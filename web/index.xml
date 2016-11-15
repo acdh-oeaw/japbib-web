@@ -1,0 +1,23 @@
+<view:surround with="page.html" at="content" xmlns="http://www.w3.org/1999/xhtml" xmlns:view="http://acdh.oeaw.ac.at/webapp/view">
+    <h3>Page Template</h3>
+    <p>This fragment is defined in web/index.xml, it is surrounded with tpl/page.html, as indicated by the top level view:surround element.</p>
+    <p>"View" elements that you can use are:</p>
+    <ul>
+        <li><code>view:if-param-set</code></li>
+        <li><code>view:if-param-unset</code></li>
+        <li><code>view:include</code></li>
+        <li><code>view:if</code></li>
+        <li><code>view:transform</code></li>
+        <li><code>view:extract</code></li>
+        <li><code>view:exec</code></li>
+    </ul>
+    <p>Any XHTML element will be passed through.</p>
+    <form class="ajaxform" action="query">
+        <div>
+            <h4>Search</h4>
+            <input name="q"/>
+            <button type="submit">submit</button>
+        </div>
+    </form>
+    <div id="results"/>
+</view:surround>
