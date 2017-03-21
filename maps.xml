@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps>
+    <map index="http://jp80.acdh.oeaw.ac.at" base-elt="mods:mods">
+        <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>
+        <index key="cql.serverChoice" case="yes">
+            <path label="." match="data(.)">mods:mods</path>
+        </index>
+        <index key="title" case="yes">
+            <path label=".">mods:titleInfo</path>
+        </index>
+        <index key="author" case="yes">
+            <path label="." match="mods:namePart">mods:name[mods:role/mods:roleTerm = 'aut']</path>
+        </index>
+        <index key="date" datatype="xs:integer">
+            <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
+        </index>
+        <index key="keyword">
+            <path label=".">mods:subject[@displayLabel = 'Stichworte']/mods:topic</path>
+        </index>
+        <index key="subject" case="yes">
+            <path label=".">mods:subject[not(@displayLabel)]/mods:topic</path>
+        </index>
+        <index key="id">
+            <path>mods:recordIdentifier</path>
+        </index>
+    </map>
+</maps>

@@ -1,22 +1,326 @@
+xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/webapp/api";
 import module namespace view = "http://acdh.oeaw.ac.at/webapp/view" at "view.xqm";
+import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "model.xqm";
+import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
+import module namespace index = "japbib:index" at "index.xqm";
+import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
+import module namespace cache = "japbib:cache" at "cache.xqm";
+import module namespace request = "http://exquery.org/ns/request";
+declare namespace mods = "http://www.loc.gov/mods/v3";
+declare namespace sru = "http://www.loc.gov/zing/srw/";
 
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
-(: Implement any additional REST endpoints in this file :)
+declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
+declare variable $api:path-to-thesaurus := "thesaurus.xml";
+declare variable $api:thesaurus2html := "xsl/thesaurus2html.xsl";
+declare variable $api:sru2html := "xsl/sru2html.xsl";
 declare 
-    %rest:path("MYWEBAPP/query")
+    %rest:path("japbibWeb/sru")
+    %rest:query-param("version", "{$version}")
+    %rest:query-param("operation", "{$operation}", "explain")
+    %rest:query-param("query", "{$query}")
+    %rest:query-param("startRecord", "{$startRecord}", 1)
+    %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
+    %rest:query-param("scanClause", "{$scanClause}")
+    %rest:query-param("responsePosition", "{$responsePosition}", 1)
+    %rest:query-param("maximumTerms", "{$maximumTerms}", 50)
+    %rest:query-param("x-sort", "{$x-sort}", "text")
+    %rest:query-param("x-style", "{$x-style}")
+    %rest:query-param("x-debug", "{$x-debug}", "false")
     %rest:GET
-    %rest:query-param("q", "{$q}")
-    %rest:query-param("startAt", "{$startAt}")
-    %rest:query-param("max", "{$max}")
-    (:%output:method("xhtml")
-    %output:omit-xml-declaration("no")
-    %output:doctype-public("-//W3C//DTD XHTML 1.0 Transitional//EN")  
-    %output:doctype-system("http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"):)
-function api:query($q as xs:string, $startAt as xs:integer?, $max as xs:integer?) {
-    error(
-        xs:QName('err:not-implemented'),
-        'Function api:query() has to be implemented in rest.xqm'
-    )
+    %rest:produces("text/xml")
+    %output:method("xml")
+function api:sru($operation, $query as xs:string?, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $scanClause, $maximumTerms, $responsePosition, $x-sort as xs:string, $x-style, $x-debug) {
+    let $context := "http://jp80.acdh.oeaw.ac.at"
+    let $ns := index:namespaces($context)
+    return
+        if (not($version)) then diag:diagnostics('param-missing', 'version') else
+        if ($version != $api:SRU.SUPPORTEDVERSION) then diag:diagnostics('unsupported-version', $version) else
+        switch($operation)
+            case "searchRetrieve" return 
+                if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else 
+                let $xcql := cql:parse($query)
+                return 
+                    if ($x-debug = 'false')
+                    then api:searchRetrieve($xcql, $version, $maximumRecords, $startRecord, $x-style)
+                    else $xcql
+            case "scan" return api:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug)
+            default return api:explain()
+};
+
+
+declare 
+    %rest:path("japbibWeb/sru/searchRetrieve")
+    %rest:query-param("version", "{$version}")
+    %rest:query-param("startRecord", "{$startRecord}", 1)
+    %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
+    %rest:query-param("x-style", "{$x-style}", 50)
+    %rest:POST("{$xcql}")
+    %rest:consumes("application/xml", "text/xml")
+    %output:method("xml")
+function api:searchRetrieve($xcql as item(), $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
+    let $accept := request:header("ACCEPT")
+    let $context := "http://jp80.acdh.oeaw.ac.at"
+    let $ns := index:namespaces($context)
+    let $xpath := cql:xcql-to-xpath($xcql, $context)
+    let $results := 
+        if ($xpath instance of xs:string) then  
+            try {
+                xquery:eval(
+                    concat(
+                        string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
+                        $xpath
+                    )
+                    , map { '': db:open($model:dbname) }
+                )
+            } catch * {
+                diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||' xpath: '||$xpath)
+            }
+        else ()
+    let $results-distinct := $results/.
+    let $response := 
+        if ($results instance of element(sru:diagnostics))
+        then $results
+        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xpath)
+    let $response-formatted :=
+        if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
+        then 
+            let $xsl := if ($x-style != '' and doc-available("xsl/"||$x-style)) then doc("xsl/"||$x-style) else doc($api:sru2html)
+            return 
+                (<rest:response>
+                    <http:response>
+                        <http:header name="Content-Type" value="text/html; charset=utf-8"/>
+                    </http:response>
+                </rest:response>,
+                xslt:transform($response, $xsl, map{"xcql" : fn:serialize($xcql)}))
+        else $response
+    return 
+        if ($xpath instance of xs:string)
+        then $response-formatted
+        else $xpath
+};
+
+declare %private function api:searchRetrieveResponse($version, $results, $maxRecords, $startRecord, $xpath) as element(){
+    let $nor := count($results),
+        $subs := subsequence($results, $startRecord, $maxRecords),
+        $nextRecPos := if ($nor ge count($subs) + $startRecord) then count($subs) + $startRecord else ()
+    return
+    <sru:searchRetrieveResponse 
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:xcql="http://www.loc.gov/zing/cql/xcql/"
+        xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"
+        xmlns:sru="http://www.loc.gov/zing/srw/">
+        <sru:version>1.2</sru:version>
+        <sru:numberOfRecords>{$nor}</sru:numberOfRecords>
+        <sru:records>{
+            for $r at $p in $subs 
+            return
+                <sru:record>
+                    <sru:recordSchema>mods</sru:recordSchema>
+                    <sru:recordPacking>XML</sru:recordPacking>
+                    <sru:recordData>{$r}</sru:recordData>
+                    <sru:recordNumber>{$p + $startRecord - 1}</sru:recordNumber>
+                </sru:record>
+        }</sru:records>
+        {if ($nextRecPos)
+        then <sru:nextRecordPosition>{$nextRecPos}</sru:nextRecordPosition>
+        else ()}        
+        <sru:extraResponseData>
+            {if ($xpath instance of xs:string)
+            then <XPath>{$xpath}</XPath>
+            else ()}
+            <subjects>{api:subjects($results)!<mods:topic>{map:get(., "topic")} ({map:get(., "items")})</mods:topic>}</subjects>
+        </sru:extraResponseData>
+    </sru:searchRetrieveResponse>
+};
+
+
+(:~ Returns a sru scan.
+ : @param $version: required, must be equal to $api:SRU.SUPPORTEDVERSION
+ : @param $scanClause: required, must be a known index
+ : @param $responsePosition: which term should be the first in the list, defaults to 1
+ : @param $maxumumTerms: number of terms in the list, defaults to 50
+ : @param $x-sort: sorting of the term list. Possible values: 'size' (number of occurences) or 'text' (alphabetically by the term)
+ : @param $x-debug: do not return scan but show some debugging information 
+~:)
+declare 
+    %rest:path("japbibWeb/sru/scan")
+    %rest:query-param("version", "{$version}")
+    %rest:query-param("scanClause", "{$scanClause}")
+    %rest:query-param("responsePosition", "{$responsePosition}", 1)
+    %rest:query-param("maximumTerms", "{$maximumTerms}", 50)
+    %rest:query-param("x-sort", "{$x-sort}", "size")
+    %rest:query-param("x-debug", "{$x-debug}", "false")
+    %rest:GET
+    %rest:produces("text/xml")
+    %output:method("xml")
+function api:scan($version, $scanClause, $maximumTerms as xs:integer?, $responsePosition as xs:integer?, $x-sort as xs:string?, $x-debug) {
+        if (not(exists($scanClause))) then diag:diagnostics("param-missing", "scanClause") else 
+        if (not($version)) then diag:diagnostics("param-missing", "version") else
+        if (exists(cache:scan($scanClause, $x-sort))) then cache:scan($scanClause, $x-sort) 
+        else api:do-scan($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug)
+};
+
+(:~
+ : Caches a given sru scan.
+ : @param $version: required, must be equal to $api:SRU.SUPPORTEDVERSION
+ : @param $scanClause: required, must be a known index
+ : @param $responsePosition: which term should be the first in the list, defaults to 1
+ : @param $maxumumTerms: number of terms in the list, defaults to 50
+ : @param $x-sort: sorting of the term list. Possible values: 'size' (number of occurences) or 'text' (alphabetically by the term)
+ : @param $x-debug: do not return scan but show some debugging information
+~:)
+declare 
+    %rest:PUT
+    %rest:path("japbibWeb/sru/scan")
+    %rest:query-param("version", "{$version}")
+    %rest:query-param("scanClause", "{$scanClause}")
+    %rest:query-param("responsePosition", "{$responsePosition}", 1)
+    %rest:query-param("maximumTerms", "{$maximumTerms}")
+    %rest:query-param("x-sort", "{$x-sort}", "size")
+    %rest:query-param("x-debug", "{$x-debug}", "false")
+    %updating
+function api:cache-scan($version, $scanClause, $maximumTerms as xs:integer?, $responsePosition as xs:integer?, $x-sort as xs:string?, $x-debug) {
+    let $terms := api:do-scan($scanClause, (), $responsePosition, $x-sort, $x-debug)
+    return cache:scan($terms, $scanClause, $x-sort)
+};
+
+(:~
+ : Computes the scan
+ : @param $scanClause: required, must be a known index
+ : @param $responsePosition: which term should be the first in the list, defaults to 1
+ : @param $maxumumTerms: number of terms in the list, defaults to 50
+ : @param $x-sort: sorting of the term list. Possible values: 'size' (number of occurences) or 'text' (alphabetically by the term)
+ : @param $x-debug: do not return scan but show some debugging information
+~:)
+declare %private function api:do-scan($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug){
+    let $context := "http://jp80.acdh.oeaw.ac.at"
+    let $ns := index:namespaces($context)
+    let $map := index:map($context)    
+    let $index-xpath := index:index-as-xpath-from-map($scanClause, $map, 'path-only'),
+                $index-match := index:index-as-xpath-from-map($scanClause, $map, 'match-only')
+            let $xpath := 
+                if (some $x in ($index-xpath, $index-match) satisfies $x instance of element(sru:diagnostics)) 
+                then ($index-xpath, $index-match)[self::sru:diagnostics] 
+                else $index-xpath||"/"||$index-match
+            return 
+            if ($xpath instance of xs:string) then
+                let $xquery :=  
+                     concat(
+                         string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
+                         "for $t in //", $xpath, " 
+                          group by $v := data($t)
+                          let $c := count($t) 
+                          order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
+                          return 
+                             <sru:term xmlns:sru='http://www.loc.gov/zing/srw/'>
+                                 <sru:numberOfRecords>{$c}</sru:numberOfRecords>
+                                 <sru:value>{$v}</sru:value>
+                                 <sru:displayTerm>{$v}</sru:displayTerm>
+                             </sru:term>"
+                     )
+                let $terms := try { 
+                    xquery:eval($xquery, map { '': db:open($model:dbname) })
+                } catch * {
+                    diag:diagnostics('general-error', 'Error evaluating expression '||$xquery||' '||$err:description)
+                }
+                return 
+                    if ($x-debug = "true") 
+                    then <debug>{$xquery}</debug> else 
+                    if ($terms instance of element(sru:diagnostics))
+                    then $terms
+                    else 
+                        api:scanResponse($terms, $maximumTerms, $responsePosition)
+            else $xpath
+};
+
+(:~
+ : Wraps a (sub)sequence of sru:terms in a sru:scanResponse element.
+ : @param $terms: the terms to be output
+ : @param $maxumumTerms: number of terms in the list. If empty, all terms are returned (used for caching)
+ : @param $responsePosition: which term should be the first in the list
+~:)
+declare %private function api:scanResponse($terms, $maximumTerms, $responsePosition){
+    <sru:scanResponse xmlns:srw="//www.loc.gov/zing/srw/"
+              xmlns:diag="//www.loc.gov/zing/srw/diagnostic/"
+              xmlns:myServer="http://myServer.com/">
+        <sru:version>{$api:SRU.SUPPORTEDVERSION}</sru:version>
+        <sru:terms>{if (not($maximumTerms)) then $terms else subsequence($terms, $responsePosition, $maximumTerms)}</sru:terms>
+    </sru:scanResponse>
+};
+
+
+declare 
+    %rest:path("japbibWeb/sru/explain")
+    %rest:GET
+    %rest:produces("text/xml")
+    %output:method("xml")
+function api:explain() {
+    <sru:explainResponse xmlns:sru="//www.loc.gov/zing/srw/">
+        <sru:version>{$api:SRU.SUPPORTEDVERSION}</sru:version>
+        <sru:record>
+        <sru:recordPacking>XML</sru:recordPacking>
+        <sru:recordSchema>http://explain.z3950.org/dtd/2.1/</sru:recordSchema>
+        <sru:recordData>
+            <zr:explain xmlns:zr="http://explain.z3950.org/dtd/2.1/">
+                <zr:serverInfo protocol="SRU" version="{$api:SRU.SUPPORTEDVERSION}" transport="http" method="GET POST">
+                    <zr:host>jp80.acdh.oeaw.ac.at</zr:host>
+                    <zr:port>80</zr:port>
+                    <zr:database>jp80</zr:database>
+                </zr:serverInfo>
+                <zr:databaseInfo>
+                    <title lang="en" primary="true">JP 80 Database</title>
+                </zr:databaseInfo>
+                <zr:indexInfo>
+                    <zr:set name="dc" identifier="info:srw/cql-context-set/1/dc-v1.1"/>
+                    <zr:index>
+                        <zr:map>
+                            <zr:name set="dc">title</zr:name>
+                        </zr:map>
+                    </zr:index>
+                </zr:indexInfo>
+                <zr:schemaInfo>
+                    <zr:schema name="dc" identifier="info:srw/schema/1/dc-v1.1">
+                        <zr:title>Simple Dublin Core</zr:title>
+                    </zr:schema>
+                </zr:schemaInfo>
+                <zr:configInfo>
+                    <zr:default type="numberOfRecords">1</zr:default>
+                    <zr:setting type="maximumRecords">50</zr:setting>
+                </zr:configInfo>
+            </zr:explain>
+        </sru:recordData>
+    </sru:record>
+</sru:explainResponse>
+
+};
+
+declare 
+    %rest:path("japbibWeb/thesaurus")
+    %rest:GET
+    %rest:produces("text/xml")
+    %output:method("xml")
+function api:taxonomy-as-xml() {
+    doc($api:path-to-thesaurus)
+};
+
+declare 
+    %rest:path("japbibWeb/thesaurus")
+    %rest:GET
+    %rest:produces("text/html", "application/xml+xhtml")
+    %output:method("xml")
+function api:taxonomy-as-html() {
+    xslt:transform(doc($api:path-to-thesaurus), doc($api:thesaurus2html))
+};
+
+declare %private function api:subjects($r){
+    for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
+    let $v := data($t)
+    group by $v
+    return map {
+        'topic' : $v, 
+        'items' : count($t)
+    } 
 };
