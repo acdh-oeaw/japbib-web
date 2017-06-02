@@ -56,7 +56,7 @@ function cql:parse($query as xs:string) as item()* {
     let $boolOps-parsed := cql:parse-boolean-operators($groups-parsed)
     let $sortClause-parsed := cql:parse-sort-clause($boolOps-parsed) 
     let $searchClauses-parsed := cql:parse-searchClauses($sortClause-parsed)
-(:    return <xcql>{$searchClauses-parsed}</xcql>:)
+    (:return <xcql>{$searchClauses-parsed}</xcql>:)
     return cql:create-triples($searchClauses-parsed)  
     
 (:    return <xcql>{$sortClause-parsed}</xcql>:)
@@ -109,16 +109,17 @@ declare function cql:create-triples($parts as element()+) {
         )}</searchClause>,
         $w[self::boolean])
     }
-    return
+    return 
     if (count($parts) eq 1 and $parts/self::term)
     then $formatSearchClause($parts)
     else 
-    let $searchClauses-grouped := 
-        for tumbling window $w in $parts
-        start $s when true()
-        end $e when $e instance of element(boolean)
-        return $formatSearchClause($w)
-    return cql:group-triples($searchClauses-grouped)
+        let $searchClauses-grouped := 
+            for tumbling window $w in $parts
+            start $s when true()
+            end $e when $e instance of element(boolean)
+            return $formatSearchClause($w)
+        (:Currently grouping is commented out since it is not implemented correctly ... :)
+        return cql:group-triples($searchClauses-grouped)
 };
 
 (:~
@@ -150,8 +151,8 @@ declare function cql:group-triples($elts as element()+) as element(){
 declare function cql:do-group-triples($boolean as element(boolean), $lo as element(), $ro as element(), $rest as element()*) as element(triple){
     let $t := <triple>
                   {$boolean}
-                  <leftOperator>{$lo}</leftOperator>
-                  <rightOperator>{$ro}</rightOperator>                  
+                  <leftOperand>{$lo}</leftOperand>
+                  <rightOperand>{$ro}</rightOperand>                  
               </triple>
     (:return $t:)
     let $boolean-rest := $rest/self::boolean[1],
@@ -181,12 +182,15 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
               if ($prev instance of element(fn:match)) then <term>{data($w)}</term>
               else <index>{normalize-space($w)}</index>
     }
-    return
-        for $p in $parts
-        return 
-            if ($p instance of xs:string and matches($p, $relationOperators))
-            then $parse-searchClause($p)
-            else $p
+    return 
+        if (count($parts) eq 1)
+        then <term>{$parts}</term>
+        else 
+            for $p in $parts
+            return (:$parse-searchClause($p):)
+                if ($p instance of xs:string and matches($p, $relationOperators))
+                then $parse-searchClause($p)
+                else $p
 };      
 
 declare function cql:parse-quotes($expr as xs:string) as item()* {
@@ -263,7 +267,7 @@ declare function cql:parse-boolean-operators($parts as item()*) as item()* {
 };
 
 declare function cql:make-triples($parts as item()*) as item()* {
-         
+ ()        
 };
 
 declare function cql:group-expressions($expr as element()+) as item()* {
