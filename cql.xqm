@@ -35,6 +35,7 @@ module namespace cql = "http://exist-db.org/xquery/cql";
 import module namespace index = "japbib:index" at "index.xqm";
 declare namespace cqlparser = "http://exist-db.org/xquery/cqlparser";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
+declare namespace rest = "http://exquery.org/ns/restxq";
 
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 
@@ -110,16 +111,21 @@ declare function cql:create-triples($parts as element()+) {
         $w[self::boolean])
     }
     return 
+    (: if there is only a term, the formatSearchClause() function will put it into a simple cql.serverChoice query :)
     if (count($parts) eq 1 and $parts/self::term)
     then $formatSearchClause($parts)
-    else 
-        let $searchClauses-grouped := 
-            for tumbling window $w in $parts
-            start $s when true()
-            end $e when $e instance of element(boolean)
-            return $formatSearchClause($w)
-        (:Currently grouping is commented out since it is not implemented correctly ... :)
-        return cql:group-triples($searchClauses-grouped)
+    else
+        (: if there are already parsed query items <index>, <relation> and <term>, formatSeachClause() will simply wrap them with a <searchClause> element :) 
+        if (count($parts) eq 3 and (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term')))
+        then $formatSearchClause($parts)
+        else 
+            let $searchClauses-grouped := 
+                for tumbling window $w in $parts
+                start $s when true()
+                end $e when $e instance of element(boolean)
+                return $formatSearchClause($w)
+            (:Currently grouping is commented out since it is not implemented correctly ... :)
+            return cql:group-triples($searchClauses-grouped)
 };
 
 (:~
@@ -184,7 +190,7 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
     }
     return 
         if (count($parts) eq 1)
-        then <term>{$parts}</term>
+        then $parse-searchClause($parts)
         else 
             for $p in $parts
             return (:$parse-searchClause($p):)
