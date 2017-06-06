@@ -62,3 +62,29 @@ declare function index:index-as-xpath-from-map($index-key as xs:string, $map as 
             case 'path-only' return $indexDef/path
             default return $indexDef/path
 };
+
+declare function index:map-to-indexInfo() {
+    for $m in $index:maps//map
+    return 
+    <zr:indexInfo xmlns:zr="http://explain.z3950.org/dtd/2.1/">
+        <zr:set name="{$m/@name}" identifier="{$m/@index}"/>
+        {for $i in $m//index
+        return 
+        <zr:index>
+            <zr:map>
+                <zr:name set="jb80">{$i/data(@key)}</zr:name>
+            </zr:map>
+        </zr:index>}
+    </zr:indexInfo>
+};
+
+declare function index:map-to-schemaInfo() { 
+    <zr:schemaInfo xmlns:zr="http://explain.z3950.org/dtd/2.1/">{
+        for $m in $index:maps//map
+        return
+        <zr:schema name="{$m/@name}" identifier="{$m/@index}">
+          <zr:title>{data($m/@description)}</zr:title>
+        </zr:schema>
+    }</zr:schemaInfo>
+};
+
