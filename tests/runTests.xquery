@@ -23,7 +23,7 @@ declare function local:handle ($item as item()) {
     typeswitch ($item) 
         case element(test) return try { local:handleTestElt ($item) } catch * {($item, <error>{$err:code||": "||$err:description|| " (module "||$err:module||", line "||$err:line-number||")"}</error>)}
         (: @outcome is always generated anew :)
-        case attribute(outcome) return ()
+        case attribute(result) return ()
         (: <actual> is always generated anew :)
         case element(actual) return ()
         (: <error> is always generated anew :)
@@ -40,10 +40,10 @@ declare function local:handleTestElt($item as element(test)) as element(test){
     return
     element {QName(namespace-uri($item), local-name($item))} {(
         for $att in $item/@* return local:handle($att),
-        attribute outcome {if ($matches-expected) then 'success' else 'failure'},
-        for $n in $item/node() return local:handle($n),
-        if (not($matches-expected))
-        then <actual>{$xcql}</actual>
+        attribute result {if ($matches-expected) then 'success' else 'failure'},
+        if (not($matches-expected)) then
+        (for $n in $item/node() return local:handle($n),
+         <actual>{$xcql}</actual>)
         else ()
     )}
 };
