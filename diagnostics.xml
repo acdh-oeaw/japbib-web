@@ -29,6 +29,11 @@
         <details>{$param}</details>
         <message>Query syntax error</message>
     </diagnostic>
+    <diagnostic key="unsupported-context-set">
+        <uri>info:srw/diagnostic/1/15</uri>
+        <details>{$param}</details>
+        <message>Unsupported context set</message>
+    </diagnostic>
     <diagnostic key="index-unknown">
         <uri>info:srw/diagnostic/1/16</uri>
         <details>{$param}</details>

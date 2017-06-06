@@ -307,14 +307,19 @@ declare function cql:cql-to-xpath($cql-expression, $context)  as item()* {
 
 declare function cql:xcql-to-xpath ($xcql as node(), $context as xs:string) as item() {
     let $map := index:map($context)
-    let $xpath := 
-        if ($xcql instance of document-node())
-        then cql:process-xcql($xcql/*, $map)
-        else cql:process-xcql($xcql, $map)
     return 
-        if ($xpath instance of element(sru:diagnostics))
-        then $xpath
-        else string-join($xpath,'') 
+        if ($map instance of element(sru:diagnostics))
+        then $map
+        else 
+            let $xpath := 
+                if ($xcql instance of document-node())
+                then cql:process-xcql($xcql/*, $map)
+                else cql:process-xcql($xcql, $map)
+            return
+            if ($xpath instance of element(sru:diagnostics))
+            then $xpath
+            else string-join($xpath,'')
+        
 };
 
 (:~ the default recursive processor of the parsed query expects map with indexes defined
