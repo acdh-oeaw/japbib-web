@@ -1,11 +1,12 @@
 xquery version "3.1";
-module namespace api = "http://acdh.oeaw.ac.at/webapp/api";
+module namespace api = "http://acdh.oeaw.ac.at/japbib/api";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "model.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "index.xqm";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cache = "japbib:cache" at "cache.xqm";
 import module namespace request = "http://exquery.org/ns/request";
+import module namespace xqueryui = "http://acdh.oeaw.ac.at/japbib/xqueryui" at "xqueryui/xqueryui.xqm";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 
@@ -26,7 +27,7 @@ declare variable $api:sru2html := "xsl/sru2html.xsl";
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/{$file=.+\.(html|js|map|css)}")
+  %rest:path("japbib-web/(?!(xqueryui)){$file=.+\.(html|js|map|css|png|gif|jpg|jpeg|PNG|GIF|JPG|JPEG)}")
 function api:file($file as xs:string) as item()+ {
   let $path := file:base-dir()|| $file
   return if (file:exists($path)) then
