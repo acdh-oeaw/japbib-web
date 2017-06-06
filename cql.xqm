@@ -189,14 +189,11 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
               else <index>{normalize-space($w)}</index>
     }
     return 
-        if (count($parts) eq 1)
-        then $parse-searchClause($parts)
-        else 
-            for $p in $parts
-            return (:$parse-searchClause($p):)
-                if ($p instance of xs:string and matches($p, $relationOperators))
-                then $parse-searchClause($p)
-                else $p
+        for $p in $parts
+        return (:$parse-searchClause($p):)
+            if ($p instance of xs:string and matches($p, $relationOperators))
+            then $parse-searchClause($p)
+            else <term>{$p}</term>
 };      
 
 declare function cql:parse-quotes($expr as xs:string) as item()* {
