@@ -57,10 +57,7 @@ function cql:parse($query as xs:string) as item()* {
     let $boolOps-parsed := cql:parse-boolean-operators($groups-parsed)
     let $sortClause-parsed := cql:parse-sort-clause($boolOps-parsed) 
     let $searchClauses-parsed := cql:parse-searchClauses($sortClause-parsed)
-    (:return <xcql>{$searchClauses-parsed}</xcql>:)
-    return cql:create-triples($searchClauses-parsed)  
-    
-(:    return <xcql>{$sortClause-parsed}</xcql>:)
+    return cql:create-triples($searchClauses-parsed)
 };      
 
 (:~ NOT USED ~:)
@@ -116,7 +113,7 @@ declare function cql:create-triples($parts as element()+) {
     then $formatSearchClause($parts)
     else
         (: if there are already parsed query items <index>, <relation> and <term>, formatSeachClause() will simply wrap them with a <searchClause> element :) 
-        if (count($parts) eq 3 and (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term')))
+        if (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term', 'sortKeys'))
         then $formatSearchClause($parts)
         else 
             let $searchClauses-grouped := 

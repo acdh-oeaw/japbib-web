@@ -53,4 +53,19 @@
             </triple>
         </expected>
     </test>
+    <test>
+        <query>Haus sortBy author</query>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term>Haus</term>
+                <sortKeys>
+                    <index>author</index>
+                </sortKeys>
+            </searchClause>
+        </expected>
+    </test>
 </tests>
