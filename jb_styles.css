@@ -1,0 +1,588 @@
+﻿/***************
+   Schrift
+****************/
+body {
+  color:#555;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  }
+h2, h3, h4 {
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  }
+a {
+  color:#005;
+  text-decoration: none;
+  }
+a:hover { 
+  color:#008;
+	background: rgba(0, 0, 255, 0.06);
+  }
+h2 {
+  color: #8e843b;
+  }
+h2:first-child {
+    margin-top: 0;
+}
+h3 {
+  color: #8e843b;
+  }
+
+h4 {
+  color: #8e843b;
+  }
+.white {
+  background-color:#fff; 
+  }
+p { 
+  margin: 1em 0;
+}
+
+/***************
+   STRUKTUR
+****************/
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color:#ffd; 
+  color:#666;
+  } 
+
+.background {
+  background-image:url('images/bg.png');  
+}
+ 
+
+/* head */
+
+
+#main,
+#navbar {
+  max-width: 80em;
+  margin: 0 auto;
+  }
+
+#head {   
+  position: relative;
+  height: 180px;
+  background-image:url('images/bg3.jpg');
+  background-position: right;
+  }
+#head img.figure {
+position:absolute;
+top:0;
+right:0;
+  
+}
+#logo1,
+#logo2 {
+  position: absolute;
+  top: 0;
+  left: 0; 
+  right: 0; 
+  bottom: 0;  
+  }
+#logo1 {
+  padding-left: 30px;
+  padding-top: 42px; 
+  background: -webkit-linear-gradient(left, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For  Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* #e7d5a7 Standard syntax (must be last) */
+  }
+#logo2 {
+  right: 0; 
+  display: none;
+  }
+h1 {
+  position: relative;
+  text-align: center;
+  margin: 0 245px;
+  padding: 46px 0 0;
+  font-family: "trebuchet ms";
+  font-size: 32px;
+  z-index: 1;
+  }
+.H1_big span {
+  display:block;
+  margin: 0 100px;
+  font-size: .7em;
+}
+.H1_big em {
+    font-style: normal;
+    text-shadow: 2px 2px 6px #e4d3a5, -2px -2px 6px #e4d3a5;    
+    border-radius: 5px;
+    color: #615a2c;
+}
+#subhead {
+    background: rgba(174, 158, 108, 0.21);
+    padding: 2px 0; 
+    height: 20px;
+    position: absolute;
+    width: 100%;
+    margin-top: -27px; 
+    border: 3px solid rgb(255, 247, 212);
+    border-width: 0px 0 4px;
+}
+#navbar {
+  height: 19px;
+  font-size: 14px;
+  line-height:15px;
+  font-family: calibri, arial, sans-serif;
+  position:relative;
+  }
+#navbar_items {
+  display: block;
+  position: absolute;
+  left: 9em;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  }
+#navbar_items li {
+  display: block;
+  position: relative;
+  float: left;
+  margin-right: -.3em;
+  list-style: none;
+  } 
+#navbar a {
+  display: inline-block; 
+  position: relative;
+  padding: .2em 1em; 
+  background: #eee;  
+    background: rgb(237, 227, 185);
+    border: 1px solid rgb(255, 247, 212);
+    border-color: #e4d3a5 #e4d3a5 rgb(255, 247, 212);
+  border-radius: .6em .6em .1em .1em;
+  }
+#navbar a:hover {
+  background: #fff;  
+  }
+
+
+
+/* main body */
+
+iframe {
+  width: 100%;
+  min-height: 45em;
+  border: 0; 
+  border-bottom: 1px solid #ddd;
+  overflow: auto;
+  }
+
+table.main {
+  position:relative;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+  min-height: 30em;
+  max-height: 40em;
+    border: 1px solid #fff7d4;
+    border-width: 0 0 0 3px;
+  }
+#nav {
+}
+#find {
+}
+ 
+td.control {
+    position: relative;
+    vertical-align: top;
+    padding-top: 20em;
+    background: rgb(228, 211, 165);
+    width: 3em;
+    overflow: hidden;
+    border-right: 3px solid #fff7d4;
+    min-height: 20em;
+    cursor: pointer;
+    font-family:"Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    font-weight:bold;
+}
+  td.control.hilite {
+    background: rgb(208, 219, 216);
+    cursor: default;
+}
+.control div {
+  transform: rotate(90deg);
+  position: absolute;
+  width: 12em;
+  left: -4.5em;
+  text-align: center;
+  text-transform: uppercase;
+  border: 0px solid #ddd;
+  color: #000;
+  }
+  
+td.control:hover {
+  background:rgb(208, 219, 216);
+  }
+  
+/* foot */
+
+#footer {
+  clear: both;
+  text-align: center;
+ 
+    border-top: 3px solid #fff7d4;
+  padding: .5em;
+  background-color: rgba(233, 220, 175, 0.5);
+  /*  position: absolute;
+    width: 100%;
+    bottom: 0; */
+  }
+
+
+/*******************
+   JS-Funktionen
+********************/
+
+.hide {
+  display: none;
+  }
+#navbar .hilite {
+  z-index: 3!important;
+  background: #fff;
+  border-bottom-color: #fff;
+  cursor: default;
+  line-height: 17px;
+  }
+
+/*******************
+   Slides
+********************/
+
+.main .slide {
+  position:relative;
+  vertical-align:top;
+  background:#fff;
+  padding: 3.5rem 5%;
+  }
+ 
+.white {
+}
+.content {
+  margin-right: 16.5rem;
+  margin-left: auto;
+  max-width: 50em; 
+  line-height: 1.5em;
+  }
+#about .content {
+  margin-right: auto;
+  }
+ 
+.pageindex {
+    float: right;
+    width: 15rem;
+    margin: 0 0 1.5em 1.5em; 
+    border: 1px solid rgb(191, 207, 203);
+    border-radius: 5px 5px 0 0;
+    background-color: rgb(255, 247, 212);
+    }
+
+#schlagworte .pageindex {
+  position: fixed;
+  vertical-align: top;
+  z-index: 3;
+  right:  5%; 
+  }
+   
+#find .pageindex { 
+    width: 15em; 
+  }
+
+.pageindex h4 {
+  margin: 0;
+  padding: .4em;
+  text-align: center;
+  background: #eed;
+    background: rgb(208, 219, 216);
+    color: #005;
+  }
+.pageindex ul { 
+  max-width: 13em;
+  margin: 1em auto;
+  list-style: none;
+  padding: 0;
+}
+.pageindex li  {
+  list-style: none;
+  padding: 0;
+  }  
+.pageindex a  {
+  display: inline-block;
+  padding: .2em;
+  padding-left: 1.2em;
+  text-indent: -1em;
+  }
+.pageindex a.andOr  {
+  display: inline;
+  padding: 0; 
+  text-indent: 0;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+    font-size: .8em;
+  }   
+#schlagworte .pageindex a {
+  padding: 0;
+  }
+.i_container {
+  overflow: hidden;
+  }
+.i_container img {
+    width: 100%; 
+ margin-bottom:-5px;
+ }
+
+
+/*******************
+   Spezielle Felder
+********************/
+
+#showList {
+  margin-left: -1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+    padding: .5em 1em;
+    background: rgba(255, 255, 255, 0.75);
+    } 
+#searchfield { 
+}
+  
+#show_entry th {
+  text-align: right;
+}
+ 
+.showEntry, 
+.showEntry li {
+  list-style:none;
+  margin: 0;
+  padding: 0;  
+  }
+.showEntry {
+    color: #000;
+    border: 1px solid #ccc;
+    margin: 0 -.5em .5em;
+    padding: .5em 1em;
+    border-radius: 5px;
+    background: rgba(0, 0, 255, 0.06);
+    background: rgb(255, 247, 212);
+  }
+.showEntry li { 
+  margin-left: 9em;   
+  }
+.showEntry .eSegment {
+  float:left;
+  clear: left;
+  width: 9em; 
+  margin-left: 0em; 
+  font-style: italic;
+  }  
+  
+/*******************
+   Schlagworte
+********************/
+fieldset {
+  border: 0;
+  }
+#schlagworte { 
+  padding: 1.5em 16.5em 1em 3em;
+  padding:0;
+  }
+#expandAll {  
+    padding: 0.2em .5em; 
+}
+#expandAll a {
+  text-transform: lowercase;
+  color: #333300;
+  display: inline-block;
+  margin-left: -1.5em;
+  padding: 0 .5em 0 2.5em;
+  border-radius: .5em;
+  position: relative;
+  z-index: 2;
+  width: 7em;  
+  }
+a.zahl {
+  font-family: courier, monospace;
+  }
+a.zahl::before {
+  content: '▶';
+  padding-right: .2em;
+  font-family: arial unicode ms, sans serif;
+  }
+  
+.schlagworte {
+    max-width: 35em;
+    margin: 0 auto;
+}
+.schlagworte ul,
+.schlagworte ol {
+	margin: 0; 
+	padding: 0;
+	list-style: none;
+  }
+.schlagworte li {
+  position: relative;
+	margin: 1px 1.5em; 
+	padding: 0; 
+	list-style: none;
+	}
+.schlagworte li::first-letter { 
+  text-transform: uppercase;
+  }
+.sup,
+.schlagworte span { 
+  padding-right: .5em; 
+  position: relative;
+	z-index: 2;
+	}  
+.schlagworte li.li1  { 
+  margin-top: 1em; 
+  margin-left: 0; 
+  }  
+.pageindex ol.schlagworte {
+    margin: 1em;
+    padding: 0;
+    font-size: .85rem;
+}
+.pageindex .schlagworte li.li1 {
+    margin: .5em 0;
+    padding: 0;
+}
+.pageindex .schlagworte li {
+  margin-right:0;
+  }
+.pageindex .schlagworte a {  
+  padding: 0;
+  text-indent: 0;
+}
+  
+  
+#hint_result .schlagworte {
+  padding-left: 1em;
+  }
+#hint_result .schlagworte li.li1  {  
+  margin-left: -1.5em; 
+  }
+#hint_result .#schlagworte li   {  
+  margin-right: 0; 
+  }
+.schlagworte .li1 > span { 
+  margin-bottom: .5em; 
+	font-weight: bold;  
+	color: #8e843b;  
+	text-transform: uppercase;  
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	} 
+.sup, 
+.sup2 { 
+  position:relative; 
+  padding-right: .5em; 
+	z-index: 2;
+	cursor: pointer; 
+  }
+.sup:hover { 
+	background: rgba(0, 0, 255, 0.07);
+	border-radius: .4em; 
+	}
+.sup::before,
+.sup2::before {
+  content: '+';
+  display: block;
+  position: absolute;
+  left: -1.5em;
+  top: 0;
+  width: 1em; 
+  height: 1em; 
+    line-height: 1.2em;
+  text-align: center;
+  border-radius: 1em;
+  border: 1px solid #ccc;
+  font-family: courier, arial;
+  }
+.showResults #showList .sup {
+  margin-left: 1.5em;
+  }
+.close::before {
+  content: '–';
+  }  
+.showOptions {
+  text-align: right; 
+    text-align: right;
+    background: rgba(0, 63, 255, 0.06);
+    background: rgba(233, 220, 175, 0.5);
+    padding: 1px 5px;
+    margin: -.5em -1em .5em;
+}
+.erklärung:before {
+  content: '?';
+  display: inline-block; 
+    color: #008;
+    background:rgb(208, 219, 216);
+    border: 1px solid rgba(0, 0, 136, 0.5);
+    border-radius: 1em;
+    box-shadow:4px 4px 6px rgba(51, 51, 51, 0.15);
+    line-height: 1.5em;
+    width: 1.5em;
+    text-align: center;
+    cursor: pointer;
+} 
+.erklärung:hover:before {    
+  background: rgb(218, 229, 226);  
+  }
+.erklärung {
+  position: relative;
+  display: inline;
+  color:#005;
+  }
+.erklärung span{
+    display: none;
+    width: 16em;
+    position: absolute;
+    top: 1.4em; 
+    left:0;
+    background: rgb(218, 229, 226);
+    z-index: 5;   
+  text-align: left; 
+    padding: .5em .7em; 
+    border-radius: 5px; 
+    border: 1px solid rgba(0, 0, 136, 0.5); 
+    box-shadow:4px 4px 6px rgba(51, 51, 51, 0.15);
+
+}
+.erklärung:hover span {
+    display: block;
+}
+
+.impressum, 
+.impressum li {
+ list-style: none; 
+ margin: 0;
+ padding: 0;
+ }
+.impressum li {
+ margin-left:3em;
+ margin-bottom:1em;
+ }
+.impressum i {
+ display: block; 
+    text-indent: -3em;
+    }
+.impressum span {
+ display: block; 
+ line-height: 1.25em;
+ margin-bottom: 1em;
+}
+ 
+.tipp {
+    padding-left: 3em;
+}
+.tipp::before {
+    content: 'Tipp: ';
+    display: inline-block;
+    margin-left: -3em;
+    width: 3em;
+    font-style: italic;
+}

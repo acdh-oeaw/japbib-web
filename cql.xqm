@@ -181,7 +181,7 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
             start $s at $s-pos previous $prev when true()
             end $e at $e-pos next $next when true()
             return 
-              if ($w instance of element(fn:match)) then <relation><value>{normalize-space($w)}</value></relation> else  
+              if ($w instance of element(fn:match)) then <relation><value>{lower-case(normalize-space($w))}</value></relation> else  
               if ($prev instance of element(fn:match)) then <term>{data($w)}</term>
               else <index>{normalize-space($w)}</index>
     }
@@ -258,7 +258,7 @@ declare function cql:parse-boolean-operators($parts as item()*) as item()* {
         for $e in $r/* 
         return 
             if ($e instance of element(fn:match)) 
-            then <boolean><value>{normalize-space($e)}</value></boolean> 
+            then <boolean><value>{lower-case(normalize-space($e))}</value></boolean> 
             else xs:string($e)
      }
      return

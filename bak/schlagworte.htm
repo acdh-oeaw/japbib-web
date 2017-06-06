@@ -1,0 +1,761 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Thesaurus</title>
+
+<link href="jb_styles.css" rel="stylesheet" type="text/css" />
+<script src="jquery-3.1.1.js"></script>
+<script src="jb_scripts.js"></script>
+<script src="schlagworte.js"></script>
+
+</head> 
+<body class="white"  id="schlagworte">
+
+<div class="pageindex">
+	<h4>Ausgewählte Schlagworte </h4>
+	<fieldset>
+    <ul>
+      <li> 
+        <label>
+          <input type="checkbox" name="schlagwort" value="Shintō"  checked>
+          Shintō <a href="#" class="andOr">AND</a>
+        </label>
+      </li>
+      <li> 
+        <label>
+           <input type="checkbox" name="schlagwort" value="Buddhismus " checked>
+          Buddhismus <a href="#" class="andOr">AND</a>
+        </label>
+      </li>
+      <li>  
+        <label>
+          <input type="checkbox" name="schlagwort" value="Altertum (bis 1192)" checked>
+          Altertum (bis 1192)
+        </label>
+      </li>
+      <li style="text-align:right; margin-top:1em; ">334 Resultate <button name="button" title="Suche nach Schlagworten">anzeigen</button></li>
+    </ul> 
+  </fieldset>   
+  <div class="i_container"><img alt="" src="images/kason book.jpg" width="250"></div>
+</div>
+
+<div class="content"> 
+
+<h2>Thesaurus</h2>
+<p>Über diese Seite ist eine Suche nach hierarchisch geordneten Schlagworten möglich. Wählen Sie aus der folgenden Liste ein oder mehrere Schlagworte aus und klicken Sie anschließend im Feld rechts auf „anzeigen“. Die Resultate werden auf der Seite „Suchen und finden“ angezeigt. </p>
+<p>Tipp: Die Schlagworte werden standardmäßig mit „AND“ verküpft (Suchfeld wird kleiner), können aber durch Anklicken auch mit „OR“ verbunden werden (Suchfeld wird größer).  </p>
+
+<div id="showList">
+<div class="showOptions">
+  <div id="expandAll">
+    <div><span class="sup2"><a id="aO" href="#">Alles öffnen</a></span></div>
+    <div><span class="sup2 close"><a id="aC" href="#">Alles schließen</a></span></div>  
+  </div>  
+</div>
+<div class="schlagworte">
+	<ol>
+	  <li class="li1"><span>Thema </span>
+	  <ol>
+		<li><span class='sup'>Allgemeines und Varia</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>allgemeine und fachübergreifende Werke</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Auslandsbild und Einstellung zu Ausland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Biographie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class="sup">Japanbild und Einstellung zu Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Japan im Schulunterricht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Japaner im Ausland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Japan im internationalen Vergleich</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Japan-Ratgeber</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Japanreise und -erlebnis</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Kochbücher</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+	    <li><span class="sup">Geschichte </span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		<ol>
+		  <li><span>Archäologie und Vorgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Außenbeziehungen und internationale Krisen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Japanisch-chinesischer Krieg (1894–1895)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Russisch-japanischer Krieg (1904–1905)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Erster Weltkrieg (1914–1918)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Zweiter Weltkrieg (1937–1945)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Besatzungszeit (1945–1952)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Hiroshima und Nagasaki</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Geschichtsbewusstsein, -bewältigung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Geschichtswissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Geschichtsschreibung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Numismatik und Philatelie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Lokalgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Kulturgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Militärgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>oral history</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class="sup">Gesellschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		<ol>
+		  <li><span>Alltag und Alltagskultur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Bevölkerung und Demographie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class="sup">Bildung und Erziehung</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Behindertenausbildung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Berufsausbildung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Deutschunterricht für Japaner</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Erwachsenenbildung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Erziehungsgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span class="sup">Schulwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+			<ol>
+			  <li><span>höhere Schule</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Lehrer und Studenten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Schulbücher, Lehrpläne und Ausbildungsmethoden</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Universitäten und Hochschulen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Vorschule, Pflichtschule</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			</ol>
+			</li>
+		  </ol>
+		  </li>
+		  <li><span>Erotik und Sexualität</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class="sup">Familie</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Ehe und Partnerschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Frau</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Gemeinde und Lokalgemeinschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Geschlechterbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Gesellschaftswissenschaften und -theorie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Lebensumstände,	Lebensstandard</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Lebenszyklus</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Alter und Tod</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kindheit und Jugend</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Minderheiten in Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Ainu</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Burakumin</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Koreaner</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Psychologie und Psychiatrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Japanische Identität</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Mentalität und Denkweise</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Sozialbeziehungen und -struktur</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Sozialer Wandel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sozialerziehung und Sozialisation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Soziales Verhalten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Sozialgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Soziale Probleme</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Aids</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Armut</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Diskriminierung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Gewalt und Kriminalität</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Krankheit und Behinderung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Prostitution</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Selbstmord</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Sport und Wettkampf</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Budō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Jūdō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Karate</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kendō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kyūdō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sumō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>traditionelle	Waffen und Kampftechniken</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class="sup">Unterhaltung und Freizeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Massenkultur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Spiel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Tourismus und	Fremdenverkehr</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Wohlfahrt und Sozialarbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class="sup">Kunst und Kultur</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		<ol>
+		  <li><span>Architektur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Ästhetik und Kunsttheorie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Bibliotheken und Museen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Museums- und Bibliothekskunde</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Restauration</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sammlungen außerhalb Japans</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sammlungen in Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>bildende Kunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Design und angewandte Kunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Graphik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Holzschnitte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kalligraphie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Keramik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kunsthandwerk und Volkskunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Malerei</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Skulptur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Textilkunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class="sup">darstellende Kunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Bunraku</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Butō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kabuki</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kyōgen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Nō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Shingeki, Gegenwartstheater</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Tanz</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Theater</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Freizeitkünste</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Bonsai</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Ikebana</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Origami</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Teezeremonie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class="sup">Japan als Gegenstand nicht-jap. Kunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a>
+		  <ol>
+			<li><span>Japan-Drama und -Musik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japan-Kinder- und Jugendbücher</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japan-Kunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japan-Lyrik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japan-Prosa</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Kommunikation, Medien, Information</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Buch- und Verlagswesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Informationswesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span class='sup'>Massenmedien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			  <li><span>Journalismus, Zeitungen, Zeitschriften</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Radio und Fernsehen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Telekommunikation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			</ol>
+			</li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Kulturelle Außenbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Kulturinstitute und Freundschaftsgesellschaften</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>japanische Kunst im Ausland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kultur- und Wissenschaftsaustausch</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>westliche Kunst und Kultur in Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Kunstgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Landschaftsgestaltung und Gärten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Musik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Jazz</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Photographie,	Film und neue Medien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Film</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Medienkunst</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Photographie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		</ol>
+		</li>
+		<li><span class='sup'>Landeskunde</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Brauchtum und	Feste</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Klima und Geodynamik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>materielle Kultur</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Bekleidung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Ernährung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Wohnen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Natur, Fauna und Flora</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Physische Anthropologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Raumordnung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Städte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Umweltproblematik und -politik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Volkskunde</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Literatur</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Comics, Manga</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Drama</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Essay</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Germanistik und dt.-sprachige Literatur in Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Kinder- und Jugendliteratur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Literaturkritik und -essayistik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Literaturwissenschaft und -geschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Motivforschung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Vergleichende	Literaturwissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Lyrik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Märchen und Legenden</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Prosa</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Rakugo</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Rezeption</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+	    <li><span class='sup'>Philosophie und Religion</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Buddhismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Zen-Buddhismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Bushidō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Christentum</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Gottheit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Ideen- und Geistesgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Konfuzianismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Rezeption einzelner Philosophen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Neo-Konfuzianismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Neue Religionen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Religionswissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Schamanismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Shintō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Taoismus</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Volksreligion</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Werte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Politik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Agrarpolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Außenbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Außenwirtschaftskonflikte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Außenwirtschaftspolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Diplomatie, Außenpolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Entwicklungshilfe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Geschichte der	Außenbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>internationale	Beziehungen (staatlich)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>internationale	Zusammenarbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Internationalisierung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kolonialmacht Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Protektionismus, Handelshemmnisse</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Innenpolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>öffentliche Sicherheit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Politikwissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>politische Ideen und Theorie, Ideologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>politische Parteien und Bewegungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>alternative Parteien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>anarchistische Bewegungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Anti-Atombewegung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Gewerkschaften und Arbeiterbewegungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Demokratie-, Menschenrechts- und Bürgerbewegungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Frauenbewegung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Friedensbewegung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>kommunistische Parteien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Konservative und Liberale</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Konsumentenbewegung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Nationalisten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>soziale und	sozialistische Bewegungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Umwelt- u. Naturschutzbewegung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>politisches	System</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Parlament, Gesetzgebung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>politische Kultur und Bewusstsein</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Regierung, Ministerien, Verwaltung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Tennō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Wahlsystem, Wahlkampf</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Regionalpolitik, Kommunalpolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Sicherheits- und Verteidigungspolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Militärwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		</ol>
+		</li>
+		<li><span class='sup'>Recht</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Öffentliches Recht</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Internationales Recht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Menschenrechte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sozialversicherungsrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Strafrecht und Strafprozessrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Umweltrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Verfassungsrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Verwaltungsrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Völkerrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Privatrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Arbeitsrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Gesellschaftsrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Wirtschafts-, Handels- und Unternehmensrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Zivilrecht und Zivilprozessrecht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Justizwesen, Gerichtswesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Kriminologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Rechtswissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Rechtsgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Rechtsphilosophie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Rechtsrezeption</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Rechtsvergleichung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		</ol>
+		</li>
+	    <li><span class='sup'>Sprache</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Grammatik und Syntax</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Namensforschung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Schrift und Transkription</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Japanisch auf dem	Computer</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Sprachübertragung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Sprachwissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Soziolinguistik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Wortschatz und Lexikographie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Wirtschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Allgemeine Wirtschaftspolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Gyōsei-shidō, administrative Lenkung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Industrie-, Technologie- und Energiepolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Regionalentwicklung, Standortfragen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Wirtschaftsplanung, Entwicklungspläne</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Arbeitswelt</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Arbeitnehmer-Arbeitgeberbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Arbeitsbedingungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Arbeitsmarkt</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Arbeitslosigkeit, Gelegenheitsarbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Arbeitszeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span class='sup'>Berufe, Beschäftigungsformen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			  <li><span>Angestellte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Arbeiter</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Bauern</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>selbständige Arbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>unbezahlte Arbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>unselbständige Arbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			</ol>
+			</li>
+			<li><span>Einstellung zur Arbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Löhne und Gehälter</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Außenhandel, internationale Wirtschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Ausländische Unternehmen und Produkte in Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Direktinvestitionen ins Ausland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>internationale Wirtschaftsbeziehungen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>internationaler Wettbewerb</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japanische Unternehmen und Produkte im Ausland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Bergbau und Rohstoffe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Betriebswirtschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>betriebliches Finanz- und Steuerwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Betriebsorganisation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Buchführung, Rechnungswesen, Bilanzen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>innerbetriebliche Aus- und Fortbildung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Investition, Innovation, Finanzierung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Management und Unternehmensführung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Office Automation, EDV, Rationalisierung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Personalwesen, Mitbestimmung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Dienstleistungs- und Freizeitsektor</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Energie</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Atomenergie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Finanz-, Geld- und Steuerwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Banken und andere Finanzinstitutionen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Börsen- und Wertpapierwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Einkommen, Sparen, Konsum</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Fiskal- und Geldpolitik, Steuerpolitik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>internationales Finanzwesen (Wechselkurs)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kreditmarkt</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Preise, Inflation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Steuerwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Versicherungswesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Firmengeschichten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Fischerei</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Handel und Gewerbe</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Großhandel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kleinhandel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Marketing</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Marktstruktur, Distributionssystem</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Warenhäuser und Supermärkte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Werbung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Immobilien, Wohungsmarkt</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Industrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Autoindustrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Bauindustrie u. Bauwesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Chemie, Keramik, Glas</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Elektroindustrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>High-Tech und Feinmechanische Industrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Metallverarbeitung und Maschinenbau</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Nahrung und Genussmittel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Pharma-Industrie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Textilindustrieverarbeitende Industriezweige</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Konsum und Konsumentenfragen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Landwirtschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Forstwirtschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Tierzucht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Patente und Normen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Produktionswesen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Sozialversicherung, Wohlfahrtskosten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Unternehmen allgemein</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Fusionen und Übernahmen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Großunternehmen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Klein- und Mittelbetriebe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>multinationale Unternehmen, Joint Venture</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>öffentliche Unternehmen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Unternehmensideologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Unternehmenskonzentration</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Unternehmer und Unternehmerinnen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Verkehr</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Güterverkehr, Transport</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Individualverkehr</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Luftfahrt</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>öffentlicher Verkehr</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Schienenverkehr</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Schiffahrt</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Wirtschaftsgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Wirtschaftstheorie und -wissenschaft</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Wirtschaftslage, Konjunktur, Krise</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Wirtschaftsverbände, Kammern</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Wissenschaft und Technik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Geisteswissenschaften</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Japanologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Ansätze und Aufgaben der Japanologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Geschichte der Japanforschung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japanforschung nach 1945</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Japanischunterricht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Studium und Beruf Japanologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Medizin</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>traditionelle Medizin</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Naturwissenschaften</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Bio- und Gentechnologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Geologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Physik</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Technik</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Computer, EDV,	Roboter</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Technologietransfer</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Wissenschaftsgeschichte</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+	  </ol>
+	  </li>
+	  <li class="li1"><span>Zeit</span><ol>
+		<li><span class='sup'>Vormoderne (vor 1868)</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Altertum (bis 1192)</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Nara-Zeit (710–784)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Heian-Zeit (784–1192)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Mittelalter (1192–1600)</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Kamakura-Zeit (1192–1333)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Muromachi-Zeit (1334–1573)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Azuchi-Momoyama-Zeit (1573–1600)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Frühe Neuzeit (Edo-Zeit, 1600–1868)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>vor 1600</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>nach 1868</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Moderne (1868–1945)</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Meiji-Zeit (1868–1912)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Taishō-Zeit (1912–1926)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Frühe Shōwa-Zeit (1926–1945)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Gegenwart (ab 1945)</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Spätere Shōwa-Zeit (1945–1989)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Heisei-Zeit (1989–)</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		</ol>
+		</li>
+	  </ol>
+	  </li>
+	  <li class="li1"><span>Region</span><ol>
+		<li><span class='sup'>Asien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Ostasien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>China</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Korea</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span class='sup'>Japan</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			  <li><span>Hokkaidō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Tōhoku</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span class='sup'>Kantō</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+				<li><span>Tōkyō</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  </ol>
+			  </li>
+			  <li><span>Chūbu</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span class='sup'>Kinki</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+				<li><span>Kyōto</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+				<li><span>Nara</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+				<li><span>Ōsaka</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  </ol>
+			  </li>
+			  <li><span>Chūgoku</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Shikoku</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Kyūshū</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			  <li><span>Okinawa</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			</ol>
+			</li>
+			<li><span>Taiwan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Südostasien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>ASEAN</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Indonesien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Kambodscha</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Malaisia</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Myanmar</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Philippinen</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Singapur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Thailand</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Vietnam</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>Südasien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Indien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Pakistan</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sri Lanka</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Mittlerer Osten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Vorderer Orient</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Türkei</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Zentralasien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Europa</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>EU</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Großbritannien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Frankreich</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Niederlande</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Deutschland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Schweiz</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Österreich</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Italien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Schweden</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Skandinavien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>UdSSR, Russland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Balkanstaaten</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span>Afrika</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		<li><span class='sup'>Amerika</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>Nordamerika</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Kanada</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>USA</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Mexiko</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Mittelamerika</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Südamerika</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span class='sup'>Ozeanien</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Australien</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Neuseeland</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+	  </ol>
+	  </li>
+	  <li class="li1"><span>Form</span><ol>
+		<li><span>audiovisuelles Material</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		<li><span>elektronische Publikation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		<li><span class='sup'>Literaturgattung</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Anthologie</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Ausstellungskatalog</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Bibliographie, Katalog</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Graue Literatur</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Hochschulschrift</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Dissertation</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Habilitationsschrift</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Magister-, Diplomarbeit</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Informationsschrift</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Interview, Stellungnahme</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Lehrmaterial</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Nachschlagewerk</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>nicht-deutschsprachige Veröffentlichung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Quellenwerk</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>praktische Anleitung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Rezension</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Tagungsbericht</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span class='sup'>Übersetzung</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Literaturübersetzung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span>Vortrag, unveröffentlichtes Manuskript</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+		<li><span>Neuauflage</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		<li><span class='sup'>selbständige Publikation</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span class='sup'>begrenztes Werk</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Einzelwerk</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sammelwerk</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Sammlung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		  <li><span class='sup'>fortlaufendes Werk</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+			<li><span>Loseblattausgabe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Schriftenreihe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Zeitschrift</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Zeitschriftenartige Reihe</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+			<li><span>Zeitung</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  </ol>
+		  </li>
+		</ol>
+		</li>
+		<li><span class='sup'>unselbständige Publikation</span><a href="#" class="zahl" title="Suchergebnisse">100</a><ol>
+		  <li><span>Beitrag zu Sammelwerk</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Vorwort, Nachwort</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Zeitschriftenartikel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		  <li><span>Zeitungsartikel</span><a href="#" class="zahl" title="Suchergebnisse">100</a></li>
+		</ol>
+		</li>
+	  </ol>
+	  </li>
+	</ol>
+</div> 
+
+</div>
+
+</div>
+
+</body>
+
+</html>

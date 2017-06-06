@@ -1,0 +1,34 @@
+body {
+	font-family: Raleway;
+	font-weight: 400;
+	margin: 5em;
+}
+#header {
+	height: 5em;
+}
+#logo, #logo * {
+	float: right;
+	height: 100%;
+}
+#editor, #results { 
+	width: 75%;
+	border: 1px solid gray;
+	overflow-y: scroll;
+}
+#editor {
+	height: 150px;
+}
+
+#results {
+	height: 700px;
+}
+#results-meta {
+	margin-bottom: 1em;
+}
+/* Initially we search in LIDOS data, so we hide the MODS examples.*/
+#MODS-examples {
+    display: none;
+}
+#LIDOS-examples {
+    display: block;
+}
