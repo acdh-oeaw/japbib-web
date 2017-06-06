@@ -1,6 +1,5 @@
 xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/webapp/api";
-import module namespace view = "http://acdh.oeaw.ac.at/webapp/view" at "view.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "model.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "index.xqm";
