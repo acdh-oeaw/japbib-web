@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Find</title>
+
+<link href="jb_styles.css" rel="stylesheet" type="text/css" />
+<script src="jquery-3.1.1.js"></script>
+<script src="jb_scripts.js"></script>
+<script src="schlagworte.js"></script>
+ 
+</head> 
+<body class="white" id="find" >
+
+<div class="pageindex" >
+    <h4 ><span class="showResults">Such-Filter</span></h4>
+	<ol class="schlagworte showResults">
+	  <li class="li1"><span>Thema </span>
+	  <ol>		  
+	  <li><span class='sup'>Gesellschaft</span> <a href="#" class="zahl" title="Suchergebnisse">20</a>
+      <ol><li><span class='sup'>Unterhaltung und Freizeit</span> <a href="#" class="zahl" title="Suchergebnisse">15</a>
+        <ol><li><span>Spiel</span> <a href="#" class="zahl" title="Suchergebnisse">15</a>
+        </li></ol>
+      </li>
+      <li><span >Sport</span> <a href="#" class="zahl" title="Suchergebnisse">5</a>
+      </li></ol>
+    </li></ol> </li>
+    <li class="li1"><span>Zeit</span>
+      <ol><li><span class='sup'>Nach 1868</span> <a href="#" class="zahl" title="Suchergebnisse">2</a>
+        <ol><li><span class='sup'>Gegenwart</span> <a href="#" class="zahl" title="Suchergebnisse">2</a>
+          <ol><li><span>Heisei-Zeit</span> <a href="#" class="zahl" title="Suchergebnisse">2</a>
+          </li></ol>
+        </li></ol>
+      </li></ol>
+    </li>
+	  <li class="li1"><span>Region</span>
+      <ol><li><span class='sup'>Japan</span> <a href="#" class="zahl" title="Suchergebnisse">1</a>
+        <ol><li><span class='sup'>Kansai</span> <a href="#" class="zahl" title="Suchergebnisse">1</a>
+          <ol><li><span>Tokyo</span> <a href="#" class="zahl" title="Suchergebnisse">1</a>
+          </li></ol>
+        </li></ol>
+      </li></ol>
+    </li>
+    <li class="li1"><span>Form</span>
+      <ol><li>Selbständige <a href="#" class="zahl" title="Suchergebnisse">10</a>
+      </li></ol>
+	  </li>
+  </ol>  
+  <div class="i_container"><img alt="" src="images/book%20hokusai2.jpg" width="250"></div>
+</div>
+
+
+<div class="content">
+<h2 style="display:inline"> Suche </h2>
+<p id="erklärung"> <span>Auf dieser Seite können Sie nach selbstgewählten Suchbegriffen in allen Datensätzen suchen oder sich Listen mit Autoren oder Werktiteln anzeigen lassen. Die Ergebnislisten lassen sich mit Hilfe von Suchfiltern weiter verfeinern. </span></p>
+<ul class="suchOptionen">
+  <li>Freie Suche: 
+  <form action=""  id="searchform1">
+	<input name="search" title="JB80 durchsuchen "  id="searchInput1" size="40" value=""/>
+	<a href="#" id="search1">Testen</a>
+  </form></li>  
+  <li>Autoren:    
+  <a href="#">A</a>, <a href="#">B</a>, <a href="#">C</a>, <a href="#">D</a>, 
+  <a href="#">E</a>, 
+  <a href="#">F</a>, <a href="#">G</a>, <a href="#">H</a>, <a href="#">I</a>, 
+  <a href="#">J</a>, 
+  <a href="#">K</a>, <a href="#">L</a>, <a href="#">M</a>, <a href="#">N</a>, 
+  <a href="#">O</a>, 
+  <a href="#">P</a>, <a href="#">Q</a>, <a href="#">R</a>, <a href="#">S</a>, 
+  <a href="#">T</a>, 
+  <a href="#">U</a>, <a href="#">V</a>, <a href="#">W</a>, <a href="#">X</a>, 
+  <a href="#">Y</a>, 
+  <a href="#">Z</a>, <a href="#">Sonstige</a>, <a href="#">alle</a>  
+  </li>
+
+  <li>Werktitel: 
+
+  <a href="#">A</a>, <a href="#">B</a>, <a href="#">C</a>, <a href="#">D</a>, <a href="#">E</a>, 
+  <a href="#">F</a>, <a href="#">G</a>, <a href="#">H</a>, <a href="#">I</a>, <a href="#">J</a>, 
+  <a href="#">K</a>, <a href="#">L</a>, <a href="#">M</a>, <a href="#">N</a>, <a href="#">O</a>, 
+  <a href="#">P</a>, <a href="#">Q</a>, <a href="#">R</a>, <a href="#">S</a>, <a href="#">T</a>, 
+  <a href="#">U</a>, <a href="#">V</a>, <a href="#">W</a>, <a href="#">X</a>, <a href="#">Y</a>, 
+  <a href="#">Z</a>, <a href="#">Sonstige</a>, <a href="#">alle</a>  
+  </li>
+  </ul>
+
+<div class="showResults"  >
+<h2 >Resultate</h2> 
+<div id="showList">
+<div class="showOptions">
+<form>
+  <label>Resultate anzeigen als:
+    <select name="top5" size="1">
+      <option selected>Liste (nach Autoren)</option>
+      <option>Liste (nach Werktiteln)</option>
+      <option>Diagramm (nach Jahren)</option>
+      <option>Diagramm (nach Themen)</option>
+    </select>
+  </label>
+<span class="erklärung"><span>Wählen Sie das Format, in dem die Resultate angezeigt werden. Bei kleineren Datenmengen empfehlen sich Listen, während Diagramme einen statistischen Überblick ermöglichen.</span></span>
+
+</form>
+</div>
+
+  <ol data-numberOfRecords="26" data-nextRecordPosition="">
+    <li value="1">
+      <span class="authors">Berndt, Jürgen</span> <span class="year">1995</span>, <a class="sup fullRecordLink" href="sru?operation=searchRetrieve&version=1.2&query=id=0002656&x-style='record2html.xsl'"><span class="title">Nachwort.</span></a>            
+     </li>
+	<li>Prohl, Inken/ Zinser, Hartmut 1998, 
+	<a href="#" class="sup">Zen, Reiki, Karate</a></li>
+	<li>Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999,
+	<a href="#" class="sup">Religion and Identity in the Japanese Context</a></li>
+	<li> Staemmler, Birgit 2000, <a href="#" class="sup">Werden und Vergehen</a></li>
+
+	<li>Antoni, Klaus 1997, <a href="#" class="sup">Rituale und ihre Urheber</a>.	
+<div class="showEntry">
+
+<div class="showOptions">
+<form>
+  <label>Anzeige des Eintrags:
+    <select name="top5" size="1">
+      <option selected>detailliert</option>
+      <option>Chicago Styles Manual</option>
+      <option>BibTeX</option>S
+      <option>Lidos</option>
+    </select>
+  </label>
+<span class="erklärung"><span> „Detailliert“ enthält auch Stichworte, über die neue Suchabfragen möglich sind. Alle weiteren Optionen sind für das Kopieren in andere Formate gedacht. </span></span>
+</form></div>
+
+<ul>
+  <li class="eSegment"> Autor </li>
+  <li> Antoni, Klaus (<a href="#" class="zahl" title="Suchergebnisse">30</a>),  Hg.</li>
+  <li class="eSegment"> Titel </li>
+  <li> Rituale und ihre Urheber: Invented Traditions in der japanischen Religionsgeschichte</li>
+  <li class="eSegment"> Reihe </li>
+  <li> Ostasien-Pazifik (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Bd.5</li>
+  <li class="eSegment"> Ort/Verlag/Jahr</li>
+  <li> Hamburg: LIT-Verl. (<a href="#" class="zahl" title="Suchergebnisse">300</a>), 1997 </li>
+  <li class="eSegment"> Co-Autoren </li>
+  <li> Paul, G. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Naumann, 
+  N. (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Ōbayashi, T (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Blümmel, 
+  V. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Vollmer, K. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Zöllner, 
+  R. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Lokowandt, H. (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Fischer, 
+  P. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Knecht, P. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Pörtner, 
+  P. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Toelken, R. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Woirgardt, 
+  M. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Ikeda, H. (<a href="#" class="zahl" title="Suchergebnisse">6</a>)</li>
+  <li class="eSegment"> Kollationsvermerk 
+  </li>
+  <li> 300 S. : Ill., graph. Darst., Notenbeisp.</li>
+  </ul>
+  <p> <b>Verwandte Suchabfragen</b> </p>
+  <ul>
+  <li class="eSegment">Thema</li>  
+	<li>Religionswissenschaft (<a href="#" class="zahl" title="Suchergebnisse">40</a>)</li>
+	<li>Brauchtum und Feste (<a href="#" class="zahl" title="Suchergebnisse">20</a>)</li>  
+	<li class="eSegment">Form</li> 
+	<li>Sammelwerk (<a href="#" class="zahl" title="Suchergebnisse">6.000</a>)</li>   
+	<li class="eSegment">Stichworte</li>    
+	<li><a href="#">Nishida Kitarō</a>; <a href="#">Karl Florenz</a>; 
+  <a href="#">Eihei-ji</a>; <a href="#">Ritual</a>; <a href="#">Invented traditions</a>; 
+  <a href="#autor">Tagungsbericht</a> </li>
+
+</ul>
+</div>	
+	
+	</li>
+
+	<li>Antoni, Klaus 1997, <a href="#" class="sup">Rituale und ihre Urheber</a></li>
+	<li>Prohl, Inken/ Zinser, Hartmut 1998, 
+	<a href="#" class="sup">Zen, Reiki, Karate</a></li>
+	<li>Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999,
+	<a href="#" class="sup">Religion and Identity in the Japanese Context</a></li>
+	<li> Staemmler, Birgit 2000, <a href="#" class="sup">Werden und Vergehen</a></li>
+
+	<li>Antoni, Klaus 1997, <a href="#" class="sup">Rituale und ihre Urheber</a></li>
+	<li>Prohl, Inken/ Zinser, Hartmut 1998, 
+	<a href="#" class="sup">Zen, Reiki, Karate</a></li>
+	<li>Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999,
+	<a href="#" class="sup">Religion and Identity in the Japanese Context</a></li>
+	<li> Staemmler, Birgit 2000, <a href="#" class="sup">Werden und Vergehen</a></li>
+  </ol>
+
+</div>
+</div>
+</div>
+
+
+</body>
+
+</html>
