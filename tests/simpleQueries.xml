@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- run through runTests.xquery -->
+<tests>
+    <test>
+        <query>Haus</query>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term>Haus</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test>
+        <query>title contains Haus</query>
+        <expected>
+            <searchClause>
+                <index>title</index>
+                <relation>
+                    <value>contains</value>
+                </relation>
+                <term>Haus</term>
+            </searchClause>
+        </expected>
+    </test>
+</tests>
