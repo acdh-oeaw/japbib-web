@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- run through runTests.xquery -->
 <tests>
-    <test>
+    <test title="simple string">
         <query>Haus</query>
         <expected>
             <searchClause>
@@ -13,7 +13,43 @@
             </searchClause>
         </expected>
     </test>
-    <test>
+    <test title="empty string">
+        <query>""</query>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term/>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="simple string with quotes">
+        <query>"Haus"</query>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term>Haus</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="simple string with quotes and space">
+        <query>"ein Haus"</query>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term>ein Haus</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="simple string complex relation">
         <query>title contains Haus</query>
         <expected>
             <searchClause>
@@ -25,7 +61,19 @@
             </searchClause>
         </expected>
     </test>
-    <test>
+    <test title="simple string complex relation with quotes and space">
+        <query>title contains "ein Haus"</query>
+        <expected>
+            <searchClause>
+                <index>title</index>
+                <relation>
+                    <value>contains</value>
+                </relation>
+                <term>ein Haus</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="two simple strings with complex relation boolean">
         <query>title contains Haus and author contains Götting</query>
         <expected>
             <triple>
@@ -53,7 +101,7 @@
             </triple>
         </expected>
     </test>
-    <test>
+    <test title="simple string with sorting">
         <query>Haus sortBy author</query>
         <expected>
             <searchClause>
@@ -66,6 +114,218 @@
                     <index>author</index>
                 </sortKeys>
             </searchClause>
+        </expected>
+    </test>
+    <test title="boolean with and without quotes 1">
+        <query>"cat" or dog</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>or</value>
+                </boolean>
+                <leftOperand>
+                    <searchClause>
+                        <index>cql.serverChoice</index>
+                        <relation>
+                            <value>scr</value>
+                        </relation>
+                        <term>cat</term>
+                    </searchClause>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>cql.serverChoice</index>
+                        <relation>
+                            <value>scr</value>
+                        </relation>
+                        <term>dog</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>
+        </expected>
+    </test>
+    <test title="boolean with and without quotes 2">
+        <query>cat OR "dog"</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>or</value>
+                </boolean>
+                <leftOperand>
+                    <searchClause>
+                        <index>cql.serverChoice</index>
+                        <relation>
+                            <value>scr</value>
+                        </relation>
+                        <term>cat</term>
+                    </searchClause>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>cql.serverChoice</index>
+                        <relation>
+                            <value>scr</value>
+                        </relation>
+                        <term>dog</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>
+        </expected>
+    </test>
+    <test title="simple AND + OR triples">
+        <query>cat and dog or house</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>or</value>
+                </boolean>
+                <leftOperand>
+                    <triple>
+                        <boolean>
+                            <value>and</value>
+                        </boolean>
+                        <leftOperand>
+                            <searchClause>
+                                <index>cql.serverChoice</index>
+                                <relation>
+                                    <value>scr</value>
+                                </relation>
+                                <term>cat</term>
+                            </searchClause>
+                        </leftOperand>
+                        <rightOperand>
+                            <searchClause>
+                                <index>cql.serverChoice</index>
+                                <relation>
+                                    <value>scr</value>
+                                </relation>
+                                <term>dog</term>
+                            </searchClause>
+                        </rightOperand>
+                    </triple>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>cql.serverChoice</index>
+                        <relation>
+                            <value>scr</value>
+                        </relation>
+                        <term>house</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>
+        </expected>
+    </test>
+    <test title="simple index equals value search">
+        <query>title=cat</query>
+        <expected>
+            <searchClause>
+                <index>title</index>
+                <relation>
+                    <value>=</value>
+                </relation>
+                <term>cat</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="qualified index contains value search">
+        <query>dc.title contains cat</query>
+        <expected>
+            <searchClause>
+                <index>dc.title</index>
+                <relation>
+                    <value>contains</value>
+                </relation>
+                <term>cat</term>
+            </searchClause>
+        </expected>
+    </test>
+    <test title="3 index searchClauses">
+        <query>dc.title contains "sea" AND dc.author = Hemingway AND year > 1920</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>and</value>
+                </boolean>
+                <leftOperand>
+                    <triple>
+                        <boolean>
+                            <value>and</value>
+                        </boolean>
+                        <leftOperand>
+                            <searchClause>
+                                <index>dc.title</index>
+                                <relation>
+                                    <value>contains</value>
+                                </relation>
+                                <term>sea</term>
+                            </searchClause>
+                        </leftOperand>
+                        <rightOperand>
+                            <searchClause>
+                                <index>dc.author</index>
+                                <relation>
+                                    <value>=</value>
+                                </relation>
+                                <term>Hemingway</term>
+                            </searchClause>
+                        </rightOperand>
+                    </triple>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>year</index>
+                        <relation>
+                            <value>></value>
+                        </relation>
+                        <term>1920</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>
+        </expected>
+    </test>   
+    <test title="3 index searchClauses with grouping">
+        <query>dc.title contains "sea" OR (dc.author = Hemingway AND year > 1920)</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>or</value>
+                </boolean>
+                <leftOperand>
+                    <searchClause>
+                        <index>dc.title</index>
+                        <relation>
+                            <value>contains</value>
+                        </relation>
+                        <term>sea</term>
+                    </searchClause>
+                </leftOperand>
+                <rightOperand>
+                    <triple>
+                        <boolean>
+                            <value>and</value>
+                        </boolean>
+                        <leftOperand>
+                            <searchClause>
+                                <index>dc.author</index>
+                                <relation>
+                                    <value>=</value>
+                                </relation>
+                                <term>Hemingway</term>
+                            </searchClause>
+                        </leftOperand>
+                        <rightOperand>
+                            <searchClause>
+                                <index>year</index>
+                                <relation>
+                                    <value>></value>
+                                </relation>
+                                <term>1920</term>
+                            </searchClause>
+                        </rightOperand>
+                    </triple>
+                </rightOperand>
+            </triple>
         </expected>
     </test>
 </tests>
