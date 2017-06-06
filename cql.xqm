@@ -357,7 +357,7 @@ declare function cql:boolean($value as element(value), $modifiers as element(mod
  };
 
 declare function cql:searchClause($clause as element(searchClause), $map) {
-    let $index-key := $clause//index/text(),        
+    let $index-key := $clause/index/text(),        
         $index := index:index-from-map($index-key ,$map),
         $index-type := ($index/xs:string(@type),'')[1],
         $index-datatype := $index/xs:string(@datatype),
