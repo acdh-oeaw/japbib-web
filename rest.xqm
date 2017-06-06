@@ -21,7 +21,7 @@ declare variable $api:path-to-thesaurus := "thesaurus.xml";
 declare variable $api:thesaurus2html := "xsl/thesaurus2html.xsl";
 declare variable $api:sru2html := "xsl/sru2html.xsl";
 declare 
-    %rest:path("japbibWeb/sru")
+    %rest:path("japbib-web/sru")
     %rest:query-param("version", "{$version}")
     %rest:query-param("operation", "{$operation}", "explain")
     %rest:query-param("query", "{$query}")
@@ -56,7 +56,7 @@ function api:sru($operation, $query as xs:string?, $version, $maximumRecords as 
 
 
 declare 
-    %rest:path("japbibWeb/sru/searchRetrieve")
+    %rest:path("japbib-web/sru/searchRetrieve")
     %rest:query-param("version", "{$version}")
     %rest:query-param("startRecord", "{$startRecord}", 1)
     %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
@@ -150,7 +150,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
  : @param $x-debug: do not return scan but show some debugging information 
 ~:)
 declare 
-    %rest:path("japbibWeb/sru/scan")
+    %rest:path("japbib-web/sru/scan")
     %rest:query-param("version", "{$version}")
     %rest:query-param("scanClause", "{$scanClause}")
     %rest:query-param("responsePosition", "{$responsePosition}", 1)
@@ -178,7 +178,7 @@ function api:scan($version, $scanClause, $maximumTerms as xs:integer?, $response
 ~:)
 declare 
     %rest:PUT
-    %rest:path("japbibWeb/sru/scan")
+    %rest:path("japbib-web/sru/scan")
     %rest:query-param("version", "{$version}")
     %rest:query-param("scanClause", "{$scanClause}")
     %rest:query-param("responsePosition", "{$responsePosition}", 1)
@@ -257,7 +257,7 @@ declare %private function api:scanResponse($terms, $maximumTerms, $responsePosit
 
 
 declare 
-    %rest:path("japbibWeb/sru/explain")
+    %rest:path("japbib-web/sru/explain")
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
@@ -291,7 +291,7 @@ function api:explain() {
 };
 
 declare 
-    %rest:path("japbibWeb/thesaurus")
+    %rest:path("japbib-web/thesaurus")
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
@@ -300,7 +300,7 @@ function api:taxonomy-as-xml() {
 };
 
 declare 
-    %rest:path("japbibWeb/thesaurus")
+    %rest:path("japbib-web/thesaurus")
     %rest:GET
     %rest:produces("text/html", "application/xml+xhtml")
     %output:method("xml")

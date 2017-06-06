@@ -17,11 +17,11 @@ declare variable $view:xsl-path := "xsl";
 
 (: This is the main function which renders any .html "page". 
  Whenever starting a new web application do the following: 
-    1) in %rest:path annotation: change the URL prefix ("MYWEBAPP") to your prefix of choice
+    1) in %rest:path annotation: change the URL prefix ("japbib-web") to your prefix of choice
     2) add any request parameters that are needed in any view ("page") here. 
  :)
 declare 
-    %rest:path("MYWEBAPP/{$page}.html")
+    %rest:path("japbib-web/{$page}.html")
     %rest:GET
     %rest:query-param("id", "{$id}")
     %rest:query-param("startAt", "{$startAt}")
@@ -60,7 +60,7 @@ function view:view($page as xs:string, $id as xs:string?, $startAt as xs:integer
  : @return rest response and binary file
  :)
 declare
-  %rest:path("MYWEBAPP/static/{$file=.+}")
+  %rest:path("japbib-web/static/{$file=.+}")
 function view:file(  $file as xs:string ) as item()+ {
   let $path := file:base-dir() || $view:web-content-path || $file
   return (

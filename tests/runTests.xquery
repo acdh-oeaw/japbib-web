@@ -9,9 +9,11 @@ declare function local:runTests($item as document-node()){
 
 declare function local:compare($s1, $s2) {
     try {
-        if (not(empty(function-lookup(xs:QName('saxon:parse'), 1))))
-        then saxon:deep-equal($s1, $s2, (), 'wS')
-        else false()
+        let $deep-equal := function-lookup(xs:QName('saxon:deep-equal'), 4)
+        return
+          if (exists($deep-equal))
+          then $deep-equal($s1, $s2, default-collation(), 'wS')
+          else deep-equal($s1, $s2, default-collation())
     } catch * {
         ()
     }
