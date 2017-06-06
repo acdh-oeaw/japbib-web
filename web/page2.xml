@@ -1,4 +1,0 @@
-<view:surround with="page.html" at="content" xmlns="http://www.w3.org/1999/xhtml" xmlns:view="http://acdh.oeaw.ac.at/webapp/view">
-    <h3>Page 2</h3>
-    <p>This fragment is defined in web/page1.xml, it is surrounded with tpl/page.html, as indicated by the top level element <code>&lt;view:surround&gt;</code>.</p>
-</view:surround>
