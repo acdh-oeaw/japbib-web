@@ -25,4 +25,32 @@
             </searchClause>
         </expected>
     </test>
+    <test>
+        <query>title contains Haus and author contains Götting</query>
+        <expected>
+            <triple>
+                <boolean>
+                    <value>and</value>
+                </boolean>
+                <leftOperand>
+                    <searchClause>
+                        <index>title</index>
+                        <relation>
+                            <value>contains</value>
+                        </relation>
+                        <term>Haus</term>
+                    </searchClause>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>author</index>
+                        <relation>
+                            <value>contains</value>
+                        </relation>
+                        <term>Götting</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>
+        </expected>
+    </test>
 </tests>

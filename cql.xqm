@@ -191,6 +191,9 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
     return 
         for $p in $parts
         return (:$parse-searchClause($p):)
+            if ($p instance of element())
+            then $p
+            else 
             if ($p instance of xs:string and matches($p, $relationOperators))
             then $parse-searchClause($p)
             else <term>{$p}</term>

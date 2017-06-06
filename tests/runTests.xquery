@@ -1,9 +1,20 @@
 xquery version "3.0";
 
-import module namespace cql = "http://exist-db.org/xquery/cql" at "file:/C:/Users/Daniel/repo/japbib-web/cql.xqm";
+import module namespace cql = "http://exist-db.org/xquery/cql" at "../cql.xqm";
+declare namespace saxon = "http://saxon.sf.net/";
 
 declare function local:runTests($item as document-node()){
     local:handle($item/tests)
+};
+
+declare function local:compare($s1, $s2) {
+    try {
+        if (not(empty(function-lookup(xs:QName('saxon:parse'), 1))))
+        then saxon:deep-equal($s1, $s2, (), 'wS')
+        else false()
+    } catch * {
+        ()
+    }
 };
 
 declare function local:handle ($item as item()) {
@@ -20,7 +31,7 @@ declare function local:handle ($item as item()) {
 declare function local:handleTestElt($item as element(test)) as element(test){
     let $xcql := cql:parse($item/query)
     let $expected := $item/expected/*
-    let $matches-expected := saxon:deep-equal($xcql, $expected, (), 'wS')  
+    let $matches-expected := local:compare($xcql, $expected)
     return
     element {QName(namespace-uri($item), local-name($item))} {(
         for $att in $item/@* return local:handle($att),
