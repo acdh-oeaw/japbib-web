@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <maps>
-    <map index="http://jp80.acdh.oeaw.ac.at" base-elt="mods:mods">
+    <map name="jp80" index="http://jb80.acdh.oeaw.ac.at" base-elt="mods:mods" description="MODS-based schema for JB 80 bibliographic records">
         <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>
         <index key="cql.serverChoice" case="yes">
             <path label="." match="data(.)">mods:mods</path>

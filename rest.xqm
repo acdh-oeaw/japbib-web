@@ -13,6 +13,10 @@ declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
+declare variable $api:HOSTNAME := "jb80.acdh.oeaw.ac.at";
+declare variable $api:SRU.DATABASE := $model:dbname;
+declare variable $api:SRU.DATABASETITLE := "JB 80: Deutschsprachige Japan-Bibliographie 1980–2000";
+
 declare variable $api:path-to-thesaurus := "thesaurus.xml";
 declare variable $api:thesaurus2html := "xsl/thesaurus2html.xsl";
 declare variable $api:sru2html := "xsl/sru2html.xsl";
@@ -196,7 +200,7 @@ function api:cache-scan($version, $scanClause, $maximumTerms as xs:integer?, $re
  : @param $x-debug: do not return scan but show some debugging information
 ~:)
 declare %private function api:do-scan($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug){
-    let $context := "http://jp80.acdh.oeaw.ac.at"
+    let $context := $api:HOSTNAME
     let $ns := index:namespaces($context)
     let $map := index:map($context)    
     let $index-xpath := index:index-as-xpath-from-map($scanClause, $map, 'path-only'),
@@ -266,26 +270,15 @@ function api:explain() {
         <sru:recordData>
             <zr:explain xmlns:zr="http://explain.z3950.org/dtd/2.1/">
                 <zr:serverInfo protocol="SRU" version="{$api:SRU.SUPPORTEDVERSION}" transport="http" method="GET POST">
-                    <zr:host>jp80.acdh.oeaw.ac.at</zr:host>
+                    <zr:host>{$api:HOSTNAME}</zr:host>
                     <zr:port>80</zr:port>
-                    <zr:database>jp80</zr:database>
+                    <zr:database>{$api:SRU.DATABASE}</zr:database>
                 </zr:serverInfo>
                 <zr:databaseInfo>
-                    <title lang="en" primary="true">JP 80 Database</title>
+                    <title lang="en" primary="true">{$api:SRU.DATABASETITLE}</title>
                 </zr:databaseInfo>
-                <zr:indexInfo>
-                    <zr:set name="dc" identifier="info:srw/cql-context-set/1/dc-v1.1"/>
-                    <zr:index>
-                        <zr:map>
-                            <zr:name set="dc">title</zr:name>
-                        </zr:map>
-                    </zr:index>
-                </zr:indexInfo>
-                <zr:schemaInfo>
-                    <zr:schema name="dc" identifier="info:srw/schema/1/dc-v1.1">
-                        <zr:title>Simple Dublin Core</zr:title>
-                    </zr:schema>
-                </zr:schemaInfo>
+                {index:map-to-indexInfo()}
+                {index:map-to-schemaInfo()}
                 <zr:configInfo>
                     <zr:default type="numberOfRecords">1</zr:default>
                     <zr:setting type="maximumRecords">50</zr:setting>
