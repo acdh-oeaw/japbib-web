@@ -57,10 +57,7 @@ function cql:parse($query as xs:string) as item()* {
     let $boolOps-parsed := cql:parse-boolean-operators($groups-parsed)
     let $sortClause-parsed := cql:parse-sort-clause($boolOps-parsed) 
     let $searchClauses-parsed := cql:parse-searchClauses($sortClause-parsed)
-    (:return <xcql>{$searchClauses-parsed}</xcql>:)
-    return cql:create-triples($searchClauses-parsed)  
-    
-(:    return <xcql>{$sortClause-parsed}</xcql>:)
+    return cql:create-triples($searchClauses-parsed)
 };      
 
 (:~ NOT USED ~:)
@@ -116,7 +113,7 @@ declare function cql:create-triples($parts as element()+) {
     then $formatSearchClause($parts)
     else
         (: if there are already parsed query items <index>, <relation> and <term>, formatSeachClause() will simply wrap them with a <searchClause> element :) 
-        if (count($parts) eq 3 and (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term')))
+        if (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term', 'sortKeys'))
         then $formatSearchClause($parts)
         else 
             let $searchClauses-grouped := 
@@ -307,14 +304,19 @@ declare function cql:cql-to-xpath($cql-expression, $context)  as item()* {
 
 declare function cql:xcql-to-xpath ($xcql as node(), $context as xs:string) as item() {
     let $map := index:map($context)
-    let $xpath := 
-        if ($xcql instance of document-node())
-        then cql:process-xcql($xcql/*, $map)
-        else cql:process-xcql($xcql, $map)
     return 
-        if ($xpath instance of element(sru:diagnostics))
-        then $xpath
-        else string-join($xpath,'') 
+        if ($map instance of element(sru:diagnostics))
+        then $map
+        else 
+            let $xpath := 
+                if ($xcql instance of document-node())
+                then cql:process-xcql($xcql/*, $map)
+                else cql:process-xcql($xcql, $map)
+            return
+            if ($xpath instance of element(sru:diagnostics))
+            then $xpath
+            else string-join($xpath,'')
+        
 };
 
 (:~ the default recursive processor of the parsed query expects map with indexes defined
@@ -355,7 +357,7 @@ declare function cql:boolean($value as element(value), $modifiers as element(mod
  };
 
 declare function cql:searchClause($clause as element(searchClause), $map) {
-    let $index-key := $clause//index/text(),        
+    let $index-key := $clause/index/text(),        
         $index := index:index-from-map($index-key ,$map),
         $index-type := ($index/xs:string(@type),'')[1],
         $index-datatype := $index/xs:string(@datatype),

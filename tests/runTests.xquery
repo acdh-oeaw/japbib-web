@@ -21,10 +21,13 @@ declare function local:compare($s1, $s2) {
 
 declare function local:handle ($item as item()) {
     typeswitch ($item) 
-        case element(test) return local:handleTestElt ($item)
-        (: @outcome and <actual> are always generated anew :)
+        case element(test) return try { local:handleTestElt ($item) } catch * {($item, <error>{$err:code||": "||$err:description|| " (module "||$err:module||", line "||$err:line-number||")"}</error>)}
+        (: @outcome is always generated anew :)
         case attribute(outcome) return ()
+        (: <actual> is always generated anew :)
         case element(actual) return ()
+        (: <error> is always generated anew :)
+        case element(error) return ()
         case element() return element {QName(namespace-uri($item), local-name($item))} { for $n in ($item/@*, $item/node()) return local:handle($n) }
         case document-node() return document { for $n in $item/node() return local:handle($n) }
         default return $item

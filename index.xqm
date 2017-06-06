@@ -38,8 +38,12 @@ declare function index:base-elt($map as element(map)){
     $map/xs:string(@base-elt)
 };
 
-declare function index:map($context as xs:string) as element(map)? {
-    $index:maps//map[@index = $context]
+declare function index:map($context as xs:string) as element()? {
+    let $map := $index:maps//map[@index = $context]
+    return 
+        if (exists($map))
+        then $map
+        else diag:diagnostics('unsupported-context-set', $context)
 };
 
 declare function index:index-from-map($index-key as xs:string, $map as element(map)){
