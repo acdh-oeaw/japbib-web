@@ -44,7 +44,7 @@ $(go2s[i]).click(
   );
   }
 
-//////// SCHLAGWORTE //////
+//////// Find //////
 
 var toggleAnd = $('.andOr').click(
   function() { if (this.innerHTML== 'AND') this.innerHTML='OR'; 
@@ -52,13 +52,12 @@ var toggleAnd = $('.andOr').click(
   );
   
 var hideResults= $('.showResults').hide();
-var toggleResults= $('.suchOptionen a').click(
-  function() {  
-    $('.showResults').toggle('slow');    
-    $('#erklärung').toggleClass('erklärung');
+var resultTogglingLinks= $('.suchOptionen a').click(toggleResults);
+function toggleResults() {  
+  $('.showResults').toggle('slow');    
+  $('#erklärung').toggleClass('erklärung');
     
-    }
-  );
+  }
 var hideEntry= $('.showEntry').hide();
 var toggleEntry= $('#showList a').click(
   function() {  
@@ -66,6 +65,15 @@ var toggleEntry= $('#showList a').click(
     }
   );
 
+$('#searchInput1').keypress(searchOnReturn);
+function searchOnReturn(e) {
+  if (e.which === 13) {
+    e.preventDefault();
+    toggleResults();
+  }
+}
+
+//////// Schlagworte //////
   
 $ ( '.schlagworte li li ol' ).hide ();
 var as= $ ( '.schlagworte a' );
