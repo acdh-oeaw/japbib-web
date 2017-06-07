@@ -28,7 +28,7 @@ declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats a
             let $cat-stats := map:get($stats, $thesaurus/catDesc) 
             let $sub-topics := $thesaurus/*!api:addStatsToThesaurus(., $stats)
             return 
-                if (exists($cat-stats) or exists($sub-topics//occurences))
+                if (exists($cat-stats) or exists($sub-topics//numberOfRecords))
                 then 
                     element {QName(namespace-uri($thesaurus), local-name($thesaurus))} {(
                         $thesaurus/@*!api:addStatsToThesaurus(., $stats),
