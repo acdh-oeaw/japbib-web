@@ -1,5 +1,7 @@
 xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api";
+
+import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "model.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "index.xqm";
@@ -7,9 +9,9 @@ import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "dia
 import module namespace cache = "japbib:cache" at "cache.xqm";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace xqueryui = "http://acdh.oeaw.ac.at/japbib/xqueryui" at "xqueryui/xqueryui.xqm";
+
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
-
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
@@ -27,7 +29,7 @@ declare variable $api:sru2html := "xsl/sru2html.xsl";
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/{$file=(?!(xqueryui)).+}")
+  %rest:path("japbib-web/{$file=.+}")
 function api:file($file as xs:string) as item()+ {
   let $path := file:base-dir()|| $file
   return if (file:exists($path)) then
@@ -37,6 +39,8 @@ function api:file($file as xs:string) as item()+ {
       file:read-binary($path)
     ) else
     api:forbidden-file($file)
+  else if (matches($file, 'runTests/.+\.(xml)$')) then
+	api:run-tests(replace($file, 'runTests/', ''))
   else
   (
   <rest:response>
@@ -63,8 +67,12 @@ declare
   %rest:path("japbib-web")
 function api:index-file() as item()+ {
   let $index-html := file:base-dir()||'index.html',
-      $index-htm := file:base-dir()||'index.htm'
-  return if (file:exists($index-html)) then
+      $index-htm := file:base-dir()||'index.htm',
+      $uri := rest:uri(),
+      $absolute-prefix := if (matches($uri, '/$')) then () else 'japbib-web/'
+  return if (exists($absolute-prefix)) then
+    <rest:redirect>{$absolute-prefix}</rest:redirect>
+  else if (file:exists($index-html)) then
     <rest:forward>index.html</rest:forward>
   else if (file:exists($index-htm)) then
     <rest:forward>index.htm</rest:forward>
@@ -138,23 +146,45 @@ function api:run-tests($file as xs:string) as item()+ {
   return if (file:exists($path) and doc($path)/tests) then
   (
     web:response-header(map { 'media-type': 'text/xml'}),
-    xquery:invoke('tests/runTests.xquery', map{'': doc($path)})
+    serialize(xquery:invoke('tests/runTests.xquery', map{'': doc($path)}))
   )
   else
   (
   <rest:response>
-    <http:response status="404" message="{$file} was not found.">
+    <http:response status="404" message="Tests in {$file} were not found.">
       <http:header name="Content-Language" value="en"/>
       <http:header name="Content-Type" value="text/html; charset=utf-8"/>
     </http:response>
   </rest:response>,
   <html xmlns="http://www.w3.org/1999/xhtml">
-    <title>{$file||' was not found'}</title>
+    <title>{'Tests in '||$file||' were not found'}</title>
     <body>        
-       <h1>{$file||' was not found'}</h1>
+       <h1>{'Tests in '||$file||' were not found'}</h1>
     </body>
   </html>
   )
+};
+
+declare
+  %rest:path("japbib-web/runtime")
+function api:runtime-info() as item()+ {
+  let $runtime-info := db:system()
+  return
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <title>Runtime info</title>
+    <body>        
+       <h1>Runtime info</h1>
+       <table>
+       {for $item in $runtime-info/*:generalinformation/*
+       return
+         <tr>
+           <td>{$item/local-name()}</td>
+           <td>{$item}</td>
+         </tr>
+       }
+       </table>
+    </body>
+  </html>
 };
 
 declare 
