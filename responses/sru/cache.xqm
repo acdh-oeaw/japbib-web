@@ -1,7 +1,7 @@
 xquery version "3.0";
 
 module namespace c = "japbib:cache";
-import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "model.xqm";
+import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 
 declare variable $c:dbname := $model:dbname||"_cache";
 

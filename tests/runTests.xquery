@@ -1,6 +1,6 @@
 xquery version "3.0";
 
-import module namespace cql = "http://exist-db.org/xquery/cql" at "../cql.xqm";
+import module namespace cql = "http://exist-db.org/xquery/cql" at "../responses/sru/cql.xqm";
 declare namespace saxon = "http://saxon.sf.net/";
 
 declare function local:runTests($item as document-node()){

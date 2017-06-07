@@ -32,7 +32,7 @@ SOFTWARE
 :)
 module namespace cql = "http://exist-db.org/xquery/cql";
 
-import module namespace index = "japbib:index" at "index.xqm";
+import module namespace index = "japbib:index" at "../../index.xqm";
 declare namespace cqlparser = "http://exist-db.org/xquery/cqlparser";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace rest = "http://exquery.org/ns/restxq";

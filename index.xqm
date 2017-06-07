@@ -25,7 +25,7 @@ SOFTWARE
 :)
 
 module namespace index = "japbib:index";
-import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
+import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "responses/sru/diagnostics.xqm";
 
 declare variable $index:maps := doc("maps.xml");
 declare variable $index:INDEX_TYPE_FT := "ft";
