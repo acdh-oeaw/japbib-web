@@ -11,6 +11,7 @@
     exclude-result-prefixes="#all"
     version="2.0">
     <xsl:param name="xcql"/>
+    <xsl:include href="thesaurus2html.xsl"/>
     <xsl:variable name="dict" as="element()+">
         <dict xml:lang="de" xmlns="">
             <entry id="no-year-abbr">o.J.</entry>
@@ -70,11 +71,7 @@
     
     <xsl:template match="sru:extraResponseData/subjects">
         <h4>Subjects</h4>
-        <ol>
-            <xsl:for-each select="mods:topic">
-                <li><xsl:value-of select="."/></li>
-            </xsl:for-each>
-        </ol>
+        <xsl:apply-templates select="taxonomy"/>
     </xsl:template>
     
     <xsl:template match="sru:extraResponseData">

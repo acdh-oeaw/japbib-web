@@ -4,7 +4,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="xs"
     version="2.0">
-    <xsl:template match="/taxonomy">
+    <xsl:template match="taxonomy">
 	<ul>
 	    <xsl:apply-templates/>
 	</ul>
@@ -12,6 +12,9 @@
     <xsl:template match="category">
         <li class="li{count(ancestor::category)+1}">
             <xsl:apply-templates select="catDesc"/>
+            <xsl:if test="numberOfRecords">
+                <xsl:value-of select="concat('&#10;(',numberOfRecords,')')"/>
+            </xsl:if>
             <xsl:if test="category">
                 <ul>
                     <xsl:apply-templates select="category"/>
