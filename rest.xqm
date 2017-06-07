@@ -195,7 +195,7 @@ declare
     %output:method("xml")
 function api:searchRetrieve($xcql as item(), $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
     let $accept := request:header("ACCEPT")
-    let $context := "http://jb80.acdh.oeaw.ac.at"
+    let $context := $api:HOSTNAME
     let $ns := index:namespaces($context)
     
     let $xpath := cql:xcql-to-xpath($xcql, $context)
