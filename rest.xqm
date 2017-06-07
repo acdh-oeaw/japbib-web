@@ -13,7 +13,7 @@ declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
 
 declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
-declare variable $api:HOSTNAME := "jb80.acdh.oeaw.ac.at";
+declare variable $api:HOSTNAME := "http://jb80.acdh.oeaw.ac.at";
 declare variable $api:SRU.DATABASE := $model:dbname;
 declare variable $api:SRU.DATABASETITLE := "JB 80: Deutschsprachige Japan-Bibliographie 1980–2000";
 
