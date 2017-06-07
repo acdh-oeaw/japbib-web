@@ -205,26 +205,36 @@ function api:searchRetrieve($xcql as item(), $version, $maximumRecords as xs:int
     let $accept := request:header("ACCEPT")
     let $context := "http://jb80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context)
+    
     let $xpath := cql:xcql-to-xpath($xcql, $context)
+    let $sort-xpath := cql:xcql-to-orderExpr($xcql, $context)
+    let $xqueryExpr := concat(
+                        string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
+                        if ($sort-xpath != '')
+                        then
+                            concat("for $m in ",$xpath," ", 
+                                   "let $o := ($m/descendant-or-self::",$sort-xpath,")[1] ",
+                                   "order by $o ",
+                                   "return $m"
+                            )
+                        else $xpath
+                    )
     let $results := 
-        if ($xpath instance of xs:string) then  
+        if ($xpath instance of xs:string and (not($sort-xpath) or $sort-xpath instance of xs:string)) then  
             try {
                 xquery:eval(
-                    concat(
-                        string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
-                        $xpath
-                    )
+                    $xqueryExpr
                     , map { '': db:open($model:dbname) }
                 )
             } catch * {
-                diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||' xpath: '||$xpath)
+                diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||' XQuery: '||$xqueryExpr)
             }
         else ()
-    let $results-distinct := $results/.
+    let $results-distinct := $results
     let $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xpath)
+        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr)
     let $response-formatted :=
         if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
         then 
