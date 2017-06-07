@@ -226,7 +226,7 @@ function api:searchRetrieve($xcql as item(), $version, $maximumRecords as xs:int
     let $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr)
+        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql)
     let $response-formatted :=
         if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
         then 
@@ -245,7 +245,7 @@ function api:searchRetrieve($xcql as item(), $version, $maximumRecords as xs:int
         else $xpath
 };
 
-declare %private function api:searchRetrieveResponse($version, $results, $maxRecords, $startRecord, $xpath) as element(){
+declare %private function api:searchRetrieveResponse($version, $results, $maxRecords, $startRecord, $xpath, $xcql) as element(){
     let $nor := count($results),
         $subs := subsequence($results, $startRecord, $maxRecords),
         $nextRecPos := if ($nor ge count($subs) + $startRecord) then count($subs) + $startRecord else ()
@@ -274,6 +274,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             {if ($xpath instance of xs:string)
             then <XPath>{$xpath}</XPath>
             else ()}
+            {$xcql}
             <subjects>{api:subjects($results)!<mods:topic>{map:get(., "topic")} ({map:get(., "items")})</mods:topic>}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
