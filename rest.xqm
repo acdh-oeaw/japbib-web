@@ -341,19 +341,24 @@ function api:cache-scan($version, $scanClause, $maximumTerms as xs:integer?, $re
 declare %private function api:do-scan($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug){
     let $context := $api:HOSTNAME
     let $ns := index:namespaces($context)
-    let $map := index:map($context)    
-    let $index-xpath := index:index-as-xpath-from-map($scanClause, $map, 'path-only'),
-                $index-match := index:index-as-xpath-from-map($scanClause, $map, 'match-only')
-            let $xpath := 
+    let $map as element(map):= index:map($context)
+    let $scanClauseParsed := api:parseScanClause($scanClause, $map),
+        $scanClauseIndex :=  $scanClauseParsed/index 
+    let $index-xpath := index:index-as-xpath-from-map($scanClauseIndex, $map, 'path-only'),
+        $index-match := index:index-as-xpath-from-map($scanClauseIndex, $map, 'match-only')
+    let $xpath := 
+            if (exists($scanClauseParsed/relation))
+            then cql:cql-to-xpath(xs:string($scanClause), $context)||"//"||$index-xpath||"/"||$index-match
+            else
                 if (some $x in ($index-xpath, $index-match) satisfies $x instance of element(sru:diagnostics)) 
                 then ($index-xpath, $index-match)[self::sru:diagnostics] 
-                else $index-xpath||"/"||$index-match
-            return 
+                else "//"||$index-xpath||"/"||$index-match
+    return 
             if ($xpath instance of xs:string) then
                 let $xquery :=  
                      concat(
                          string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
-                         "for $t in //", $xpath, " 
+                         "for $t in ", $xpath, " 
                           group by $v := data($t)
                           let $c := count($t) 
                           order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
@@ -377,6 +382,20 @@ declare %private function api:do-scan($scanClause, $maximumTerms, $responsePosit
                     else 
                         api:scanResponse($terms, $maximumTerms, $responsePosition)
             else $xpath
+};
+
+declare function api:parseScanClause($scanClause as xs:string, $map as element(map)) as element(scanClause) {
+    if ($scanClause = $map//index/@key/data(.))
+    then <scanClause><index>{$scanClause}</index></scanClause>
+    else 
+        if (matches($scanClause,$cql:modifierRegex))
+        then 
+            let $parsed := cql:parse($scanClause)
+            return 
+                if ($parsed instance of element(sru:diagnostics))
+                then $parsed
+                else <scanClause>{$parsed/*}</scanClause>
+        else diag:diagnostics('general-error', 'Unparsed scanClause '||$scanClause) 
 };
 
 (:~
