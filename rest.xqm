@@ -27,14 +27,16 @@ declare variable $api:sru2html := "xsl/sru2html.xsl";
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/(?!(xqueryui)){$file=.+\.(html|js|map|css|png|gif|jpg|jpeg|PNG|GIF|JPG|JPEG)}")
+  %rest:path("japbib-web/{$file=(?!(xqueryui)).+}")
 function api:file($file as xs:string) as item()+ {
   let $path := file:base-dir()|| $file
   return if (file:exists($path)) then
-  (
-    web:response-header(map { 'media-type': web:content-type($path) }),
-    file:read-binary($path)
-  )
+    if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg)$', 'i')) then
+    (
+      web:response-header(map { 'media-type': web:content-type($path) }),
+      file:read-binary($path)
+    ) else
+    api:forbidden-file($file)
   else
   (
   <rest:response>
@@ -60,7 +62,13 @@ function api:file($file as xs:string) as item()+ {
 declare
   %rest:path("japbib-web")
 function api:index-file() as item()+ {
-  <rest:forward>index.html</rest:forward>
+  let $index-html := file:base-dir()||'index.html',
+      $index-htm := file:base-dir()||'index.htm'
+  return if (file:exists($index-html)) then
+    <rest:forward>index.html</rest:forward>
+  else if (file:exists($index-htm)) then
+    <rest:forward>index.htm</rest:forward>
+  else api:forbidden-file($index-html)    
 };
 
 (:~
@@ -69,7 +77,7 @@ function api:index-file() as item()+ {
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/{$file=[^/]+}")
+  %private
 function api:forbidden-file($file as xs:string) as item()+ {
   <rest:response>
     <http:response status="403" message="{$file} forbidden.">
