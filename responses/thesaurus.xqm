@@ -1,4 +1,4 @@
-xquery version "3.1";
+xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus";
 
 declare variable $api:path-to-thesaurus := "../thesaurus.xml";
@@ -12,6 +12,38 @@ declare
 function api:taxonomy-as-xml() {
     doc($api:path-to-thesaurus)
 };
+
+declare function api:taxonomy-as-xml($stats as element(subjects)) {
+    api:addStatsToThesaurus(api:taxonomy-as-html(), $stats)    
+};
+
+declare function api:addStatsToThesaurus($stats as map(*)) {
+    api:addStatsToThesaurus(api:taxonomy-as-xml(), $stats)
+};
+
+declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats as map(*)) {
+    typeswitch ($thesaurus)
+        case document-node() return api:addStatsToThesaurus($thesaurus/*, $stats)
+        case element(category) return 
+            let $cat-stats := map:get($stats, $thesaurus/catDesc) 
+            let $sub-topics := $thesaurus/*!api:addStatsToThesaurus(., $stats)
+            return 
+                if (exists($cat-stats) or exists($sub-topics//occurences))
+                then 
+                    element {QName(namespace-uri($thesaurus), local-name($thesaurus))} {(
+                        $thesaurus/@*!api:addStatsToThesaurus(., $stats),
+                        if ($cat-stats)
+                        then <numberOfRecords>{$cat-stats}</numberOfRecords>
+                        else (),
+                        $sub-topics
+                    )}
+                else ()
+        case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:addStatsToThesaurus(., $stats) }
+        case attribute() return $thesaurus
+        default return $thesaurus
+};
+
+
 
 declare 
     %rest:path("japbib-web/thesaurus")

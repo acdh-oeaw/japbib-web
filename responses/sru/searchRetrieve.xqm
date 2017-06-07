@@ -9,6 +9,7 @@ import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "../../index.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "../sru.xqm";
+import module namespace thesaurus = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "../thesaurus.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
@@ -119,17 +120,16 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             then <XPath>{$xpath}</XPath>
             else ()}
             {$xcql}
-            <subjects xmlns:mods="http://www.loc.gov/mods/v3">{api:subjects($results)!<mods:topic>{map:get(., "topic")} ({map:get(., "items")})</mods:topic>}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(api:subjects($results))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
 
-declare %private function api:subjects($r){
-    for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
-    let $v := data($t)
-    group by $v
-    return map {
-        'topic' : $v, 
-        'items' : count($t)
-    } 
+declare %private function api:subjects($r) as map(*) {
+    map:merge(
+        for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
+        let $v := data($t)
+        group by $v
+        return map:entry($v, count($t))
+    )
 };
