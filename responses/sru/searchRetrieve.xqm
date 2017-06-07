@@ -14,7 +14,8 @@ import module namespace thesaurus = "http://acdh.oeaw.ac.at/japbib/api/thesaurus
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
-declare variable $api:sru2html := "../../xsl/sru2html.xsl";
+declare variable $api:path-to-stylesheets := "../../xsl/";
+declare variable $api:sru2html := $api:path-to-stylesheets||"sru2html.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
   api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, 'false')
@@ -75,7 +76,7 @@ function api:searchRetrieveXCQL($xcql as item(), $version, $maximumRecords as xs
     let $response-formatted :=
         if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
         then 
-            let $xsl := if ($x-style != '' and doc-available("xsl/"||$x-style)) then doc("xsl/"||$x-style) else doc($api:sru2html)
+            let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html)
             return 
                 (<rest:response>
                     <http:response>
