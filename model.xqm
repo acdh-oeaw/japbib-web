@@ -4,7 +4,7 @@ module namespace model = "http://acdh.oeaw.ac.at/webapp/model";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
-declare variable $model:dbname := "japBib5";
+declare variable $model:dbname := "japbib_06";
 declare variable $model:db := collection($model:dbname);
 
 declare function model:query($q as xs:string) {
