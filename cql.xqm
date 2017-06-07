@@ -319,29 +319,31 @@ declare function cql:xcql-to-xpath ($xcql as node(), $context as xs:string) as i
         
 };
 
-declare function cql:xcql-to-orderExpr ($xcql as node(), $context as xs:string) as item() {
+declare function cql:xcql-to-orderExpr ($xcql as node(), $context as xs:string) as item()? {
     let $map := index:map($context)
     let $sortIndex := $xcql//sortKeys/index
     return 
-        if ($map instance of element(sru:diagnostics))
-        then $map
+        if (not(exists($sortIndex)))
+        then ()
         else 
-            if (not(exists($sortIndex)))
-            then ()
+            if ($map instance of element(sru:diagnostics))
+            then $map
             else 
-                let $sortIndexMap := index:index-from-map($sortIndex/text(), $map)
-                let $sortIndexXpath := index:index-as-xpath-from-map($sortIndex, $map)
-                return
-                if ($sortIndexXpath instance of element(sru:diagnostics))
-                then $sortIndexXpath
+                if (not(exists($sortIndex)))
+                then ()
                 else 
-                    let $sortIndexType := $sortIndexMap/@datatype
-                    let $sortIndexXpath-typed := 
-                        if (exists($sortIndexType))
-                        then $sortIndexXpath||"[. castable as "||$sortIndexType||"]/"||$sortIndexType||"(.)"
-                        else $sortIndexXpath
-                    return string-join($sortIndexXpath-typed,'')
-        
+                    let $sortIndexMap := index:index-from-map($sortIndex/text(), $map)
+                    let $sortIndexXpath := index:index-as-xpath-from-map($sortIndex, $map)
+                    return
+                    if ($sortIndexXpath instance of element(sru:diagnostics))
+                    then $sortIndexXpath
+                    else 
+                        let $sortIndexType := $sortIndexMap/@datatype
+                        let $sortIndexXpath-typed := 
+                            if (exists($sortIndexType))
+                            then $sortIndexXpath||"[. castable as "||$sortIndexType||"]/"||$sortIndexType||"(.)"
+                            else $sortIndexXpath
+                        return string-join($sortIndexXpath-typed,'')
 };
 
 (:~ the default recursive processor of the parsed query expects map with indexes defined
