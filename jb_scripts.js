@@ -60,9 +60,11 @@ function toggleResults(href) {
   $('.showResults ol').remove();
   var frameWork = $('.content .showResults').clone();
   $('.content .showResults').load(href, function(){
-    var ajaxParts = $('.content .showResults');
-    frameWork.find('#showList').append(ajaxParts.find('.search-result > ol'));
-    $('.schlagworte.showResults').replaceWith(ajaxParts.find('.categoryFilter > ol'));
+    var ajaxParts = $('.content .showResults .ajax-result'),
+        searchResult = ajaxParts.find('.search-result > ol'),
+        categoryFilter = ajaxParts.find('.categoryFilter > ol');
+    $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+    frameWork.find('#showList').append(searchResult);
     ajaxParts.replaceWith(frameWork);
     $('.showResults').show('slow');
     $('#erklärung').toggleClass('erklärung');

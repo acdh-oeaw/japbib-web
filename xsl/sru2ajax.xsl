@@ -12,7 +12,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="no" method="xhtml"/>
+    <xsl:output indent="yes" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:param name="startRecord" select="1" as="xs:integer"/>
@@ -24,7 +24,7 @@
     <xsl:param name="version" select="''" as="xs:string"/>
     
     <xsl:template match="/">
-        <div>
+        <div class="ajax-result">
             <div class="search-result">
                 <xsl:apply-templates
                     select="sru:searchRetrieveResponse/sru:records"/>                
@@ -72,7 +72,7 @@
 
     <!-- Taxonomy -->
     <xsl:template match="taxonomy">
-        <ol><xsl:apply-templates select="*"/></ol>
+        <ol class="schlagworte showResults"><xsl:apply-templates select="*"/></ol>
     </xsl:template>
     
     <xsl:template match="category[matches(@n, '^[123456789]$')]">
