@@ -26,20 +26,21 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
   let $xcql := cql:parse($query)
   return 
      if ($x-debug = 'false')
-     then api:searchRetrieveXCQL($xcql, $version, $maximumRecords, $startRecord, $x-style)
+     then api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style)
      else $xcql
 };
 
 declare 
     %rest:path("japbib-web/sru/searchRetrieve")
     %rest:query-param("version", "{$version}")
+    %rest:query-param("query", "{$query}", "")
     %rest:query-param("startRecord", "{$startRecord}", 1)
     %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
     %rest:query-param("x-style", "{$x-style}", 50)
     %rest:POST("{$xcql}")
     %rest:consumes("application/xml", "text/xml")
     %output:method("xml")
-function api:searchRetrieveXCQL($xcql as item(), $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
+function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
     let $accept := request:header("ACCEPT")
     let $context := $sru-api:HOSTNAME
     let $ns := index:namespaces($context)
@@ -90,7 +91,15 @@ function api:searchRetrieveXCQL($xcql as item(), $version, $maximumRecords as xs
                         <http:header name="Content-Type" value="text/html; charset=utf-8"/>
                     </http:response>
                 </rest:response>,
-                xslt:transform($response, $xsl, map{"xcql" : fn:serialize($xcql)}))
+                xslt:transform($response, $xsl,
+                map{"xcql" : fn:serialize($xcql),
+                    "query": $query,
+                    "version": $version,
+                    "startRecord": $startRecord,
+                    "maximumRecords": $maximumRecords,
+                    "base-uri-public": api:get-base-uri-public(),
+                    "base-uri": api:get-base-uri()
+                }))
         else $response
     return 
         if ($xpath instance of xs:string)
@@ -140,4 +149,12 @@ declare %private function api:subjects($r) as map(*) {
         group by $v
         return map:entry($v, count($t))
     )
+};
+
+declare %private function api:get-base-uri-public() as xs:string {
+    request:scheme()||'://'||request:hostname()||':'||request:port()||request:path()
+};
+
+declare %private function api:get-base-uri() as xs:string {
+    'http://localhost:8984'||request:path()
 };

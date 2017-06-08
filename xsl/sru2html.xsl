@@ -10,7 +10,14 @@
     xmlns:_="urn:sur2html"
     exclude-result-prefixes="#all"
     version="2.0">
-    <xsl:param name="xcql"/>
+    <xsl:param name="xcql" select="''" as="xs:string"/>
+    <xsl:param name="startRecord" select="1" as="xs:integer"/>
+    <xsl:param name="maximumRecords" select="10" as="xs:integer"/>
+    <xsl:param name="query" select="''" as="xs:string"/>
+    <xsl:param name="base-uri-public" select="''" as="xs:string"/>
+    <xsl:param name="base-uri" select="''" as="xs:string"/>
+    <xsl:param name="version" select="''" as="xs:string"/>
+    
     <xsl:include href="thesaurus2html.xsl"/>
     <xsl:variable name="dict" as="element()+">
         <dict xml:lang="de" xmlns="">
@@ -53,6 +60,20 @@
                 <xsl:if test="$xcql != ''">
                     <h4>XCQL</h4>
                     <pre><xsl:copy-of select="$xcql"/></pre>
+                </xsl:if>
+                <xsl:if test="$query != ''">
+                    <h4>URI</h4>
+                    <p>Public:
+                    <pre><xsl:value-of select="concat($base-uri-public, '?version=', $version,
+                                                                    '&amp;query=', $query,
+                                                                    '&amp;maximumRecords=', $maximumRecords,
+                                                                    '&amp;startRecord=', $startRecord)"/></pre>
+                    Private:
+                    <pre><xsl:value-of select="concat($base-uri, '?version=', $version,
+                                                                    '&amp;query=', $query,
+                                                                    '&amp;maximumRecords=', $maximumRecords,
+                                                                    '&amp;startRecord=', $startRecord)"/></pre>
+                    </p>
                 </xsl:if>
             </div>
             <xsl:apply-templates select="sru:records"/>
