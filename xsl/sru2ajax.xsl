@@ -51,7 +51,7 @@
         <xsl:apply-templates select="mods:name[mods:role/mods:roleTerm = 'aut']"/><xsl:text>,</xsl:text>
         <xsl:if test="not(mods:originInfo/mods:dateIssued)"><span class="year">o. J.</span></xsl:if>
         <xsl:apply-templates select="mods:originInfo/mods:dateIssued"/>
-        <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style=record2html.xsl&amp;query=id={mods:recordInfo/mods:recordIdentifier}" class="sup" target="_blank"><xsl:apply-templates select="mods:titleInfo"/></a>
+        <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style=sru2html.xsl&amp;query=id={mods:recordInfo/mods:recordIdentifier}" class="sup" target="_blank"><xsl:apply-templates select="mods:titleInfo"/></a>
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm = 'aut']">

@@ -272,8 +272,9 @@
     <xsl:template name="numberOfRecordsTemplate">
         <xsl:param name="index" required="yes"/>
         <xsl:param name="value" required="no" select="."/>
+        <xsl:variable name="query" select="concat($index,'=&quot;',$value,'&quot;')"/>
         <xsl:text>&#160;(</xsl:text>
-        <a href="{$sru-url}?operation=searchRetrieve&amp;version=1.2&amp;query={$index}={$value}" class="zahl" title="Suchergebnisse">numberOfRecords</a>
+        <a data-query="{$query}" href="{$sru-url}?operation=searchRetrieve&amp;version=1.2&amp;query={$query}" class="zahl" title="Suchergebnisse">numberOfRecords</a>
         <xsl:text>)</xsl:text>
     </xsl:template>
     

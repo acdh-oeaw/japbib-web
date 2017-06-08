@@ -52,15 +52,15 @@ var toggleAnd = $('.andOr').click(
   );
   
 var hideResults= $('.showResults').hide();
-var resultTogglingLinks= $('.suchOptionen a').click(function(e){
+/*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
-  toggleResults($(this).attr('href'))});
+  toggleResults($(this).attr('href'))});*/
 function toggleResults(href) {  
   $('.showResults').hide('slow');
   $('.showResults ol').remove();
-  var frameWork = $('.content .showResults').clone();
-  $('.content .showResults').load(href, function(){
-    var ajaxParts = $('.content .showResults .ajax-result'),
+  var frameWork = $('.content > .showResults').clone();
+  $('.content > .showResults').load(href, function(){
+    var ajaxParts = $('.content > .showResults .ajax-result'),
         searchResult = ajaxParts.find('.search-result > ol'),
         categoryFilter = ajaxParts.find('.categoryFilter > ol');
     $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
@@ -82,11 +82,20 @@ $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
   if (e.which === 13) {
     e.preventDefault();
+    doSearchOnReturn();
+  }
+}
+
+function doSearchOnReturn() {
     var params = $('#searchform1').serialize(),
         baseUrl = $('#searchform1').attr('action')
     toggleResults(baseUrl+'?'+params);
-  }
-}
+};
+
+function executeQuery(query) {
+    $('#searchInput1').val(query);
+    doSearchOnReturn();
+};
 
 //////// Schlagworte //////
   
@@ -96,12 +105,42 @@ for (i in as) {
   as[i].innerHTML= Math.ceil(Math.random()*10000);
   }
 
-var showSublist =  $ ( '.sup' ).click( 
-  function ( ) { 
-    $ ( this ).nextAll( 'ol' ).toggle('fast');
-    $ ( this ).toggleClass( 'close' );     
+// Handler für Klick auf (+) in Resultatliste
+$( '.showResults' ).on('click', '.sup', function (e) {
+    e.preventDefault();
+    var fullEntryIsShown = $(this).hasClass("close");
+    $ ( this ).nextAll( 'div' ).toggle('fast');
+    $ ( this ).toggleClass( 'close' );
+    if ( fullEntryIsShown ) {
+        // Eintrag ist bereits ausgeklappt, daher wird er eingeklappt und der Inhalt gelöscht.
+        $ ( this ).nextAll( 'div' ).remove();
+    } else {
+        //
+        var caller = $ ( this ); 
+        var url = $ ( this ).attr("href");
+        $.get(url, null , function ( responseData , statusText, responseObj ) {
+            caller.after( $(responseData).find(".showEntry") );
+        }, 'html' );
+        
     }
-  ); 
+}); 
+
+// Handler für Klick auf "Resultate"
+$( '.showResults' ).on('click', '.zahl', function (e) {
+    e.preventDefault();
+    var caller = $ ( this ); 
+    var query = $ ( this ).attr("data-query");
+    executeQuery(query);
+});
+
+// Handler für Klick auf alphabetische Liste für Autoren oder Werktitel
+$('.suchOptionen a').click(function(e){
+    e.preventDefault();
+    var index = $(e.target).closest("li").attr("data-index");
+    var term = $(e.target).text() + "*";
+    executeQuery(index+"="+term);
+});
+ 
 var sup= $ ( 'div.schlagworte .sup' );
 var showAll =  $ ( '#aO' ).click( 
   function ( ) { 
