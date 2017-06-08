@@ -20,6 +20,9 @@
         <index key="subject" case="yes">
             <path label=".">mods:subject[not(@displayLabel)]/mods:topic</path>
         </index>
+        <index key="series" case="yes">
+            <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
+        </index>
         <index key="id">
             <path>mods:recordIdentifier</path>
         </index>
