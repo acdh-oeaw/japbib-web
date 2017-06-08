@@ -40,7 +40,18 @@
         </xsl:choose>
     </xsl:function>
     <xsl:template match="/">
-        <xsl:apply-templates/>
+        <html>
+            <head>
+                <title>SRU Endpoint</title>
+                <style type="text/css">
+                    .css-switch ~ * {display: none;}
+                    .css-switch:checked ~ *{display: initial;}
+                </style>
+            </head>
+            <body>
+                <xsl:apply-templates/>
+            </body>
+        </html>
     </xsl:template>
     <xsl:template match="sru:diagnostics">
        <div>
@@ -60,14 +71,15 @@
     
     <xsl:template match="sru:searchRetrieveResponse">
         <div>
-            <form action="sru">
-                <input name="query"/>
-                <input name="version" type="hidden" value="{sru:version}"/>
+            <form action="{$base-uri-public}" method="get">
+                <input name="query" value="{$query}"/>
+                <input name="version" type="hidden" value="{$version}"/>
+                <input name="startRecord" type="hidden" value="{$startRecord}"/>
+                <input name="maximumRecords" type="hidden" value="{$maximumRecords}"/>
                 <input name="operation" type="hidden" value="searchRetrieve"/>
                 <button type="submit">Search</button>
             </form>
             <div class="meta">
-                <xsl:apply-templates select="sru:extraResponseData"/>
                 <xsl:if test="$xcql != ''">
                     <h4>XCQL</h4>
                     <pre><xsl:copy-of select="$xcql"/></pre>
@@ -86,6 +98,7 @@
                                                                     '&amp;startRecord=', $startRecord)"/></pre>
                     </p>
                 </xsl:if>
+                <xsl:apply-templates select="sru:extraResponseData"/>
             </div>
             <xsl:apply-templates select="sru:records"/>
         </div>
@@ -102,8 +115,11 @@
     </xsl:template>
     
     <xsl:template match="sru:extraResponseData/subjects">
-        <h4>Subjects</h4>
-        <xsl:apply-templates select="taxonomy"/>
+        <h4><label for="subjects-switch">Subjects</label></h4>
+        <div>
+            <input type="checkbox" class="css-switch" id="subjects-switch" name="ui-subjects-switch" style="display:none;" checked="checked"/>
+            <xsl:apply-templates select="taxonomy"/>
+        </div>
     </xsl:template>
     
     <xsl:template match="sru:extraResponseData">

@@ -3,7 +3,6 @@ module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace request = "http://exquery.org/ns/request";
-import module namespace web = "http://basex.org/modules/web";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 
@@ -94,7 +93,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                 </rest:response>,
                 xslt:transform($response, $xsl,
                 map{"xcql" : fn:serialize($xcql),
-                    "query": web:encode-url($query),
+                    "query": $query,
                     "version": $version,
                     "startRecord": $startRecord,
                     "maximumRecords": $maximumRecords,
