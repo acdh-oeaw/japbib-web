@@ -6,6 +6,7 @@
     xmlns:mods="http://www.loc.gov/mods/v3" xmlns:sru="http://www.loc.gov/zing/srw/"
     xmlns:_="urn:sur2html"
     exclude-result-prefixes="#all" version="2.0">
+    <xsl:include href="thesaurus2html.xsl"/>
     <xsl:strip-space elements="*"/>
     <xsl:param name="p_records-of-authors"/>
     <xsl:param name="p_records-of-series"/>
@@ -74,7 +75,7 @@
                         <xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]">
                             <xsl:variable name="roleTerm" select="mods:role/normalize-space(mods:roleTerm)"/>
                             <xsl:variable name="roleLabel" select="_:resolveMARCcode($roleTerm)"/>
-                            <span class="author"><xsl:value-of select="data(.)"/> (<xsl:value-of select="$records-of-authors[. = current()]/@count"/>)<xsl:if test="$roleLabel != ''"><xsl:value-of select="concat(', ',$roleLabel)"/></xsl:if></span>
+                            <span class="author"><xsl:value-of select="data(mods:namePart)"/> (<xsl:value-of select="$records-of-authors[. = current()]/@count"/>)<xsl:if test="$roleLabel != ''"><xsl:value-of select="concat(', ',$roleLabel)"/></xsl:if></span>
                         </xsl:for-each>
                     </td>
                 </tr>
