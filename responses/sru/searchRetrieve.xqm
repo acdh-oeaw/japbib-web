@@ -97,6 +97,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                     "version": $version,
                     "startRecord": $startRecord,
                     "maximumRecords": $maximumRecords,
+                    "x-style": $x-style,
                     "base-uri-public": api:get-base-uri-public(),
                     "base-uri": api:get-base-uri()
                 }))

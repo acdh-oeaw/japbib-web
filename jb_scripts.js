@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+$(document).ready(function() {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -52,10 +52,21 @@ var toggleAnd = $('.andOr').click(
   );
   
 var hideResults= $('.showResults').hide();
-var resultTogglingLinks= $('.suchOptionen a').click(toggleResults);
-function toggleResults() {  
-  $('.showResults').toggle('slow');    
-  $('#erklärung').toggleClass('erklärung');
+var resultTogglingLinks= $('.suchOptionen a').click(function(e){
+  e.preventDefault();
+  toggleResults($(this).attr('href'))});
+function toggleResults(href) {  
+  $('.showResults').hide('slow');
+  $('.showResults ol').remove();
+  var frameWork = $('.content .showResults').clone();
+  $('.content .showResults').load(href, function(){
+    var ajaxParts = $('.content .showResults');
+    frameWork.find('#showList').append(ajaxParts.find('.search-result > ol'));
+    $('.schlagworte.showResults').replaceWith(ajaxParts.find('.categoryFilter > ol'));
+    ajaxParts.replaceWith(frameWork);
+    $('.showResults').show('slow');
+    $('#erklärung').toggleClass('erklärung');
+  });
     
   }
 var hideEntry= $('.showEntry').hide();
@@ -69,7 +80,9 @@ $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
   if (e.which === 13) {
     e.preventDefault();
-    toggleResults();
+    var params = $('#searchform1').serialize(),
+        baseUrl = $('#searchform1').attr('action')
+    toggleResults(baseUrl+'?'+params);
   }
 }
 
