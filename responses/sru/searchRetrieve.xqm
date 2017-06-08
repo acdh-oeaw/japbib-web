@@ -46,13 +46,20 @@ function api:searchRetrieveXCQL($xcql as item(), $version, $maximumRecords as xs
     
     let $xpath := cql:xcql-to-xpath($xcql, $context)
     let $sort-xpath := cql:xcql-to-orderExpr($xcql, $context)
+    let $sort-index-key := $xcql//sortKeys/index
+    let $sort-index := if ($sort-index-key != '') then index:index-from-map($sort-index-key, index:map($context)) else () 
+    let $max-sort-value := 
+            switch ($sort-index/@datatype)
+                case "xs:integer" return 99999
+                default return "'ZZZZZZZ'"
+            
     let $xqueryExpr := concat(
                         string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
                         if ($sort-xpath != '')
                         then
                             concat("for $m in ",$xpath," ", 
                                    "let $o := ($m/descendant-or-self::",$sort-xpath,")[1] ",
-                                   "order by $o ",
+                                   "order by ($o, ", $max-sort-value, ")[1] ",
                                    "return $m"
                             )
                         else $xpath
