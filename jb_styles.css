@@ -479,9 +479,9 @@ a.zahl::before {
 #hint_result .schlagworte li.li1  {  
   margin-left: -1.5em; 
   }
-#hint_result .#schlagworte li   {  
+#hint_result .schlagworte li   {  
   margin-right: 0; 
-  }
+}
 .schlagworte .li1 > span { 
   margin-bottom: .5em; 
 	font-weight: bold;  
@@ -598,4 +598,70 @@ a.zahl::before {
     margin-left: -3em;
     width: 3em;
     font-style: italic;
+} 
+
+/**************
+PLUS-MINUS
+
+(statt .sup)
+**************/
+ 
+.plusMinus::before {  
+ content: '+'; 
+ display: inline-block;
+ font-family: Courier, Arial, sans-serif;
+ font-weight: bold;
+ border: 1px solid; 
+ border-color: #ddd;
+ border-radius: .5em;
+ height: 1em;
+ width: 1em;  
+ line-height: 1em; 
+ text-align: center;
+ cursor: pointer;
+ } 
+.plusMinus.hover::before { 
+ background: #eef; 
+ border-color: #ccd;
+ }
+ 
+.schlagworte .plusMinus::before { 
+ position: absolute;
+ left: -1.5em; 
+ top: .2em;  
+ }
+  
+.close::before {
+ content: '–';
+ }
+
+/*******************/
+
+.term {
+  margin-right: .5em; 
 }
+
+
+/* MODS und LIDOS */
+.record-mods, .record-lidos {
+    overflow-x: scroll;
+}
+
+/* Quick Fix: Checkbox based show/hide */
+
+.css-switch ~ * {display: none;}
+.css-switch:checked ~ div,
+.css-switch:checked ~ pre,
+.css-switch:checked ~ p,
+.css-switch:checked ~ ul,
+.css-switch:checked ~ ol,
+.css-switch ~ div.show-instead,
+.css-switch ~ pre.show-instead,
+.css-switch ~ p.show-instead
+{display: block;}
+.css-switch:checked ~ span,                    
+.css-switch:checked ~ label,
+.css-switch ~ span.show-instead,
+.css-switch ~ label.show-instead
+{display: inline;}
+.css-switch:checked ~ .show-instead {display: none;}

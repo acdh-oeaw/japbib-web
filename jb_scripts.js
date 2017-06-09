@@ -1,4 +1,5 @@
-﻿$(document).ready(function() {
+$(document).ready(jb_init);
+function jb_init() {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -59,27 +60,39 @@ var toggleAnd = $('.andOr').click(
   );
   
 var hideResults= $('.showResults').hide();
+var resultsFramework;
 /*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
 function toggleResults(href) {  
+  // todo (BS, 10.6.): 
+    //function besser auf .showList anwenden statt auf .showResults
+    //neu kreiertes div muss bei neuer Frage wieder gelöscht werden
+    //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
-  $('.showResults ol').remove();
-  var frameWork = $('.content > .showResults').clone();
-  $('.content > .showResults').load(href, function(){
+  resultsFramework = resultsFramework || $('.content > .showResults').clone();
+  $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
     var ajaxParts = $('.content > .showResults .ajax-result'),
         searchResult = ajaxParts.find('.search-result > ol'),
-        categoryFilter = ajaxParts.find('.categoryFilter > ol');
-    $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
-    frameWork.find('#showList').append(searchResult);
-    ajaxParts.replaceWith(frameWork);
+        categoryFilter = ajaxParts.find('.categoryFilter > ol'),
+        frameWork = resultsFramework.clone();
+    if (statusText === 'success') {      
+        $('.showResults ol').remove();
+        $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+        frameWork.find('#showList > ol').replaceWith(searchResult);
+    } else {
+        frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
+    }
+    $('.content > .showResults').replaceWith(frameWork);
     $('.showResults').show('slow');
-    $('#erklärung').toggleClass('erklärung');
+    // Erste Erklaerung in ein Fragezeichen verpacken:
+    // todo (BS 10.6.): , if Resultate > 0, addClass(''erklärung''), else removeClass  
+    $('#erklärung').toggleClass('erklärung'); 
   });
     
   }
 var hideEntry= $('.showEntry').hide();
-var toggleEntry= $('#showList a').click(
+var toggleEntry= $(document).on('click', '#showList a',
   function() {  
     $('.showEntry').toggle('slow');       
     }
@@ -104,6 +117,25 @@ function executeQuery(query) {
     doSearchOnReturn();
 };
 
+// MODS/ LIDOS/  HTML ein/ausblenden
+$('.showResults').on('change', '.showOptions form', function(e){
+   var target = $(e.target);
+   var dataFormat = target.data("format")
+   var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
+   var format = target.val();
+   target.data("format", format);
+   var c = ".record-" + format;
+   var div = target.closest(".showEntry").find(c);
+   if (curFormat === "lidos" || curFormat === "mods") {
+        console.log(curFormat);   
+   }
+   target.closest(".showEntry").find("[class^=record]").hide();
+   div.show();
+   if (format == 'lidos' || format == 'mods') {
+        /// TODO invoke code higlighting
+   }
+});
+
 //////// Schlagworte //////
   
 $ ( '#facet-subjects').on('click', 'a', function(e){
@@ -115,7 +147,7 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 });
 
 // Handler für Klick auf (+) in Resultatliste
-$( '.showResults' ).on('click', '.sup', function (e) {
+$(document).on('click', '.showResults .sup', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
     $ ( this ).nextAll( 'div' ).toggle('fast');
@@ -135,7 +167,7 @@ $( '.showResults' ).on('click', '.sup', function (e) {
 }); 
 
 // Handler für Klick auf "Resultate"
-$( '.showResults' ).on('click', '.zahl', function (e) {
+$(document).on('click', '.showResults .zahl', function (e) {
     e.preventDefault();
     var caller = $ ( this ); 
     var query = $ ( this ).attr("data-query");
@@ -164,4 +196,4 @@ var closeAll =  $ ( '#aC' ).click(
     }
   ); 
  
-});
+}

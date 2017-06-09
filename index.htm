@@ -4,8 +4,10 @@
 <meta charset="UTF-8" />
 <title>Japan-Bibliographie</title>
 
+<link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
 <link href="jb_styles.css" rel="stylesheet" type="text/css" />
-<script src="jquery-3.1.1.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/codemirror/lib/codemirror.js"></script>
 <script src="jb_scripts.js"></script>
 
 </head>
@@ -349,7 +351,7 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 <div id="showList">
 <div class="showOptions">
 <form>
-  <label>Resultate anzeigen als:
+  <label><span id="countResults"></span> Resultate anzeigen als:
     <select name="top5" size="1">
       <option selected="selected">Liste (nach Autoren)</option>
       <option>Liste (nach Werktiteln)</option>

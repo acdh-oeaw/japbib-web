@@ -36,11 +36,11 @@ declare
     %rest:query-param("query", "{$query}", "")
     %rest:query-param("startRecord", "{$startRecord}", 1)
     %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
-    %rest:query-param("x-style", "{$x-style}", 50)
+    %rest:query-param("x-style", "{$x-style}", '')
     %rest:POST("{$xcql}")
     %rest:consumes("application/xml", "text/xml")
     %output:method("xml")
-function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
+function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?) {
     let $accept := request:header("ACCEPT")
     let $context := $sru-api:HOSTNAME
     let $ns := index:namespaces($context)
@@ -84,23 +84,28 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
     let $response-formatted :=
         if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
         then 
-            let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html)
+            let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html),
+                $formatted := 
+                xslt:transform($response, $xsl,
+                map:merge((
+                map{"xcql" : fn:serialize($xcql),
+                    "query": $query,
+                    "version": $version,
+                    "startRecord": $startRecord,
+                    "maximumRecords": $maximumRecords,
+                    "operation": 'searchRetrieve',
+                    "base-uri-public": api:get-base-uri-public(),
+                    "base-uri": api:get-base-uri()
+                },
+                if ($x-style) then map{"x-style": $x-style} else map{}
+                )))
             return 
                 (<rest:response>
                     <http:response>
                         <http:header name="Content-Type" value="text/html; charset=utf-8"/>
                     </http:response>
                 </rest:response>,
-                xslt:transform($response, $xsl,
-                map{"xcql" : fn:serialize($xcql),
-                    "query": $query,
-                    "version": $version,
-                    "startRecord": $startRecord,
-                    "maximumRecords": $maximumRecords,
-                    "x-style": $x-style,
-                    "base-uri-public": api:get-base-uri-public(),
-                    "base-uri": api:get-base-uri()
-                }))
+                $formatted)
         else $response
     return 
         if ($xpath instance of xs:string)
