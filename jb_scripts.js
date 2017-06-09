@@ -99,11 +99,13 @@ function executeQuery(query) {
 
 //////// Schlagworte //////
   
-$ ( '.schlagworte li li ol' ).hide ();
-var as= $ ( '.schlagworte a' );
-for (i in as) {
-  as[i].innerHTML= Math.ceil(Math.random()*10000);
-  }
+$ ( '#facet-subjects').on('click', 'a', function(e){
+    e.preventDefault();
+    var subject = $(e.target).parent().children('.sup').text();
+    var currentQuery = $('#searchInput1').val();
+    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " AND " + "subject=" + subject;
+    executeQuery(newQuery);
+});
 
 // Handler für Klick auf (+) in Resultatliste
 $( '.showResults' ).on('click', '.sup', function (e) {
