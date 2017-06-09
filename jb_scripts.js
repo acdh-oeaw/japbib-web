@@ -1,4 +1,5 @@
-$(document).ready(function() {
+$(document).ready(jb_init);
+function jb_init() {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -157,4 +158,4 @@ var closeAll =  $ ( '#aC' ).click(
     }
   ); 
  
-});
+}
