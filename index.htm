@@ -18,8 +18,8 @@
   <img alt="ÖAW, IKGA, ACDH" src="images/logo_3.png" usemap="#links" width="245" height="96"/>
   <map name="links">
     <area shape="rect" coords="0,0,110,96" href="http://www.oeaw.ac.at" alt="OEAW" title="OEAW"/>
-    <area shape="rect" coords="111,0,245,48" href="http://www.oeaw.ac.at/ikga" alt="IKGA" title="IKGA"/>
-    <area shape="rect" coords="111,49,245,96" href="http://www.oeaw.ac.at/acdh" alt="ACDH" title="ACDH"/>
+    <area shape="rect" coords="111,0,245,48" href="http://ikga.oeaw.ac.at/" alt="IKGA" title="IKGA"/>
+    <area shape="rect" coords="111,49,245,96" href="https://adhc.oeaw.ac.at/" alt="ACDH" title="ACDH"/>
   </map>
 </div>
 <h1><span class="H1_big"><span><em>Deutschsprachige </em> </span><em>Japan-Bibliographie</em> <span>
@@ -100,6 +100,7 @@ und der Österreichischen Akademie der Wissenschaften erstellt. Die über 30.000
   möglich, die Entwicklung dieser Themen innerhalb der behandelten zwei 
   Jahrzehnte zu beobachten oder statistische Vergleiche zwischen verschiedenen Themen anzustellen.
   </p>
+  <p class="next">Weiter zu: <a href="#" id="next_help" name="help"> Hinweise zur Benützung </a></p>
   </div>
   <div id="help">
 <h2>Hinweise zur Benützung</h2>
@@ -151,6 +152,7 @@ und der Österreichischen Akademie der Wissenschaften erstellt. Die über 30.000
   Sachgebiete und umfasst über 500 Schlagworte in 12 Gruppen. 
   Die Verschlagwortung wurde dabei extensiv durchgeführt, das heißt, eine Publikation wurde zumeist nicht nur einem, 
   sondern mehreren relevanten Themen zugeordnet. </p>
+  <p class="next">Weiter zu: <a href="#" id="next_geschichte" name="geschichte"> Geschichte des Projekts</a></p>
  </div>
  
  <div id="geschichte">
@@ -211,7 +213,7 @@ und der Österreichischen Akademie der Wissenschaften erstellt. Die über 30.000
   So wurden z.B. einige auf geschichtliche Perioden bezogenen Schlagworte aus dem Themen-Index entfernt 
   und mit dem Zeit-Index übereingestimmt. 
   Die Grundstruktur des Thesaurus blieb jedoch bestehen. </p>
-  
+  <p class="next">Weiter zu: <a href="#" id="next_impressum" name="impressum"> Impressum </a></p>
 </div>
 
 <div id="impressum">
@@ -241,15 +243,16 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 <span>Peter Getreuer, Susanne Formanek, Karina Kleiber, Angela Kramer, Gabriele Pauer, Lennart Hruska</span>
 <i>Konzeption der Online-Version:</i>
 <span>Bernhard Scheid, Daniel Schopper, Karl-Heinz Mörth</span>
-<i>Server-seitige Programmierung:</i>
-<span>Daniel Schopper, ...</span>
-<i>Layout und client-seitige Programmierung:</i>
+<i>Programmierung:</i>
+<span>Daniel Schopper, Omar Siam, ...</span>
+<i>Layout und Contentmanagement:</i>
 <span>Bernhard Scheid, ...</span>
 <i>Adaptierung der Datensätze für die Online-Version:</i>
 <span>Lennart Hruska, Daniel Schopper, ...</span>
 </li>
 
 </ul>
+  <p class="next">Zurück zu: <a href="#" id="next_ziele" name="ziele"> Umfang und Ziele dieser Bibliographie </a></p>
 </div>
 </div> 
 
@@ -265,7 +268,7 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 -->
 <td id="find" class="slide hide">
 
-<div class="pageindex" >
+<div class="pageindex"  id="facet-subjects">
     <h4 ><span class="showResults">Such-Filter</span></h4>
 	<ol class="schlagworte showResults">
 	  <li class="li1"><span>Thema </span>
@@ -304,7 +307,7 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 
 
 <div class="content">
-<h2> Suche </h2>
+<h2 style="display:inline-block"> Suche </h2>
 <p id="erklärung"> <span>Auf dieser Seite können Sie nach selbstgewählten Suchbegriffen in allen Datensätzen suchen oder sich Listen mit Autoren oder Werktiteln anzeigen lassen. Die Ergebnislisten lassen sich mit Hilfe von Suchfiltern weiter verfeinern. </span></p>
 <ul class="suchOptionen">
   <li>Freie Suche: 
@@ -350,8 +353,8 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
     <select name="top5" size="1">
       <option selected="selected">Liste (nach Autoren)</option>
       <option>Liste (nach Werktiteln)</option>
-      <option>Diagramm (nach Jahren)</option>
-      <option>Diagramm (nach Themen)</option>
+      <!--<option>Diagramm (nach Jahren)</option>
+      <option>Diagramm (nach Themen)</option>-->
     </select>
   </label>
 <span class="erklärung"><span>Wählen Sie das Format, in dem die Resultate angezeigt werden. Bei kleineren Datenmengen empfehlen sich Listen, während Diagramme einen statistischen Überblick ermöglichen.</span></span>
@@ -359,7 +362,7 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 </form>
 </div>
 
-  <ol data-numberOfRecords="26" data-nextRecordPosition="">
+  <ol class="results" data-numberOfRecords="26" data-nextRecordPosition="">
     <li value="1">
       <span class="authors">Berndt, Jürgen</span> <span class="year">1995</span>, <a class="sup fullRecordLink" href="sru?operation=searchRetrieve&amp;version=1.2&amp;query=&amp;maximumRecords=10id=0002656&amp;x-style='record2html.xsl'"><span class="title">Nachwort.</span></a>            
      </li>

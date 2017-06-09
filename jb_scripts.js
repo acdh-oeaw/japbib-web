@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -24,26 +24,33 @@ function toggleNav() {
 $ ( controls ).click( toggleNav ); 
 $ ( navs ).click( toggleNav ); 
 
-//////// ABOUT //////
-
+//////// ABOUT ////// 
 
 var divs= [$('#ziele'), $('#help'), $('#geschichte'), $('#impressum')];
 var go2s= [$('#go2ziele'), $('#go2help'), $('#go2geschichte'), $('#go2impressum')]; 
+var nexts= [$('#next_ziele'), $('#next_help'), $('#next_geschichte'), $('#next_impressum')]; 
+
+$(go2s[0]).addClass('here');
 
 for (a in divs) { 
   $( divs[a] ).hide(); 
-  $( divs[0] ).show(); 
   } 
+  $( divs[0] ).show(); 
 
-for (i in go2s) {
-$(go2s[i]).click(
-  function () {  
-    for (a in divs) { $( divs[a] ).hide(); } 
-    $('#'+this.name ).show();
-    }
-  );
+
+function go2next() {  
+  for (a in divs) { $( divs[a] ).hide(); } 
+  for (a in go2s) { $( go2s[a] ).removeClass('here'); } 
+  $('#'+this.name ).show();
+  $('#go2'+this.name).addClass('here');
   }
-
+for (i in go2s) {
+  $(go2s[i]).click(go2next);
+  }
+for (i in nexts) {
+  $(nexts[i]).click(go2next);
+  }
+  
 //////// Find //////
 
 var toggleAnd = $('.andOr').click(
@@ -99,11 +106,13 @@ function executeQuery(query) {
 
 //////// Schlagworte //////
   
-$ ( '.schlagworte li li ol' ).hide ();
-var as= $ ( '.schlagworte a' );
-for (i in as) {
-  as[i].innerHTML= Math.ceil(Math.random()*10000);
-  }
+$ ( '#facet-subjects').on('click', 'a', function(e){
+    e.preventDefault();
+    var subject = $(e.target).parent().children('.sup').text();
+    var currentQuery = $('#searchInput1').val();
+    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " AND " + "subject=" + subject;
+    executeQuery(newQuery);
+});
 
 // Handler für Klick auf (+) in Resultatliste
 $( '.showResults' ).on('click', '.sup', function (e) {

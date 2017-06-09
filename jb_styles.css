@@ -232,7 +232,9 @@ td.control:hover {
     width: 100%;
     bottom: 0; */
   }
-
+.next a {
+	font-style: italic;
+}
 
 /*******************
    JS-Funktionen
@@ -248,7 +250,7 @@ td.control:hover {
   cursor: default;
   line-height: 17px;
   }
-
+ 
 /*******************
    Slides
 ********************/
@@ -324,6 +326,17 @@ td.control:hover {
     font-weight: bold;
     font-size: .8em;
   }   
+
+.pageindex .here {
+  color:#008;
+  background: rgba(0, 0, 255, 0.06);
+  cursor: text;
+  font-style: italic;
+}
+.pageindex .here:before {
+  content: '> '; 
+}
+
 #schlagworte .pageindex a {
   padding: 0;
   }
@@ -483,6 +496,9 @@ a.zahl::before {
 	z-index: 2;
 	cursor: pointer; 
   }
+.results .sup {	
+  margin-left: 1.7em;
+}
 .sup:hover { 
 	background: rgba(0, 0, 255, 0.07);
 	border-radius: .4em; 
@@ -502,9 +518,6 @@ a.zahl::before {
   border: 1px solid #ccc;
   font-family: courier, arial;
   }
-.showResults #showList .sup {
-  margin-left: 1.5em;
-  }
 .close::before {
   content: '–';
   }  
@@ -520,7 +533,7 @@ a.zahl::before {
   content: '?';
   display: inline-block; 
     color: #008;
-    background:rgb(208, 219, 216);
+    background:rgb(224, 240, 251);
     border: 1px solid rgba(0, 0, 136, 0.5);
     border-radius: 1em;
     box-shadow:4px 4px 6px rgba(51, 51, 51, 0.15);
@@ -543,7 +556,7 @@ a.zahl::before {
     position: absolute;
     top: 1.4em; 
     left:0;
-    background: rgb(218, 229, 226);
+    background: rgb(224, 240, 251);
     z-index: 5;   
   text-align: left; 
     padding: .5em .7em; 
