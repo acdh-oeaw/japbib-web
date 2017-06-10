@@ -64,6 +64,10 @@ var hideResults= $('.showResults').hide();
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
 function toggleResults(href) {  
+  // todo (BS, 10.6.): 
+    //function besser auf .showList anwenden statt auf .showResults
+    //neu kreiertes div muss bei neuer Frage wieder gel�scht werden
+    //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
   $('.showResults ol').remove();
   var frameWork = $('.content > .showResults').clone();
@@ -75,7 +79,9 @@ function toggleResults(href) {
     frameWork.find('#showList').append(searchResult);
     ajaxParts.replaceWith(frameWork);
     $('.showResults').show('slow');
-    $('#erklärung').toggleClass('erklärung');
+  // Erste Erklaerung in ein Fragezeichen verpacken:
+    // todo (BS 10.6.): , if Resultate > 0, addClass(''erklärung''), else removeClass  
+    $('#erklärung').toggleClass('erklärung'); 
   });
     
   }
