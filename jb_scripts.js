@@ -66,7 +66,7 @@ var hideResults= $('.showResults').hide();
 function toggleResults(href) {  
   // todo (BS, 10.6.): 
     //function besser auf .showList anwenden statt auf .showResults
-    //neu kreiertes div muss bei neuer Frage wieder gelöscht werden
+    //neu kreiertes div muss bei neuer Frage wieder gelÃ¶scht werden
     //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
   $('.showResults ol').remove();
