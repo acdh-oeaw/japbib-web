@@ -1,0 +1,22 @@
+{
+  "name": "japbib-web",
+  "description": "Webiste für die Japan-Bibliographie 1980-2000",
+  "main": "jb-scripts.js",
+  "authors": [
+    "Bernhard.Scheid@oeaw.ac.at"
+  ],
+  "license": "MIT",
+  "homepage": "jb80.acdh.oeaw.ac.at",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "codemirror": "^5.26.0"
+  }
+}
