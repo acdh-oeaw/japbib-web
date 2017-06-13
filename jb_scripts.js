@@ -111,6 +111,25 @@ function executeQuery(query) {
     doSearchOnReturn();
 };
 
+// MODS/ LIDOS/  HTML ein/ausblenden
+$('.showResults').on('change', '.showOptions form', function(e){
+   var target = $(e.target);
+   var dataFormat = target.data("format")
+   var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
+   var format = target.val();
+   target.data("format", format);
+   var c = ".record-" + format;
+   var div = target.closest(".showEntry").find(c);
+   if (curFormat === "lidos" || curFormat === "mods") {
+        console.log(curFormat);   
+   }
+   target.closest(".showEntry").find("[class^=record]").hide();
+   div.show();
+   if (format == 'lidos' || format == 'mods') {
+        /// TODO invoke code higlighting
+   }
+});
+
 //////// Schlagworte //////
   
 $ ( '#facet-subjects').on('click', 'a', function(e){
