@@ -600,4 +600,7 @@ a.zahl::before {
     font-style: italic;
 }
 
- 
+/* MODS und LIDOS */
+.record-mods, .record-lidos {
+    overflow-x: scroll;
+}
