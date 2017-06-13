@@ -15,6 +15,8 @@
     <string xml:id="no-place-abbr">o.O.</string>
     <string xml:id="no-pub-abbr">o.V.</string>
     <string xml:id="no-title-abbr">o.T.</string>
+    <string xml:id="from">vom</string>
+    <string xml:id="title">Titel</string>
     <!-- Interface -->
     <string xml:id="numberOfRefords">Number of Records</string>
 </dict>

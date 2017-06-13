@@ -68,7 +68,7 @@
                 <xsl:text>"</xsl:text>
             </xsl:when>
             <xsl:when test="$node instance of comment()">
-                <xsl:value-of select="concat('&lt;!--',$node,'--&gt;')"/>
+                <xsl:value-of select="concat('&lt;!--',$node,'--&gt;')"/>   
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$node"/>
@@ -201,7 +201,8 @@
     </xsl:template>
     
     <xsl:template match="sru:recordData">
-        <xsl:variable name="title" select="mods:mods/mods:titleInfo/mods:title"></xsl:variable>
+        <xsl:variable name="title" select="mods:mods/mods:titleInfo/*[not(self::mods:subTitle)]"/>
+        <xsl:variable name="subtitle" select="mods:mods/mods:titleInfo/*[self::mods:subTitle]"/>
         <xsl:variable name="authors" select="mods:mods/mods:name[mods:role/mods:roleTerm = 'aut']/mods:namePart"/>
         <xsl:variable name="year" select="mods:mods/mods:originInfo/mods:dateIssued"/>
         <xsl:variable name="pubPlace" select="mods:mods//mods:originInfo/mods:place/mods:placeTerm"/>
@@ -212,6 +213,8 @@
         <xsl:variable name="keywords" select="mods:mods//mods:subject[@displayLabel = 'Stichworte']/*"/>
         <xsl:variable name="mods-serialized" select="_:serialize(mods:mods, 'LIDOS-Dokument')"/>
         <xsl:variable name="lidos-serialized" select="_:serialize(mods:mods//LIDOS-Dokument)"/>
+        <xsl:variable name="genre" select="mods:mods/mods:genre"/>
+        <xsl:variable name="is-book" select="$genre = 'book'"/>
         <span class="recordHead">
             <span class="authors">
                 <xsl:for-each select="$authors">
@@ -243,7 +246,7 @@
                             </xsl:if>
                         </select>
                     </label>
-                    <span class="erklärung"><span> „Detailliert“ enthält auch Stichworte, über die neue Suchabfragen möglich sind. Alle weiteren Optionen sind für das Kopieren in andere Formate gedacht. </span></span>
+                    <span class="erklärung"><span> „Detailliert“ enthält auch Stichworte, über die neue Suchabfragen möglich sind. LIDOS bezeichnet das Originalformat der Daten, MODS den aktuellen Stand der Daten in der Datenbank.</span></span>
                 </form>
             </div>
             <div class="record-html">
@@ -263,9 +266,16 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </li>
-                    <li class="eSegment"> Titel </li>
-                    <li> <xsl:value-of select="string-join($title, ' ')"/></li>
+                    <li class="eSegment"> <xsl:value-of select="_:dict('title')"/> </li>
+                    <li>
+                        <xsl:call-template name="title">
+                            <xsl:with-param name="title" select="$title"/>
+                            <xsl:with-param name="subtitle" select="$subtitle"/>
+                        </xsl:call-template>
+                    </li>
                     <xsl:if test="exists($host)">
+                        <xsl:variable name="volume" select="$host/mods:part/mods:detail[@type = 'volume']"/>
+                        <xsl:variable name="issue" select="$host/mods:part/mods:detail[@type = 'issue']"/>
                         <li class="eSegment"> In: </li>
                         <li>
                             <xsl:choose>
@@ -280,20 +290,24 @@
                                     <xsl:text>[</xsl:text><xsl:value-of select="_:dict('no-title-abbr')"/><xsl:text>]</xsl:text>
                                 </xsl:otherwise>
                             </xsl:choose>
-                            <xsl:choose>
-                                <xsl:when test="$host/mods:name">
-                                    <xsl:call-template name="formatName">
-                                        <xsl:with-param name="name" select="$host/mods:name"/>
-                                    </xsl:call-template>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    
-                                </xsl:otherwise>
-                            </xsl:choose>
+                            <xsl:call-template name="volume">
+                                <xsl:with-param name="volume" select="$volume"/>
+                            </xsl:call-template>
+                            <xsl:call-template name="issue">
+                                <xsl:with-param name="year" select="$host/mods:originInfo/mods:dateIssued[matches(.,'^\d{4,4}$')]"/>
+                                <xsl:with-param name="issue" select="$issue"/>
+                                <xsl:with-param name="issue-date" select="$host/mods:originInfo/mods:dateIssued[matches(.,'^\d{1,2}\.\d{1,2}\.\d{4,4}$')]"/>
+                            </xsl:call-template>
+                            <xsl:if test="$host/mods:name">
+                                <xsl:call-template name="formatName">
+                                    <xsl:with-param name="name" select="$host/mods:name"/>
+                                </xsl:call-template>
+                            </xsl:if>
                         </li>
                     </xsl:if>
                     <xsl:if test="exists($series)">
                         <xsl:variable name="volume" select="$series/mods:part/mods:detail[@type = 'volume']"/>
+                        <xsl:variable name="issue" select="$series/mods:part/mods:detail[@type = 'issue']"/>
                         <li class="eSegment"> <xsl:value-of select="_:dict('series')"/> </li>
                         <li>
                             <xsl:choose>
@@ -306,19 +320,24 @@
                             </xsl:choose>
                             <xsl:text> </xsl:text>
                             <xsl:if test="$volume != ''">
-                                <xsl:text>,&#160;</xsl:text>
-                                <xsl:value-of select="_:dict('vol-abbr')"/>
-                                <xsl:text> </xsl:text>
+                                <xsl:text xml:space="preserve">; </xsl:text>
                                 <xsl:value-of select="$volume"/>
                             </xsl:if>
+                            <xsl:call-template name="issue">
+                                <xsl:with-param name="year" select="$series/mods:originInfo/mods:dateIssued[matches(.,'^\d{4,4}$')]"/>
+                                <xsl:with-param name="issue" select="$issue"/>
+                                <xsl:with-param name="issue-date" select="$series/mods:originInfo/mods:dateIssued[matches(.,'^\d{1,2}\.\d{1,2}\.\d{4,4}$')]"/>
+                            </xsl:call-template>
                             <xsl:call-template name="numberOfRecordsTemplate">
                                 <xsl:with-param name="index">series</xsl:with-param>
                                 <xsl:with-param name="value" select="$series//mods:titleInfo"/>
                             </xsl:call-template>
                         </li>
                     </xsl:if>
-                    <li class="eSegment"> <xsl:value-of select="_:dict('place')"/>/<xsl:value-of select="_:dict('publisher')"/>/<xsl:value-of select="_:dict('year')"/></li>
-                    <li xml:space="preserve"><xsl:value-of select="($pubPlace, _:dict('no-place-abbr'))[1]"/>: <xsl:value-of select="($publisher, _:dict('no-pub-abbr'))[1]"/>, <xsl:value-of select="($year, _:dict('no-year-abbr'))[1]"/></li>
+                    <xsl:if test="$is-book">
+                        <li class="eSegment"> <xsl:value-of select="_:dict('place')"/>/<xsl:value-of select="_:dict('publisher')"/>/<xsl:value-of select="_:dict('year')"/></li>
+                        <li xml:space="preserve"><xsl:value-of select="($pubPlace, _:dict('no-place-abbr'))[1]"/>: <xsl:value-of select="($publisher, _:dict('no-pub-abbr'))[1]"/>, <xsl:value-of select="($year, _:dict('no-year-abbr'))[1]"/></li>
+                    </xsl:if>
                     <!--<li class="eSegment"> Co-Autoren </li>
                 <li> Paul, G. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Naumann, 
                     N. (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Ōbayashi, T (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Blümmel, 
@@ -369,6 +388,36 @@
         </div>
     </xsl:template>
     
+    <xsl:template name="volume">
+        <xsl:param name="volume"/>
+        <xsl:if test="$volume != ''">
+            <xsl:text>,&#160;</xsl:text>
+            <xsl:value-of select="_:dict('vol-abbr')"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="$volume"/>
+        </xsl:if>
+    </xsl:template>
+    
+    
+    <xsl:template name="issue">
+        <xsl:param name="issue"/>
+        <xsl:param name="year"/>
+        <xsl:param name="issue-date"/>        
+        <xsl:if test="$year != ''">
+            <xsl:text xml:space="preserve"> </xsl:text>
+            <xsl:value-of select="$year"/>
+        </xsl:if>
+        <xsl:if test="$issue != ''">
+            <xsl:text xml:space="preserve">, </xsl:text>
+            <xsl:value-of select="$issue"/>
+            <xsl:if test="$issue-date != ''">
+                <xsl:value-of select="_:dict('from')"/>
+                <xsl:text xml:space="preserve"> </xsl:text>
+                <xsl:value-of select="$issue-date"/>
+            </xsl:if>
+        </xsl:if>
+    </xsl:template>
+    
     <xsl:template name="format-record-heading">
         
     </xsl:template>
@@ -376,7 +425,7 @@
     <xsl:template name="numberOfRecordsTemplate">
         <xsl:param name="index" required="yes"/>
         <xsl:param name="value" required="no" select="."/>
-        <xsl:variable name="query" select="concat($index,'=&quot;',$value,'&quot;')"/>
+        <xsl:variable name="query" select="concat($index,'=&quot;',normalize-space($value),'&quot;')"/>
         <xsl:text>&#160;(</xsl:text>
         <a data-query="{$query}" href="{$sru-url}?operation=searchRetrieve&amp;version=1.2&amp;query={$query}" class="zahl" title="Suchergebnisse">numberOfRecords</a>
         <xsl:text>)</xsl:text>
@@ -389,5 +438,15 @@
             <xsl:text>, </xsl:text>
             <xsl:value-of select="_:dict(mods:role/mods:roleTerm)"/>
         </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template name="title" xml:space="default">
+        <xsl:param name="title"/>
+        <xsl:param name="subtitle"/>
+        <xsl:value-of select="string-join($title, ' ')"/>
+        <xsl:if test="$subtitle != ''">
+            <xsl:text xml:space="preserve">. </xsl:text><xsl:value-of select="string-join($subtitle,' ')"/><xsl:text>.</xsl:text>
+        </xsl:if>
+        
     </xsl:template>
 </xsl:stylesheet>
