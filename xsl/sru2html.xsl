@@ -21,21 +21,16 @@
     
     <xsl:include href="thesaurus2html.xsl"/>
     <xsl:variable name="sru-url">http://localhost:8984/japbib-web/sru</xsl:variable>
-    <xsl:variable name="dict" as="element()+">
-        <dict xml:lang="de" xmlns="">
-            <entry id="no-year-abbr">o.J.</entry>
-            <entry id="aut">Autor</entry>
-            <entry id="edt">Hrsg.</entry>
-        </dict>
-    </xsl:variable>
+    <xsl:variable name="dict" as="document-node()" select="doc('dict-de.xml')"/>
+    
     <xsl:function name="_:dict">
         <xsl:param name="id"/>
         <xsl:choose>
-            <xsl:when test="exists($dict/entry[@id = $id])">
-                <xsl:value-of select="$dict/entry[@id = $id]"/>
+            <xsl:when test="exists($dict//string[@xml:id = $id])">
+                <xsl:value-of select="$dict//string[@xml:id = $id]"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="$id"/> <xsl:text> ABBREV NOT FOUND IN DICT !!!</xsl:text>
+                <xsl:value-of select="$id"/> 
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
@@ -131,7 +126,7 @@
             <h4>Records</h4>
             <table>
                 <tbody>
-                    <tr><td>Number of Records</td><td><xsl:value-of select="../sru:numberOfRecords"/></td></tr>
+                    <tr><td><xsl:value-of select="_:dict('numberOfRecords')"/></td><td><xsl:value-of select="../sru:numberOfRecords"/></td></tr>
                     <!--<xsl:if test="min(sru:recordNumber) gt 1">
                         <tr><td>Previous Record Position</td><td><a href="?{../sru}"><xsl:value-of select="../sru:nextRecordPosition"/></a></td></tr>
                     </xsl:if>-->

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dict xml:lang="de">
-    <string xml:id="Year">Jahr</string>
     <string xml:id="aut">Autor</string>
     <string xml:id="trl">Übersetzer</string>
+    <string xml:id="trl-abbr">Übers.</string>
+    <string xml:id="edt">Hrsg.</string>
+    <string xml:id="year">Jahr</string>
+    <string xml:id="publisher">Verlag</string>
+    <string xml:id="place">Ort</string>
+    <string xml:id="series">Reihe</string>
+    <string xml:id="vol-abbr">Band</string>
+    <string xml:id="no-year-abbr">o.J.</string>
+    <string xml:id="no-aut-abbr">o.A.</string>
+    <string xml:id="no-value-abbr">o.A.</string>
+    <string xml:id="no-place-abbr">o.O.</string>
+    <string xml:id="no-pub-abbr">o.V.</string>
+    <string xml:id="no-title-abbr">o.T.</string>
+    <!-- Interface -->
+    <string xml:id="numberOfRefords">Number of Records</string>
 </dict>
