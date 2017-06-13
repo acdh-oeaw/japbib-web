@@ -1,43 +1,16 @@
 describe("japbib Website", function(){
-    describe("Find", function(){
+    var test_utils = window.test_utils = window.test_utils || {};
 
-        before(function(){
-            fixture.setBase('tests/fixtures');
-        });
+    describe("Find", function(){
 
         beforeEach(function(){
             fixture.load('findFixture.html');
-            this.xhr = sinon.useFakeXMLHttpRequest(); 
-            var requests = this.requests = [];
-            this.xhr.onCreate = function(req) {
-                requests.push(req);
-            };
+            test_utils.initFakeRequests.apply(this);
             jb_init();
-            return timeout(10) // need a small timeout to settle (initial animations?)
+            return test_utils.timeout(10) // need a small timeout to settle (initial animations?)
             //  .then(function(){                 
             //  });
         });
-
-        it("Should be able to get a fake result", function(){
-            var get = $.get("sru?operation=searchRetrieve&version=1.2&query=id=0002656&x-style='record2html.xsl'"),
-                result = returnOneHTML.apply(this, ['simpleResult.html']);
-            // return timeout(3000)
-            // .then(function(){
-            // });
-            return get
-            .then(function( data, textStatus, jqXHR ) {
-                expect(data).to.equal(result);
-            });
-        });
-
-        function returnOneHTML(fileName){
-            expect(this.requests.length).to.equal(1);
-            var resultHandle = fixture.load(fileName, true)[0],
-                result = resultHandle.outerHTML;
-            resultHandle.parentNode.removeChild(resultHandle);
-            this.requests[0].respond(200, {"Content-Type": "text/html"}, result);
-            return result;
-        }
 
         it("Should get a result on 'Freie Suche'", function(){
 
@@ -48,13 +21,13 @@ describe("japbib Website", function(){
             input.val('Test');
             expect(input.val()).to.equal('Test');
             input.trigger(jQuery.Event('keypress', {which: 13}));
-            returnOneHTML.apply(this, ['fullResult.html']);
-            return timeout(10)
+            test_utils.returnOneHTML.apply(this, ['fullResult.html']);
+            return test_utils.timeout(10)
             .then(function(){
             expect($('.content .showResults')).to.be.visible;
             // chai-jquery .to.exist is broken because there seem to be two different jQueries here.
             expect($('#showList .showOptions ~ ol').length).to.be.above(0, 'There should be some results');
-            // return timeout(1000)
+            // return test_utils.test_utils.timeout(1000)
             // .then(function(){
             // });
         });
@@ -62,14 +35,8 @@ describe("japbib Website", function(){
 
         afterEach(function(){
             fixture.cleanup();
-            this.xhr.restore();
+            test_utils.restoreRequests.apply(this);
         });
     });
     const expect = chai.expect;
-    
-    function timeout(ms) {
-        return new Promise(function(resolve, reject){
-            setTimeout(function(){resolve();}, ms);
-        });
-    }
 })
