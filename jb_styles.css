@@ -479,9 +479,9 @@ a.zahl::before {
 #hint_result .schlagworte li.li1  {  
   margin-left: -1.5em; 
   }
-#hint_result .#schlagworte li   {  
+#hint_result .schlagworte li   {  
   margin-right: 0; 
-  }
+}
 .schlagworte .li1 > span { 
   margin-bottom: .5em; 
 	font-weight: bold;  
@@ -599,3 +599,5 @@ a.zahl::before {
     width: 3em;
     font-style: italic;
 }
+
+ 
