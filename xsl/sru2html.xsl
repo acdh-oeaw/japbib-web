@@ -135,7 +135,9 @@
                 <input name="operation" type="hidden" value="searchRetrieve"/>
                 <button type="submit">Search</button>
             </form>
-            <div class="meta">
+            <div class="meta">                
+                <h4>XSLT Processor</h4>
+                <p><xsl:value-of select="concat(system-property('xsl:product-name'), ': ', system-property('xsl:product-version'))"/></p>
                 <xsl:if test="$xcql != ''">
                     <h4>XCQL</h4>
                     <pre><xsl:copy-of select="$xcql"/></pre>
