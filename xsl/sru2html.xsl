@@ -18,6 +18,8 @@
     <xsl:param name="base-uri-public" select="''" as="xs:string"/>
     <xsl:param name="base-uri" select="''" as="xs:string"/>
     <xsl:param name="version" select="''" as="xs:string"/>
+    <xsl:param name="x-style" select="''" as="xs:string"/>
+    <xsl:param name="operation" select="''" as="xs:string"/>
     
     <xsl:include href="thesaurus2html.xsl"/>
     <xsl:variable name="sru-url">http://localhost:8984/japbib-web/sru</xsl:variable>
@@ -87,13 +89,42 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
+    
+    <xsl:function name="_:urlParameters" as="xs:string">
+        <xsl:value-of select="_:urlParameters($startRecord)"/>
+    </xsl:function>
+    <xsl:function name="_:urlParameters" as="xs:string">
+        <xsl:param name="startRecord" as="xs:integer"/>
+        <xsl:value-of select="concat(
+            '?version=', $version,
+            '&amp;operation=searchRetrieve',
+            '&amp;query=', $query,
+            '&amp;maximumRecords=', $maximumRecords,
+            '&amp;startRecord=', $startRecord,
+            '&amp;x-style=', $x-style)"/>
+    </xsl:function>
+    
     <xsl:template match="/">
         <html>
             <head>
                 <title>SRU Endpoint</title>
                 <style type="text/css">
                     .css-switch ~ * {display: none;}
-                    .css-switch:checked ~ *{display: initial;}
+                    .css-switch:checked ~ div,
+                    .css-switch:checked ~ pre,
+                    .css-switch:checked ~ p,
+                    .css-switch:checked ~ ul,
+                    .css-switch:checked ~ ol,
+                    .css-switch ~ div.show-instead,
+                    .css-switch ~ pre.show-instead,
+                    .css-switch ~ p.show-instead
+                    {display: block;}
+                    .css-switch:checked ~ span,                    
+                    .css-switch:checked ~ label,
+                    .css-switch ~ span.show-instead,
+                    .css-switch ~ label.show-instead
+                    {display: inline;}
+                    .css-switch:checked ~ .show-instead {display: none;}
                 </style>
             </head>
             <body>
@@ -135,15 +166,9 @@
                 <xsl:if test="$query != ''">
                     <h4>URI</h4>
                     <p>Public:
-                    <pre><xsl:value-of select="concat($base-uri-public, '?version=', $version,
-                                                                    '&amp;query=', $query,
-                                                                    '&amp;maximumRecords=', $maximumRecords,
-                                                                    '&amp;startRecord=', $startRecord)"/></pre>
+                    <pre><xsl:value-of select="concat($base-uri-public, _:urlParameters())"/></pre>
                     Private:
-                    <pre><xsl:value-of select="concat($base-uri, '?version=', $version,
-                                                                    '&amp;query=', $query,
-                                                                    '&amp;maximumRecords=', $maximumRecords,
-                                                                    '&amp;startRecord=', $startRecord)"/></pre>
+                    <pre><xsl:value-of select="concat($base-uri, _:urlParameters())"/></pre>
                     </p>
                 </xsl:if>
                 <xsl:apply-templates select="sru:extraResponseData"/>
@@ -163,10 +188,12 @@
     </xsl:template>
     
     <xsl:template match="sru:extraResponseData/subjects">
-        <h4><label for="subjects-switch">Subjects</label></h4>
+        <h4>Subjects</h4>
         <div>
-            <input type="checkbox" class="css-switch" id="subjects-switch" name="ui-subjects-switch" style="display:none;" checked="checked"/>
+            <input type="checkbox" class="css-switch" id="subjects-switch" name="ui-subjects-switch" style="display:none;"/>
+            <label for="subjects-switch">Hide...</label>
             <xsl:apply-templates select="taxonomy"/>
+            <label for="subjects-switch" class="show-instead">Show list...</label>
         </div>
     </xsl:template>
     
@@ -184,7 +211,7 @@
                         <tr><td>Previous Record Position</td><td><a href="?{../sru}"><xsl:value-of select="../sru:nextRecordPosition"/></a></td></tr>
                     </xsl:if>-->
                     <xsl:if test="../sru:nextRecordPosition != ''">
-                        <tr><td>Next Record Position</td><td><a href="?{../sru}"><xsl:value-of select="../sru:nextRecordPosition"/></a></td></tr>
+                        <tr><td>Next Record Position</td><td><a href="{_:urlParameters(../sru:nextRecordPosition)}"><xsl:value-of select="../sru:nextRecordPosition"/></a></td></tr>
                     </xsl:if>
                 </tbody>
             </table>
@@ -383,8 +410,18 @@
                     </xsl:if>
                 </ul>
             </div>
-            <pre class="record-mods" style="display:none;"><xsl:value-of select="$mods-serialized"/></pre>
-            <pre class="record-lidos" style="display:none;"><xsl:value-of select="$lidos-serialized"/></pre>
+            <div>
+                <input type="checkbox" id="show-mods" class="css-switch" style="display:none;"/>
+                <label for="show-mods">Hide...</label>
+                <pre class="record-mods"><xsl:value-of select="$mods-serialized"/></pre>
+                <label for="show-mods" class='show-instead'>Show MODS...</label>
+            </div>
+            <div>
+                <input type="checkbox" id="show-lidos" class="css-switch" style="display:none;"/>
+                <label for="show-lidos">Hide...</label>
+                <pre class="record-lidos"><xsl:value-of select="$lidos-serialized"/></pre>
+                <label for="show-lidos" class='show-instead'>Show LIDOS...</label>
+            </div>
         </div>
     </xsl:template>
     
