@@ -85,14 +85,14 @@ function toggleResults(href) {
     }
     $('.content > .showResults').replaceWith(frameWork);
     $('.showResults').show('slow');
-  // Erste Erklaerung in ein Fragezeichen verpacken:
+    // Erste Erklaerung in ein Fragezeichen verpacken:
     // todo (BS 10.6.): , if Resultate > 0, addClass(''erklärung''), else removeClass  
     $('#erklärung').toggleClass('erklärung'); 
   });
     
   }
 var hideEntry= $('.showEntry').hide();
-var toggleEntry= $('#showList a').click(
+var toggleEntry= $(document).on('click', '#showList a',
   function() {  
     $('.showEntry').toggle('slow');       
     }
@@ -147,7 +147,7 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 });
 
 // Handler für Klick auf (+) in Resultatliste
-$( '.showResults' ).on('click', '.sup', function (e) {
+$(document).on('click', '.showResults .sup', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
     $ ( this ).nextAll( 'div' ).toggle('fast');
@@ -167,7 +167,7 @@ $( '.showResults' ).on('click', '.sup', function (e) {
 }); 
 
 // Handler für Klick auf "Resultate"
-$( '.showResults' ).on('click', '.zahl', function (e) {
+$(document).on('click', '.showResults .zahl', function (e) {
     e.preventDefault();
     var caller = $ ( this ); 
     var query = $ ( this ).attr("data-query");
