@@ -604,3 +604,22 @@ a.zahl::before {
 .record-mods, .record-lidos {
     overflow-x: scroll;
 }
+
+/* Quick Fix: Checkbox based show/hide */
+
+.css-switch ~ * {display: none;}
+.css-switch:checked ~ div,
+.css-switch:checked ~ pre,
+.css-switch:checked ~ p,
+.css-switch:checked ~ ul,
+.css-switch:checked ~ ol,
+.css-switch ~ div.show-instead,
+.css-switch ~ pre.show-instead,
+.css-switch ~ p.show-instead
+{display: block;}
+.css-switch:checked ~ span,                    
+.css-switch:checked ~ label,
+.css-switch ~ span.show-instead,
+.css-switch ~ label.show-instead
+{display: inline;}
+.css-switch:checked ~ .show-instead {display: none;}
