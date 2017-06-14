@@ -87,7 +87,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
             let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html),
                 $formatted := 
                 xslt:transform($response, $xsl,
-                map:merge(
+                map:merge((
                 map{"xcql" : fn:serialize($xcql),
                     "query": $query,
                     "version": $version,
@@ -98,7 +98,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                     "base-uri": api:get-base-uri()
                 },
                 if ($x-style) then map{"x-style": $x-style} else map{}
-                ))
+                )))
             return 
                 (<rest:response>
                     <http:response>
