@@ -10,7 +10,7 @@
     xmlns:_="urn:sur2html"
     xmlns:saxon="http://saxon.sf.net/"
     exclude-result-prefixes="#all"
-    version="2.0">
+    version="3.0">
     <xsl:param name="xcql" select="''" as="xs:string"/>
     <xsl:param name="startRecord" select="1" as="xs:integer"/>
     <xsl:param name="maximumRecords" select="10" as="xs:integer"/>
@@ -24,59 +24,36 @@
     <xsl:include href="thesaurus2html.xsl"/>
     <xsl:variable name="sru-url">http://localhost:8984/japbib-web/sru</xsl:variable>
     <xsl:variable name="dict" as="document-node()" select="doc('dict-de.xml')"/>
-    
+
     <xsl:function name="_:serialize">
         <xsl:param name="node" as="node()?"/>
-        <xsl:sequence select="_:serialize($node, ())"/>
+        <xsl:param name="omit-nodes" as="node()?"/>
+        <xsl:sequence select="_:serialize($node, $omit-nodes, ())"/>
     </xsl:function>
     
     <xsl:function name="_:serialize">
         <xsl:param name="node" as="node()?"/>
-        <xsl:param name="omit-nodes" as="xs:string*"/>
-        <xsl:choose>
-            <xsl:when test="$node instance of document-node()">
-                <xsl:for-each select="$node/node()">
-                    <xsl:sequence select="_:serialize(., $omit-nodes)"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="local-name($node) = $omit-nodes"></xsl:when>
-            <xsl:when test="$node instance of element()">
-                <xsl:text>&lt;</xsl:text>
-                <xsl:value-of select="local-name($node)"/>
-                <xsl:for-each select="$node/@*">
-                    <xsl:text> </xsl:text>
-                    <xsl:value-of select="_:serialize(., $omit-nodes)"/>
-                </xsl:for-each>
-                <xsl:choose>
-                    <xsl:when test="$node/node()">
-                        <xsl:text>&gt;</xsl:text>
-                        <xsl:for-each select="$node/node()">
-                            <xsl:sequence select="_:serialize(., $omit-nodes)"/>
-                        </xsl:for-each>
-                        <xsl:text>&lt;/</xsl:text>
-                        <xsl:value-of select="local-name($node)"/>
-                        <xsl:text>&gt;</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>/&gt;</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:when test="$node instance of attribute()">
-                <xsl:text xml:space="preserve"> </xsl:text>
-                <xsl:value-of select="local-name($node)"/>
-                <xsl:text>="</xsl:text>
-                <xsl:value-of select="$node"/>
-                <xsl:text>"</xsl:text>
-            </xsl:when>
-            <xsl:when test="$node instance of comment()">
-                <xsl:value-of select="concat('&lt;!--',$node,'--&gt;')"/>   
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$node"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:param name="omit-nodes" as="node()?"/>
+        <xsl:param name="params" as="item()?"/>
+        <xsl:variable name="preprocessedXML">
+            <xsl:apply-templates mode="filter" select="$node">
+                <xsl:with-param name="omit-nodes" tunnel="yes" select="$omit-nodes"/>
+            </xsl:apply-templates>
+        </xsl:variable>
+        <xsl:value-of select="serialize($preprocessedXML)"/>
     </xsl:function>
+    
+    <xsl:template mode="filter" match="@*|*|processing-instruction()|comment()">
+        <xsl:param name="omit-nodes" as="node()?" tunnel="yes"/>
+        <xsl:if test="not(. = $omit-nodes)">
+           <xsl:copy>
+              <xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" mode="filter"/>
+           </xsl:copy>
+        </xsl:if>
+<!--        <xsl:if test=". = $omit-nodes">
+            <xsl:message terminate="no"><xsl:value-of select="local-name(.)"/> omitted</xsl:message> 
+        </xsl:if>-->
+    </xsl:template>
     
     <xsl:function name="_:dict">
         <xsl:param name="id"/>
@@ -238,8 +215,8 @@
         <xsl:variable name="series" select="mods:mods//mods:relatedItem[@type = 'series']"/>
         <xsl:variable name="subjects" select="mods:mods//mods:subject[not(@displayLabel)]/*"/>
         <xsl:variable name="keywords" select="mods:mods//mods:subject[@displayLabel = 'Stichworte']/*"/>
-        <xsl:variable name="mods-serialized" select="_:serialize(mods:mods, 'LIDOS-Dokument')"/>
-        <xsl:variable name="lidos-serialized" select="_:serialize(mods:mods//LIDOS-Dokument)"/>
+        <xsl:variable name="mods-serialized" select="_:serialize(mods:mods, mods:mods//LIDOS-Dokument)"/>
+        <xsl:variable name="lidos-serialized" select="serialize(mods:mods//LIDOS-Dokument)"/>
         <xsl:variable name="genre" select="mods:mods/mods:genre"/>
         <xsl:variable name="is-book" select="$genre = 'book'"/>
         <span class="recordHead">
