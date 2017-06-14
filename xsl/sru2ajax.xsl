@@ -39,7 +39,7 @@
     <!-- Results -->
     
     <xsl:template match="sru:records">
-        <ol data-numberOfRecords="{/sru:searchRetrieveResponse/sru:numberOfRecords}" data-nextRecordPosition="{sru:searchRetrieveResponse/sru:nextRecordPosition}"><xsl:apply-templates select="*"/></ol>
+        <ol data-numberOfRecords="{/sru:searchRetrieveResponse/sru:numberOfRecords}" data-nextRecordPosition="{sru:searchRetrieveResponse/sru:nextRecordPosition}" class="results"><xsl:apply-templates select="*"/></ol>
     </xsl:template>
     
     <xsl:template match="sru:record">
