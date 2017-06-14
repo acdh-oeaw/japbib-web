@@ -60,6 +60,7 @@ var toggleAnd = $('.andOr').click(
   );
   
 var hideResults= $('.showResults').hide();
+var resultsFramework;
 /*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
@@ -69,15 +70,20 @@ function toggleResults(href) {
     //neu kreiertes div muss bei neuer Frage wieder gelöscht werden
     //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
-  $('.showResults ol').remove();
-  var frameWork = $('.content > .showResults').clone();
-  $('.content > .showResults').load(href, function(){
+  resultsFramework = resultsFramework || $('.content > .showResults').clone();
+  $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
     var ajaxParts = $('.content > .showResults .ajax-result'),
         searchResult = ajaxParts.find('.search-result > ol'),
-        categoryFilter = ajaxParts.find('.categoryFilter > ol');
-    $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
-    frameWork.find('#showList').append(searchResult);
-    ajaxParts.replaceWith(frameWork);
+        categoryFilter = ajaxParts.find('.categoryFilter > ol'),
+        frameWork = resultsFramework.clone();
+    if (statusText === 'success') {      
+        $('.showResults ol').remove();
+        $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+        frameWork.find('#showList > ol').replaceWith(searchResult);
+    } else {
+        frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
+    }
+    $('.content > .showResults').replaceWith(frameWork);
     $('.showResults').show('slow');
   // Erste Erklaerung in ein Fragezeichen verpacken:
     // todo (BS 10.6.): , if Resultate > 0, addClass(''erklärung''), else removeClass  

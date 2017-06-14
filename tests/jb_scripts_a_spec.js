@@ -11,6 +11,16 @@ describe("japbib Website", function(){
     }
     test_utils.returnOneHTML = returnOneHTML;
 
+    function returnOneError(code){
+        expect(this.requests.length).to.equal(1);
+        expect(code).to.be.a("number");
+        var result = 
+        "<html><head><title>Error "+code+"</title></head><body>"+code+"</body></html>"
+        this.requests[0].respond(code, {"Content-Type": "text/html"}, result);
+        return result;
+    }
+    test_utils.returnOneError = returnOneError;
+
     function initFakeRequests() {        
         this.xhr = sinon.useFakeXMLHttpRequest(); 
         var requests = this.requests = [];

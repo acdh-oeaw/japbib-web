@@ -7,12 +7,9 @@ describe("japbib Website", function(){
             fixture.load('findFixture.html');
             test_utils.initFakeRequests.apply(this);
             jb_init();
-            return test_utils.timeout(10) // need a small timeout to settle (initial animations?)
-            //  .then(function(){                 
-            //  });
         });
 
-        it("Should get a result on 'Freie Suche'", function(){
+        it("Should show a result on 'Freie Suche'", function(){
 
             var input = $('#searchInput1');
             expect(input).to.be.visible;
@@ -22,15 +19,23 @@ describe("japbib Website", function(){
             expect(input.val()).to.equal('Test');
             input.trigger(jQuery.Event('keypress', {which: 13}));
             test_utils.returnOneHTML.apply(this, ['fullResult.html']);
-            return test_utils.timeout(10)
-            .then(function(){
             expect($('.content .showResults')).to.be.visible;
             // chai-jquery .to.exist is broken because there seem to be two different jQueries here.
-            expect($('#showList .showOptions ~ ol').length).to.be.above(0, 'There should be some results');
-            // return test_utils.test_utils.timeout(1000)
-            // .then(function(){
-            // });
+            expect($('#showList .showOptions ~ ol').length).to.be.equal(1, 'There should be one result list');
         });
+
+        it("Should show the result template if there is no actual sru endpoint", function(){
+            var input = $('#searchInput1');
+            expect(input).to.be.visible;
+            expect(input.val()).to.equal('');
+            expect($('.content .showResults')).to.be.not.visible;
+            input.val('Test');
+            expect(input.val()).to.equal('Test');
+            input.trigger(jQuery.Event('keypress', {which: 13}));
+            test_utils.returnOneError.apply(this, [404]);
+            expect($('.content .showResults')).to.be.visible;
+            // chai-jquery .to.exist is broken because there seem to be two different jQueries here.
+            expect($('#showList .showOptions ~ ol').length).to.be.equal(1, 'There should be one result list');
         });
 
         afterEach(function(){
