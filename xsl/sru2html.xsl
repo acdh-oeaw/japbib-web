@@ -12,32 +12,12 @@
     exclude-result-prefixes="#all"
     version="3.0">
     <xsl:param name="xcql" select="''" as="xs:string"/>
-    <xsl:param name="startRecord" select="1" as="xs:integer"/>
-    <xsl:param name="maximumRecords" select="10" as="xs:integer"/>
-    <xsl:param name="query" select="''" as="xs:string"/>
-    <xsl:param name="base-uri-public" select="''" as="xs:string"/>
-    <xsl:param name="base-uri" select="''" as="xs:string"/>
-    <xsl:param name="version" select="''" as="xs:string"/>
-    <xsl:param name="x-style" select="''" as="xs:string"/>
-    <xsl:param name="operation" select="''" as="xs:string"/>
     
     <xsl:include href="thesaurus2html.xsl"/>
     <xsl:include href="lib/serialization.xsl"/>
+    <xsl:include href="lib/localization.xsl"/>
+    <xsl:include href="lib/buildurls.xsl"/>
     <xsl:variable name="sru-url">http://localhost:8984/japbib-web/sru</xsl:variable>
-    
-    <xsl:function name="_:urlParameters" as="xs:string">
-        <xsl:value-of select="_:urlParameters($startRecord)"/>
-    </xsl:function>
-    <xsl:function name="_:urlParameters" as="xs:string">
-        <xsl:param name="startRecord" as="xs:integer"/>
-        <xsl:value-of select="concat(
-            '?version=', $version,
-            '&amp;operation=searchRetrieve',
-            '&amp;query=', $query,
-            '&amp;maximumRecords=', $maximumRecords,
-            '&amp;startRecord=', $startRecord,
-            '&amp;x-style=', $x-style)"/>
-    </xsl:function>
     
     <xsl:template match="/">
         <html>
