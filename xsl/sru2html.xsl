@@ -11,6 +11,7 @@
     xmlns:saxon="http://saxon.sf.net/"
     exclude-result-prefixes="#all"
     version="3.0">
+    <xsl:output method="xhtml" indent="yes"/>
     <xsl:param name="xcql" select="''" as="xs:string"/>
     
     <xsl:include href="thesaurus2html.xsl"/>
@@ -328,16 +329,16 @@
                 </ul>
             </div>
             <div>
-                <input type="checkbox" id="show-mods" class="css-switch" style="display:none;"/>
-                <label for="show-mods">Hide...</label>
+                <input type="checkbox" id="show-mods-{mods:mods/mods:recordInfo/mods:recordIdentifier}" class="css-switch" style="display:none;"/>
+                <label for="show-mods-{mods:mods/mods:recordInfo/mods:recordIdentifier}">Hide...</label>
                 <pre class="record-mods"><xsl:value-of select="$mods-serialized"/></pre>
-                <label for="show-mods" class='show-instead'>Show MODS...</label>
+                <label for="show-mods-{mods:mods/mods:recordInfo/mods:recordIdentifier}" class='show-instead'>Show MODS...</label>
             </div>
             <div>
-                <input type="checkbox" id="show-lidos" class="css-switch" style="display:none;"/>
-                <label for="show-lidos">Hide...</label>
+                <input type="checkbox" id="show-lidos-{mods:mods/mods:recordInfo/mods:recordIdentifier}" class="css-switch" style="display:none;"/>
+                <label for="show-lidos-{mods:mods/mods:recordInfo/mods:recordIdentifier}">Hide...</label>
                 <pre class="record-lidos"><xsl:value-of select="$lidos-serialized"/></pre>
-                <label for="show-lidos" class='show-instead'>Show LIDOS...</label>
+                <label for="show-lidos-{mods:mods/mods:recordInfo/mods:recordIdentifier}" class='show-instead'>Show LIDOS...</label>
             </div>
         </div>
     </xsl:template>
