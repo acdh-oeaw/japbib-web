@@ -588,7 +588,7 @@ PLUS-MINUS
  text-align: center;
  cursor: pointer;
  } 
-.plusMinus.hover::before { 
+.plusMinus:hover::before { 
  background: #eef; 
  border-color: #ccd;
  }
