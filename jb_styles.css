@@ -445,7 +445,6 @@ a.zahl::before {
 .schlagworte li::first-letter { 
   text-transform: uppercase;
   }
-.sup,
 .schlagworte span { 
   padding-right: .5em; 
   position: relative;
@@ -489,38 +488,7 @@ a.zahl::before {
 	text-transform: uppercase;  
 	font-family: "Trebuchet MS", Arial, sans-serif;
 	} 
-.sup, 
-.sup2 { 
-  position:relative; 
-  padding-right: .5em; 
-	z-index: 2;
-	cursor: pointer; 
-  }
-.results .sup {	
-  margin-left: 1.7em;
-}
-.sup:hover { 
-	background: rgba(0, 0, 255, 0.07);
-	border-radius: .4em; 
-	}
-.sup::before,
-.sup2::before {
-  content: '+';
-  display: block;
-  position: absolute;
-  left: -1.5em;
-  top: 0;
-  width: 1em; 
-  height: 1em; 
-    line-height: 1.2em;
-  text-align: center;
-  border-radius: 1em;
-  border: 1px solid #ccc;
-  font-family: courier, arial;
-  }
-.close::before {
-  content: '–';
-  }  
+	  
 .showOptions {
   text-align: right; 
     text-align: right;
@@ -629,6 +597,9 @@ PLUS-MINUS
  position: absolute;
  left: -1.5em; 
  top: .2em;  
+ }
+.showResults .plusMinus::before {
+ margin-right: .2em;
  }
   
 .close::before {
