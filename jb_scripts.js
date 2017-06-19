@@ -140,14 +140,14 @@ $('.showResults').on('change', '.showOptions form', function(e){
   
 $ ( '#facet-subjects').on('click', 'a', function(e){
     e.preventDefault();
-    var subject = $(e.target).parent().children('.sup').text();
+    var subject = $(e.target).parent().children('.plusMinus').text();
     var currentQuery = $('#searchInput1').val();
     var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " AND " + "subject=" + subject;
     executeQuery(newQuery);
 });
 
 // Handler für Klick auf (+) in Resultatliste
-$(document).on('click', '.showResults .sup', function (e) {
+$(document).on('click', '.showResults .plusMinus', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
     $ ( this ).nextAll( 'div' ).toggle('fast');
@@ -182,17 +182,17 @@ $('.suchOptionen a').click(function(e){
     executeQuery(index+"="+term);
 });
  
-var sup= $ ( 'div.schlagworte .sup' );
+var plusMinus= $ ( 'div.schlagworte .plusMinus' );
 var showAll =  $ ( '#aO' ).click( 
   function ( ) { 
     $ ( '.schlagworte li li ol' ).show ();
-    $ ( sup ).addClass( 'close' );     
+    $ ( plusMinus ).addClass( 'close' );     
     }
   );  
 var closeAll =  $ ( '#aC' ).click( 
   function ( ) { 
     $ ( '.schlagworte li li ol' ).hide ();
-    $ ( '.schlagworte .sup' ).removeClass( 'close' );     
+    $ ( '.schlagworte .plusMinus' ).removeClass( 'close' );     
     }
   ); 
  
