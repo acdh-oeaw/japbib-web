@@ -22,50 +22,8 @@
     <xsl:param name="operation" select="''" as="xs:string"/>
     
     <xsl:include href="thesaurus2html.xsl"/>
+    <xsl:include href="lib/serialization.xsl"/>
     <xsl:variable name="sru-url">http://localhost:8984/japbib-web/sru</xsl:variable>
-    <xsl:variable name="dict" as="document-node()" select="doc('dict-de.xml')"/>
-
-    <xsl:function name="_:serialize">
-        <xsl:param name="node" as="node()?"/>
-        <xsl:param name="omit-nodes" as="node()?"/>
-        <xsl:sequence select="_:serialize($node, $omit-nodes, ())"/>
-    </xsl:function>
-    
-    <xsl:function name="_:serialize">
-        <xsl:param name="node" as="node()?"/>
-        <xsl:param name="omit-nodes" as="node()?"/>
-        <xsl:param name="params" as="item()?"/>
-        <xsl:variable name="preprocessedXML">
-            <xsl:apply-templates mode="filter" select="$node">
-                <xsl:with-param name="omit-nodes" tunnel="yes" select="$omit-nodes"/>
-            </xsl:apply-templates>
-        </xsl:variable>
-        <xsl:value-of select="serialize($preprocessedXML)"/>
-    </xsl:function>
-    
-    <xsl:template mode="filter" match="@*|*|processing-instruction()|comment()">
-        <xsl:param name="omit-nodes" as="node()?" tunnel="yes"/>
-        <xsl:if test="not(. = $omit-nodes)">
-           <xsl:copy>
-              <xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" mode="filter"/>
-           </xsl:copy>
-        </xsl:if>
-<!--        <xsl:if test=". = $omit-nodes">
-            <xsl:message terminate="no"><xsl:value-of select="local-name(.)"/> omitted</xsl:message> 
-        </xsl:if>-->
-    </xsl:template>
-    
-    <xsl:function name="_:dict">
-        <xsl:param name="id"/>
-        <xsl:choose>
-            <xsl:when test="exists($dict//string[@xml:id = $id])">
-                <xsl:value-of select="$dict//string[@xml:id = $id]"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="$id"/> 
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
     
     <xsl:function name="_:urlParameters" as="xs:string">
         <xsl:value-of select="_:urlParameters($startRecord)"/>
