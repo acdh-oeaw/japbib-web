@@ -85,9 +85,9 @@ function toggleResults(href) {
     }
     $('.content > .showResults').replaceWith(frameWork);
     $('.showResults').show('slow');
-    // Erste Erklaerung in ein Fragezeichen verpacken:
-    // todo (BS 10.6.): , if Resultate > 0, addClass(''erklärung''), else removeClass  
-    $('#erklärung').toggleClass('erklärung'); 
+/* Erste Erklaerung in ein Fragezeichen verpacken:
+    // eher unn�tig (BS. 20. 6.)
+    $('#erklärung').toggleClass('erklärung'); */
   });
     
   }
@@ -177,12 +177,19 @@ $(document).on('click', '.showResults .zahl', function (e) {
 // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel
 $('.suchOptionen a').click(function(e){
     e.preventDefault();
-    var index = $(e.target).closest("li").attr("data-index");
+    var index = $(e.target).closest("td").attr("data-index");
     var term = $(e.target).text() + "*";
     executeQuery(index+"="+term);
 });
  
+// Schlagwortbaum oeffnen und schliessen
 var plusMinus= $ ( 'div.schlagworte .plusMinus' );
+var ols= $ ( '.schlagworte li li ol' );
+
+  // Anfangszustand; sp�ter �ndern
+$ ( plusMinus ).addClass( 'close' );   
+$ ( ols ).show(); 
+
 var showAll =  $ ( '#aO' ).click( 
   function ( ) { 
     $ ( '.schlagworte li li ol' ).show ();
