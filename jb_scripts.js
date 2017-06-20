@@ -192,15 +192,20 @@ $ ( ols ).show();
 
 var showAll =  $ ( '#aO' ).click( 
   function ( ) { 
-    $ ( '.schlagworte li li ol' ).show ();
+    $ ( '.schlagworte li li ol' ).show ( 'slow' );
     $ ( plusMinus ).addClass( 'close' );     
     }
   );  
 var closeAll =  $ ( '#aC' ).click( 
   function ( ) { 
-    $ ( '.schlagworte li li ol' ).hide ();
+    $ ( '.schlagworte li li ol' ).hide ( 'slow' );
     $ ( '.schlagworte .plusMinus' ).removeClass( 'close' );     
     }
   ); 
- 
+var toggleNext = $ (plusMinus ).click (
+  function () {
+    $ (this).next( 'ol' ).toggle( 'slow' );
+    $ (this).toggleClass( 'close' );
+    }
+  );
 }

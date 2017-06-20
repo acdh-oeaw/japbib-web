@@ -595,6 +595,7 @@ PLUS-MINUS
 (statt .sup)
 **************/
  
+.sup::before,
 .plusMinus::before {  
  content: '+'; 
  display: inline-block;
@@ -609,16 +610,19 @@ PLUS-MINUS
  text-align: center;
  cursor: pointer;
  } 
+.sup:hover::before,
 .plusMinus:hover::before { 
  background: #eef; 
  border-color: #ccd;
  }
  
+.schlagworte .sup::before,
 .schlagworte .plusMinus::before { 
  position: absolute;
  left: -1.5em; 
  top: .2em;  
  }
+.showResults .sup::before, 
 .showResults .plusMinus::before {
  margin-right: .2em;
  }
