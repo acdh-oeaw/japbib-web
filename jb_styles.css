@@ -360,9 +360,30 @@ td.control:hover {
     padding: .5em 1em;
     background: rgba(255, 255, 255, 0.75);
     } 
-#searchfield { 
-}
-  
+
+/**** Suchfelder ******/
+
+#searchform1 input {
+ box-sizing: border-box;
+ width: 50%; 
+ padding: .5em;
+ font-size: 1rem;
+ -webkit-transition: width 0.4s ease-in-out;
+ transition: width 0.4s ease-in-out;
+ }
+#searchform1 input:focus {    
+ width: 100%;
+ }
+.suchOptionen {
+  margin: 0 0 2em;
+ }
+.suchOptionen th {
+ text-align: right;
+ padding: 0 .5em;
+ }  
+ 
+/******************/
+
 #show_entry th {
   text-align: right;
 }

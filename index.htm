@@ -145,6 +145,7 @@ und der Österreichischen Akademie der Wissenschaften erstellt. Die über 30.000
   abgebildet ist. </p>
   
   <h3>Thesaurus</h3>
+  
   <p>Der <a href="#schlagworte">Thesaurus</a> eröffnet eine alternative Form der Suche nach Themen. 
   Auf dieser Seite können ein oder mehrere Schlagworte selektiert werden. 
   Die entsprechende Suchabfrage wird wieder im Bereich <i><a href="#find">Suchen und Finden</a></i> dargestellt. </p>
@@ -311,17 +312,26 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
 <div class="content">
 <h2> Suche </h2>
 <p> <span>Auf dieser Seite können Sie nach selbstgewählten Suchbegriffen in allen Datensätzen suchen oder sich Listen mit Autoren oder Werktiteln anzeigen lassen. Die Ergebnislisten lassen sich mit Hilfe von Suchfiltern weiter verfeinern. </span></p>
-<ul class="suchOptionen">
-  <li>Freie Suche: 
-  <form action="sru"  id="searchform1">
-  	<input name="query" title="JB80 durchsuchen "  id="searchInput1" size="40" value=""/>
+
+<table class="suchOptionen">
+<tr>
+<th> Suchbegriff: </th>
+<td>
+<form action="sru"  id="searchform1">
+  	<input name="query" title="JB80 durchsuchen "  id="searchInput1" size="40" value=""  placeholder="eingeben..."/>
   	<input name="version" type="hidden" value="1.2"/>
   	<input name="operation" type="hidden" value="searchRetrieve"/>
   	<input name="maximumRecords" type="hidden" value="10"/>
   	<input name="x-style" type="hidden" value="sru2ajax.xsl"/>
-  	<a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a>
-  </form></li>  
-  <li data-index="author">Autoren:    
+  	<!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a> -->
+  </form>
+</td>
+</tr>
+<tr>
+<th>
+Autoren:
+</th>
+<td data-index="author">
   	<a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=A*+sortBy+author">A</a>, <a href="#">B</a>, <a href="#">C</a>, <a href="#">D</a>, 
   <a href="#">E</a>, 
   <a href="#">F</a>, <a href="#">G</a>, <a href="#">H</a>, <a href="#">I</a>, 
@@ -333,18 +343,25 @@ M: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
   <a href="#">U</a>, <a href="#">V</a>, <a href="#">W</a>, <a href="#">X</a>, 
   <a href="#">Y</a>, 
   	<a href="sru?version=1.2&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=Z*+sortBy+author">Z</a>, <a href="#">Sonstige</a>, <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author">alle</a>  
-  </li>
+  
+</td>
+</tr>
 
-	<li data-index="title">Werktitel: 
-
+<tr>
+<th>
+Werktitel: 
+</th>
+<td data-index="title">
   <a href="#">A</a>, <a href="#">B</a>, <a href="#">C</a>, <a href="#">D</a>, <a href="#">E</a>, 
   <a href="#">F</a>, <a href="#">G</a>, <a href="#">H</a>, <a href="#">I</a>, <a href="#">J</a>, 
   <a href="#">K</a>, <a href="#">L</a>, <a href="#">M</a>, <a href="#">N</a>, <a href="#">O</a>, 
   <a href="#">P</a>, <a href="#">Q</a>, <a href="#">R</a>, <a href="#">S</a>, <a href="#">T</a>, 
   <a href="#">U</a>, <a href="#">V</a>, <a href="#">W</a>, <a href="#">X</a>, <a href="#">Y</a>, 
-  <a href="#">Z</a>, <a href="#">Sonstige</a>, <a href="#">alle</a>  
-  </li>
-  </ul>
+  <a href="#">Z</a>, <a href="#">Sonstige</a>, <a href="#">alle</a>
+</td> 
+</tr>
+
+</table>
 
 <div class="showResults"  >
 <h2 >Resultate</h2> 
