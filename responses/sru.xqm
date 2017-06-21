@@ -29,12 +29,20 @@ declare
     %rest:query-param("maximumTerms", "{$maximumTerms}", 50)
     %rest:query-param("x-sort", "{$x-sort}", "text")
     %rest:query-param("x-style", "{$x-style}")
+    %rest:query-param("x-mode", "{$x-mode}", "refresh")
+    %rest:query-param("x-filter", "{$x-filter}")
     %rest:query-param("x-debug", "{$x-debug}", "false")
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
     %updating
-function api:sru($operation, $query as xs:string?, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $scanClause, $maximumTerms, $responsePosition, $x-sort as xs:string, $x-style, $x-debug) {
+function api:sru($operation as xs:string, $query, 
+                 $version, $maximumRecords as xs:integer,
+                 $startRecord as xs:integer, $scanClause,
+                 $maximumTerms as xs:integer, $responsePosition as xs:integer,
+                 $x-sort as xs:string, $x-style,
+                 $x-mode, $x-filter,
+                 $x-debug as xs:boolean) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context)
     return
@@ -42,7 +50,7 @@ function api:sru($operation, $query as xs:string?, $version, $maximumRecords as 
         if ($version != $api:SRU.SUPPORTEDVERSION) then db:output(diag:diagnostics('unsupported-version', $version)) else
         switch($operation)
             case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug))
-            case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug)
+            case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
             default return db:output(api:explain())
 };
 

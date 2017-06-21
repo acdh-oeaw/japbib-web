@@ -8,29 +8,40 @@ import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../
 
 declare variable $c:dbname := $model:dbname||"__cache";
 
-declare %updating function c:scan($terms as item(), $scanClause as xs:string, $sort as xs:string) {
+declare %updating function c:scan($terms as item(), $scanClause as xs:string?, $sort as xs:string) {
     let $fn := c:scan-filename($scanClause, $sort)
-    return
+    return try {
     if (exists($terms)) then
       if (exists(c:scan($scanClause, $sort)))
       then 
         let $log := l:write-log('cache:scan replacing cached scan in '||$c:dbname||': '||$fn)
         return db:replace($c:dbname, $fn,$terms)
-      else
+      else if (db:exists($c:dbname)) then
         let $log := l:write-log('cache:scan creating cached scan in '||$c:dbname||': '||$fn)
+        return db:add($c:dbname, $terms, $fn)        
+      else
+        let $log := l:write-log('cache:scan creating cached scan and db '||$c:dbname||': '||$fn)
         return db:create($c:dbname, $terms, $fn)
     else ()
+    } catch err:FODC0007 {
+         ()
+    }
 };
 
-declare function c:scan($scanClause as xs:string, $sort as xs:string) {
+declare function c:scan($scanClause as xs:string?, $sort as xs:string) {
     let $log := l:write-log('cache:scan $scanClause := '||$scanClause||' $sort := '||$sort, 'DEBUG'),
         $ret := if (db:exists($c:dbname)) 
-                then db:open($c:dbname, c:scan-filename($scanClause, $sort))
+                then try {
+                   db:open($c:dbname, c:scan-filename($scanClause, $sort))
+                } catch err:FODC0007 {
+                   ()
+                }
                 else (),
         $logRest := l:write-log('cache:scan return '||substring(if (exists($ret)) then serialize($ret) else '()', 1, 240), 'DEBUG')
     return $ret
 };
 
-declare function c:scan-filename($scanClause as xs:string, $sort as xs:string) {
-    $scanClause||"-"||$sort||".xml"
+declare function c:scan-filename($scanClause as xs:string?, $sort as xs:string) {
+    (: could also be import module namespace w = "http://basex.org/modules/web"; w:encode-url() but oXygen does not like url encoded filenames :) 
+    replace($scanClause, '[\s=",]','')||"-"||$sort||".xml"
 };
