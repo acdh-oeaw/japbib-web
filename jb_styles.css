@@ -365,22 +365,63 @@ td.control:hover {
 
 #searchform1 input {
  box-sizing: border-box;
- width: 50%; 
+ width: 100%; 
  padding: .5em;
  font-size: 1rem;
- -webkit-transition: width 0.4s ease-in-out;
- transition: width 0.4s ease-in-out;
  }
-#searchform1 input:focus {    
- width: 100%;
+#searchform1 input:focus { 
+ background: rgba(0, 0, 255, 0.03) 
  }
+#searchform1 input::placeholder,
+#searchform1 input:placeholder-shown {
+ color: #ddd;
+ } 
+ 
 .suchOptionen {
   margin: 0 0 2em;
  }
 .suchOptionen th {
  text-align: right;
  padding: 0 .5em;
+ font-weight: normal;
+ font-style: italic;
  }  
+
+.suchOptionen .top {
+  vertical-align: top;  
+}  
+.beispiele ol, 
+.beispiele li {
+  margin: 0; 
+  padding: 0; 
+  list-style:none;
+  font-size: .9rem;
+ }
+.beispiele ol {
+  margin: .5em 0;
+ } 
+.beispiele li {
+ padding-left: 1.5em; 
+ text-indent: -1.5em;
+ }
+.suchOptionen a {
+ padding: 0 .35em;     
+ border-radius: .4em; 
+ }
+.beispiele a {
+ background: rgba(0, 0, 255, 0.03) 
+ }
+.beispiele a:hover {
+ background: rgba(0, 0, 255, 0.06) 
+ }
+.abc a {
+ display: inline-block;
+ }
+code,
+.code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: .9em;
+  } 
  
 /******************/
 
