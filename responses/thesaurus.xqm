@@ -1,6 +1,12 @@
 xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus";
 
+import module namespace rest = "http://exquery.org/ns/restxq";
+import module namespace xslt = "http://basex.org/modules/xslt";
+import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
+
+declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
+
 declare variable $api:path-to-thesaurus := "../thesaurus.xml";
 declare variable $api:thesaurus2html := "../xsl/thesaurus2html.xsl";
 

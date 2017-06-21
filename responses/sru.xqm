@@ -2,12 +2,15 @@ xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
+import module namespace db = "http://basex.org/modules/db";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "sru/diagnostics.xqm";
 import module namespace searchRetrieve = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve" at "sru/searchRetrieve.xqm";
 import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "sru/scan.xqm";
 
 import module namespace index = "japbib:index" at "../index.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
+
+declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
 
 declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
 declare variable $api:HOSTNAME := "http://jb80.acdh.oeaw.ac.at";
@@ -30,16 +33,17 @@ declare
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
+    %updating
 function api:sru($operation, $query as xs:string?, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $scanClause, $maximumTerms, $responsePosition, $x-sort as xs:string, $x-style, $x-debug) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context)
     return
-        if (not($version)) then diag:diagnostics('param-missing', 'version') else
-        if ($version != $api:SRU.SUPPORTEDVERSION) then diag:diagnostics('unsupported-version', $version) else
+        if (not($version)) then db:output(diag:diagnostics('param-missing', 'version')) else
+        if ($version != $api:SRU.SUPPORTEDVERSION) then db:output(diag:diagnostics('unsupported-version', $version)) else
         switch($operation)
-            case "searchRetrieve" return searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug)
+            case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug))
             case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug)
-            default return api:explain()
+            default return db:output(api:explain())
 };
 
 declare 
@@ -71,6 +75,6 @@ function api:explain() {
                 </zr:configInfo>
             </zr:explain>
         </sru:recordData>
-    </sru:record>
-</sru:explainResponse>
+        </sru:record>
+    </sru:explainResponse>
 };

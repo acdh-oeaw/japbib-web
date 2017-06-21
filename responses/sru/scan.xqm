@@ -1,7 +1,10 @@
-xquery version "3.1";
+xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/scan";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
+import module namespace xquery = "http://basex.org/modules/xquery";
+import module namespace db = "http://basex.org/modules/db";
+import module namespace l = "http://basex.org/modules/admin";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 
@@ -31,11 +34,16 @@ declare
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
+    %updating
 function api:scan($version, $scanClause, $maximumTerms as xs:integer?, $responsePosition as xs:integer?, $x-sort as xs:string?, $x-debug) {
+    let $log := l:write-log('scan:scan', 'DEBUG'),
+        $cached-scan := cache:scan($scanClause, $x-sort),
+        $ret := 
         if (not(exists($scanClause))) then diag:diagnostics("param-missing", "scanClause") else 
         if (not($version)) then diag:diagnostics("param-missing", "version") else
-        if (exists(cache:scan($scanClause, $x-sort))) then cache:scan($scanClause, $x-sort) 
+        if (exists($cached-scan)) then $cached-scan 
         else api:do-scan($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-debug)
+    return (db:output($ret), cache:scan($ret, $scanClause, $x-sort))
 };
 
 (:~

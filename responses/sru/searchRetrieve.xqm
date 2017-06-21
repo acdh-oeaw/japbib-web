@@ -1,8 +1,10 @@
-xquery version "3.1";
+xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
+import module namespace http = "http://expath.org/ns/http-client";
 import module namespace request = "http://exquery.org/ns/request";
+import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 
