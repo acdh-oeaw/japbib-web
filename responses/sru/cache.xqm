@@ -6,13 +6,15 @@ import module namespace db = "http://basex.org/modules/db";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 
+declare namespace sru = "http://www.loc.gov/zing/srw/";
+
 declare variable $c:dbname := $model:dbname||"__cache";
 
-declare %updating function c:scan($terms as item(), $scanClause as xs:string?, $sort as xs:string) {
-    let $fn := c:scan-filename($scanClause, $sort)
+declare %updating function c:scan($terms as element(sru:terms), $scanClauseParsed as element(scanClause), $sort as xs:string) {
+    let $fn := c:scan-filename($scanClauseParsed, $sort)
     return try {
     if (exists($terms)) then
-      if (exists(c:scan($scanClause, $sort)))
+      if (exists(c:scan($scanClauseParsed, $sort)))
       then 
         let $log := l:write-log('cache:scan replacing cached scan in '||$c:dbname||': '||$fn)
         return db:replace($c:dbname, $fn,$terms)
@@ -28,11 +30,11 @@ declare %updating function c:scan($terms as item(), $scanClause as xs:string?, $
     }
 };
 
-declare function c:scan($scanClause as xs:string?, $sort as xs:string) {
-    let $log := l:write-log('cache:scan $scanClause := '||$scanClause||' $sort := '||$sort, 'DEBUG'),
+declare function c:scan($scanClauseParsed as element(scanClause), $sort as xs:string) as element(sru:terms)? {
+    let $log := l:write-log('cache:scan $scanClause := '||$scanClauseParsed/index||' $sort := '||$sort, 'DEBUG'),
         $ret := if (db:exists($c:dbname)) 
                 then try {
-                   db:open($c:dbname, c:scan-filename($scanClause, $sort))
+                   db:open($c:dbname, c:scan-filename($scanClauseParsed, $sort))/*
                 } catch err:FODC0007 {
                    ()
                 }
@@ -41,7 +43,7 @@ declare function c:scan($scanClause as xs:string?, $sort as xs:string) {
     return $ret
 };
 
-declare function c:scan-filename($scanClause as xs:string?, $sort as xs:string) {
+declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort as xs:string) as xs:string {
     (: could also be import module namespace w = "http://basex.org/modules/web"; w:encode-url() but oXygen does not like url encoded filenames :) 
-    replace($scanClause, '[\s=",]','')||"-"||$sort||".xml"
+    $scanClauseParsed/index||"-"||$sort||".xml"
 };
