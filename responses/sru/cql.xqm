@@ -173,7 +173,7 @@ declare function cql:do-group-triples($boolean as element(boolean), $lo as eleme
  : @result: The same flat input sequence, with tagged <index>, <relation> and <term> elements 
 ~:)
 declare function cql:parse-searchClauses($parts as item()*) as item()* { 
-    let $relationOperators :=  "\s*(\w+\.)?(=|<=|>=|<|>|==|<>|any|contains)"||$cql:modifierRegex||"\s*"
+    let $relationOperators :=  "\s*(\w+\.)?(==|=|<=|>=|<|>|<>|any|contains)"||$cql:modifierRegex||"\s*"
     let $parse-searchClause := function($s as xs:string) as element()*{
         let $is := analyze-string($s, $relationOperators)/fn:*
         return 

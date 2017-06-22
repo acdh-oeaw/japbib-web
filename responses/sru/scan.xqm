@@ -141,7 +141,16 @@ declare function api:parseScanClause($scanClause as xs:string, $map as element(m
 declare %private function api:scanResponse($scanClauseParsed as element(scanClause), $terms as element(sru:terms),
                                            $maximumTerms as xs:integer?, $responsePosition as xs:integer,
                                            $x-filter as xs:string?){
-    let $start-term-position := (count($terms/*[.//sru:value eq $scanClauseParsed/term]/preceding-sibling::*) + 1) + (-$responsePosition + 1),
+    let $anchor-term :=
+        switch($scanClauseParsed/relation)
+            case "==" return $terms/*[.//sru:value eq $scanClauseParsed/term]
+            case "=" return $terms/*[starts-with(.//sru:value, $scanClauseParsed/term)]
+            case "contains" return $terms/*[contains(.//sru:value, $scanClauseParsed/term)]
+            case "any" return $terms/*[contains(.//sru:value, $scanClauseParsed/term)]
+            case () return $terms[1]
+            default  return error(xs:QName('diag:unimplementedRelation'), "Don't know how to handle relation"||$scanClauseParsed/relation||" for scan"),
+        $error := if (empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation) else (),
+        $start-term-position := (count($anchor-term/preceding-sibling::*) + 1) + (-$responsePosition + 1),
         $scan-clause := xs:string($scanClauseParsed)
     return
     <sru:scanResponse xmlns:srw="//www.loc.gov/zing/srw/"

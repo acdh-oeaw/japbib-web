@@ -29,7 +29,7 @@ declare
     %rest:query-param("maximumTerms", "{$maximumTerms}", 50)
     %rest:query-param("x-sort", "{$x-sort}", "text")
     %rest:query-param("x-style", "{$x-style}")
-    %rest:query-param("x-mode", "{$x-mode}", "refresh")
+    %rest:query-param("x-mode", "{$x-mode}")
     %rest:query-param("x-filter", "{$x-filter}")
     %rest:query-param("x-debug", "{$x-debug}", "false")
     %rest:GET
@@ -48,10 +48,15 @@ function api:sru($operation as xs:string, $query,
     return
         if (not($version)) then db:output(diag:diagnostics('param-missing', 'version')) else
         if ($version != $api:SRU.SUPPORTEDVERSION) then db:output(diag:diagnostics('unsupported-version', $version)) else
-        switch($operation)
-            case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug))
-            case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
-            default return db:output(api:explain())
+        try {
+            switch($operation)
+                case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug))
+                case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
+                default return db:output(api:explain())
+        } catch diag:* {
+            db:output(diag:diagnostics('general-error', 
+       $err:code||': '||$err:description||' '||$err:value||' in '||$err:module||' at '||$err:line-number||': '||$err:column-number||': '||$err:additional))
+        }
 };
 
 declare 
