@@ -23,13 +23,13 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
   api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, 'false')
 };
 
-declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:string) {
+declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean) {
   if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else 
   let $xcql := cql:parse($query)
   return 
-     if ($x-debug = 'false')
-     then api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style)
-     else $xcql
+     if ($x-debug = true())
+     then $xcql
+     else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style)
 };
 
 declare 
