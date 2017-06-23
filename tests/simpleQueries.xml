@@ -49,6 +49,18 @@
             </searchClause>
         </expected>
     </test>
+    <test title="complex string simple relation">
+        <query>author="Stalk, George &lt;Jr.&gt;"</query>
+        <expected>
+            <searchClause>
+                <index>author</index>
+                <relation>
+                    <value>=</value>
+                </relation>
+                <term>Stalk, George &lt;Jr.&gt;</term>
+            </searchClause>
+        </expected>        
+    </test>
     <test title="simple string complex relation">
         <query>title contains Haus</query>
         <expected>
