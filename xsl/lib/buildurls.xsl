@@ -20,10 +20,15 @@
     <xsl:param name="operation" select="''" as="xs:string"/>
     
     <xsl:function name="_:urlParameters" as="xs:string">
-        <xsl:value-of select="_:urlParameters($startRecord)"/>
+        <xsl:value-of select="_:urlParameters($startRecord, $query)"/>
+    </xsl:function>   
+    <xsl:function name="_:urlParameters" as="xs:string">
+        <xsl:param name="startRecord" as="xs:integer"/>      
+        <xsl:value-of select="_:urlParameters($startRecord, $query)"/>
     </xsl:function>
     <xsl:function name="_:urlParameters" as="xs:string">
         <xsl:param name="startRecord" as="xs:integer"/>
+        <xsl:param name="query" as="xs:string"/>
         <xsl:value-of select="concat(
             '?version=', $version,
             '&amp;operation=searchRetrieve',
@@ -31,6 +36,16 @@
             '&amp;maximumRecords=', $maximumRecords,
             '&amp;startRecord=', $startRecord,
             '&amp;x-style=', $x-style)"/>
+    </xsl:function>
+    
+    <xsl:function name="_:scanUrlParameters">
+        <xsl:param name="scanClause"/>
+        <xsl:param name="maximumTerms"/>
+        <xsl:value-of select="concat(
+            '?version=', $version,
+            '&amp;operation=scan',
+            '&amp;scanClause=', encode-for-uri($scanClause),
+            '&amp;maximumTerms=', $maximumTerms)"/>     
     </xsl:function>
     
 </xsl:stylesheet>

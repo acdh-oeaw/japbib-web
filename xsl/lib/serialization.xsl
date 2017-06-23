@@ -20,13 +20,13 @@
     <xsl:function name="_:serialize">
         <xsl:param name="node" as="node()?"/>
         <xsl:param name="omit-nodes" as="node()?"/>
-        <xsl:param name="params" as="item()?"/>
+        <xsl:param name="params" as="element()?"/>
         <xsl:variable name="preprocessedXML">
             <xsl:apply-templates mode="filter" select="$node">
                 <xsl:with-param name="omit-nodes" tunnel="yes" select="$omit-nodes"/>
             </xsl:apply-templates>
         </xsl:variable>
-        <xsl:value-of select="serialize($preprocessedXML)"/>
+        <xsl:sequence select="serialize($preprocessedXML, $params)"/>
     </xsl:function>
     
     <xsl:template mode="filter" match="@*|*|processing-instruction()|comment()">
