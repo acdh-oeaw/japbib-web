@@ -11,10 +11,12 @@ import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "../../index.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "../sru.xqm";
+import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
 import module namespace thesaurus = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "../thesaurus.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
+declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 
 declare variable $api:path-to-stylesheets := "../../xsl/";
 declare variable $api:sru2html := $api:path-to-stylesheets||"sru2html.xsl";
@@ -82,13 +84,14 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
     let $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql)
+        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql),
+        $response-with-stats := api:addStatScans($response)
     let $response-formatted :=
-        if (some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml'))
+        if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and not($x-style eq 'none'))
         then 
             let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html),
                 $formatted := 
-                xslt:transform($response, $xsl,
+                xslt:transform($response-with-stats, $xsl,
                 map:merge((
                 map{"xcql" : fn:serialize($xcql),
                     "query": $query,
@@ -108,7 +111,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                     </http:response>
                 </rest:response>,
                 $formatted)
-        else $response
+        else $response-with-stats
     return 
         if ($xpath instance of xs:string)
         then $response-formatted
@@ -148,6 +151,19 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             <subjects>{thesaurus:addStatsToThesaurus(api:subjects($results))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
+};
+
+declare %private function api:addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
+    let $context := $sru-api:HOSTNAME,
+        $indexes := index:map-to-indexInfo()//zr:name,
+        $ns := index:namespaces($context),
+        $responseDocument := document{$response},
+        $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else
+             let $q := concat(string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
+                    '//', index:index-as-xpath-from-map($i, index:map($context), 'match'))
+             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'="'||.||'"')
+        , $scans := $scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1])
+    return $response update insert node $scans into ./sru:extraResponseData
 };
 
 declare %private function api:subjects($r) as map(*) {
