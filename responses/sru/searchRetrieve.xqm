@@ -4,6 +4,7 @@ module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve";
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace http = "http://expath.org/ns/http-client";
 import module namespace request = "http://exquery.org/ns/request";
+import module namespace prof = "http://basex.org/modules/prof";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
@@ -148,7 +149,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             then <XPath>{$xpath}</XPath>
             else ()}
             {$xcql}
-            <subjects>{thesaurus:addStatsToThesaurus(api:subjects($results))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(api:subjects($results), false(), 'api:subject '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
@@ -161,8 +162,8 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else
              let $q := concat(string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
                     '//', index:index-as-xpath-from-map($i, index:map($context), 'match'))
-             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'="'||.||'"')
-        , $scans := $scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1])
+             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||.||'"')
+        , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
     return $response update insert node $scans into ./sru:extraResponseData
 };
 

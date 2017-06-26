@@ -148,7 +148,7 @@
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]" mode="detail">
-        <xsl:variable name="scanClause" select="'author='||normalize-space(./mods:namePart)"/>
+        <xsl:variable name="scanClause" select="'author=='||normalize-space(./mods:namePart)"/>
         <xsl:variable name="by-this-author" select="//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
         <li class="eSegment"><xsl:value-of select="_:dict(mods:role/normalize-space(mods:roleTerm))"/></li>
         <li><xsl:value-of select="string-join(mods:namePart, '/ ')"/>(<a href="#{_:urlParameters()}" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-author"/></a>)<xsl:if test="mods:role/normalize-space(mods:roleTerm) eq 'edt'">,

@@ -42,10 +42,11 @@ function api:scan($version, $scanClause,
                   $maximumTerms as xs:integer?, $responsePosition as xs:integer?,
                   $x-sort as xs:string?, $x-mode,
                   $x-filter, $x-debug as xs:boolean) {
-    let $log := l:write-log('scan:scan', 'DEBUG')
+    let $log := l:write-log('scan:scan', 'DEBUG'),
+        $sort := if (lower-case($x-sort) eq 'text') then 'text' else 'size'
     return if (not(exists($scanClause))) then db:output(diag:diagnostics("param-missing", "scanClause")) else 
            if (not($version)) then db:output(diag:diagnostics("param-missing", "version"))
-           else api:scan-filter-limit-response-and-cache($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
+           else api:scan-filter-limit-response-and-cache($scanClause, $maximumTerms, $responsePosition, $sort, $x-mode, $x-filter, $x-debug)
 };
 
 declare %updating %private function api:scan-filter-limit-response-and-cache($scanClause as xs:string,  
@@ -56,7 +57,7 @@ declare %updating %private function api:scan-filter-limit-response-and-cache($sc
        $ret := $try-scan[1],
        $terms := $try-scan[2],
        $cached-scan := $try-scan[3]
-   return (db:output($ret), if ($terms instance of element(sru:terms) and empty($cached-scan)) then cache:scan($terms, api:parseScanClause($scanClause), $x-sort) else ())
+   return (db:output($ret), if ($terms instance of document-node() and empty($cached-scan)) then cache:scan($terms, api:parseScanClause($scanClause), $x-sort) else ())
 };
 
 declare function api:scan-filter-limit-response($scanClause as xs:string,  
@@ -64,15 +65,19 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
                   $x-sort as xs:string?, $x-mode as xs:string?,
                   $x-filter as xs:string?, $x-debug as xs:boolean,
                   $fail-on-not-cached as xs:boolean) as item()+ {
-   let $scanClauseParsed := api:parseScanClause($scanClause),
-       $log := l:write-log('api:scan-filter-limit-response $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG'),
+   let $start := prof:current-ns(),
+       $sort := if (lower-case($x-sort) eq 'text') then 'text' else 'size',
+       $scanClauseParsed := api:parseScanClause($scanClause),
        $scanClauseIndex :=  $scanClauseParsed/index,
        $cached-scan := if ($x-mode eq "refresh") then () else cache:scan($scanClauseParsed, $x-sort),
        $fail := if (empty($cached-scan) and $fail-on-not-cached) then error(xs:QName('diag:scanNotCached'), 'Scan for index '||$scanClauseParsed/index||' needs to be cached!') else (),
-       $terms := if (empty($cached-scan) or $x-mode eq 'refresh') then api:do-scan($scanClauseParsed, $x-sort, $x-debug) else $cached-scan,
-       $ret := if ($terms instance of element(sru:terms))
+       $terms := if (empty($cached-scan) or $x-mode eq 'refresh') then api:do-scan($scanClauseParsed, $sort, $x-debug) else $cached-scan,
+       $ret := if ($terms instance of document-node())
                then api:scanResponse($scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-filter)
-               else $terms
+               else $terms,
+       $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
+       $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
+       $logRuntime := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
    return ($ret, $terms, $cached-scan)
 };
 
@@ -84,7 +89,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
  : @return either element(sru:terms) or element(sru:diagnostics) or element(debug)
 ~:)
 declare %private function api:do-scan($scanClauseParsed as element(scanClause), $x-sort as xs:string?,
-                                      $x-debug as xs:boolean?) as element() {
+                                      $x-debug as xs:boolean?) as item() {
     let $log := l:write-log('api:do-scan $x-debug := '||$x-debug||' $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG'),
         $context := $sru-api:HOSTNAME,
         $map as element(map) := index:map($context), 
@@ -119,7 +124,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                         {xquery:eval($xquery, map { '': db:open($model:dbname) })}
                     </sru:terms>,
                         $numbered-terms := api:numberTerms($terms)
-                    return $numbered-terms
+                    return document {$numbered-terms}
                 } catch * {
                     diag:diagnostics('general-error', 'Error evaluating expression '||$xquery||' '||$err:description)
                 },
@@ -155,17 +160,19 @@ declare function api:parseScanClause($scanClause as xs:string, $map as element(m
  : @param $maxumumTerms: number of terms in the list. If empty, all terms are returned (used for caching)
  : @param $responsePosition: which term should be the first in the list
 ~:)
-declare %private function api:scanResponse($scanClauseParsed as element(scanClause), $terms as element(sru:terms),
+declare %private function api:scanResponse($scanClauseParsed as element(scanClause), $terms as document-node(),
                                            $maximumTerms as xs:integer?, $responsePosition as xs:integer,
                                            $x-filter as xs:string?){
     let $anchor-term :=
         try {
         switch($scanClauseParsed/relation)
-            case "==" return $terms/*[.//sru:value eq $scanClauseParsed/term]
-            case "=" return $terms/*[starts-with(.//sru:value, $scanClauseParsed/term)]
-            case "contains" return $terms/*[contains(.//sru:value, $scanClauseParsed/term)]
-            case "any" return $terms/*[contains(.//sru:value, $scanClauseParsed/term)]
-            case () return $terms[1]
+(:            case "==" return $terms/sru:terms/*[.//sru:value eq $scanClauseParsed/term] (\:does not get optimized ?!:\) :)
+(: hand optimization, don not reuse without thorough consideration :)
+            case "==" return cache:text-nodes-in-cached-file-equal($scanClauseParsed/term, $terms)/ancestor::sru:term
+            case "=" return $terms//sru:term[starts-with(.//sru:value, $scanClauseParsed/term)]
+            case "contains" return $terms//sru:term[contains(.//sru:value, $scanClauseParsed/term)]
+            case "any" return $terms//sru:term[contains(.//sru:value, $scanClauseParsed/term)]
+            case () return $terms//sru:terms[1]
             default  return error(xs:QName('diag:unimplementedRelation'), "Don't know how to handle relation"||$scanClauseParsed/relation||" for scan")
         } catch * {
             error(xs:QName('diag:unableToInterpretScanClause'), $err:code||': '||$err:description||' parsed scanClause: '||serialize($scanClauseParsed))
@@ -179,7 +186,7 @@ declare %private function api:scanResponse($scanClauseParsed as element(scanClau
               xmlns:myServer="http://myServer.com/">
         <sru:version>{$sru-api:SRU.SUPPORTEDVERSION}</sru:version>
         <sru:terms xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
-        {subsequence($terms/sru:term, $start-term-position, $maximumTerms)}
+        {subsequence($terms/sru:terms/sru:term, $start-term-position, $maximumTerms)}
         </sru:terms>
         <sru:echoedScanRequest>
             <sru:scanClause>{$scan-clause}</sru:scanClause>
