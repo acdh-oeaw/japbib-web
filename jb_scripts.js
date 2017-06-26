@@ -1,4 +1,4 @@
-$(document).ready(jb_init);
+﻿$(document).ready(jb_init);
 function jb_init() {
 
 var navs= $ ( '#navbar_items a' );
@@ -85,12 +85,33 @@ function toggleResults(href) {
     }
     $('.content > .showResults').replaceWith(frameWork);
     $('.showResults').show('slow');
-/* Erste Erklaerung in ein Fragezeichen verpacken:
-    // eher unn�tig (BS. 20. 6.)
-    $('#erklärung').toggleClass('erklärung'); */
   });
     
   }
+// Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.   
+// Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
+// ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
+
+$( document )
+  .on('click', '#pullRight',
+  function () { 
+      if( $( '#hitRow' ).position().left < 0) {
+        $( '#hitRow' ).animate(  { left:'+='+ ($( '#fenster1').width()-16) }, 200 );
+      } 
+    }
+  )
+  .on('click', '#pullLeft',
+  function () { 
+    if( $( '#hitRow' ).position().left > 
+        $( '#fenster1').width() - $( '#hitRow').width() ) {
+      $( '#hitRow' ).animate(  { left:'-='+ ($( '#fenster1').width()-16)  }, 200 );
+      } 
+    }
+  ); 
+///////////////
+  
+  
+  
 var hideEntry= $('.showEntry').hide();
 var toggleEntry= $(document).on('click', '#showList a',
   function() {  
@@ -186,7 +207,7 @@ $('.suchOptionen a').click(function(e){
 var plusMinus= $ ( 'div.schlagworte .plusMinus' );
 var ols= $ ( '.schlagworte li li ol' );
 
-  // Anfangszustand; sp�ter �ndern
+  // Anfangszustand; sp�ter �ndern
 $ ( plusMinus ).addClass( 'close' );   
 $ ( ols ).show(); 
 
