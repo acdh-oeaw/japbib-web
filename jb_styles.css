@@ -4,6 +4,7 @@
 body {
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
+  overflow-y: scroll;
   }
 h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
@@ -11,10 +12,11 @@ h2, h3, h4 {
 a {
   color:#005;
   text-decoration: none;
+  border-radius: 3px;
   }
 a:hover { 
   color:#008;
-	background: rgba(0, 0, 255, 0.06);
+	background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
   }
 h2 {
   color: #8e843b;
@@ -232,9 +234,12 @@ td.control:hover {
     width: 100%;
     bottom: 0; */
   }
+.next {
+ text-align: right;
+ }
 .next a {
-	font-style: italic;
-}
+ font-style: italic;
+ }
 
 /*******************
    JS-Funktionen
@@ -314,7 +319,7 @@ td.control:hover {
   }  
 .pageindex a  {
   display: inline-block;
-  padding: .2em;
+  padding: .3em;
   padding-left: 1.2em;
   text-indent: -1em;
   }
@@ -329,13 +334,14 @@ td.control:hover {
 
 .pageindex .here {
   color:#008;
-  background: rgba(0, 0, 255, 0.06);
+	background: linear-gradient( rgba(0, 0, 255, 0.03), rgba(0, 0, 255, 0.07));
   cursor: text;
   font-style: italic;
 }
 .pageindex .here:before {
-  content: '> '; 
-}
+ content: '∘ ';
+ font-style: normal;
+ }
 
 #schlagworte .pageindex a {
   padding: 0;
@@ -374,11 +380,11 @@ td.control:hover {
  }
 #searchform1 input::placeholder,
 #searchform1 input:placeholder-shown {
- color: #ddd;
  } 
  
 .suchOptionen {
   margin: 0 0 2em;
+  position: relative;
  }
 .suchOptionen th {
  text-align: right;
@@ -389,7 +395,34 @@ td.control:hover {
 
 .suchOptionen .top {
   vertical-align: top;  
-}  
+  } 
+#Beispiele {
+  position: absolute;
+  display: block;
+  width: 125%;
+  top: -2em;
+  z-index: 3;    
+  } 
+  
+#Beispiele td,
+#Beispiele th {
+  display: none; 
+  padding: 0 1.5em 1em;  
+  background: rgba(238, 238, 255, 0.93); 
+  border: 1px solid #dde;
+  border-radius: 7px;
+  } 
+#Beispiele:hover {
+  }
+#Beispiele:hover td,
+#Beispiele:hover th {
+  display: block;
+  } 
+#Beispiele::before { 
+  position: absolute; 
+  top: -1em;
+  left: 7em; 
+  }
 .beispiele ol, 
 .beispiele li {
   margin: 0; 
@@ -551,14 +584,14 @@ a.zahl::before {
 	font-family: "Trebuchet MS", Arial, sans-serif;
 	} 
 	  
-.showOptions {
+.showOptions, 
+.navResults { /* mehr zu navResults unten */
   text-align: right; 
-    text-align: right;
-    background: rgba(0, 63, 255, 0.06);
-    background: rgba(233, 220, 175, 0.5);
-    padding: 1px 5px;
-    margin: -.5em -1em .5em;
-}
+  font-family: Arial, sans-serif;
+  background: rgba(233, 220, 175, 0.5);
+  padding: 1px 5px;
+  margin: -.5em -1em .5em;
+  }
 .erklärung:before {
   content: '?';
   display: inline-block; 
@@ -653,7 +686,7 @@ PLUS-MINUS
  } 
 .sup:hover::before,
 .plusMinus:hover::before { 
- background: #eef; 
+ background: #f5f5ff; 
  border-color: #ccd;
  }
  
@@ -671,17 +704,96 @@ PLUS-MINUS
 .close::before {
  content: '–';
  }
-
+a.plusMinus {
+ }
 /*******************/
 
 .term {
   margin-right: .5em; 
+  border-radius: .5em;
+  padding: 0 .3em;
 }
 
+/******************************
+  NavResults
+  s.a. .showOptions
+*******************************/
+
+.navResults {
+ background: rgba(233, 220, 175, 0.3);
+ padding: 1px 1em;
+ }
+.navResults { 
+ line-height: 2rem;
+ }
+.countResults {
+ float: left;
+ }
+.navResults ul,
+.navResults li {
+  margin: 0; 
+  padding: 0; 
+  list-style: none;
+  }
+.hits {
+  display: inline-block; 
+  text-align: center; 
+  font-size: .8em; 
+    border: 0px solid #ccc; 
+    padding: 0 .3em;
+    margin-right: -.3em;
+  }    
+.fenster {  
+  display: inline-block;
+  position: relative;
+  width: 5em;
+  height: 2em;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;  
+  }
+.fenster span {
+  position: absolute; 
+  left: 0;
+  bottom: 0;
+  right: auto;
+  } 
+.hits.first,
+.hits.last,  
+.hits.here {
+  font-size: 1em;
+  }  
+.hits.here a,
+.hits.here,
+.hits.here:hover,
+.numberofRecords { 
+  color: #ca9916;
+  cursor: default;
+  font-weight: bold;  
+  background: transparent;
+  } 
+.hitList .hide {  
+  display:inline;
+  color: #ccc;
+  background: transparent;
+  cursor:default;
+  }
+ 
+.pull {
+  display: inline-block;
+  color: #aaa;
+  cursor:pointer;
+  }
+.pull:hover {
+  color: #333;
+  }
+  
 /* MODS und LIDOS */
 .record-mods, .record-lidos {
     overflow-x: scroll;
 }
+  
+
 
 /* Quick Fix: Checkbox based show/hide */
 
