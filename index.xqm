@@ -61,8 +61,9 @@ declare function index:index-as-xpath-from-map($index-key as xs:string, $map as 
     let $indexDef := index:index-from-map($index-key, $map)
     return
         switch ($aspect)
+            case 'match' return string-join(($indexDef/path, $indexDef/path/@match), '/')
             case 'match-only' return if (exists($indexDef/path/@match)) then $indexDef/path/@match else '.'
-            case 'label' return concat($indexDef/path,'/',$indexDef/path/@label)
+            case 'label' return string-join(($indexDef/path,$indexDef/path/@label), '/')
             case 'path-only' return $indexDef/path
             default return $indexDef/path
 };
@@ -76,7 +77,7 @@ declare function index:map-to-indexInfo() {
         return 
         <zr:index>
             <zr:map>
-                <zr:name set="jb80">{$i/data(@key)}</zr:name>
+                <zr:name set="{$m/data(@name)}/">{$i/data(@key)}</zr:name>
             </zr:map>
         </zr:index>}
     </zr:indexInfo>
