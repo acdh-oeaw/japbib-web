@@ -88,6 +88,29 @@ function toggleResults(href) {
   });
     
   }
+  
+// Handler fuer .tipp
+
+$( '.tipp' )
+  .attr('title', 'Tipp')
+  .children()
+    .addClass('display') // :hover ausschalten
+    .hide();  
+$( document )
+  .on('click', '.tipp',
+    function () {
+      $( this )
+        .toggleClass ( 'q2x' )  // ? --> X
+        .children().slideToggle( 'slow' );
+      var title= 'Tipp'; 
+      if( $(this).hasClass('q2x')){
+        title = 'Tipp ausblenden';
+      }        
+      $(this).attr('title', title);  
+    } 
+  );  
+  
+  
 // Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.   
 // Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
 // ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
@@ -108,17 +131,23 @@ $( document )
       } 
     }
   ); 
-///////////////
+  
+// Handler für .showEntry select
+// Idee BS: .showEntry bekommt von select option:selected die richtige Klasse verpasst, Formatierung des Eintrags reines CSS
+// Könnte die untere MODS LIDOS Prozedur vereinfachen, funktioniert aber noch nicht  
+/* 
+$( '.showEntry select' )
+  .change(function() {
+    $( 'select option:selected' ).each(function() {
+    var myParent = $( this).parent( '.showEntry' );
+    var myClass= this.className;
+    alert(myClass);
+       $( myParent ).addClass( myClass );
+    });   
+  });
+*/  
   
   
-  
-var hideEntry= $('.showEntry').hide();
-var toggleEntry= $(document).on('click', '#showList a',
-  function() {  
-    $('.showEntry').toggle('slow');       
-    }
-  );
-
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
   if (e.which === 13) {
@@ -207,7 +236,7 @@ $('.suchOptionen a').click(function(e){
 var plusMinus= $ ( 'div.schlagworte .plusMinus' );
 var ols= $ ( '.schlagworte li li ol' );
 
-  // Anfangszustand; sp�ter �ndern
+  // Anfangszustand; spaeter aendern
 $ ( plusMinus ).addClass( 'close' );   
 $ ( ols ).show(); 
 

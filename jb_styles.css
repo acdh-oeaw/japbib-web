@@ -166,23 +166,13 @@ h1 {
 
 /* main body */
 
-iframe {
-  width: 100%;
-  min-height: 45em;
-  border: 0; 
-  border-bottom: 1px solid #ddd;
-  overflow: auto;
-  }
-
 table.main {
   position:relative;
   padding: 0;
   width: 100%;
-  overflow: hidden;
-  min-height: 30em;
-  max-height: 40em;
-    border: 1px solid #fff7d4;
-    border-width: 0 0 0 3px;
+  min-height: 30em; 
+  border: 1px solid #fff7d4;
+  border-width: 0 0 0 3px;
   }
 #nav {
 }
@@ -354,18 +344,32 @@ td.control:hover {
  margin-bottom:-5px;
  }
 
+/****** Impressum ******/
+
+.impressum, 
+.impressum li {
+ list-style: none; 
+ margin: 0;
+ padding: 0;
+ }
+.impressum li {
+ margin-left:3em;
+ margin-bottom:1em;
+ }
+.impressum i {
+ display: block; 
+ text-indent: -3em;
+ }
+.impressum span {
+ display: block; 
+ line-height: 1.25em;
+ margin-bottom: 1em;
+ }
+ 
 
 /*******************
    Spezielle Felder
 ********************/
-
-#showList {
-  margin-left: -1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px; 
-    padding: .5em 1em;
-    background: rgba(255, 255, 255, 0.75);
-    } 
 
 /**** Suchfelder ******/
 
@@ -376,7 +380,7 @@ td.control:hover {
  font-size: 1rem;
  }
 #searchform1 input:focus { 
- background: rgba(0, 0, 255, 0.03) 
+ background: rgba(225, 247, 255, 0.3) 
  }
 #searchform1 input::placeholder,
 #searchform1 input:placeholder-shown {
@@ -396,67 +400,16 @@ td.control:hover {
 .suchOptionen .top {
   vertical-align: top;  
   } 
-#Beispiele {
-  position: absolute;
-  display: block;
-  width: 125%;
-  top: -2em;
-  z-index: 3;    
-  } 
-  
-#Beispiele td,
-#Beispiele th {
-  display: none; 
-  padding: 0 1.5em 1em;  
-  background: rgba(238, 238, 255, 0.93); 
-  border: 1px solid #dde;
-  border-radius: 7px;
-  } 
-#Beispiele:hover {
-  }
-#Beispiele:hover td,
-#Beispiele:hover th {
-  display: block;
-  } 
-#Beispiele::before { 
-  position: absolute; 
-  top: -1em;
-  left: 7em; 
-  }
-.beispiele ol, 
-.beispiele li {
-  margin: 0; 
-  padding: 0; 
-  list-style:none;
-  font-size: .9rem;
- }
-.beispiele ol {
-  margin: .5em 0;
- } 
-.beispiele li {
- padding-left: 1.5em; 
- text-indent: -1.5em;
- }
-.suchOptionen a {
- padding: 0 .35em;     
- border-radius: .4em; 
- }
-.beispiele a {
- background: rgba(0, 0, 255, 0.03) 
- }
-.beispiele a:hover {
- background: rgba(0, 0, 255, 0.06) 
- }
-.abc a {
- display: inline-block;
- }
-code,
-.code {
-  font-family: "Courier New", Courier, monospace;
-  font-size: .9em;
-  } 
  
-/******************/
+/*******  Suchresultate ***********/
+
+#showList {
+  margin-left: -1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px; 
+  padding: .5em 1em;
+  background: rgba(255, 255, 255, 0.75);
+  } 
 
 #show_entry th {
   text-align: right;
@@ -487,6 +440,11 @@ code,
   margin-left: 0em; 
   font-style: italic;
   }  
+.showEntry.compact .eSegment, 
+.showEntry.compact .zahl, 
+.showEntry.compact .addInfo {
+  display: none; 
+  }
   
 /*******************
    Schlagworte
@@ -519,6 +477,12 @@ a.zahl::before {
   content: '▶';
   padding-right: .2em;
   font-family: arial unicode ms, sans serif;
+  }
+.showEntry a.zahl::before {
+  content: ' (▶';
+  }
+.showEntry a.zahl::after {
+  content: ')';
   }
   
 .schlagworte {
@@ -591,77 +555,133 @@ a.zahl::before {
   background: rgba(233, 220, 175, 0.5);
   padding: 1px 5px;
   margin: -.5em -1em .5em;
-  }
-.erklärung:before {
-  content: '?';
-  display: inline-block; 
-    color: #008;
-    background:rgb(224, 240, 251);
-    border: 1px solid rgba(0, 0, 136, 0.5);
-    border-radius: 1em;
-    box-shadow:4px 4px 6px rgba(51, 51, 51, 0.15);
-    line-height: 1.5em;
-    width: 1.5em;
-    text-align: center;
-    cursor: pointer;
-} 
-.erklärung:hover:before {    
-  background: rgb(218, 229, 226);  
-  }
-.erklärung {
+  } 
+  
+/*****************
+   tipp 
+*****************/  
+
+.tipp {
   position: relative;
   display: inline;
-  color:#005;
+  color: rgba(0, 44, 88, 1);  
   }
-.erklärung span{
-    display: none;
-    width: 16em;
-    position: absolute;
-    top: 1.4em; 
-    left:0;
-    background: rgb(224, 240, 251);
+.tipp:before {
+  content: '❓'; /* 'BLACK QUESTION MARK ORNAMENT' (U+2753) */
+  display: inline-block; 
+  font-family: sans-serif;
+  color: rgb(21, 104, 165);
+  background: rgb(225, 247, 255);
+  border: 1px solid rgba(200, 222, 228, 1);    
+  border-radius: 1em;
+  box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
+  line-height: 1.5em;
+  width: 1.5em;
+  text-align: center;
+  cursor: pointer;
+  } 
+.tipp.q2x:before {
+  content: '✖';  /* 'HEAVY MULTIPLICATION X' (U+2716) */
+  }
+.tipp:hover:before {    
+  background: rgb(194, 238, 253);  
+  position: relative; 
+  z-index: 6;
+  }
+.tipp > * {
+  display: none;
+  position: absolute;
     z-index: 5;   
-  text-align: left; 
-    padding: .5em .7em; 
+    top: .8em; 
+    left: 0;
+  width: 16em;  
+  margin: 0;  
+  padding: 1em; 
+  background: rgba(225, 247, 255, .93);
+  border: 1px solid rgba(200, 222, 228, 1);
     border-radius: 5px; 
-    border: 1px solid rgba(0, 0, 136, 0.5); 
-    box-shadow:4px 4px 6px rgba(51, 51, 51, 0.15);
+  box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
+  text-align: left; 
+  font-family: initial; 
+  }
+.tipp:hover > *, 
+.tipp.display > *,  {
+  display: block;
+  }
+.tipp ul, 
+.tipp ol {
+  padding-left: 2em;
+  } 
+#Beispiele.tipp > * {
+  padding: 0 1.5em 1em;  
+  width: 120%;
+  } 
+#Beispiele.tipp::before { 
+  position: absolute; 
+  top: -.2em;
+  right: 0; 
+  } 
+#thesaurus .tipp {
+  position: absolute;
+  top: -2.5em; 
+  right: 0; 
+  }
 
-}
-.erklärung:hover span {
-    display: block;
-}
+/**** Beispiele ******/
 
-.impressum, 
-.impressum li {
- list-style: none; 
- margin: 0;
- padding: 0;
+#Beispiele {
+  position: absolute; 
+  display: block;
+  width: 100%;
+  top: -2.8em;
+  z-index: 3;    
+  }  
+.beispiele div {
+  display: inline-block;
+  width: 48%;
+  min-width: 20em;
+  vertical-align: top;
+  margin-right: 1%;
+  }
+.beispiele ol, 
+.beispiele li {
+  margin: 0; 
+  padding: 0; 
+  list-style:none;
+  font-size: .9rem;
  }
-.impressum li {
- margin-left:3em;
- margin-bottom:1em;
+.beispiele ol {
+  margin: 0 0 .5em;
+ } 
+.beispiele li {
+ padding-left: 1.5em; 
+ text-indent: -1em;
  }
-.impressum i {
- display: block; 
-    text-indent: -3em;
-    }
-.impressum span {
- display: block; 
- line-height: 1.25em;
- margin-bottom: 1em;
+.beispiele p {
+  margin-bottom: 0;
 }
- 
-.tipp {
-    padding-left: 3em;
-}
-.tipp::before {
-    content: 'Tipp: ';
-    display: inline-block;
-    margin-left: -3em;
-    width: 3em;
-    font-style: italic;
-} 
+.suchOptionen a {
+ padding: 0 .35em;     
+ border-radius: .4em; 
+ }
+.beispiele a {
+ background: rgba(0, 0, 255, 0.03) 
+ }
+.beispiele a:hover {
+ background: rgba(0, 0, 255, 0.06) 
+ }
+.abc a {
+ display: inline-block;
+ }
+code,
+.code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: .9em;
+  } 
+.beispiele code, 
+.beispiele .code {
+  padding: 0 .5em;
+  }
 
 /**************
 PLUS-MINUS
@@ -672,40 +692,47 @@ PLUS-MINUS
 .sup::before,
 .plusMinus::before {  
  content: '+'; 
+ content: '➕';  /* 'HEAVY PLUS SIGN' (U+2795) */
  display: inline-block;
- font-family: Courier, Arial, sans-serif;
- font-weight: bold;
+ font-size: .625em;
  border: 1px solid; 
- border-color: #ddd;
- border-radius: .5em;
- height: 1em;
+ border-radius: 1em;
+ height: 1.6em;
  width: 1em;  
- line-height: 1em; 
+ padding: 0 .3em;
+ line-height: 1.7em; 
  text-align: center;
  cursor: pointer;
+ opacity: 0.4;
+ vertical-align: text-top;
+ overflow:hidden;
  } 
 .sup:hover::before,
 .plusMinus:hover::before { 
- background: #f5f5ff; 
- border-color: #ccd;
+ background: #f8f8ff; 
+ opacity: 0.8;
  }
  
 .schlagworte .sup::before,
 .schlagworte .plusMinus::before { 
  position: absolute;
- left: -1.5em; 
+ left: -1.8em; 
  top: .2em;  
  }
 .showResults .sup::before, 
 .showResults .plusMinus::before {
- margin-right: .2em;
+ margin-right: .5em;
+ }
+.showResults a.plusMinus {
+ padding: 0 .3em;
+ border-radius: 1em;
  }
   
 .close::before {
- content: '–';
+ content: '–'; 
+ content: '➖'; /* 'HEAVY MINUS SIGN' (U+2796) */ 
  }
-a.plusMinus {
- }
+ 
 /*******************/
 
 .term {
