@@ -23,6 +23,9 @@
         <index key="series" case="yes">
             <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
         </index>
+        <index key="publisher" case="yes">
+            <path label=".">mods:publisher</path>
+        </index>
         <index key="id">
             <path>mods:recordIdentifier</path>
         </index>
