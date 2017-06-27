@@ -77,24 +77,25 @@
                         gedacht. </span>
                 </span>
             </div>
-
-            <ul><xsl:call-template name="detail-list-items"/></ul>
-            <p><b>Weitere bibliographische Angaben</b></p>
-            <ul><xsl:call-template name="more-detail-list-items"/></ul>
-            <p><b>Inhaltliche Angaben</b></p>
-            <ul><xsl:call-template name="topics-list-items"/></ul>
-        </div>
-        <div class="showMods" style="display:none;">
-            <xsl:variable name="modsDoc">
-                <xsl:copy-of select="." copy-namespaces="no"/>               
-            </xsl:variable>
-            <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
-        </div>
-        <div class="showLidos" style="display:none;">         
-            <xsl:variable name="lidosDoc">
-                <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
-            </xsl:variable>
-            <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
+            <div class="showDetails">
+                <ul><xsl:call-template name="detail-list-items"/></ul>
+                <p><b>Weitere bibliographische Angaben</b></p>
+                <ul><xsl:call-template name="more-detail-list-items"/></ul>
+                <p><b>Inhaltliche Angaben</b></p>
+                <ul><xsl:call-template name="topics-list-items"/></ul>
+            </div>
+            <div class="showMods" style="display:none;">
+                <xsl:variable name="modsDoc">
+                    <xsl:copy-of select="." copy-namespaces="no"/>               
+                </xsl:variable>
+                <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
+            </div>
+            <div class="showLidos" style="display:none;">         
+                <xsl:variable name="lidosDoc">
+                    <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
+                </xsl:variable>
+                <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
+            </div>
         </div>
     </xsl:template>
     
