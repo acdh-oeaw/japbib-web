@@ -63,7 +63,7 @@
     </xsl:template>
     
     <xsl:template match="mods:mods" mode="detail">
-        <div class="showEntry">
+        <div class="showEntry" style="display:none;">
             <div class="showOptions">
                 <label>Anzeige des Eintrags: <select name="top5" size="1">
                         <option selected="selected">detailliert</option>
@@ -178,6 +178,8 @@
         <li class="eSegment"><xsl:value-of select="_:dict('title')"/></li>
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
+    
+    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)||' '"/></xsl:template>
     
     <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/>.</xsl:template>
     
