@@ -61,6 +61,18 @@
             </searchClause>
         </expected>        
     </test>
+    <test title="complex string with quotes simple relation">
+        <query>title=="Kokutai - das \"Nationalwesen\" als japanische Utopie"</query>        
+        <expected>
+            <searchClause>
+                <index>title</index>
+                <relation>
+                    <value>==</value>
+                </relation>
+                <term>Kokutai - das \"Nationalwesen\" als japanische Utopie</term>
+            </searchClause>
+        </expected>  
+    </test>
     <test title="simple string complex relation">
         <query>title contains Haus</query>
         <expected>
