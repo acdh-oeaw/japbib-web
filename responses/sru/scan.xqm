@@ -73,7 +73,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
        $fail := if (empty($cached-scan) and $fail-on-not-cached) then error(xs:QName('diag:scanNotCached'), 'Scan for index '||$scanClauseParsed/index||' needs to be cached!') else (),
        $terms := if (empty($cached-scan) or $x-mode eq 'refresh') then api:do-scan($scanClauseParsed, $sort, $x-debug) else $cached-scan,
        $ret := if ($terms instance of document-node())
-               then api:scanResponse($scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-filter)
+               then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-filter)
                else $terms,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
        $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
@@ -156,11 +156,15 @@ declare function api:parseScanClause($scanClause as xs:string, $map as element(m
 
 (:~
  : Wraps a (sub)sequence of sru:terms in a sru:scanResponse element.
- : @param $terms: the terms to be output
+ : @param $scanClause: The scanClause as string. Only used for error reporting
+ : @param $scanClauseParsed: The scanClause parsed into an XML fragment
+ : @param $terms: the source terms to be filtered according to position and number 
  : @param $maxumumTerms: number of terms in the list. If empty, all terms are returned (used for caching)
  : @param $responsePosition: which term should be the first in the list
+ : @param $x-filter: TODO to be implemented
 ~:)
-declare %private function api:scanResponse($scanClauseParsed as element(scanClause), $terms as document-node(),
+declare %private function api:scanResponse($scanClause as xs:string,
+                                           $scanClauseParsed as element(scanClause), $terms as document-node(),
                                            $maximumTerms as xs:integer?, $responsePosition as xs:integer,
                                            $x-filter as xs:string?){
     let $anchor-term :=
@@ -168,16 +172,16 @@ declare %private function api:scanResponse($scanClauseParsed as element(scanClau
         switch($scanClauseParsed/relation)
 (:            case "==" return $terms/sru:terms/*[.//sru:value eq $scanClauseParsed/term] (\:does not get optimized ?!:\) :)
 (: hand optimization, don not reuse without thorough consideration :)
-            case "==" return cache:text-nodes-in-cached-file-equal($scanClauseParsed/term, $terms)/ancestor::sru:term
-            case "=" return $terms//sru:term[starts-with(.//sru:value, $scanClauseParsed/term)]
-            case "contains" return $terms//sru:term[contains(.//sru:value, $scanClauseParsed/term)]
-            case "any" return $terms//sru:term[contains(.//sru:value, $scanClauseParsed/term)]
+            case "==" return cache:text-nodes-in-cached-file-equal(api:t-unmask-quotes($scanClauseParsed/term), $terms)[parent::sru:value]/ancestor::sru:term
+            case "=" return $terms//sru:term[starts-with(.//sru:value, api:t-unmask-quotes($scanClauseParsed/term))]
+            case "contains" return $terms//sru:term[contains(.//sru:value, api:t-unmask-quotes($scanClauseParsed/term))]
+            case "any" return $terms//sru:term[contains(.//sru:value, api:t-unmask-quotes($scanClauseParsed/term))]
             case () return $terms//sru:terms[1]
             default  return error(xs:QName('diag:unimplementedRelation'), "Don't know how to handle relation"||$scanClauseParsed/relation||" for scan")
         } catch * {
-            error(xs:QName('diag:unableToInterpretScanClause'), $err:code||': '||$err:description||' parsed scanClause: '||serialize($scanClauseParsed))
+            error(xs:QName('diag:unableToInterpretScanClause'), $err:code||': '||$err:description||': '||$err:additional||' '||$scanClause||' parsed as XML scanClause: '||serialize($scanClauseParsed))
         },
-        $error := if (empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation) else (),
+        $error := if (empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation||' '||$scanClause) else (),
         $start-term-position := (count($anchor-term/preceding-sibling::*) + 1) + (-$responsePosition + 1),
         $scan-clause := xs:string($scanClauseParsed)
     return
@@ -194,6 +198,10 @@ declare %private function api:scanResponse($scanClauseParsed as element(scanClau
             <fcs:x-filter>{$x-filter}</fcs:x-filter>
         </sru:echoedScanRequest>
     </sru:scanResponse>
+};
+
+declare %private function api:t-unmask-quotes($t as element(term)) as xs:string {
+  replace($t, '\\&quot;', '&quot;')
 };
 
 declare %private function api:numberTerms($terms as element(sru:terms)) as element(sru:terms) {

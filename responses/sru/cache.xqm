@@ -53,6 +53,6 @@ declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort
 };
 
 (: hand optimization, don not use without thorough consideration :)
-declare function c:text-nodes-in-cached-file-equal($string as xs:string, $dn as document-node()) as element()* {
-  db:text($c:dbname, $string)[base-uri(.) = base-uri($dn)]/..
+declare function c:text-nodes-in-cached-file-equal($string as xs:string, $dn as document-node()) as text()* {
+  db:text($c:dbname, $string)[base-uri(.) = base-uri($dn)]
 };
