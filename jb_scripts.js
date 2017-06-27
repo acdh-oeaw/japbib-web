@@ -1,4 +1,4 @@
-﻿$(document).ready(jb_init);
+$(document).ready(jb_init);
 function jb_init() {
 
 var navs= $ ( '#navbar_items a' );
@@ -113,11 +113,7 @@ $( document )
   
   
 var hideEntry= $('.showEntry').hide();
-var toggleEntry= $(document).on('click', '#showList a',
-  function() {  
-    $('.showEntry').toggle('slow');       
-    }
-  );
+
 
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
@@ -139,7 +135,7 @@ function executeQuery(query) {
 };
 
 // MODS/ LIDOS/  HTML ein/ausblenden
-$('.showResults').on('change', '.showOptions form', function(e){
+$(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target);
    var dataFormat = target.data("format")
    var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
@@ -171,19 +167,11 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 $(document).on('click', '.showResults .plusMinus', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
-    $ ( this ).nextAll( 'div' ).toggle('fast');
     $ ( this ).toggleClass( 'close' );
     if ( fullEntryIsShown ) {
-        // Eintrag ist bereits ausgeklappt, daher wird er eingeklappt und der Inhalt gelöscht.
-        $ ( this ).nextAll( 'div' ).remove();
+        $ ( this ).nextAll( 'div' ).hide('fast');
     } else {
-        //
-        var caller = $ ( this ); 
-        var url = $ ( this ).attr("href");
-        $.get(url, null , function ( responseData , statusText, responseObj ) {
-            caller.after( $(responseData).find(".showEntry") );
-        }, 'html' );
-        
+        $ ( this ).next('.showEntry').show('slow');
     }
 }); 
 
