@@ -13,7 +13,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="yes" method="xhtml"/>
+    <xsl:output indent="no" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:include href="lib/serialization.xsl"/>
@@ -54,7 +54,7 @@
     </xsl:template>
     
     <xsl:template match="mods:mods">
-        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors">_:dict('no-aut-abbr')</span></xsl:if>
+        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
         <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]"/><xsl:text xml:space="prsserve"> </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
         <xsl:apply-templates select=".//mods:originInfo/mods:dateIssued"/><xsl:text>,</xsl:text>
@@ -65,10 +65,10 @@
     <xsl:template match="mods:mods" mode="detail">
         <div class="showEntry" style="display:none;">
             <div class="showOptions">
-                <label>Anzeige des Eintrags: <select name="top5" size="1">
-                        <option selected="selected">detailliert</option>
-                        <option>MODS</option>
-                        <option>Lidos</option>
+                <label>Anzeige des Eintrags: <select name="top5" size="1" data-format="html">
+                        <option value="html" selected="selected">detailliert</option>
+                        <option value="mods">MODS</option>
+                        <option value="lidos">Lidos</option>
                     </select>
                 </label>
                 <span class="erklärung">
@@ -77,20 +77,20 @@
                         gedacht. </span>
                 </span>
             </div>
-            <div class="showDetails">
+            <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
                 <p><b>Weitere bibliographische Angaben</b></p>
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>
                 <p><b>Inhaltliche Angaben</b></p>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
             </div>
-            <div class="showMods" style="display:none;">
+            <div class="record-mods" style="display:none;">
                 <xsl:variable name="modsDoc">
                     <xsl:copy-of select="." copy-namespaces="no"/>               
                 </xsl:variable>
                 <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
             </div>
-            <div class="showLidos" style="display:none;">         
+            <div class="record-lidos" style="display:none;">         
                 <xsl:variable name="lidosDoc">
                     <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
                 </xsl:variable>
@@ -195,7 +195,7 @@
                 <xsl:with-param name="term" select="mods:publisher"/>
             </xsl:call-template>
             <xsl:value-of select="', '||
-            (if (mods:dateIssued) then mods:dateIssued else _:dict('no-year-abbr'))"/></li>
+            (if (mods:dateIssued) then string-join(mods:dateIssued, ', ') else _:dict('no-year-abbr'))"/></li>
     </xsl:template>
     
     <xsl:template match="mods:relatedItem[@type eq 'series']" mode="more-detail">
