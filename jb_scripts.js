@@ -84,6 +84,14 @@ function toggleResults(href) {
         frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
     }
     $('.content > .showResults').replaceWith(frameWork);
+    $('.content > .showResults textarea.codemirror-data').each(function(){
+      CodeMirror.fromTextArea(this,
+      {readOnly: true,
+      lineNumbers: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      });
+    });
     $('.showResults').show('slow');
   });
     
@@ -134,7 +142,7 @@ function executeQuery(query) {
     doSearchOnReturn();
 };
 
-// MODS/ LIDOS/  HTML ein/ausblenden
+// MODS/ LIDOS/  HTML umschalten
 $(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target);
    var dataFormat = target.data("format")
@@ -143,15 +151,17 @@ $(document).on('change', '.showResults .showOptions select', function(e){
    target.data("format", format);
    var c = ".record-" + format;
    var div = target.closest(".showEntry").find(c);
-   if (curFormat === "lidos" || curFormat === "mods") {
-        console.log(curFormat);   
-   }
    target.closest(".showEntry").find("[class^=record]").hide();
    div.show();
    if (format == 'lidos' || format == 'mods') {
-        /// TODO invoke code higlighting
+        refreshCM(div);
    }
 });
+
+function refreshCM(div) {  
+    var editor = div.find('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
+}
 
 //////// Schlagworte //////
   
