@@ -32,6 +32,25 @@
     
     <xsl:template match="/">
         <div class="ajax-result">
+            <div class="navResults">
+                <div class="countResults">
+                    <span class="numberofRecords"><xsl:value-of select="/sru:searchRetrieveResponse/sru:numberOfRecords"/></span>&#xa0;Treffer 
+                </div>
+                <div class="hitList">
+                    <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">≪</span>
+                    <a class="hits first{if ($startRecord &lt;= 10) then ' here' else ''}" href="#{_:urlParameters(1)}" title="Treffer 1–10">1</a>
+                    <span class="fenster" id="fenster1">
+                        <span id="hitRow">
+                            <xsl:for-each select="1 to ((/sru:searchRetrieveResponse/sru:numberOfRecords - 11) idiv 10)">
+                                <a class="hits{if ($startRecord &gt;= (. * 10 + 1) and $startRecord &lt;= (. * 10 + 10)) then ' here' else ''}" href="#{_:urlParameters(. * 10 + 1)}" title="Treffer {. * 10 + 1}—{. * 10 + 10}"><xsl:value-of select=". + 1"/></a>
+                            </xsl:for-each>
+                        </span>  
+                    </span>
+                    <xsl:variable name="lastPage" as="xs:integer" select="(/sru:searchRetrieveResponse/sru:numberOfRecords - 1) idiv 10"/>
+                    <a class="hits last{if ($startRecord &gt;= ($lastPage * 10 + 1)) then ' here' else ''}" href="#{_:urlParameters($lastPage * 10 + 1)}" title="Treffer {$lastPage * 10 + 1}–{/sru:searchRetrieveResponse/sru:numberOfRecords}"><xsl:value-of select="$lastPage"/></a>
+                    <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
+                </div>
+            </div>
             <div class="search-result">
                 <xsl:apply-templates
                     select="sru:searchRetrieveResponse/sru:records"/>                
@@ -260,7 +279,7 @@
                 <xsl:value-of select="catDesc"/>
             </span>
             <xsl:if test="numberOfRecords">
-                <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style={$x-style}&amp;startRecord=1&amp;maximumRecords={$maximumRecords}&amp;query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="numberOfRecords"/></a>
+                <a href="#{_:urlParameters(1, 'query=subject%3D&quot;'||catDesc||'&quot;')}" class="zahl" title="Suchergebnisse"><xsl:value-of select="numberOfRecords"/></a>
             </xsl:if>
             <xsl:if test="category">
                 <ol style="display:none;"><xsl:apply-templates select="category"/></ol>

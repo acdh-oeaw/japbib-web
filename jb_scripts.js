@@ -71,9 +71,11 @@ function toggleResults(href) {
     var ajaxParts = $('.content > .showResults .ajax-result'),
         searchResult = ajaxParts.find('.search-result > ol'),
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
+        navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
     if (statusText === 'success') {
         $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+        frameWork.find('#showList > .navResults').replaceWith(navResults);
         frameWork.find('#showList > ol').replaceWith(searchResult);
     } else {
         frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
