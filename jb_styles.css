@@ -1,4 +1,4 @@
-/***************
+﻿/***************
    Schrift
 ****************/
 body {
@@ -430,6 +430,9 @@ td.control:hover {
     background: rgba(0, 0, 255, 0.06);
     background: rgb(255, 247, 212);
   }
+.showEntry a { 
+  color: #009;
+  }
 .showEntry li { 
   margin-left: 9em;   
   }
@@ -445,6 +448,27 @@ td.control:hover {
 .showEntry.compact .addInfo {
   display: none; 
   }
+.showEntry.compact li {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  }
+.showEntry.compact li::after {
+  content: ' ';
+  } 
+.pubForm { 
+  min-height: 40px;
+  padding-right: 42px;  
+  background-repeat: no-repeat;
+  background-position: top right;
+  }
+.article {
+  background-image:url('images/icon_article.png'); 
+  }
+.buch {
+  background-image:url('images/icon_book.png');  
+  }
+
   
 /*******************
    Schlagworte
@@ -719,6 +743,12 @@ PLUS-MINUS
  left: -1.8em; 
  top: .2em;  
  }
+.pageindex .schlagworte .plusMinus::before {
+ left: -2.3em; 
+ top: -.1em;  
+ }
+
+ 
 .showResults .sup::before, 
 .showResults .plusMinus::before {
  margin-right: .5em;
@@ -814,6 +844,17 @@ PLUS-MINUS
 .pull:hover {
   color: #333;
   }
+  
+/* MODS und LIDOS */
+.record-mods, .record-lidos {
+    overflow-x: scroll;
+}
+
+.CodeMirror { 
+  margin: -.5em -1em;
+  }
+  
+
 
 /* Quick Fix: Checkbox based show/hide */
 
