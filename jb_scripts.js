@@ -203,7 +203,7 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 });
 
 // Handler für Klick auf (+) in Resultatliste
-$(document).on('click', '#showList .showResults .plusMinus', function (e) {
+$(document).on('click', '.results .plusMinus', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
     $ ( this ).toggleClass( 'close' );

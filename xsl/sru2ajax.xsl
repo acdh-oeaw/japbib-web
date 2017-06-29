@@ -71,18 +71,18 @@
                         <option value="lidos">Lidos</option>
                     </select>
                 </label>
-                <span class="erklärung">
-                    <span> „Detailliert“ enthält auch Stichworte, über die neue Suchabfragen möglich
-                        sind. Alle weiteren Optionen sind für das Kopieren in andere Formate
-                        gedacht. </span>
-                </span>
+                <span class="tipp" title="Tipp"><span class="display" style="display: none;">„Detailliert“ 
+                    enthält Stichworte, über die neue Suchabfragen möglich 
+                    sind.</span></span>
             </div>
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
+                <div class="addInfo">
                 <p><b>Weitere bibliographische Angaben</b></p>
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>
                 <p><b>Inhaltliche Angaben</b></p>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
+                </div>
             </div>
             <div class="record-mods" style="display:none;">
                 <xsl:variable name="modsDoc">
