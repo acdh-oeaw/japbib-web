@@ -639,7 +639,7 @@ a.zahl::before {
 .beispiele div {
   display: inline-block;
   width: 48%;
-  min-width: 20em;
+  min-width: 16em;
   vertical-align: top;
   margin-right: 1%;
   }

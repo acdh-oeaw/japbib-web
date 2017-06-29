@@ -65,10 +65,6 @@ var resultsFramework;
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
 function toggleResults(href) {  
-  // todo (BS, 10.6.): 
-    //function besser auf .showList anwenden statt auf .showResults
-    //neu kreiertes div muss bei neuer Frage wieder gelöscht werden
-    //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
@@ -134,18 +130,20 @@ $( document )
   
 // Handler für .showEntry select
 // Idee BS: .showEntry bekommt von select option:selected die richtige Klasse verpasst, Formatierung des Eintrags reines CSS
-// Könnte die untere MODS LIDOS Prozedur vereinfachen, funktioniert aber noch nicht  
-/* 
-$( '.showEntry select' )
-  .change(function() {
-    $( 'select option:selected' ).each(function() {
+// Könnte die untere MODS LIDOS Prozedur vereinfachen, funktioniert aber noch nicht 
+ 
+
+$( '#top5' ).change( function() { 
+  alert(this.value);
+    /*
     var myParent = $( this).parent( '.showEntry' );
     var myClass= this.className;
     alert(myClass);
        $( myParent ).addClass( myClass );
-    });   
-  });
-*/  
+       
+       .prop('selected', true)
+    */  
+  }); 
   
   
 $('#searchInput1').keypress(searchOnReturn);

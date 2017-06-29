@@ -18,8 +18,8 @@
         <img alt="ÖAW, IKGA, ACDH" height="96" src="images/logo_3.png" usemap="#links" width="245" />
         <map name="links">
           <area alt="OEAW" coords="0,0,110,96" href="http://www.oeaw.ac.at" shape="rect" title="OEAW" />
-          <area alt="IKGA" coords="111,0,245,48" href="http://ikga.oeaw.ac.at/" shape="rect" title="IKGA" />
-          <area alt="ACDH" coords="111,49,245,96" href="https://adhc.oeaw.ac.at/" shape="rect" title="ACDH" />
+          <area alt="IKGA" coords="111,0,245,48" href="http://www.ikga.oeaw.ac.at/" shape="rect" title="IKGA" />
+          <area alt="ACDH" coords="111,49,245,96" href="https://www.oeaw.ac.at/acdh/" shape="rect" title="ACDH" />
         </map>
       </div>
       <h1><span class="H1_big"><span><em>Deutschsprachige </em></span><em>Japan-Bibliographie</em>
@@ -64,6 +64,7 @@
             <div class="content">
               <div id="ziele">
                 <h2>Umfang und Ziele dieser Bibliographie</h2>
+
                 <p>Die vorliegende Bibliographie wurde von JapanologInnen der Universität 
                   Wien und der Österreichischen Akademie der Wissenschaften erstellt. Die 
                   über 30.000 bibliographischen Einträge wurden nach folgenden Kriterien 
@@ -280,6 +281,7 @@
 -------------------------------------------->
           <td id="find" class="slide hide">
             <div id="facet-subjects" class="pageindex">
+            
               <h4><span class="showResults">Such-Filter</span></h4>
               <ol class="schlagworte showResults">
                 <li class="li1">
@@ -429,6 +431,8 @@
               </table>
               <div class="showResults">
                 <h2>Resultate</h2>
+                
+                       
                 <div id="showList">
                   <div class="showOptions">
                     <form>
@@ -500,20 +504,16 @@
 <!------------      Einzeleintrag    -------------->
                       <div class="showEntry">
                         <div class="showOptions">
-                          <form>
-                            <label>
                               Anzeige des Eintrags: 
-                              <select name="top5" size="1">
+                              <select id="top5" name="top5" size="1">
                                 <option class="detail" selected="selected">detailliert</option>
                                 <option class="compact">kompakt</option>
-                                <option class="bibtex">BibTeX</option>
-                                <option class="lidos">Lidos</option>
+                                <option class="mods">MODS</option>
+                                <option class="lidos">LIDOS</option>
                               </select>
-                            </label>
                             <span class="tipp"><span>„Detailliert“ 
-                            enthält auch Stichworte, über die neue Suchabfragen möglich 
+                            enthält Stichworte, über die neue Suchabfragen möglich 
                             sind.   </span></span>
-                          </form>
                         </div>
                         <ul>
                           <li class="eSegment">Autor </li>
