@@ -143,14 +143,15 @@ $( document )
 
 $( '#top5' ).change( function() { 
   alert(this.value);
+  });
     /*
     var myParent = $( this).parent( '.showEntry' );
     var myClass= this.className;
     alert(myClass);
        $( myParent ).addClass( myClass );
        
+*/
 var hideEntry= $('.showEntry').hide();
-
 
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
