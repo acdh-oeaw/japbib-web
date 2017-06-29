@@ -137,22 +137,7 @@ $( document )
     }
   ); 
   
-// Handler für .showEntry select
-// Idee BS: .showEntry bekommt von select option:selected die richtige Klasse verpasst, Formatierung des Eintrags reines CSS
-// Könnte die untere MODS LIDOS Prozedur vereinfachen, funktioniert aber noch nicht 
- 
-
-$( '#top5' ).change( function() { 
-  alert(this.value);
-  });
-    /*
-    var myParent = $( this).parent( '.showEntry' );
-    var myClass= this.className;
-    alert(myClass);
-       $( myParent ).addClass( myClass );
-       
-*/
-var hideEntry= $('.showEntry').hide();
+//var hideEntry= $('.showEntry').hide();
 
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
@@ -172,6 +157,18 @@ function executeQuery(query) {
     $('#searchInput1').val(query);
     doSearchOnReturn();
 };
+  
+// Handler fuer .showEntry select compact (BS)
+// todo:  mit MODS/ LIDOS Handler vereinheitlichen
+
+$( '.showOptions select' ).change( function() {  
+  if(this.value == 'compact') {
+    $( this ).closest('.showEntry').addClass('compact');
+    }
+  else {
+    $( this ).closest(".showEntry").removeClass('compact');
+    }
+  });
 
 // MODS/ LIDOS/  HTML umschalten
 $(document).on('change', '.showResults .showOptions select', function(e){
