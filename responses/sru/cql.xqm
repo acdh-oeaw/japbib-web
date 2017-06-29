@@ -208,8 +208,9 @@ declare function cql:parse-quotes($expr as xs:string) as item()* {
                 else xs:string($e)  
             default return $e/node()!$it(., $it)
     }
-    let $parse-quotes := function($a){$it($a, $it)}
-    return $parse-quotes($a)
+    let $parse-quotes := function($a){$it($a, $it)},
+        $ret := $parse-quotes($a)
+    return if (exists($ret)) then $ret else <term/>
 }; 
 
 
