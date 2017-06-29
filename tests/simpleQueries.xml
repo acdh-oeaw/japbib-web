@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- run through runTests.xquery -->
 <tests>
+    <test title="no query string">
+        <query/>
+        <expected>
+            <searchClause>
+                <index>cql.serverChoice</index>
+                <relation>
+                    <value>scr</value>
+                </relation>
+                <term/>
+            </searchClause>
+        </expected>
+    </test>
     <test title="simple string">
         <query>Haus</query>
         <expected>
