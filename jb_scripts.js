@@ -1,5 +1,5 @@
-$(document).ready(jb_init);
-function jb_init() {
+$(document).ready(function(){jb_init(jQuery, CodeMirror, hasher, crossroads)});
+function jb_init($, CodeMirror, hasher, crossroads) {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -200,7 +200,7 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
     e.preventDefault();
     var subject = $(e.target).parent().children('.plusMinus').text();
     var currentQuery = $('#searchInput1').val();
-    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " AND " + "subject=" + subject;
+    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " and " + 'subject="' + subject + '"';
     executeQuery(newQuery);
 });
 
