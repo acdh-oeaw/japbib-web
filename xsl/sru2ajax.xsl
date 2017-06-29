@@ -13,7 +13,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="yes" method="xhtml"/>
+    <xsl:output indent="no" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:include href="lib/serialization.xsl"/>
@@ -36,10 +36,10 @@
                 <xsl:apply-templates
                     select="sru:searchRetrieveResponse/sru:records"/>                
             </div>
-<!--            <div class="categoryFilter">
+            <div class="categoryFilter">
                 <xsl:apply-templates
                     select="sru:searchRetrieveResponse/sru:extraResponseData/subjects/taxonomy"/>
-            </div>-->
+            </div>
         </div>
     </xsl:template>
 
@@ -54,21 +54,21 @@
     </xsl:template>
     
     <xsl:template match="mods:mods">
-        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors">_:dict('no-aut-abbr')</span></xsl:if>
-        <xsl:apply-templates select="mods:name[mods:role/mods:roleTerm = 'aut']"/><xsl:text>,</xsl:text>
-        <xsl:if test="not(mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
-        <xsl:apply-templates select="mods:originInfo/mods:dateIssued"/>
+        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
+        <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]"/><xsl:text xml:space="prsserve"> </xsl:text>
+        <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
+        <xsl:apply-templates select=".//mods:originInfo/mods:dateIssued"/><xsl:text>,</xsl:text>
+        <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
         <xsl:apply-templates select="." mode="detail"/>
-<!--        <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style=sru2html.xsl&amp;query=id={mods:recordInfo/mods:recordIdentifier}" class="sup" target="_blank"><xsl:apply-templates select="mods:titleInfo"/></a>-->
     </xsl:template>
     
     <xsl:template match="mods:mods" mode="detail">
-        <div class="showEntry">
+        <div class="showEntry" style="display:none;">
             <div class="showOptions">
-                <label>Anzeige des Eintrags: <select name="top5" size="1">
-                        <option selected="selected">detailliert</option>
-                        <option>MODS</option>
-                        <option>Lidos</option>
+                <label>Anzeige des Eintrags: <select name="top5" size="1" data-format="html">
+                        <option value="html" selected="selected">detailliert</option>
+                        <option value="mods">MODS</option>
+                        <option value="lidos">Lidos</option>
                     </select>
                 </label>
                 <span class="erklärung">
@@ -77,82 +77,94 @@
                         gedacht. </span>
                 </span>
             </div>
-
-            <ul><xsl:apply-templates mode="detail"/></ul>
-<!--            <p>
-                <b>Verwandte Suchabfragen</b>
-            </p>
-            <ul>
-                <li class="eSegment">Thema</li>
-                <li>Religionswissenschaft (<a href="#" class="zahl" title="Suchergebnisse"
-                    >40</a>)</li>
-                <li>Brauchtum und Feste (<a href="#" class="zahl" title="Suchergebnisse"
-                    >20</a>)</li>
-                <li class="eSegment">Form</li>
-                <li>Sammelwerk (<a href="#" class="zahl" title="Suchergebnisse">6.000</a>)</li>
-                <li class="eSegment">Stichworte</li>
-                <li><a href="#">Nishida Kitarō</a>; <a href="#">Karl Florenz</a>; <a href="#"
-                        >Eihei-ji</a>; <a href="#">Ritual</a>; <a href="#">Invented traditions</a>;
-                        <a href="#autor">Tagungsbericht</a>
-                </li>
-
-            </ul>-->
+            <div class="record-html">
+                <ul><xsl:call-template name="detail-list-items"/></ul>
+                <p><b>Weitere bibliographische Angaben</b></p>
+                <ul><xsl:call-template name="more-detail-list-items"/></ul>
+                <p><b>Inhaltliche Angaben</b></p>
+                <ul><xsl:call-template name="topics-list-items"/></ul>
+            </div>
+            <div class="record-mods" style="display:none;">
+                <xsl:variable name="modsDoc">
+                    <xsl:copy-of select="." copy-namespaces="no"/>               
+                </xsl:variable>
+                <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
+            </div>
+            <div class="record-lidos" style="display:none;">         
+                <xsl:variable name="lidosDoc">
+                    <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
+                </xsl:variable>
+                <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
+            </div>
         </div>
-<!--        <div class="showMods" style="display:none;">
-            <xsl:variable name="modsDoc">
-                <xsl:copy-of select="." copy-namespaces="no"/>               
-            </xsl:variable>
-            <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
-        </div>
-        <div class="showLidos" style="display:none;">         
-            <xsl:variable name="lidosDoc">
-                <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
-            </xsl:variable>
-            <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
-        </div>-->
     </xsl:template>
     
-    <xsl:template match="*" mode="detail">
+    <xsl:template name="detail-list-items">
         <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')][not(./ancestor::mods:relatedItem)]" mode="detail"/>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
+        <xsl:apply-templates select=".//mods:originInfo" mode="detail"/>
     </xsl:template>
     
-    <xsl:template match="mods:xxx">
-        
-        <li class="eSegment"> Reihe </li>
-        <li> Ostasien-Pazifik (<a href="#" class="zahl" title="Suchergebnisse">6</a>),
-            Bd.5</li>
-        <li class="eSegment"> Ort/Verlag/Jahr</li>
-        <li> Hamburg: LIT-Verl. (<a href="#" class="zahl" title="Suchergebnisse">300</a>),
-            1997 </li>
-        <li class="eSegment"> Co-Autoren </li>
-<!-- TODO       <li> Paul, G. (<a href="#" class="zahl" title="Suchergebnisse">6</a>), Naumann, N.
-            (<a href="#" class="zahl" title="Suchergebnisse">6</a>); Ōbayashi, T (<a
-                href="#" class="zahl" title="Suchergebnisse">6</a>); Blümmel, V. (<a
-                    href="#" class="zahl" title="Suchergebnisse">6</a>), Vollmer, K. (<a
-                        href="#" class="zahl" title="Suchergebnisse">6</a>), Zöllner, R. (<a
-                            href="#" class="zahl" title="Suchergebnisse">6</a>), Lokowandt, H. (<a
-                                href="#" class="zahl" title="Suchergebnisse">6</a>); Fischer, P. (<a
-                                    href="#" class="zahl" title="Suchergebnisse">6</a>), Knecht, P. (<a href="#"
-                                        class="zahl" title="Suchergebnisse">6</a>), Pörtner, P. (<a href="#"
-                                            class="zahl" title="Suchergebnisse">6</a>), Toelken, R. (<a href="#"
-                                                class="zahl" title="Suchergebnisse">6</a>), Woirgardt, M. (<a href="#"
-                                                    class="zahl" title="Suchergebnisse">6</a>), Ikeda, H. (<a href="#"
-                                                        class="zahl" title="Suchergebnisse">6</a>)</li>-->
-        <li class="eSegment"> Kollationsvermerk </li>
-        <li> 300 S. : Ill., graph. Darst., Notenbeisp.</li>
+    <xsl:template name="more-detail-list-items">
+        <xsl:apply-templates select=".//mods:relatedItem[@type eq 'series']" mode="more-detail"/>
+        <xsl:apply-templates select="mods:physicalDescription" mode="more-detail"/>
+        <xsl:call-template name="topic-filterd-subject-links">
+            <xsl:with-param name="topic">Form</xsl:with-param>
+            <xsl:with-param name="subjects" select="mods:subject[not(@displayLabel)]"/>
+        </xsl:call-template>        
+        <!-- TODO <li class="eSegment"> Co-Autoren </li>
+ Co-Autoren -->
+        <xsl:apply-templates select="mods:note[@type eq 'footnotes']" mode="more-detail"/>
     </xsl:template>
+    
+    <xsl:template name="topics-list-items">
+        <xsl:variable name="this" select="."/>
+        <xsl:for-each select="('Thema', 'Zeit', 'Region')">
+        <xsl:call-template name="topic-filterd-subject-links">
+            <xsl:with-param name="topic" select="."/>
+            <xsl:with-param name="subjects" select="$this/mods:subject[not(@displayLabel)]"/>
+        </xsl:call-template>
+        </xsl:for-each>
+<!--        <li class="eSegment">Thema</li>
+        <li>Religionswissenschaft (<a class="zahl" href="#" title="Neue Abfrage">40</a>)</li>
+        <li>Brauchtum und Feste (<a class="zahl" href="#" title="Neue Abfrage">20</a>)</li>-->        
+        
+<!--        <li class="eSegment">Zeit</li>
+        <li>Moderne (1868–1945) (<a class="zahl" href="#" title="Neue Abfrage">4.088</a>)</li>-->
+        
+<!--        <li class="eSegment">Region</li>
+        <li>Japan (<a class="zahl" href="#" title="Neue Abfrage">20.000</a>)</li>
+        <li>Korea (<a class="zahl" href="#" title="Neue Abfrage">4.000</a>)</li>-->
+        <xsl:call-template name="keywords">
+            <xsl:with-param name="keywords" select="mods:subject[@displayLabel eq 'Stichworte']"/>
+        </xsl:call-template>        
+    </xsl:template>
+    
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]">
         <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')"/></span>
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]" mode="detail">
-        <xsl:variable name="scanClause" select="'author=='||normalize-space(./mods:namePart)"/>
-        <xsl:variable name="by-this-author" select="//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
         <li class="eSegment"><xsl:value-of select="_:dict(mods:role/normalize-space(mods:roleTerm))"/></li>
-        <li><xsl:value-of select="string-join(mods:namePart, '/ ')"/>(<a href="#{_:urlParameters()}" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-author"/></a>)<xsl:if test="mods:role/normalize-space(mods:roleTerm) eq 'edt'">,
-            <xsl:value-of select="_:dict('edt')"/></xsl:if></li>
+        <li><xsl:call-template name="link-with-number-of-records">
+                <xsl:with-param name="index">author</xsl:with-param>
+                <xsl:with-param name="term" select="mods:namePart"/>
+            </xsl:call-template>
+        </li>
+    </xsl:template>
+    
+    <xsl:template name="link-with-number-of-records">
+        <xsl:param name="index" as="xs:string"/>
+        <xsl:param name="term" as="xs:string*"/>
+        <xsl:param name="separator" as="xs:string" select="' /'"/>
+        <xsl:variable name="this" select="."/>
+        <xsl:for-each select="$term">
+            <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
+            <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
+            <xsl:value-of select="."/> (<a href="#{_:urlParameters(1, $index||'=&quot;'||.||'&quot;')}" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a>)<xsl:if
+                test="position() ne last()"><xsl:value-of select="$separator"/></xsl:if>
+        </xsl:for-each>
     </xsl:template>
     
     <xsl:template match="mods:dateIssued">
@@ -165,14 +177,66 @@
     
     <xsl:template match="mods:titleInfo" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('title')"/></li>
-        <li> Rituale und ihre Urheber: Invented Traditions in der japanischen
-            Religionsgeschichte</li>
+        <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
+    
+    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)||' '"/></xsl:template>
     
     <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/>.</xsl:template>
     
     <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="normalize-space(.)"/>.</xsl:template>
-
+    
+    <xsl:template match="mods:originInfo" mode="detail">
+        <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
+        <li><xsl:value-of select="(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))||': '||
+            (if (not(mods:publisher)) then _:dict('no-pub-abbr') else '' )"/>
+            <xsl:call-template name="link-with-number-of-records">
+                <xsl:with-param name="index">publisher</xsl:with-param>
+                <xsl:with-param name="term" select="mods:publisher"/>
+            </xsl:call-template>
+            <xsl:value-of select="', '||
+            (if (mods:dateIssued) then string-join(mods:dateIssued, ', ') else _:dict('no-year-abbr'))"/></li>
+    </xsl:template>
+    
+    <xsl:template match="mods:relatedItem[@type eq 'series']" mode="more-detail">
+        <li class="eSegment"><xsl:value-of select="_:dict('series')"/></li>
+        <li><xsl:call-template name="link-with-number-of-records">
+            <xsl:with-param name="index">series</xsl:with-param>
+            <xsl:with-param name="term" select=".//mods:title"/>
+        </xsl:call-template><xsl:apply-templates mode="more-detail" select="* except mods:titleInfo"/></li>
+    </xsl:template>
+    
+    <xsl:template match="mods:part[mods:detail[@type eq 'volume']]" mode="more-detail">
+       <xsl:value-of select="', '||_:dict('vol-abbr')||' '||mods:detail"/>
+    </xsl:template>
+    
+    <xsl:template match="mods:physicalDescription" mode="more-detail">
+        <li class="eSegment">Kollationsvermerk</li>
+        <li><xsl:value-of select="mods:note"/></li>
+    </xsl:template>
+    
+    <xsl:template name="topic-filterd-subject-links">
+        <xsl:param name="topic" as="xs:string"/>
+        <xsl:param name="subjects" as="element(mods:subject)*"/>
+        <li class="eSegment"><xsl:value-of select="$topic"/></li>
+        <li>TODO -> <xsl:value-of select="count($subjects)"/> subjects</li>
+    </xsl:template>
+    
+    <xsl:template match="mods:note[@type eq 'footnotes']" mode="more-detail">        
+        <li class="eSegment">Bemerkungen</li>
+        <li><xsl:value-of select="."/></li>        
+    </xsl:template>
+    
+    <xsl:template name="keywords">
+        <xsl:param name="keywords" as="element(mods:subject)*"/>
+        <xsl:if test="$keywords">
+        <li class="eSegment">Stichworte</li>
+        <li><xsl:for-each select="$keywords">
+            <a href="#{_:urlParameters(1, 'subject=&quot;'||.||'&quot;')}"><xsl:value-of select="."/></a><xsl:text xml:space="preserve"> </xsl:text>
+        </xsl:for-each>
+        </li></xsl:if>
+    </xsl:template>
+    
     <!-- Taxonomy -->
     <xsl:template match="taxonomy">
         <ol class="schlagworte showResults"><xsl:apply-templates select="*"/></ol>
@@ -185,7 +249,7 @@
     </xsl:template>
     
     <xsl:template match="category">
-        <li><span class="catNum"><xsl:value-of select="@n"/></span><span class="sup"><xsl:value-of select="catDesc"/></span>
+        <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>--><span class="sup"><xsl:value-of select="catDesc"/></span>
             <xsl:if test="numberOfRecords">
                 <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style={$x-style}&amp;startRecord=1&amp;maximumRecords={$maximumRecords}&amp;query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="numberOfRecords"/></a>
             </xsl:if>

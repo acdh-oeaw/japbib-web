@@ -1,4 +1,4 @@
-﻿$(document).ready(jb_init);
+$(document).ready(jb_init);
 function jb_init() {
 
 var navs= $ ( '#navbar_items a' );
@@ -80,6 +80,14 @@ function toggleResults(href) {
         frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
     }
     $('.content > .showResults').replaceWith(frameWork);
+    $('.content > .showResults textarea.codemirror-data').each(function(){
+      CodeMirror.fromTextArea(this,
+      {readOnly: true,
+      lineNumbers: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      });
+    });
     $('.showResults').show('slow');
   });
     
@@ -141,11 +149,9 @@ $( '#top5' ).change( function() {
     alert(myClass);
        $( myParent ).addClass( myClass );
        
-       .prop('selected', true)
-    */  
-  }); 
-  
-  
+var hideEntry= $('.showEntry').hide();
+
+
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
   if (e.which === 13) {
@@ -165,8 +171,8 @@ function executeQuery(query) {
     doSearchOnReturn();
 };
 
-// MODS/ LIDOS/  HTML ein/ausblenden
-$('.showResults').on('change', '.showOptions form', function(e){
+// MODS/ LIDOS/  HTML umschalten
+$(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target);
    var dataFormat = target.data("format")
    var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
@@ -174,15 +180,17 @@ $('.showResults').on('change', '.showOptions form', function(e){
    target.data("format", format);
    var c = ".record-" + format;
    var div = target.closest(".showEntry").find(c);
-   if (curFormat === "lidos" || curFormat === "mods") {
-        console.log(curFormat);   
-   }
    target.closest(".showEntry").find("[class^=record]").hide();
    div.show();
    if (format == 'lidos' || format == 'mods') {
-        /// TODO invoke code higlighting
+        refreshCM(div);
    }
 });
+
+function refreshCM(div) {  
+    var editor = div.find('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
+}
 
 //////// Schlagworte //////
   
@@ -198,19 +206,11 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 $(document).on('click', '.showResults .plusMinus', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
-    $ ( this ).nextAll( 'div' ).toggle('fast');
     $ ( this ).toggleClass( 'close' );
     if ( fullEntryIsShown ) {
-        // Eintrag ist bereits ausgeklappt, daher wird er eingeklappt und der Inhalt gelöscht.
-        $ ( this ).nextAll( 'div' ).remove();
+        $ ( this ).nextAll( 'div' ).hide('fast');
     } else {
-        //
-        var caller = $ ( this ); 
-        var url = $ ( this ).attr("href");
-        $.get(url, null , function ( responseData , statusText, responseObj ) {
-            caller.after( $(responseData).find(".showEntry") );
-        }, 'html' );
-        
+        $ ( this ).next('.showEntry').show('slow');
     }
 }); 
 

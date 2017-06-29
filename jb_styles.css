@@ -1,4 +1,4 @@
-﻿/***************
+/***************
    Schrift
 ****************/
 body {
@@ -814,13 +814,6 @@ PLUS-MINUS
 .pull:hover {
   color: #333;
   }
-  
-/* MODS und LIDOS */
-.record-mods, .record-lidos {
-    overflow-x: scroll;
-}
-  
-
 
 /* Quick Fix: Checkbox based show/hide */
 
