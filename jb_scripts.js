@@ -72,8 +72,7 @@ function toggleResults(href) {
         searchResult = ajaxParts.find('.search-result > ol'),
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         frameWork = resultsFramework.clone();
-    if (statusText === 'success') {      
-        $('.showResults ol').remove();
+    if (statusText === 'success') {
         $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
         frameWork.find('#showList > ol').replaceWith(searchResult);
     } else {
@@ -204,7 +203,7 @@ $ ( '#facet-subjects').on('click', 'a', function(e){
 });
 
 // Handler für Klick auf (+) in Resultatliste
-$(document).on('click', '.showResults .plusMinus', function (e) {
+$(document).on('click', '#showList .showResults .plusMinus', function (e) {
     e.preventDefault();
     var fullEntryIsShown = $(this).hasClass("close");
     $ ( this ).toggleClass( 'close' );
@@ -232,7 +231,7 @@ $('.suchOptionen a').click(function(e){
 });
  
 // Schlagwortbaum oeffnen und schliessen
-var plusMinus= $ ( 'div.schlagworte .plusMinus' );
+var plusMinus='.schlagworte .plusMinus';
 var ols= $ ( '.schlagworte li li ol' );
 
   // Anfangszustand; spaeter aendern
@@ -242,19 +241,18 @@ $ ( ols ).show();
 var showAll =  $ ( '#aO' ).click( 
   function ( ) { 
     $ ( '.schlagworte li li ol' ).show ( 'slow' );
-    $ ( plusMinus ).addClass( 'close' );     
+    $(plusMinus).addClass( 'close' );     
     }
   );  
 var closeAll =  $ ( '#aC' ).click( 
   function ( ) { 
     $ ( '.schlagworte li li ol' ).hide ( 'slow' );
-    $ ( '.schlagworte .plusMinus' ).removeClass( 'close' );     
+    $(plusMinus).removeClass( 'close' );     
     }
   ); 
-var toggleNext = $ (plusMinus ).click (
-  function () {
-    $ (this).next( 'ol' ).toggle( 'slow' );
+$(document).on('click', plusMinus, toggleNext);
+function toggleNext(e) {
+    $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }
-  );
 }
