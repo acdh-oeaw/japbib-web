@@ -149,7 +149,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             then <XPath>{$xpath}</XPath>
             else ()}
             {$xcql}
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(api:subjects($results), false(), 'api:subject '))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($results), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
@@ -165,15 +165,6 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
              return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||replace(., '&quot;','\\&quot;')||'"')
         , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
     return $response update insert node $scans into ./sru:extraResponseData
-};
-
-declare %private function api:subjects($r) as map(*) {
-    map:merge(
-        for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
-        let $v := data($t)
-        group by $v
-        return map:entry($v, count($t))
-    )
 };
 
 declare %private function api:get-base-uri-public() as xs:string {
