@@ -65,10 +65,6 @@ var resultsFramework;
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
 function toggleResults(href) {  
-  // todo (BS, 10.6.): 
-    //function besser auf .showList anwenden statt auf .showResults
-    //neu kreiertes div muss bei neuer Frage wieder gelöscht werden
-    //Zeige Anzahl der Resultate in neuem span: $('#countResults') 
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
@@ -96,6 +92,29 @@ function toggleResults(href) {
   });
     
   }
+  
+// Handler fuer .tipp
+
+$( '.tipp' )
+  .attr('title', 'Tipp')
+  .children()
+    .addClass('display') // :hover ausschalten
+    .hide();  
+$( document )
+  .on('click', '.tipp',
+    function () {
+      $( this )
+        .toggleClass ( 'q2x' )  // ? --> X
+        .children().slideToggle( 'slow' );
+      var title= 'Tipp'; 
+      if( $(this).hasClass('q2x')){
+        title = 'Tipp ausblenden';
+      }        
+      $(this).attr('title', title);  
+    } 
+  );  
+  
+  
 // Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.   
 // Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
 // ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
@@ -116,12 +135,23 @@ $( document )
       } 
     }
   ); 
-///////////////
   
-  
-  
-var hideEntry= $('.showEntry').hide();
+// Handler für .showEntry select
+// Idee BS: .showEntry bekommt von select option:selected die richtige Klasse verpasst, Formatierung des Eintrags reines CSS
+// Könnte die untere MODS LIDOS Prozedur vereinfachen, funktioniert aber noch nicht 
+ 
 
+$( '#top5' ).change( function() { 
+  alert(this.value);
+  });
+    /*
+    var myParent = $( this).parent( '.showEntry' );
+    var myClass= this.className;
+    alert(myClass);
+       $( myParent ).addClass( myClass );
+       
+*/
+var hideEntry= $('.showEntry').hide();
 
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
@@ -205,7 +235,7 @@ $('.suchOptionen a').click(function(e){
 var plusMinus= $ ( 'div.schlagworte .plusMinus' );
 var ols= $ ( '.schlagworte li li ol' );
 
-  // Anfangszustand; sp�ter �ndern
+  // Anfangszustand; spaeter aendern
 $ ( plusMinus ).addClass( 'close' );   
 $ ( ols ).show(); 
 
