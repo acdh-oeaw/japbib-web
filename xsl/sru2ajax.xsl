@@ -249,12 +249,21 @@
     </xsl:template>
     
     <xsl:template match="category">
-        <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>--><span class="sup"><xsl:value-of select="catDesc"/></span>
+        <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
+        <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>-->
+            <span>
+                <xsl:if test="$has-children">
+                    <xsl:attribute name="class">
+                        <xsl:if test="$has-children">plusMinus</xsl:if>
+                    </xsl:attribute>
+                </xsl:if>
+                <xsl:value-of select="catDesc"/>
+            </span>
             <xsl:if test="numberOfRecords">
                 <a href="{$base-uri-public}?version={$version}&amp;operation=searchRetrieve&amp;x-style={$x-style}&amp;startRecord=1&amp;maximumRecords={$maximumRecords}&amp;query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="numberOfRecords"/></a>
             </xsl:if>
             <xsl:if test="category">
-                <ol><xsl:apply-templates select="category"/></ol>
+                <ol style="display:none;"><xsl:apply-templates select="category"/></ol>
             </xsl:if>
         </li>
     </xsl:template>
