@@ -19,8 +19,7 @@ declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 
-declare variable $api:path-to-stylesheets := "../../xsl/";
-declare variable $api:sru2html := $api:path-to-stylesheets||"sru2html.xsl";
+declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
   api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, 'false')
@@ -90,7 +89,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
     let $response-formatted :=
         if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and not($x-style eq 'none'))
         then 
-            let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html),
+            let $xsl := if ($x-style != '' and doc-available($sru-api:path-to-stylesheets||$x-style)) then doc($sru-api:path-to-stylesheets||$x-style) else doc($api:sru2html),
                 $formatted := 
                 xslt:transform($response-with-stats, $xsl,
                 map:merge((

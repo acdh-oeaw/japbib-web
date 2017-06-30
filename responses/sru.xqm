@@ -17,6 +17,8 @@ declare variable $api:HOSTNAME := "http://jb80.acdh.oeaw.ac.at";
 declare variable $api:SRU.DATABASE := $model:dbname;
 declare variable $api:SRU.DATABASETITLE := "JB 80: Deutschsprachige Japan-Bibliographie 1980–2000";
 
+declare variable $api:path-to-stylesheets := "../../xsl/";
+
 declare 
     %rest:path("japbib-web/sru")
     %rest:query-param("version", "{$version}")

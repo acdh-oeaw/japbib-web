@@ -6,13 +6,15 @@ import module namespace xslt = "http://basex.org/modules/xslt";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace cache = "japbib:cache" at "sru/cache.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
+import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "sru.xqm";
 
 declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
 declare variable $api:path-to-thesaurus := "../thesaurus.xml";
-declare variable $api:thesaurus2html := "../xsl/thesaurus2html.xsl";
+declare variable $api:path-to-stylesheets := replace($sru-api:path-to-stylesheets, '../(.*)', '$1');
+declare variable $api:thesaurus2html := $api:path-to-stylesheets||"thesaurus2html.xsl";
 
 declare 
     %rest:path("japbib-web/thesaurus")
@@ -62,9 +64,14 @@ declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats a
                         if ($cat-stats)
                         then <numberOfRecords>{$cat-stats}</numberOfRecords>
                         else (),
+                        if ($cat-stats and $sub-topics//numberOfRecords)
+                        then <numberOfRecordsInGroup>{sum(($cat-stats, $sub-topics//numberOfRecords))}</numberOfRecordsInGroup>
+                        else (),
                         $sub-topics
                     )}
                 else ()
+        case element(numberOfRecords) return ()
+        case element(numberOfRecordsInGroup) return ()
         case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:addStatsToThesaurus(., $stats) }
         case attribute() return $thesaurus
         default return $thesaurus
@@ -74,17 +81,19 @@ declare
     %rest:path("japbib-web/thesaurus")
     %rest:GET
     %rest:query-param("x-mode", "{$x-mode}")
+    %rest:query-param("x-style", "{$x-style}")
     %rest:produces("text/html", "application/xml+xhtml")
-    %output:method("xml")
+    %output:method("xhtml")
     %updating
-function api:taxonomy-as-html-cached($x-mode) {
+function api:taxonomy-as-html-cached($x-mode, $x-style) {
     let $data-with-stats := api:create-data-with-stats($x-mode),
-        $ret := api:taxonomy-as-html($data-with-stats/*)
+        $ret := api:taxonomy-as-html($data-with-stats/*, $x-style)
     return (db:output($ret) , api:taxonomy-cahce-as-xml($x-mode, $data-with-stats))
 };
 
-declare function api:taxonomy-as-html($xml as element(taxonomy)) as node() {
-    xslt:transform($xml, doc($api:thesaurus2html))
+declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:string?) as node() {
+    let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:thesaurus2html)
+    return if ($x-style eq 'none') then $xml else xslt:transform($xml, $xsl, if ($x-style) then map{"x-style": $x-style} else map{})
 };
 
 declare function api:topics-to-map($r) as map(*) {
