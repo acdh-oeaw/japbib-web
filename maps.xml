@@ -5,10 +5,10 @@
         <index key="cql.serverChoice" case="yes">
             <path label="." match="data(.)">mods:mods</path>
         </index>
-        <index key="title" case="yes">
+        <index key="title" case="no">
             <path label=".">mods:titleInfo[parent::mods:mods]/mods:title</path>
         </index>
-        <index key="author" case="yes">
+        <index key="author" case="no">
             <path label="." match="mods:namePart">mods:name[normalize-space(mods:role/mods:roleTerm) = ('aut', 'edt')]</path>
         </index>
         <index key="date" datatype="xs:integer">
