@@ -849,10 +849,6 @@ PLUS-MINUS
 .record-mods, .record-lidos {
     overflow-x: scroll;
 }
-
-.CodeMirror { 
-  margin: -.5em -1em;
-  }
   
 
 
