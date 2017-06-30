@@ -31,7 +31,7 @@
     </xsl:variable>
     
     <xsl:template match="/">
-        <xsl:apply-templates select="sru:searchRetrieveResponse"/>>
+        <xsl:apply-templates select="sru:searchRetrieveResponse"/>
     </xsl:template>
     
     <xsl:template match="sru:searchRetrieveResponse">        
