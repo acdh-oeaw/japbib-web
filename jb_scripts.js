@@ -1,5 +1,5 @@
-$(document).ready(function(){jb_init(jQuery, CodeMirror, hasher, crossroads)});
-function jb_init($, CodeMirror, hasher, crossroads) {
+$(document).ready(function(){jb_init(jQuery, CodeMirror, hasher, crossroads, URI)});
+function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );

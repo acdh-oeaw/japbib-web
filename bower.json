@@ -20,6 +20,7 @@
     "codemirror": "^5.26.0",
 	"crossroads": "^0.12.2",
     "hasher": "^1.2.0",
-    "js-signals": "^1.0.0"	
+    "js-signals": "^1.0.0",
+    "urijs": "^1.18.10"	
   }
 }
