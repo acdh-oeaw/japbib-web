@@ -25,7 +25,7 @@ function toggleNav() {
 $ ( controls ).click( toggleNav ); 
 $ ( navs ).click( toggleNav ); 
 
-//////// ABOUT ////// 
+//////// ABOUT-Page ////// 
 
 var divs= [$('#ziele'), $('#help'), $('#geschichte'), $('#impressum')];
 var go2s= [$('#go2ziele'), $('#go2help'), $('#go2geschichte'), $('#go2impressum')]; 
@@ -52,18 +52,17 @@ for (i in nexts) {
   $(nexts[i]).click(go2next);
   }
   
-//////// Find //////
+//////// Find-Page //////
 
-var toggleAnd = $('.andOr').click(
-  function() { if (this.innerHTML== 'AND') this.innerHTML='OR'; 
-               else this.innerHTML= 'AND'; }
-  );
   
-var hideResults= $('.showResults').hide();
+//var hideResults= $('.showResults').hide();
+
 var resultsFramework;
+
 /*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
   toggleResults($(this).attr('href'))});*/
+
 function toggleResults(href) {  
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
@@ -94,7 +93,7 @@ function toggleResults(href) {
     
   }
   
-// Handler fuer .tipp
+// Handler fuer .tipp (BS)
 
 $( '.tipp' )
   .attr('title', 'Tipp')
@@ -137,7 +136,7 @@ $( document )
     }
   ); 
   
-//var hideEntry= $('.showEntry').hide();
+////////////////////////////////////////
 
 $('#searchInput1').keypress(searchOnReturn);
 function searchOnReturn(e) {
@@ -170,7 +169,7 @@ $( '.showOptions select' ).change( function() {
     }
   });
 
-// MODS/ LIDOS/  HTML umschalten
+// MODS/ LIDOS/  HTML umschalten (OS)
 $(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target);
    var dataFormat = target.data("format")
@@ -192,6 +191,16 @@ function refreshCM(div) {
 }
 
 //////// Schlagworte //////
+
+
+/* 
+// Handler für AND/OR, zu Demo-Zwecken (BS)
+var toggleAnd = $('.andOr').click(
+  function() { if (this.innerHTML== 'AND') this.innerHTML='OR'; 
+               else this.innerHTML= 'AND'; }
+  );
+*/
+
   
 $ ( '#facet-subjects').on('click', 'a', function(e){
     e.preventDefault();
@@ -221,7 +230,8 @@ $(document).on('click', '.showResults .zahl', function (e) {
     executeQuery(query);
 });
 
-// Handler für Klick auf alphabetische Liste für Autoren oder Werktitel
+// Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
+// TODO: Anpassen an Kontext (BS)
 $('.suchOptionen a').click(function(e){
     e.preventDefault();
     var index = $(e.target).closest("td").attr("data-index");
@@ -229,7 +239,10 @@ $('.suchOptionen a').click(function(e){
     executeQuery(index+"="+term);
 });
  
-// Schlagwortbaum oeffnen und schliessen
+/*
+// Schlagwortbaum oeffnen und schliessen (BS)
+// Auskommentiert wegen moegl. Konflikt mit anderen Skripts (BS)
+
 var plusMinus='.schlagworte .plusMinus';
 var ols= $ ( '.schlagworte li li ol' );
 
@@ -254,4 +267,6 @@ function toggleNext(e) {
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }
+
+*/
 }
