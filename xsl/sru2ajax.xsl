@@ -181,7 +181,7 @@
         <xsl:for-each select="$term">
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
-            <xsl:value-of select="."/> (<a href="#{_:urlParameters(1, $index||'=&quot;'||.||'&quot;')}" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a>)<xsl:if
+            <xsl:value-of select="."/> <a href="#{_:urlParameters(1, $index||'=&quot;'||.||'&quot;')}" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
                 test="position() ne last()"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
     </xsl:template>
