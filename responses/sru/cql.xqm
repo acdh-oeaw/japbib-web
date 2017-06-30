@@ -389,12 +389,13 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
         $index := index:index-from-map($index-key ,$map),
         $index-type := ($index/xs:string(@type),'')[1],
         $index-datatype := $index/xs:string(@datatype),
-        $index-case := ($index/xs:string(@case),'')[1],
+        $index-case as xs:boolean := if (($index/xs:string(@case),'')[1] = ('yes', 'true', '1')) then true() else false(),
         $index-xpath := index:index-as-xpath-from-map($index-key,$map,''),        
-        $match-on := index:index-as-xpath-from-map($index-key,$map,'match-only'),
+        $match-on := if ($index-case) then index:index-as-xpath-from-map($index-key,$map,'match-only')
+                     else 'lower-case('||index:index-as-xpath-from-map($index-key,$map,'match-only')||')',
         $relation := if ($clause/relation/value/text() eq 'scr') then 'contains' else $clause/relation/value/text(),
         (: exact, starts-with, contains, ends-with :)
-        $term := if ($index-case='yes') then $clause/term else lower-case($clause/term), 
+        $term := if ($index-case) then $clause/term else lower-case($clause/term), 
         $sanitized-term := cql:sanitize-term($term),
         $predicate := switch (true())
                         case ($sanitized-term eq 'false') return 'not('||$match-on||')'
