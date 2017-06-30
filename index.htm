@@ -458,14 +458,16 @@
                     </form>
                   </div>
                   <div class="navResults">
-                    <div class="countResults">
-                      <span class="numberofRecords">126</span> Treffer 
-                    </div>
-                    <div class="hitList">				  
-                      <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">&#8810;</span>
-                      <a class="hits first" href="" title="Treffer 1–10">1</a>
-                      <span class="fenster" id="fenster1">
+                    <div class="navBoxWrapper">
+                    <div class="box1">
+                      <span class="countResults">
+                        <span class="numberofRecords">126</span> Treffer 
+                      </span>
+                      <a id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">&#8810;</a>
+                    </div><!--
+                    --><div class="box2 fenster" id="fenster1">
                       <span id="hitRow">
+                      <a class="hits" href="" title="Treffer 1–10">1</a>
                       <a class="hits" href="" title="Treffer 11—20">2</a>
                       <a class="hits" href="" title="Treffer 21—30">3</a>
                       <a class="hits" href="" title="Treffer 31—40">4</a>
@@ -476,11 +478,22 @@
                       <a class="hits" href="" title="Treffer 81—90">9</a>
                       <a class="hits" href="" title="Treffer 91—100">10</a>
                       <a class="hits" href="" title="Treffer 101—110">11</a>
-                      <a class="hits" href="" title="Treffer 111—120">12</a>  
+                      <a class="hits" href="" title="Treffer 111—120">12</a> 
+                      <a class="hits" href="" title="Treffer 21—30">13</a>
+                      <a class="hits" href="" title="Treffer 31—40">14</a>
+                      <a class="hits" href="" title="Treffer 41—50">15</a>
+                      <a class="hits" href="" title="Treffer 51—60">16</a>
+                      <a class="hits" href="" title="Treffer 61–70">17</a>
+                      <a class="hits" href="" title="Treffer 71—80">18</a>
+                      <a class="hits" href="" title="Treffer 81—90">19</a>
                       </span>  
-                      </span>
-                      <a class="hits last" href title="Treffer 121–126">13</a>
-                      <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">&#8811;</span>
+                    </div><!--
+                    --><div class="box3">
+                    <a id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">&#8811;</a>
+                    <span class="gotoNr">
+                    <input type="text" size="3" maxlength="4" placeholder="go to"/><a class="pull" href="#">&#8811;</a>
+                    </span>
+                    </div>
                     </div>
                   </div>
 <!------------------------------------------
@@ -712,7 +725,8 @@
                   </ol>
                 </div>
               </div>
-            </div>
+            </div> 
+
           </td>
           <td id="find_control" class="control">
             <div>
