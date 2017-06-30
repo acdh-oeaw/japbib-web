@@ -737,6 +737,17 @@ PLUS-MINUS
  opacity: 0.8;
  }
  
+.plusMinus ~ .zahl.gruppe,
+.plusMinus.close ~ .zahl.eintrag {
+    display: inline;
+}
+
+.plusMinus ~ .zahl.eintrag,
+.plusMinus.close ~ .zahl.gruppe,
+.li1 > .zahl.gruppe {
+    display: none;
+}
+
 .schlagworte .sup::before,
 .schlagworte .plusMinus::before { 
  position: absolute;
