@@ -5,7 +5,7 @@
     xmlns:sru="http://www.loc.gov/zing/srw/"
     xmlns:mods="http://www.loc.gov/mods/v3"
     xmlns:_="urn:sur2html"
-    xmlns="http://www.w3org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
     exclude-result-prefixes="#all"
     version="3.0">
     <xd:doc scope="stylesheet">
@@ -31,38 +31,46 @@
     </xsl:variable>
     
     <xsl:template match="/">
+        <xsl:apply-templates select="sru:searchRetrieveResponse"/>>
+    </xsl:template>
+    
+    <xsl:template match="sru:searchRetrieveResponse">        
         <div class="ajax-result">
             <div class="navResults">
-                <div class="countResults">
-                    <span class="numberofRecords"><xsl:value-of select="/sru:searchRetrieveResponse/sru:numberOfRecords"/></span>&#xa0;Treffer 
-                </div>
-                <div class="hitList">
-                    <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">≪</span>
-                    <a class="hits first{if ($startRecord &lt;= 10) then ' here' else ''}" href="#{_:urlParameters(1)}" title="Treffer 1–10">1</a>
-                    <span class="fenster" id="fenster1">
-                        <span id="hitRow">
-                            <xsl:for-each select="1 to ((/sru:searchRetrieveResponse/sru:numberOfRecords - 11) idiv 10)">
-                                <a class="hits{if ($startRecord &gt;= (. * 10 + 1) and $startRecord &lt;= (. * 10 + 10)) then ' here' else ''}" href="#{_:urlParameters(. * 10 + 1)}" title="Treffer {. * 10 + 1}—{. * 10 + 10}"><xsl:value-of select=". + 1"/></a>
-                            </xsl:for-each>
-                        </span>  
-                    </span>
-                    <xsl:variable name="lastPage" as="xs:integer" select="(/sru:searchRetrieveResponse/sru:numberOfRecords - 1) idiv 10"/>
-                    <a class="hits last{if ($startRecord &gt;= ($lastPage * 10 + 1)) then ' here' else ''}" href="#{_:urlParameters($lastPage * 10 + 1)}" title="Treffer {$lastPage * 10 + 1}–{/sru:searchRetrieveResponse/sru:numberOfRecords}"><xsl:value-of select="$lastPage"/></a>
-                    <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
-                </div>
+                <xsl:call-template name="navbar"/>
             </div>
             <div class="search-result">
                 <xsl:apply-templates
-                    select="sru:searchRetrieveResponse/sru:records"/>                
+                    select="sru:records"/>                
             </div>
             <div class="categoryFilter">
                 <xsl:apply-templates
-                    select="sru:searchRetrieveResponse/sru:extraResponseData/subjects/taxonomy"/>
+                    select="sru:extraResponseData/subjects/taxonomy"/>
             </div>
         </div>
     </xsl:template>
 
     <!-- Results -->
+    
+    <xsl:template name="navbar">        
+        <div class="countResults">
+            <span class="numberofRecords"><xsl:value-of select="/sru:searchRetrieveResponse/sru:numberOfRecords"/></span>&#xa0;Treffer 
+        </div>
+        <div class="hitList">
+            <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">≪</span>
+            <a class="hits first{if ($startRecord &lt;= 10) then ' here' else ''}" href="#{_:urlParameters(1)}" title="Treffer 1–10">1</a>
+            <span class="fenster" id="fenster1">
+                <span id="hitRow">
+                    <xsl:for-each select="1 to ((/sru:searchRetrieveResponse/sru:numberOfRecords - 11) idiv 10)">
+                        <a class="hits{if ($startRecord &gt;= (. * 10 + 1) and $startRecord &lt;= (. * 10 + 10)) then ' here' else ''}" href="#{_:urlParameters(. * 10 + 1)}" title="Treffer {. * 10 + 1}—{. * 10 + 10}"><xsl:value-of select=". + 1"/></a>
+                    </xsl:for-each>
+                </span>  
+            </span>
+            <xsl:variable name="lastPage" as="xs:integer" select="(/sru:searchRetrieveResponse/sru:numberOfRecords - 1) idiv 10"/>
+            <a class="hits last{if ($startRecord &gt;= ($lastPage * 10 + 1)) then ' here' else ''}" href="#{_:urlParameters($lastPage * 10 + 1)}" title="Treffer {$lastPage * 10 + 1}–{/sru:searchRetrieveResponse/sru:numberOfRecords}"><xsl:value-of select="$lastPage"/></a>
+            <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
+        </div>
+    </xsl:template>
     
     <xsl:template match="sru:records">
         <ol data-numberOfRecords="{/sru:searchRetrieveResponse/sru:numberOfRecords}" data-nextRecordPosition="{sru:searchRetrieveResponse/sru:nextRecordPosition}" class="results"><xsl:apply-templates select="*"/></ol>
@@ -262,12 +270,18 @@
     </xsl:template>
     
     <xsl:template match="category[matches(@n, '^[123456789]$')]">
-        <li class="li1"><span><xsl:value-of select="catDesc"/></span>
+        <xsl:param name="base-path" tunnel="yes">#</xsl:param>
+        <li class="li1"><span><xsl:apply-templates select="catDesc"/></span>
+            <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
+                <xsl:with-param name="href" select="$base-path||'query=subject%3D&quot;'||catDesc||'&quot;'"/>
+                <xsl:with-param name="showGroup" select="true()"/>
+            </xsl:apply-templates>
             <ol><xsl:apply-templates select="category"/></ol>           
         </li>
     </xsl:template>
     
     <xsl:template match="category">
+        <xsl:param name="base-path" tunnel="yes">#</xsl:param>
         <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
         <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>-->
             <span>
@@ -276,15 +290,27 @@
                         <xsl:if test="$has-children">plusMinus</xsl:if>
                     </xsl:attribute>
                 </xsl:if>
-                <xsl:value-of select="catDesc"/>
+                <xsl:apply-templates select="catDesc"/>
             </span>
-            <xsl:if test="numberOfRecords">
-                <a href="#{_:urlParameters(1, 'query=subject%3D&quot;'||catDesc||'&quot;')}" class="zahl" title="Suchergebnisse"><xsl:value-of select="numberOfRecords"/></a>
-            </xsl:if>
+            <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
+                <xsl:with-param name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/>
+            </xsl:apply-templates>
             <xsl:if test="category">
                 <ol style="display:none;"><xsl:apply-templates select="category"/></ol>
             </xsl:if>
         </li>
+    </xsl:template>
+    
+    <xsl:template match="numberOfRecords">
+        <xsl:param name="href" as="xs:string">#</xsl:param>
+        <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
+        <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
+    </xsl:template>
+    
+    <xsl:template match="numberOfRecordsInGroup">
+        <xsl:param name="href"/>
+        <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
+        <a href="{$href}" class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></a>
     </xsl:template>
     
 </xsl:stylesheet>
