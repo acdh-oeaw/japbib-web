@@ -1,5 +1,7 @@
-$(document).ready(function(){jb_init(jQuery, CodeMirror, hasher, crossroads, URI)});
+$(document).ready(function(){if (!window.__karma__) {jb_init(jQuery, CodeMirror, hasher, crossroads, URI)}});
 function jb_init($, CodeMirror, hasher, crossroads, URI) {
+
+var m = {};
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -55,43 +57,71 @@ for (i in nexts) {
 //////// Find-Page //////
 
   
-//var hideResults= $('.showResults').hide();
+var hideResults= $('.showResults').hide();
 
 var resultsFramework;
 
 /*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
-  toggleResults($(this).attr('href'))});*/
+  getResultsHidden($(this).attr('href'))});*/
 
-function toggleResults(href) {  
+var getResultsLock = false;
+var originalStack = "";
+var raisedErrors = [];
+
+function getResultsHidden(href) {
+  if (getResultsLock) {
+    var raisedError = Error("Do not call getResultsHidden() while a request is in progress!") ;
+    raisedErrors.push(raisedError);
+    throw raisedError;
+  } else {
+    var e = Error('');
+    originalStack = e.stack;
+  }
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
+  getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
-    var ajaxParts = $('.content > .showResults .ajax-result'),
-        searchResult = ajaxParts.find('.search-result > ol'),
-        categoryFilter = ajaxParts.find('.categoryFilter > ol'),
-        navResults = ajaxParts.find('.navResults'),
-        frameWork = resultsFramework.clone();
-    if (statusText === 'success') {
+    try {
+      var ajaxParts = $('.content > .showResults .ajax-result'),
+          searchResult = ajaxParts.find('.search-result > ol'),
+          categoryFilter = ajaxParts.find('.categoryFilter > ol'),
+          navResults = ajaxParts.find('.navResults'),
+          frameWork = resultsFramework.clone();
+      if (statusText === 'success' && raisedErrors.length === 0) {
         $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
         frameWork.find('#showList > .navResults').replaceWith(navResults);
         frameWork.find('#showList > ol').replaceWith(searchResult);
-    } else {
-        frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
-    }
-    $('.content > .showResults').replaceWith(frameWork);
-    $('.content > .showResults textarea.codemirror-data').each(function(){
-      CodeMirror.fromTextArea(this,
-      {readOnly: true,
-      lineNumbers: true,
-      foldGutter: true,
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      } else {handleGetErrors.apply(this, [frameWork, jqXHR.status, ajaxParts])}
+      $('.content > .showResults').replaceWith(frameWork);
+      $('.content > .showResults textarea.codemirror-data').each(function(){
+        CodeMirror.fromTextArea(this,
+        {readOnly: true,
+        lineNumbers: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        });
       });
-    });
-    $('.showResults').show('slow');
+      $('.showResults').show('slow');
+    } finally {
+      getResultsLock = false;
+    }
   });
     
+}
+
+function handleGetErrors(frameWork, status, htmlErrorMessage) {  
+  if (raisedErrors.length === 0) {
+    frameWork.prepend($('<div class="ajax-error '+status % 100 * 100+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
+  } else {
+    var errors = '<pre>Original call:\n'+originalStack+'</pre>';          
+    for (var i = 0; i < raisedErrors.length; i++) {
+      errors += '<pre>'+raisedErrors[i].toString()+'\n'+raisedErrors[i].stack+'</pre>'
+    }
+    frameWork.prepend($('<div class="ajax-error concurrency">').append(errors));
   }
+  raisedErrors = [];
+}
   
 // Handler fuer .tipp (BS)
 
@@ -149,13 +179,17 @@ function searchOnReturn(e) {
 function doSearchOnReturn() {
     var params = $('#searchform1').serialize(),
         baseUrl = $('#searchform1').attr('action')
-    toggleResults(baseUrl+'?'+params);
+    getResultsHidden(baseUrl+'?'+params);
 };
+
+m.doSearchOnReturn = doSearchOnReturn;
 
 function executeQuery(query) {
     $('#searchInput1').val(query);
     doSearchOnReturn();
 };
+
+m.executeQuery = executeQuery;
   
 // Handler fuer .showEntry select compact (BS)
 // todo:  mit MODS/ LIDOS Handler vereinheitlichen
@@ -239,7 +273,7 @@ $('.suchOptionen a').click(function(e){
     executeQuery(index+"="+term);
 });
  
-/*
+
 // Schlagwortbaum oeffnen und schliessen (BS)
 // Auskommentiert wegen moegl. Konflikt mit anderen Skripts (BS)
 
@@ -268,5 +302,6 @@ function toggleNext(e) {
     $ (this).toggleClass( 'close' );
     }
 
-*/
+window.jb80 = m;
+
 }

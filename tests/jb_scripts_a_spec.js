@@ -2,24 +2,37 @@ describe("japbib Website", function(){
     var test_utils = window.test_utils = window.test_utils || {};
 
     function returnOneHTML(fileName){
-        expect(this.requests.length).to.equal(1);
-        var resultHandle = fixture.load(fileName, true)[0],
-            result = resultHandle.outerHTML;
-        resultHandle.parentNode.removeChild(resultHandle);
-        this.requests[0].respond(200, {"Content-Type": "text/html"}, result);
-        return result;
+        return returnNHTML.apply(this, [1, [fileName]])[0]; 
+    }
+    function returnNHTML(n, fileNames){
+        expect(this.requests.length).to.equal(n);
+        var results = [];
+        for (var i = 0; i < n; i++) {
+            var resultHandle = fixture.load(fileNames[i], true)[0];
+            results.push(resultHandle.outerHTML);
+            resultHandle.parentNode.removeChild(resultHandle);
+            this.requests[i].respond(200, {"Content-Type": "text/html"}, results[i]);
+        }  
+        return results;
     }
     test_utils.returnOneHTML = returnOneHTML;
+    test_utils.returnNHTML = returnNHTML;
 
     function returnOneError(code){
-        expect(this.requests.length).to.equal(1);
-        expect(code).to.be.a("number");
-        var result = 
-        "<html><head><title>Error "+code+"</title></head><body>"+code+"</body></html>"
-        this.requests[0].respond(code, {"Content-Type": "text/html"}, result);
-        return result;
+        return returnNError.apply(this, [1, [code]])[0];
+    }
+    function returnNError(n, codes) {
+        expect(this.requests.length).to.equal(n);
+        var results = []; 
+        for (var i = 0; i < n; i++) {
+            expect(codes[i]).to.be.a("number");
+            results.push("<html><head><title>Error "+codes[i]+"</title></head><body>"+codes[i]+"</body></html>")
+            this.requests[i].respond(codes[i], {"Content-Type": "text/html"}, results[i]);
+        }
+        return results;
     }
     test_utils.returnOneError = returnOneError;
+    test_utils.returnNError = returnNError;
 
     function initFakeRequests() {        
         this.xhr = sinon.useFakeXMLHttpRequest(); 
