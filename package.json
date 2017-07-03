@@ -9,6 +9,7 @@
     "chai": "^4.0.1",
     "chai-jquery": "^2.0.0",
     "karma": "^1.7.0",
+    "karma-bower": "^1.0.1",
     "karma-chai": "^0.1.0",
     "karma-chai-jquery": "^1.0.0",
     "karma-chrome-launcher": "^2.1.1",

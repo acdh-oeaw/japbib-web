@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai-jquery', 'chai', 'fixture', 'sinon', 'jquery-3.1.1'],
+    frameworks: ['mocha', 'chai-jquery', 'chai', 'fixture', 'sinon', 'bower', 'jquery-3.1.1'],
 
 
     // list of files / patterns to load in the browser
@@ -82,6 +82,10 @@ module.exports = function(config) {
       mocha: {
         timeout : 6000 // 6 seconds - upped from 2 seconds
       }
-    }
+    },
+
+    bowerPackages: [
+      'urijs'
+    ]
   })
 }
