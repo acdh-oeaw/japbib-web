@@ -488,6 +488,10 @@ td.control:hover {
   overflow-y: scroll;
 }
 
+.ajax-error h1 {
+  margin: 0 0 0 0;
+}
+
   
 /*******************
    Schlagworte
