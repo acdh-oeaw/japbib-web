@@ -101,7 +101,7 @@ function onResultLoaded(statusText, jqXHR) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
       frameWork.find('#showList > ol').replaceWith(searchResult);
-    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, ajaxParts]) }
+    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText)]) }
     $('.content > .showResults').replaceWith(frameWork);
     $('.content > .showResults textarea.codemirror-data').each(function () {
       CodeMirror.fromTextArea(this,
@@ -120,7 +120,7 @@ function onResultLoaded(statusText, jqXHR) {
 
 function handleGetErrors(frameWork, status, htmlErrorMessage) {  
   if (raisedErrors.length === 0) {
-    frameWork.prepend($('<div class="ajax-error c'+status % 100 * 100+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
+    frameWork.prepend($('<div class="ajax-error c'+(status-(status % 100))+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
   } else {
     var errors = '<pre>Original call:\n'+originalStack+'</pre>';          
     for (var i = 0; i < raisedErrors.length; i++) {
@@ -244,12 +244,20 @@ var toggleAnd = $('.andOr').click(
   );
 */
 
+function findQueryPartInHref(href) {
+  var parsed = URI(href),
+      conventionalQuery = parsed.query(true),
+      fragment = parsed.fragment(),
+      query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
+  return query;
+}
   
-$ ( '#facet-subjects').on('click', 'a', function(e){
+$ ( '#facet-subjects').on('click', '.showResults a.zahl', function(e){
     e.preventDefault();
-    var subject = $(e.target).parent().children('.plusMinus').text();
+    var query = findQueryPartInHref($(this).attr('href')),
+        subject = query.query;
     var currentQuery = $('#searchInput1').val();
-    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " and " + 'subject="' + subject + '"';
+    var newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
     executeQuery(newQuery);
 });
 
@@ -266,10 +274,9 @@ $(document).on('click', '.results .plusMinus', function (e) {
 }); 
 
 // Handler für Klick auf "Resultate"
-$(document).on('click', '.showResults .zahl', function (e) {
+$('.content').on('click', '.showResults a.zahl', function (e) {
     e.preventDefault();
-    var caller = $ ( this ); 
-    var query = $ ( this ).attr("data-query");
+    var query = findQueryPartInHref($(this).attr('href')).query;
     executeQuery(query);
 });
 
