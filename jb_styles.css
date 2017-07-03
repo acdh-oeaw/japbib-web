@@ -1,4 +1,4 @@
-﻿/***************
+/***************
    Schrift
 ****************/
 body {
@@ -467,7 +467,26 @@ td.control:hover {
   }
 .buch {
   background-image:url('images/icon_book.png');  
-  }
+  } 
+
+/******* Fehlermeldungen ***********/
+
+.ajax-error {
+  border: 1px solid red;
+  padding: 0 1em 0 1em;
+  background-color: lightpink;
+}
+
+/* Is returned when the html file is opened from disk */
+.ajax-error.c0 {  
+  border: 1px solid green;  
+  background-color: lightgreen;
+}
+
+.ajax-error * {
+  background-color: white;
+  overflow-y: scroll;
+}
 
   
 /*******************

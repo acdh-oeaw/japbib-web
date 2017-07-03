@@ -37,7 +37,7 @@ describe("japbib Website", function(){
             test_utils.returnOneError.apply(this, [404]);
             expect($('.content .showResults')).to.be.visible;
             // chai-jquery .to.exist is broken because there seem to be two different jQueries here.
-            expect($('.ajax-error.400').length).to.equal(1, 'There should be an error message');
+            expect($('.ajax-error.c400').length).to.equal(1, 'There should be an error message');
             expect($('#showList .showOptions ~ ol').length).to.equal(1, 'There should be one result list');
         });
 

@@ -76,47 +76,56 @@ function getResultsHidden(href) {
     throw raisedError;
   } else {
     var e = Error('');
-    originalStack = e.stack;
+    originalStack = e.stack.replace(/^Error.*/, '');
   }
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
-    try {
-      var ajaxParts = $('.content > .showResults .ajax-result'),
-          searchResult = ajaxParts.find('.search-result > ol'),
-          categoryFilter = ajaxParts.find('.categoryFilter > ol'),
-          navResults = ajaxParts.find('.navResults'),
-          frameWork = resultsFramework.clone();
-      if (statusText === 'success' && raisedErrors.length === 0) {
-        $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
-        frameWork.find('#showList > .navResults').replaceWith(navResults);
-        frameWork.find('#showList > ol').replaceWith(searchResult);
-      } else {handleGetErrors.apply(this, [frameWork, jqXHR.status, ajaxParts])}
-      $('.content > .showResults').replaceWith(frameWork);
-      $('.content > .showResults textarea.codemirror-data').each(function(){
-        CodeMirror.fromTextArea(this,
-        {readOnly: true,
-        lineNumbers: true,
-        foldGutter: true,
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    /* chrome behaves synchronous here when the file is running from disk */
+    if (jqXHR.status === 0) {
+      /* emulate a delay that will always occur if the result is fetched from the real server */
+      setTimeout(function(){onResultLoaded(statusText, jqXHR);}, 100);
+    } else {onResultLoaded(statusText, jqXHR);}    
+  });  
+}
+
+function onResultLoaded(statusText, jqXHR) {
+  try {
+    var ajaxParts = $('.content > .showResults .ajax-result'),
+        searchResult = ajaxParts.find('.search-result > ol'),
+        categoryFilter = ajaxParts.find('.categoryFilter > ol'),
+        navResults = ajaxParts.find('.navResults'),
+        frameWork = resultsFramework.clone();
+    if (statusText === 'success' && raisedErrors.length === 0) {
+      $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+      frameWork.find('#showList > .navResults').replaceWith(navResults);
+      frameWork.find('#showList > ol').replaceWith(searchResult);
+    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, ajaxParts]) }
+    $('.content > .showResults').replaceWith(frameWork);
+    $('.content > .showResults textarea.codemirror-data').each(function () {
+      CodeMirror.fromTextArea(this,
+        {
+          readOnly: true,
+          lineNumbers: true,
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
-      });
-      $('.showResults').show('slow');
-    } finally {
-      getResultsLock = false;
-    }
-  });
-    
+    });
+    $('.showResults').show('slow');
+  } finally {
+    getResultsLock = false;
+  }
 }
 
 function handleGetErrors(frameWork, status, htmlErrorMessage) {  
   if (raisedErrors.length === 0) {
-    frameWork.prepend($('<div class="ajax-error '+status % 100 * 100+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
+    frameWork.prepend($('<div class="ajax-error c'+status % 100 * 100+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
   } else {
     var errors = '<pre>Original call:\n'+originalStack+'</pre>';          
     for (var i = 0; i < raisedErrors.length; i++) {
-      errors += '<pre>'+raisedErrors[i].toString()+'\n'+raisedErrors[i].stack+'</pre>'
+      var stack = raisedErrors[i].stack.replace(/^Error.*/, '');
+      errors += '<pre>'+raisedErrors[i].toString()+'\n'+stack+'</pre>'
     }
     frameWork.prepend($('<div class="ajax-error concurrency">').append(errors));
   }
