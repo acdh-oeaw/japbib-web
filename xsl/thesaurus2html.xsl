@@ -5,9 +5,13 @@
     exclude-result-prefixes="xs"
     version="3.0">
     
-    <xsl:output indent="no" method="xhtml"/>
+    <xsl:output indent="yes" method="xhtml"/>
     
     <xsl:import href="sru2ajax.xsl"/>
+    
+    <xsl:template match="/">
+        <xsl:apply-templates select="taxonomy"/>
+    </xsl:template>
         
     <xsl:template match="taxonomy">
         <ol class="schlagworte"><xsl:apply-templates select="*"/></ol>
@@ -32,7 +36,7 @@
     </xsl:template>
     
     <xsl:template match="catDesc">
-        <a href="#find?query=subject%3D&quot;{.}&quot;" class='term{if (not(matches(../@n, "^[123456789]$"))) then " plusMinus" else ()}' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
+        <a href="#find?query=subject%3D&quot;{.}&quot;" class='term{if (not(matches(../@n, "^[123456789]$")) and ../category) then " plusMinus" else ()}' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
     </xsl:template>
 
 </xsl:stylesheet>
