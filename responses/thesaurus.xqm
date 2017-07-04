@@ -54,7 +54,7 @@ declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats a
                         if ($cat-stats)
                         then <numberOfRecords>{$cat-stats}</numberOfRecords>
                         else (),
-                        if ($cat-stats and $sub-topics//numberOfRecords)
+                        if ($sub-topics//numberOfRecords)
                         then <numberOfRecordsInGroup>{sum(($cat-stats, $sub-topics//numberOfRecords))}</numberOfRecordsInGroup>
                         else (),
                         $sub-topics

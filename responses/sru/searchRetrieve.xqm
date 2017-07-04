@@ -100,7 +100,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                     "maximumRecords": $maximumRecords,
                     "operation": 'searchRetrieve',
                     "base-uri-public": api:get-base-uri-public(),
-                    "base-uri": api:get-base-uri()
+                    "base-uri": ""
                 },
                 if ($x-style) then map{"x-style": $x-style} else map{}
                 )))
@@ -181,6 +181,4 @@ declare %private function api:get-base-uri-public() as xs:string {
     return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
 };
 
-declare %private function api:get-base-uri() as xs:string {
-    'http://localhost:8984'||request:path()
-};
+(: calling back leads to a service dead lock up to 8.6.4 :)
