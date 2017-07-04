@@ -13,7 +13,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="no" method="xhtml"/>
+    <xsl:output indent="yes" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:include href="lib/serialization.xsl"/>
@@ -52,22 +52,25 @@
 
     <!-- Results -->
     
-    <xsl:template name="navbar">        
+    <xsl:template name="navbar">
+        <xsl:variable name="nOfRec" as="xs:integer" select="/sru:searchRetrieveResponse/sru:numberOfRecords"/>
+        <xsl:variable name="lastPage" as="xs:integer" select="(($nOfRec - 1) idiv $maximumRecords) + 1"/>        
         <div class="countResults">
-            <span class="numberofRecords"><xsl:value-of select="/sru:searchRetrieveResponse/sru:numberOfRecords"/></span>&#xa0;Treffer 
+            <span class="numberofRecords"><xsl:value-of select="$nOfRec"/></span>&#xa0;Treffer 
         </div>
         <div class="hitList">
             <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">≪</span>
-            <a class="hits first{if ($startRecord &lt;= 10) then ' here' else ''}" href="#{_:urlParameters(1)}" title="Treffer 1–10">1</a>
+            <a class="hits first{if ($startRecord &lt;= $maximumRecords) then ' here' else ''}" href="#?startRecord=1" title="Treffer 1–{if ($nOfRec > $maximumRecords) then $maximumRecords else $nOfRec}">1</a>
             <span class="fenster" id="fenster1">
                 <span id="hitRow">
-                    <xsl:for-each select="1 to ((/sru:searchRetrieveResponse/sru:numberOfRecords - 11) idiv 10)">
-                        <a class="hits{if ($startRecord &gt;= (. * 10 + 1) and $startRecord &lt;= (. * 10 + 10)) then ' here' else ''}" href="#{_:urlParameters(. * 10 + 1)}" title="Treffer {. * 10 + 1}—{. * 10 + 10}"><xsl:value-of select=". + 1"/></a>
+                    <xsl:for-each select="2 to $lastPage - 1">
+                        <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) then ' here' else ''}" href="#?startRecord={((. - 1) * $maximumRecords) + 1}" title="Treffer {(. - 1) * $maximumRecords + 1}—{(. - 1) * $maximumRecords + $maximumRecords}"><xsl:value-of select="."/></a>
                     </xsl:for-each>
                 </span>  
-            </span>
-            <xsl:variable name="lastPage" as="xs:integer" select="(/sru:searchRetrieveResponse/sru:numberOfRecords - 1) idiv 10"/>
-            <a class="hits last{if ($startRecord &gt;= ($lastPage * 10 + 1)) then ' here' else ''}" href="#{_:urlParameters($lastPage * 10 + 1)}" title="Treffer {$lastPage * 10 + 1}–{/sru:searchRetrieveResponse/sru:numberOfRecords}"><xsl:value-of select="$lastPage"/></a>
+            </span> 
+            <xsl:if test="$lastPage > 1">
+                <a class="hits last{if ($startRecord &gt;= ($lastPage * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
+            </xsl:if>
             <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
         </div>
     </xsl:template>

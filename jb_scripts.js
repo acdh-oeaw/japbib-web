@@ -175,6 +175,12 @@ $( document )
     }
   ); 
   
+$( document )
+  .on('click', '.hitList a.hits', onFetchMoreHits);
+function onFetchMoreHits(e) {
+  var query = findQueryPartInHref($(this).attr('href'));
+  doSearchOnReturn(query.startRecord);
+}
 ////////////////////////////////////////
 
 $('#searchInput1').keypress(searchOnReturn);
@@ -185,10 +191,11 @@ function searchOnReturn(e) {
   }
 }
 
-function doSearchOnReturn() {
-    var params = $('#searchform1').serialize(),
+function doSearchOnReturn(optStartRecord) {    
+    var startRecord = optStartRecord || 1,
         baseUrl = $('#searchform1').attr('action')
-    getResultsHidden(baseUrl+'?'+params);
+    $('#searchform1 input[name="startRecord"]').val(startRecord);
+    getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
 };
 
 m.doSearchOnReturn = doSearchOnReturn;
