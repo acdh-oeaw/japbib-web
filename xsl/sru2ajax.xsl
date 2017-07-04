@@ -69,7 +69,7 @@
                 </span>  
             </span> 
             <xsl:if test="$lastPage > 1">
-                <a class="hits last{if ($startRecord &gt;= ($lastPage * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
+                <a class="hits last{if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
             </xsl:if>
             <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
         </div>
