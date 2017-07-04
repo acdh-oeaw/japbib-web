@@ -35,7 +35,6 @@ declare
     %rest:query-param("x-filter", "{$x-filter}")
     %rest:query-param("x-debug", "{$x-debug}", "false")
     %rest:GET
-    %rest:produces("text/xml")
     %output:method("xml")
     %updating
 function api:sru($operation as xs:string, $query, 
@@ -64,7 +63,6 @@ function api:sru($operation as xs:string, $query,
 declare 
     %rest:path("japbib-web/sru/explain")
     %rest:GET
-    %rest:produces("text/xml")
     %output:method("xml")
 function api:explain() {
     <sru:explainResponse xmlns:sru="//www.loc.gov/zing/srw/">
