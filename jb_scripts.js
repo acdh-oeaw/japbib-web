@@ -82,22 +82,24 @@ function getResultsHidden(href) {
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
+    var self = this;
     /* chrome behaves synchronous here when the file is running from disk */
     if (jqXHR.status === 0) {
       /* emulate a delay that will always occur if the result is fetched from the real server */
-      setTimeout(function(){onResultLoaded(statusText, jqXHR);}, 100);
-    } else {onResultLoaded(statusText, jqXHR);}    
+      setTimeout(function(){onResultLoaded.apply(self, [statusText, jqXHR]);}, 100);
+    } else {onResultLoaded.apply(self, [statusText, jqXHR]);}    
   });  
 }
 
 function onResultLoaded(statusText, jqXHR) {
   try {
     var ajaxParts = $('.content > .showResults .ajax-result'),
+        ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics'),
         searchResult = ajaxParts.find('.search-result > ol'),
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
-    if (statusText === 'success' && raisedErrors.length === 0) {
+    if (statusText === 'success' && raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
       frameWork.find('#showList > ol').replaceWith(searchResult);
