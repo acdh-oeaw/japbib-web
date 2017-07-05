@@ -16,6 +16,7 @@
     <string xml:id="no-pub-abbr">o.V.</string>
     <string xml:id="no-title-abbr">o.T.</string>
     <string xml:id="from">vom</string>
+    <string xml:id="pages">Seiten</string>
     <string xml:id="title">Titel</string>
     <string xml:id="bookSection">Beitrag zu Sammelwerk</string>
     <string xml:id="book">Einzelwerk</string>
