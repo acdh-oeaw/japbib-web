@@ -9,6 +9,7 @@ import module namespace cache = "japbib:cache" at "sru/cache.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "sru.xqm";
 import module namespace l = "http://basex.org/modules/admin";
+import module namespace _ = "urn:sur2html" at "localization.xqm";
 
 declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
 
@@ -99,10 +100,12 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
 };
 
 declare function api:topics-to-map($r) as map(*) {
-    map:merge(
-        for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
-        let $v := data($t)
+    let $log := l:write-log('api:topics-to-map base-ure($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG')
+    return map:merge(
+        for $s in distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
+        let $t := db:text($model:dbname, $s)/(ancestor::mods:genre|ancestor::mods:subject)
+        let $v := _:dict($s)
         group by $v
-        return map:entry($v, count($t))
+        return map:entry($v, count($t intersect ($r//mods:genre|$r//mods:subject)))
     )
 };
