@@ -140,7 +140,7 @@
         <xsl:apply-templates select="mods:physicalDescription" mode="more-detail"/>
         <xsl:call-template name="topic-filterd-subject-links">
             <xsl:with-param name="topic">Form</xsl:with-param>
-            <xsl:with-param name="subjects" select="mods:subject[not(@displayLabel)]"/>
+            <xsl:with-param name="subjects" select="mods:subject[not(@displayLabel)]|mods:genre"/>
         </xsl:call-template>        
         <!-- TODO <li class="eSegment"> Co-Autoren </li>
  Co-Autoren -->
@@ -149,22 +149,12 @@
     
     <xsl:template name="topics-list-items">
         <xsl:variable name="this" select="."/>
-        <xsl:for-each select="('Thema', 'Zeit', 'Region')">
+        <xsl:for-each select="//subjects/taxonomy/category[catDesc ne 'Form']/catDesc">
         <xsl:call-template name="topic-filterd-subject-links">
             <xsl:with-param name="topic" select="."/>
             <xsl:with-param name="subjects" select="$this/mods:subject[not(@displayLabel)]"/>
         </xsl:call-template>
         </xsl:for-each>
-<!--        <li class="eSegment">Thema</li>
-        <li>Religionswissenschaft (<a class="zahl" href="#" title="Neue Abfrage">40</a>)</li>
-        <li>Brauchtum und Feste (<a class="zahl" href="#" title="Neue Abfrage">20</a>)</li>-->        
-        
-<!--        <li class="eSegment">Zeit</li>
-        <li>Moderne (1868–1945) (<a class="zahl" href="#" title="Neue Abfrage">4.088</a>)</li>-->
-        
-<!--        <li class="eSegment">Region</li>
-        <li>Japan (<a class="zahl" href="#" title="Neue Abfrage">20.000</a>)</li>
-        <li>Korea (<a class="zahl" href="#" title="Neue Abfrage">4.000</a>)</li>-->
         <xsl:call-template name="keywords">
             <xsl:with-param name="keywords" select="mods:subject[@displayLabel eq 'Stichworte']"/>
         </xsl:call-template>        
@@ -242,14 +232,28 @@
     
     <xsl:template match="mods:physicalDescription" mode="more-detail">
         <li class="eSegment">Kollationsvermerk</li>
-        <li><xsl:value-of select="mods:note"/></li>
+        <xsl:apply-templates mode="more-detail"/>
+    </xsl:template>
+    
+    <xsl:template match="mods:extent" mode="more-detail">
+        <li><xsl:value-of select=".||' '||_:dict(@unit||'s')"/></li>
+    </xsl:template>
+    
+    <xsl:template match="mods:note" mode="more-detail">
+        <li><xsl:value-of select="."/></li>
     </xsl:template>
     
     <xsl:template name="topic-filterd-subject-links">
         <xsl:param name="topic" as="xs:string"/>
-        <xsl:param name="subjects" as="element(mods:subject)*"/>
-        <li class="eSegment"><xsl:value-of select="$topic"/></li>
-        <li>TODO -> <xsl:value-of select="count($subjects)"/> subjects</li>
+        <xsl:param name="subjects" as="element()*"/>
+        <xsl:variable name="subjectDescs" select="//subjects/taxonomy/category[catDesc eq $topic]//catDesc" as="xs:string*"/>
+        <xsl:variable name="filteredSubjects" select="$subjects[_:dict(.) = $subjectDescs]"/>
+        <xsl:if test="exists($filteredSubjects)">
+            <li class="eSegment"><xsl:value-of select="$topic"/></li>
+            <xsl:for-each select="$filteredSubjects">
+                <li><xsl:value-of select="_:dict(.)"/></li>
+            </xsl:for-each>            
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="mods:note[@type eq 'footnotes']" mode="more-detail">        
