@@ -23,9 +23,9 @@ declare %updating function api:taxonomy-cahce-as-xml($x-mode as xs:string?, $dat
 };
 
 declare function api:create-data-with-stats($x-mode as xs:string?) as document-node()? {
-    let $input-data := if ($x-mode eq 'refresh') then doc($api:path-to-thesaurus) else (),
+    let $log := l:write-log('api:create-data-with-stats $x-mode := '||$x-mode, 'DEBUG'),
         $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map($model:db) else ()
-    return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map)} else api:taxonomy-as-xml-cached()
+    return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map, $x-mode)} else ()
 };
 
 declare function api:taxonomy-as-xml-cached() {
@@ -36,21 +36,28 @@ declare function api:taxonomy-as-xml-cached() {
     api:taxonomy-as-html(api:addStatsToThesaurus(api:taxonomy-as-xml-cached(), $stats))
 };
 :)
+
 declare function api:addStatsToThesaurus($stats as map(*)) {
-    api:addStatsToThesaurus(api:taxonomy-as-xml-cached(), $stats)
+    api:addStatsToThesaurus($stats, ())
 };
 
-declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats as map(*)) {
+declare function api:addStatsToThesaurus($stats as map(*), $x-mode as xs:string?) {
+    api:doAddStatsToThesaurus(if ($x-mode eq 'refresh') 
+    then (doc($api:path-to-thesaurus), l:write-log('loading doc '||$api:path-to-thesaurus||' and adding stats', 'DEBUG'))
+    else (api:taxonomy-as-xml-cached(), l:write-log('loading doc cached thesaurus and adding stats', 'DEBUG')), $stats)
+};
+
+declare %private function api:doAddStatsToThesaurus($thesaurus as item(), $stats as map(*)) {
     typeswitch ($thesaurus)
-        case document-node() return api:addStatsToThesaurus($thesaurus/*, $stats)
+        case document-node() return api:doAddStatsToThesaurus($thesaurus/*, $stats)
         case element(category) return 
             let $cat-stats := map:get($stats, $thesaurus/catDesc) 
-            let $sub-topics := $thesaurus/*!api:addStatsToThesaurus(., $stats)
+            let $sub-topics := $thesaurus/*!api:doAddStatsToThesaurus(., $stats)
             return 
                 if (exists($cat-stats) or exists($sub-topics//numberOfRecords))
                 then 
                     element {QName(namespace-uri($thesaurus), local-name($thesaurus))} {(
-                        $thesaurus/@*!api:addStatsToThesaurus(., $stats),
+                        $thesaurus/@*!api:doAddStatsToThesaurus(., $stats),
                         if ($cat-stats)
                         then <numberOfRecords>{$cat-stats}</numberOfRecords>
                         else (),
@@ -62,7 +69,7 @@ declare %private function api:addStatsToThesaurus($thesaurus as item(), $stats a
                 else ()
         case element(numberOfRecords) return ()
         case element(numberOfRecordsInGroup) return ()
-        case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:addStatsToThesaurus(., $stats) }
+        case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:doAddStatsToThesaurus(., $stats) }
         case attribute() return $thesaurus
         default return $thesaurus
 };
