@@ -36,6 +36,7 @@ import module namespace index = "japbib:index" at "../../index.xqm";
 declare namespace cqlparser = "http://exist-db.org/xquery/cqlparser";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace rest = "http://exquery.org/ns/restxq";
+import module namespace _ = "urn:sur2html" at "../localization.xqm";
 
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 
@@ -395,8 +396,9 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
                      else 'lower-case('||index:index-as-xpath-from-map($index-key,$map,'match-only')||')',
         $relation := if ($clause/relation/value/text() eq 'scr') then 'contains' else $clause/relation/value/text(),
         (: exact, starts-with, contains, ends-with :)
-        $term := if ($index-case) then $clause/term else lower-case($clause/term), 
-        $sanitized-term := cql:sanitize-term($term),
+        $term := if ($index-case) then $clause/term else lower-case($clause/term),
+        $rtrans-term := _:rdict($term),
+        $sanitized-term := cql:sanitize-term($rtrans-term),
         $predicate := switch (true())
                         case ($sanitized-term eq 'false') return 'not('||$match-on||')'
                         case ($sanitized-term eq 'true') return $match-on
