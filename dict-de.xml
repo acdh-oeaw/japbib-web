@@ -17,6 +17,11 @@
     <string xml:id="no-title-abbr">o.T.</string>
     <string xml:id="from">vom</string>
     <string xml:id="title">Titel</string>
+    <string xml:id="bookSection">Beitrag zu Sammelwerk</string>
+    <string xml:id="book">Einzelwerk</string>
+    <string xml:id="journalArticle">Zeitschriftenartikel</string>
+    <string xml:id="newspaperArticle">Zeitungsartikel</string>
+    <string xml:id="thesis">Dissertation</string>
     <!-- Interface -->
     <string xml:id="numberOfRefords">Number of Records</string>
 </dict>
