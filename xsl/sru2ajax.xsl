@@ -85,7 +85,9 @@
     
     <xsl:template match="mods:mods">
         <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
-        <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]"/><xsl:text xml:space="prsserve"> </xsl:text>
+        <xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]">
+           <xsl:apply-templates select="."/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+        </xsl:for-each><xsl:text xml:space="prsserve"> </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
         <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/><xsl:text>,</xsl:text>
         <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
