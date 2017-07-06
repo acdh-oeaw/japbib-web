@@ -283,7 +283,7 @@ $(document).on('click', '.results .plusMinus', function (e) {
 }); 
 
 // Handler für Klick auf "Resultate"
-$('.content').on('click', '.showResults a.zahl', function (e) {
+$('.content').on('click', '.showResults a.zahl, .showResults a.stichwort', function (e) {
     e.preventDefault();
     var query = findQueryPartInHref($(this).attr('href')).query;
     executeQuery(query);

@@ -87,7 +87,7 @@
         <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
         <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]"/><xsl:text xml:space="prsserve"> </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
-        <xsl:apply-templates select=".//mods:originInfo/mods:dateIssued"/><xsl:text>,</xsl:text>
+        <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/><xsl:text>,</xsl:text>
         <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
         <xsl:apply-templates select="." mode="detail"/>
     </xsl:template>
@@ -132,7 +132,7 @@
     <xsl:template name="detail-list-items">
         <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')][not(./ancestor::mods:relatedItem)]" mode="detail"/>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
-        <xsl:apply-templates select=".//mods:originInfo" mode="detail"/>
+        <xsl:apply-templates select="(./mods:relatedItem[@type eq 'host']/mods:originInfo, ./mods:originInfo)[1]" mode="detail"/>
     </xsl:template>
     
     <xsl:template name="more-detail-list-items">
@@ -215,7 +215,7 @@
                 <xsl:with-param name="term" select="mods:publisher"/>
             </xsl:call-template>
             <xsl:value-of select="', '||
-            (if (mods:dateIssued) then string-join(mods:dateIssued, ', ') else _:dict('no-year-abbr'))"/></li>
+                (if (mods:dateIssued) then string-join((mods:dateIssued, ../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued), ', ') else _:dict('no-year-abbr'))"/></li>
     </xsl:template>
     
     <xsl:template match="mods:relatedItem[@type eq 'series']" mode="more-detail">
@@ -269,7 +269,7 @@
         <xsl:if test="$keywords">
         <li class="eSegment">Stichworte</li>
         <li><xsl:for-each select="$keywords">
-            <a href="#{_:urlParameters(1, 'subject=&quot;'||.||'&quot;')}"><xsl:value-of select="."/></a><xsl:text xml:space="preserve"> </xsl:text>
+            <a href="#?query=keyword=&quot;{.}&quot;" class="stichwort"><xsl:value-of select="."/></a><xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
         </xsl:for-each>
         </li></xsl:if>
     </xsl:template>
