@@ -131,8 +131,11 @@
         </div>
     </xsl:template>
     
-    <xsl:template name="detail-list-items">
-        <xsl:apply-templates select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')][not(./ancestor::mods:relatedItem)]" mode="detail"/>
+    <xsl:template name="detail-list-items">        
+        <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
+        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')][not(./ancestor::mods:relatedItem)]">
+            <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+        </xsl:for-each></li>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
         <xsl:apply-templates select="(./mods:relatedItem[@type eq 'host']/mods:originInfo, ./mods:originInfo)[1]" mode="detail"/>
     </xsl:template>
@@ -168,12 +171,10 @@
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]" mode="detail">
-        <li class="eSegment"><xsl:value-of select="_:dict(mods:role/normalize-space(mods:roleTerm))"/></li>
-        <li><xsl:call-template name="link-with-number-of-records">
-                <xsl:with-param name="index">author</xsl:with-param>
-                <xsl:with-param name="term" select="mods:namePart"/>
-            </xsl:call-template>
-        </li>
+        <xsl:call-template name="link-with-number-of-records">
+            <xsl:with-param name="index">author</xsl:with-param>
+            <xsl:with-param name="term" select="mods:namePart"/>
+        </xsl:call-template>        
     </xsl:template>
     
     <xsl:template name="link-with-number-of-records">
