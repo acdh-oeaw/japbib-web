@@ -290,12 +290,17 @@ $('.content').on('click', '.showResults a.zahl, .showResults a.stichwort', funct
 });
 
 // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
-// TODO: Anpassen an Kontext (BS)
-$('.suchOptionen a').click(function(e){
+$('.suchOptionen .abc a').click(function(e){
     e.preventDefault();
     var index = $(e.target).closest("td").attr("data-index");
     var term = $(e.target).text() + "*";
     executeQuery(index+"="+term);
+});
+
+$('a.code').click(function(e){
+    e.preventDefault();
+    var query = $(this).text();
+    executeQuery(query);
 });
  
 
