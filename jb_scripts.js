@@ -207,20 +207,14 @@ $( document )
       $( '#hitRow' ).animate(  { left:  maxL }, 2000 );
       } 
     }
-  ); 
-  
-$( document )
-  .on('click', '.hitList a.hits', onFetchMoreHits);
-function onFetchMoreHits(e) {
-  var query = findQueryPartInHref($(this).attr('href'));
-  doSearchOnReturn(query.startRecord);
-}
+  );
 ////////////////////////////////////////
 
 $( document )
   .on('click', '.hitList a.hits', onFetchMoreHits);
 function onFetchMoreHits(e) {
   var query = findQueryPartInHref($(this).attr('href'));
+  e.preventDefault();
   doSearchOnReturn(query.startRecord);
 }
 ////////////////////////////////////////
