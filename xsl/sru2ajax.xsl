@@ -97,8 +97,9 @@
     <xsl:template match="mods:mods" mode="detail">
         <div class="showEntry" style="display:none;">
             <div class="showOptions">
-                <label>Anzeige des Eintrags: <select name="top5" size="1" data-format="html">
+                <label>Anzeige des Eintrags: <select size="1" data-format="html">
                         <option value="html" selected="selected">detailliert</option>
+                        <option value="compact">kompakt</option>
                         <option value="mods">MODS</option>
                         <option value="lidos">Lidos</option>
                     </select>

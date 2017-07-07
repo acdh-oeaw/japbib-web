@@ -223,15 +223,24 @@ $( '.showOptions select' ).change( function() {
 
 // MODS/ LIDOS/  HTML umschalten (OS)
 $(document).on('change', '.showResults .showOptions select', function(e){
-   var target = $(e.target);
-   var dataFormat = target.data("format")
-   var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
-   var format = target.val();
-   target.data("format", format);
-   var c = ".record-" + format;
-   var div = target.closest(".showEntry").find(c);
+   var target = $(e.target),
+       dataFormat = target.data("format")
+       curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html",
+       format = target.val(),
+       target.data("format", format),
+       c = ".record-" + format;
+   if (format === 'compact') {
+     c = ".record-html";
+   }
+   var entry = target.closest(".showEntry"),
+       div = entry.find(c);
    target.closest(".showEntry").find("[class^=record]").hide();
    div.show();
+   if (format === 'compact') {
+     entry.addClass('compact');
+   } else {
+     entry.removeClass('compact');
+   }
    if (format == 'lidos' || format == 'mods') {
         refreshCM(div);
    }
