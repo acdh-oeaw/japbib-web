@@ -874,17 +874,17 @@ PLUS-MINUS
 .pull {
   display: inline-block;
   color: #aaa;
+  padding: 0 .5em; 
   cursor:pointer;
   }
 .pull:hover {
-  color: #333;
+  color: #000066;
+  background: #e6eff1;
   }
-  
 /* MODS und LIDOS */
 .record-mods, .record-lidos {
     overflow-x: scroll;
 }
 
-.CodeMirror { 
-  margin: -.5em -1em;
+.CodeMirror {  
   }
