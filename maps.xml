@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps>
+    <map name="jp80" index="http://jb80.acdh.oeaw.ac.at" base-elt="mods:mods" description="MODS-based schema for JB 80 bibliographic records">
+        <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>        
+        <namespace prefix="_">urn:sur2html</namespace>;
+        <index key="cql.serverChoice" case="yes">
+            <path label="." match="data(.)">mods:mods</path>
+        </index>
+        <index key="title" case="no">
+            <path label=".">mods:titleInfo[parent::mods:mods]/mods:title</path>
+        </index>
+        <index key="author" case="no">
+            <path label="." match="mods:namePart">mods:name[normalize-space(mods:role/mods:roleTerm) = ('aut', 'edt')]</path>
+        </index>
+        <index key="date" datatype="xs:integer">
+            <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
+        </index>
+        <index key="keyword">
+            <path label=".">mods:subject[@displayLabel = 'Stichworte']/mods:topic</path>
+        </index>
+        <index key="subject" case="yes">
+            <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
+        </index>
+        <index key="series" case="yes">
+            <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
+        </index>
+        <index key="publisher" case="yes">
+            <path label=".">mods:publisher</path>
+        </index>
+        <index key="id">
+            <path>mods:recordIdentifier</path>
+        </index>
+    </map>
+</maps>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dict xml:lang="de">
+    <string xml:id="aut">Autor</string>
+    <string xml:id="trl">Übersetzer</string>
+    <string xml:id="trl-abbr">Übers.</string>
+    <string xml:id="edt">Hrsg.</string>
+    <string xml:id="year">Jahr</string>
+    <string xml:id="publisher">Verlag</string>
+    <string xml:id="place">Ort</string>
+    <string xml:id="series">Reihe</string>
+    <string xml:id="vol-abbr">Band</string>
+    <string xml:id="no-year-abbr">o.J.</string>
+    <string xml:id="no-aut-abbr">o.A.</string>
+    <string xml:id="no-value-abbr">o.A.</string>
+    <string xml:id="no-place-abbr">o.O.</string>
+    <string xml:id="no-pub-abbr">o.V.</string>
+    <string xml:id="no-title-abbr">o.T.</string>
+    <string xml:id="from">vom</string>
+    <string xml:id="pages">Seiten</string>
+    <string xml:id="title">Titel</string>
+    <string xml:id="bookSection">Beitrag zu Sammelwerk</string>
+    <string xml:id="book">Einzelwerk</string>
+    <string xml:id="journalArticle">Zeitschriftenartikel</string>
+    <string xml:id="newspaperArticle">Zeitungsartikel</string>
+    <string xml:id="thesis">Dissertation</string>
+    <!-- Interface -->
+    <string xml:id="numberOfRefords">Number of Records</string>
+</dict>
