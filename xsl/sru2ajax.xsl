@@ -323,7 +323,14 @@
     <xsl:template match="numberOfRecordsInGroup">
         <xsl:param name="href"/>
         <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
-        <a href="{$href}" class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></a>
+        <xsl:choose>
+            <xsl:when test="exists(../numberOfRecords)">
+                <a href="{$href}" class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></a>            
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></span>                            
+            </xsl:otherwise>                
+        </xsl:choose>
     </xsl:template>
     
 </xsl:stylesheet>

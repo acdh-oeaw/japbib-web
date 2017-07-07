@@ -517,7 +517,8 @@ fieldset {
   z-index: 2;
   width: 7em;  
   }
-a.zahl {
+a.zahl,
+span.zahl {
   font-family: courier, monospace;
   }
 a.zahl::before {
