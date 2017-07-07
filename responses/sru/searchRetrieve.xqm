@@ -5,6 +5,7 @@ import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace http = "http://expath.org/ns/http-client";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace prof = "http://basex.org/modules/prof";
+import module namespace l = "http://basex.org/modules/admin";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
@@ -28,7 +29,9 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean) {
   if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else 
-  let $xcql := cql:parse($query)
+  let $xcql-initial := cql:parse($query),
+      $xcql := if (contains($query, "sortBy")) then $xcql-initial else
+      (l:write-log('api:searchRetrieve forcing sortBy '||($xcql-initial//index)[1], 'DEBUG'), cql:parse($query||' sortBy '||($xcql-initial//index)[1]))
   return 
      if ($x-debug = true())
      then $xcql
@@ -69,7 +72,8 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                                    "return $m"
                             )
                         else $xpath
-                    )
+                    ),
+        $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xqueryExpr := '||$xqueryExpr , 'DEBUG')
     let $results := 
         if ($xpath instance of xs:string and (not($sort-xpath) or $sort-xpath instance of xs:string)) then  
             try {
