@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <taxonomy>
    <category n="1">
       <catDesc>Thema</catDesc>
       <category n="1.1">
          <catDesc>Allgemeines und Varia</catDesc>
+         <category n="1.1.1">
+            <catDesc>allgemeine und fachübergreifende Werke</catDesc>
+         </category>
          <category n="1.1.1">
             <catDesc>allgemeine und fachübergreifende Werke</catDesc>
          </category>
@@ -121,14 +124,11 @@
                </category>
                <category n="1.3.3.6.3">
                   <catDesc>Schulbücher, Lehrpläne und Ausbildungsmethoden</catDesc>
-               </category>
+               </category> 
                <category n="1.3.3.6.4">
-                  <catDesc>Schulbücher, Lehrpläne und Ausbildungsmethoden</catDesc>
-               </category>
-               <category n="1.3.3.6.5">
                   <catDesc>Universitäten und Hochschulen</catDesc>
                </category>
-               <category n="1.3.3.6.6">
+               <category n="1.3.3.6.5">
                   <catDesc>Vorschule, Pflichtschule</catDesc>
                </category>
             </category>
@@ -164,6 +164,18 @@
             </category>
             <category n="1.3.11.2">
                <catDesc>Kindheit und Jugend</catDesc>
+            </category>
+         </category>
+         <category n="1.3.12">
+            <catDesc>Minderheiten in Japan</catDesc>
+            <category n="1.3.12.1">
+               <catDesc>Ainu</catDesc>
+            </category>
+            <category n="1.3.12.2">
+               <catDesc>Burakumin</catDesc>
+            </category>
+            <category n="1.3.12.3">
+               <catDesc>Koreaner</catDesc>
             </category>
          </category>
          <category n="1.3.12">
@@ -261,6 +273,9 @@
             <category n="1.3.18.3">
                <catDesc>Tourismus und Fremdenverkehr</catDesc>
             </category>
+         </category>
+         <category n="1.3.19">
+            <catDesc>Wohlfahrt und Sozialarbeit</catDesc>
          </category>
          <category n="1.3.19">
             <catDesc>Wohlfahrt und Sozialarbeit</catDesc>
@@ -479,6 +494,84 @@
             <catDesc>Volkskunde</catDesc>
          </category>
       </category>
+      <category n="1.5">
+         <catDesc>Landeskunde</catDesc>
+         <category n="1.5.1">
+            <catDesc>Brauchtum und Feste</catDesc>
+         </category>
+         <category n="1.5.2">
+            <catDesc>Klima und Geodynamik</catDesc>
+         </category>
+         <category n="1.5.3">
+            <catDesc>materielle Kultur </catDesc>
+            <category n="1.5.3.1">
+               <catDesc>Bekleidung</catDesc>
+            </category>
+            <category n="1.5.3.2">
+               <catDesc>Ernährung</catDesc>
+            </category>
+            <category n="1.5.3.3">
+               <catDesc>Wohnen</catDesc>
+            </category>
+         </category>
+         <category n="1.5.4">
+            <catDesc>Natur, Fauna und Flora</catDesc>
+         </category>
+         <category n="1.5.5">
+            <catDesc>Physische Anthropologie</catDesc>
+         </category>
+         <category n="1.5.6">
+            <catDesc>Raumordnung</catDesc>
+         </category>
+         <category n="1.5.7">
+            <catDesc>Städte</catDesc>
+         </category>
+         <category n="1.5.8">
+            <catDesc>Umweltproblematik und -politik</catDesc>
+         </category>
+         <category n="1.5.9">
+            <catDesc>Volkskunde</catDesc>
+         </category>
+      </category>
+      <category n="1.5">
+         <catDesc>Landeskunde</catDesc>
+         <category n="1.5.1">
+            <catDesc>Brauchtum und Feste</catDesc>
+         </category>
+         <category n="1.5.2">
+            <catDesc>Klima und Geodynamik</catDesc>
+         </category>
+         <category n="1.5.3">
+            <catDesc>materielle Kultur </catDesc>
+            <category n="1.5.3.1">
+               <catDesc>Bekleidung</catDesc>
+            </category>
+            <category n="1.5.3.2">
+               <catDesc>Ernährung</catDesc>
+            </category>
+            <category n="1.5.3.3">
+               <catDesc>Wohnen</catDesc>
+            </category>
+         </category>
+         <category n="1.5.4">
+            <catDesc>Natur, Fauna und Flora</catDesc>
+         </category>
+         <category n="1.5.5">
+            <catDesc>Physische Anthropologie</catDesc>
+         </category>
+         <category n="1.5.6">
+            <catDesc>Raumordnung</catDesc>
+         </category>
+         <category n="1.5.7">
+            <catDesc>Städte</catDesc>
+         </category>
+         <category n="1.5.8">
+            <catDesc>Umweltproblematik und -politik</catDesc>
+         </category>
+         <category n="1.5.9">
+            <catDesc>Volkskunde</catDesc>
+         </category>
+      </category>
       <category n="1.6">
          <catDesc>Literatur</catDesc>
          <category n="1.6.1">
@@ -498,6 +591,15 @@
          </category>
          <category n="1.6.6">
             <catDesc>Literaturkritik und -essayistik</catDesc>
+         </category>
+         <category n="1.6.7">
+            <catDesc>Literaturwissenschaft und -geschichte</catDesc>
+            <category n="1.6.7.1">
+               <catDesc>Motivforschung</catDesc>
+            </category>
+            <category n="1.6.7.2">
+               <catDesc>Vergleichende Literaturwissenschaft</catDesc>
+            </category>
          </category>
          <category n="1.6.7">
             <catDesc>Literaturwissenschaft und -geschichte</catDesc>
@@ -577,6 +679,9 @@
       </category>
       <category n="1.8">
          <catDesc>Politik</catDesc>
+         <category n="1.8.10">
+            <catDesc>Agrarpolitik</catDesc>
+         </category>
          <category n="1.8.1">
             <catDesc>Außenbeziehungen</catDesc>
             <category n="1.8.1.1">
@@ -659,7 +764,7 @@
             </category>
             <category n="1.8.6.12">
                <catDesc>soziale und sozialistische Bewegungen</catDesc>
-            </category>
+            </category> 
             <category n="1.8.6.13">
                <catDesc>Umwelt- u. Naturschutzbewegung</catDesc>
             </category>
@@ -671,7 +776,7 @@
             </category>
             <category n="1.8.7.2">
                <catDesc>politische Kultur und Bewusstsein</catDesc>
-            </category>
+            </category> 
             <category n="1.8.7.3">
                <catDesc>Regierung, Ministerien, Verwaltung</catDesc>
             </category>
@@ -690,9 +795,6 @@
             <category n="1.8.9.1">
                <catDesc>Militärwesen</catDesc>
             </category>
-         </category>
-         <category n="1.8.10">
-            <catDesc>Agrarpolitik</catDesc>
          </category>
       </category>
       <category n="1.9">
@@ -1014,7 +1116,7 @@
             <category n="1.11.15.2">
                <catDesc>Tierzucht</catDesc>
             </category>
-         </category>
+         </category> <!-- 1.11.16 fehlt-->
          <category n="1.11.17">
             <catDesc>Patente und Normen</catDesc>
          </category>
@@ -1028,6 +1130,9 @@
             <catDesc>Unternehmen allgemein</catDesc>
             <category n="1.11.20.1">
                <catDesc>Fusionen und Übernahmen</catDesc>
+            </category>
+            <category n="1.11.20.2">
+               <catDesc>Großunternehmen</catDesc>
             </category>
             <category n="1.11.20.2">
                <catDesc>Großunternehmen</catDesc>
@@ -1053,6 +1158,9 @@
          </category>
          <category n="1.11.21">
             <catDesc>Verkehr</catDesc>
+            <category n="1.11.21.1">
+               <catDesc>Güterverkehr, Transport</catDesc>
+            </category>
             <category n="1.11.21.1">
                <catDesc>Güterverkehr, Transport</catDesc>
             </category>
@@ -1138,8 +1246,8 @@
          <category n="1.12.6">
             <catDesc>Wissenschaftsgeschichte</catDesc>
          </category>
-      </category>
-   </category>
+      </category>  
+   </category> 
    <category n="2">
       <catDesc>Zeit</catDesc>
       <category n="2.1">
@@ -1196,7 +1304,7 @@
             </category>
          </category>
       </category>
-   </category>
+   </category> 
    <category n="3">
       <catDesc>Region</catDesc>
       <category n="3.1">
@@ -1207,49 +1315,49 @@
                <catDesc>China</catDesc>
             </category>
             <category n="3.1.1.2">
-               <catDesc>Korea</catDesc>
-            </category>
-            <category n="3.1.1.3">
                <catDesc>Japan</catDesc>
-               <category n="3.1.1.3.1">
+               <category n="3.1.1.2.1">
                   <catDesc>Hokkaidō</catDesc>
                </category>
-               <category n="3.1.1.3.2">
+               <category n="3.1.1.2.2">
                   <catDesc>Tōhoku</catDesc>
                </category>
-               <category n="3.1.1.3.3">
+               <category n="3.1.1.2.3">
                   <catDesc>Kantō</catDesc>
-                  <category n="3.1.1.3.3.1">
+                  <category n="3.1.1.2.3.1">
                      <catDesc>Tōkyō</catDesc>
                   </category>
                </category>
-               <category n="3.1.1.3.4">
+               <category n="3.1.1.2.4">
                   <catDesc>Chūbu</catDesc>
                </category>
-               <category n="3.1.1.3.5">
+               <category n="3.1.1.2.5">
                   <catDesc>Kinki</catDesc>
-                  <category n="3.1.1.3.5.1">
+                  <category n="3.1.1.2.5.1">
                      <catDesc>Kyōto</catDesc>
                   </category>
-                  <category n="3.1.1.3.5.2">
+                  <category n="3.1.1.2.5.2">
                      <catDesc>Nara</catDesc>
                   </category>
-                  <category n="3.1.1.3.5.3">
+                  <category n="3.1.1.2.5.3">
                      <catDesc>Ōsaka</catDesc>
                   </category>
                </category>
-               <category n="3.1.1.3.6">
+               <category n="3.1.1.2.6">
                   <catDesc>Chūgoku</catDesc>
                </category>
-               <category n="3.1.1.3.7">
+               <category n="3.1.1.2.7">
                   <catDesc>Shikoku</catDesc>
                </category>
-               <category n="3.1.1.3.8">
+               <category n="3.1.1.2.8">
                   <catDesc>Kyūshū</catDesc>
                </category>
-               <category n="3.1.1.3.9">
+               <category n="3.1.1.2.9">
                   <catDesc>Okinawa</catDesc>
                </category>
+            </category>
+            <category n="3.1.1.3">
+               <catDesc>Korea</catDesc>
             </category>
             <category n="3.1.1.4">
                <catDesc>Taiwan</catDesc>
@@ -1306,7 +1414,7 @@
                <catDesc>Türkei</catDesc>
             </category>
          </category>
-         <category n="3.1.7">
+         <category n="3.1.6">
             <catDesc>Zentralasien</catDesc>
          </category>
       </category>
@@ -1316,37 +1424,37 @@
             <catDesc>EU</catDesc>
          </category>
          <category n="3.2.2">
-            <catDesc>Großbritannien</catDesc>
+            <catDesc>Balkanstaaten</catDesc>
          </category>
          <category n="3.2.3">
-            <catDesc>Frankreich</catDesc>
-         </category>
-         <category n="3.2.4">
-            <catDesc>Niederlande</catDesc>
-         </category>
-         <category n="3.2.5">
             <catDesc>Deutschland</catDesc>
          </category>
+         <category n="3.2.4">
+            <catDesc>Frankreich</catDesc>
+         </category>
+         <category n="3.2.5">
+            <catDesc>Großbritannien</catDesc>
+         </category>
          <category n="3.2.6">
-            <catDesc>Schweiz</catDesc>
+            <catDesc>Italien</catDesc>
          </category>
          <category n="3.2.7">
-            <catDesc>Österreich</catDesc>
+            <catDesc>Niederlande</catDesc>
          </category>
          <category n="3.2.8">
-            <catDesc>Italien</catDesc>
+            <catDesc>Österreich</catDesc>
          </category>
          <category n="3.2.9">
             <catDesc>Schweden</catDesc>
          </category>
          <category n="3.2.10">
-            <catDesc>Skandinavien</catDesc>
+            <catDesc>Schweiz</catDesc>
          </category>
          <category n="3.2.11">
-            <catDesc>UdSSR, Russland</catDesc>
+            <catDesc>Skandinavien</catDesc>
          </category>
          <category n="3.2.12">
-            <catDesc>Balkanstaaten</catDesc>
+            <catDesc>UdSSR, Russland</catDesc>
          </category>
       </category>
       <category n="3.3">
@@ -1357,13 +1465,13 @@
          <category n="3.4.1">
             <catDesc>Nordamerika</catDesc>
             <category n="3.4.1.1">
-               <catDesc>Kanada</catDesc>
+               <catDesc>Mexiko</catDesc>
             </category>
             <category n="3.4.1.2">
-               <catDesc>USA</catDesc>
+               <catDesc>Kanada</catDesc>
             </category>
             <category n="3.4.1.3">
-               <catDesc>Mexiko</catDesc>
+               <catDesc>USA</catDesc>
             </category>
          </category>
          <category n="3.4.2">
@@ -1382,7 +1490,7 @@
             <catDesc>Neuseeland</catDesc>
          </category>
       </category>
-   </category>
+   </category> 
    <category n="4">
       <catDesc>Form</catDesc>
       <category n="4.1">
@@ -1506,4 +1614,5 @@
          </category>
       </category>
    </category>
-</taxonomy>
+</taxonomy> 
+
