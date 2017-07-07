@@ -160,23 +160,63 @@ $( document )
 // Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
 // ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
 
+var navR = $( '.navResults' );
+var countR = $( '.countResults');
+var fenster = $( '#fenster1');
+var hitRow = $( '#hitRow');
+var hits = $( '#hitRow .hits' ); 
+var FW = 160;
+var hitsW = $( '#hitRow').width();
+
+function arrangeHitlist() {
+  // max. Weite für fenster
+  FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
+  // berechne width aller hits
+  //for (i=1;i<hits.length;i++) {
+    //hitsW += $( hits[i] ).outerWidth();
+  //}
+  
+alert ('FW = '+ FW + '; hitsW = ' + hitsW);
+  //verstecke Navigationselemente
+  $( '.pull' ).hide();
+  // Anpassen des Fensters an Hits
+  if(hits.length < 3) 
+    $( fenster ).hide();
+  else if (hitsW <= FW)
+    $( fenster ).width(hitsW);
+  else {
+    $( fenster ).width(FW);
+    $( '.pull' ).show();
+  }
+} 
+    
+//$( document ).on('click',  arrangeHitlist);
 $( document )
   .on('click', '#pullRight',
-  function () { 
+  function () {  
+    //alert ($( '#hitRow' ).position().left);
       if( $( '#hitRow' ).position().left < 0) {
-        $( '#hitRow' ).animate(  { left:'+='+ ($( '#fenster1').width()-16) }, 200 );
+        $( '#hitRow' ).animate(  { left: 0 }, 2000 );
       } 
     }
   )
   .on('click', '#pullLeft',
-  function () { 
-    if( $( '#hitRow' ).position().left > 
-        $( '#fenster1').width() - $( '#hitRow').width() ) {
-      $( '#hitRow' ).animate(  { left:'-='+ ($( '#fenster1').width()-16)  }, 200 );
+  function () {  
+    var maxL = ($( '#hitRow' ).width() - $(  '#fenster1' ).width())*-1;
+    if( $( '#hitRow' ).position().left > maxL ) {
+      $( '#hitRow' ).animate(  { left:  maxL }, 2000 );
       } 
     }
   ); 
   
+$( document )
+  .on('click', '.hitList a.hits', onFetchMoreHits);
+function onFetchMoreHits(e) {
+  var query = findQueryPartInHref($(this).attr('href'));
+  doSearchOnReturn(query.startRecord);
+}
+////////////////////////////////////////
+
 $( document )
   .on('click', '.hitList a.hits', onFetchMoreHits);
 function onFetchMoreHits(e) {
@@ -283,7 +323,7 @@ $ ( '#facet-subjects').on('click', '.showResults a.zahl', function(e){
         executeQuery(newQuery)
       }, 2000);
     } else {
-      executeQuery(newQuery);
+    executeQuery(newQuery);
     }
 });
 function plusMinusDependentIsShown(aPlusMinus) {

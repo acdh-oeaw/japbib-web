@@ -838,7 +838,7 @@ PLUS-MINUS
 .fenster {  
   display: inline-block;
   position: relative;
-  width: 5em;
+  width: 10em;
   height: 2em;
   overflow: hidden;
   white-space: nowrap;

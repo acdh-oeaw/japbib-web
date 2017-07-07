@@ -173,8 +173,8 @@
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]" mode="detail">
         <xsl:call-template name="link-with-number-of-records">
-            <xsl:with-param name="index">author</xsl:with-param>
-            <xsl:with-param name="term" select="mods:namePart"/>
+                <xsl:with-param name="index">author</xsl:with-param>
+                <xsl:with-param name="term" select="mods:namePart"/>
         </xsl:call-template>        
     </xsl:template>
     
