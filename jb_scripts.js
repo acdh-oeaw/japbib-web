@@ -264,23 +264,34 @@ function findQueryPartInHref(href) {
 $ ( '#facet-subjects').on('click', '.showResults a.zahl', function(e){
     e.preventDefault();
     var query = findQueryPartInHref($(this).attr('href')),
-        subject = query.query;
-    var currentQuery = $('#searchInput1').val();
-    var newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
-    executeQuery(newQuery);
+        subject = query.query,
+        currentQuery = $('#searchInput1').val(),
+        newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject,
+        plusMinus = $(this).prevAll('.plusMinus');
+    if (plusMinus.length === 1 && !plusMinusDependentIsShown(plusMinus)) {
+      toggleNextSubtree.apply(plusMinus, [e]);
+      setTimeout(function(){
+        executeQuery(newQuery)
+      }, 2000);
+    } else {
+      executeQuery(newQuery);
+    }
 });
+function plusMinusDependentIsShown(aPlusMinus) {
+  return $(aPlusMinus).hasClass("close")
+}
 
 // Handler für Klick auf (+) in Resultatliste
-$(document).on('click', '.results .plusMinus', function (e) {
+$(document).on('click', '.results .plusMinus', openOrCloseDetails);
+function openOrCloseDetails(e) {
     e.preventDefault();
-    var fullEntryIsShown = $(this).hasClass("close");
-    $ ( this ).toggleClass( 'close' );
-    if ( fullEntryIsShown ) {
+    if ( plusMinusDependentIsShown(this) ) {
         $ ( this ).nextAll( 'div' ).hide('fast');
     } else {
         $ ( this ).next('.showEntry').show('slow');
-    }
-}); 
+    }    
+    $ ( this ).toggleClass( 'close' );
+}
 
 // Handler für Klick auf "Resultate"
 $('.content').on('click', '.showResults a.zahl, .showResults a.stichwort', function (e) {
@@ -326,8 +337,8 @@ var closeAll =  $ ( '#aC' ).click(
     $(plusMinus).removeClass( 'close' );     
     }
   ); 
-$(document).on('click', plusMinus, toggleNext);
-function toggleNext(e) {
+$(document).on('click', plusMinus, toggleNextSubtree);
+function toggleNextSubtree(e) {
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }
