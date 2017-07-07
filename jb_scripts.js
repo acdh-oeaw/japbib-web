@@ -99,6 +99,8 @@ function onResultLoaded(statusText, jqXHR) {
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
+        currentSorting = $('#showList > .showOptions select').val();
+    frameWork.find('.showOptions select').val(currentSorting);
     if (statusText === 'success' && raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
