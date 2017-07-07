@@ -14,13 +14,13 @@ import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "../sru.xqm";
 import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
 import module namespace thesaurus = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "../thesaurus.xqm";
+import module namespace _ = "urn:sur2html" at "../localization.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 
-declare variable $api:path-to-stylesheets := "../../xsl/";
-declare variable $api:sru2html := $api:path-to-stylesheets||"sru2html.xsl";
+declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
   api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, 'false')
@@ -90,7 +90,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
     let $response-formatted :=
         if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and not($x-style eq 'none'))
         then 
-            let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:sru2html),
+            let $xsl := if ($x-style != '' and doc-available($sru-api:path-to-stylesheets||$x-style)) then doc($sru-api:path-to-stylesheets||$x-style) else doc($api:sru2html),
                 $formatted := 
                 xslt:transform($response-with-stats, $xsl,
                 map:merge((
@@ -101,7 +101,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
                     "maximumRecords": $maximumRecords,
                     "operation": 'searchRetrieve',
                     "base-uri-public": api:get-base-uri-public(),
-                    "base-uri": api:get-base-uri()
+                    "base-uri": ""
                 },
                 if ($x-style) then map{"x-style": $x-style} else map{}
                 )))
@@ -149,7 +149,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             then <XPath>{$xpath}</XPath>
             else ()}
             {$xcql}
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(api:subjects($results), false(), 'api:subject '))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($results), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
@@ -167,15 +167,6 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
     return $response update insert node $scans into ./sru:extraResponseData
 };
 
-declare %private function api:subjects($r) as map(*) {
-    map:merge(
-        for $t in $r//mods:subject[not(@displayLabel)]/mods:topic
-        let $v := data($t)
-        group by $v
-        return map:entry($v, count($t))
-    )
-};
-
 declare %private function api:get-base-uri-public() as xs:string {
     let $forwarded-hostname := if (contains(request:header('X-Forwarded-Host'), ',')) 
                                  then substring-before(request:header('X-Forwarded-Host'), ',')
@@ -191,6 +182,4 @@ declare %private function api:get-base-uri-public() as xs:string {
     return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
 };
 
-declare %private function api:get-base-uri() as xs:string {
-    'http://localhost:8984'||request:path()
-};
+(: calling back leads to a service dead lock up to 8.6.4 :)

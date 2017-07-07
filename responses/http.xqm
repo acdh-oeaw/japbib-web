@@ -105,10 +105,12 @@ function api:error-handler($code as xs:string, $description, $value, $module, $l
     <title>{$description}</title>
     <body>        
        <h1>{$description}</h1>
+	   <p>
        {$code}:{$description} {$value} in {$module} at {$line-number}:{$column-number}:<br/>
        {for $match in analyze-string($additional, '.*\n', 'm')/*
           return ($match/text(),<br/>)
        }
+	   </p>
     </body>
   </html>
 };

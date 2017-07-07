@@ -1,4 +1,4 @@
-﻿/***************
+/***************
    Schrift
 ****************/
 body {
@@ -467,7 +467,30 @@ td.control:hover {
   }
 .buch {
   background-image:url('images/icon_book.png');  
-  }
+  } 
+
+/******* Fehlermeldungen ***********/
+
+.ajax-error {
+  border: 1px solid red;
+  padding: 0 1em 0 1em;
+  background-color: lightpink;
+}
+
+/* Is returned when the html file is opened from disk */
+.ajax-error.c0 {  
+  border: 1px solid green;  
+  background-color: lightgreen;
+}
+
+.ajax-error * {
+  background-color: white;
+  overflow-y: scroll;
+}
+
+.ajax-error h1 {
+  margin: 0 0 0 0;
+}
 
   
 /*******************
@@ -737,6 +760,17 @@ PLUS-MINUS
  opacity: 0.8;
  }
  
+.plusMinus ~ .zahl.gruppe,
+.plusMinus.close ~ .zahl.eintrag {
+    display: inline;
+}
+
+.plusMinus ~ .zahl.eintrag,
+.plusMinus.close ~ .zahl.gruppe,
+.li1 > .zahl.gruppe {
+    display: none;
+}
+
 .schlagworte .sup::before,
 .schlagworte .plusMinus::before { 
  position: absolute;
@@ -803,7 +837,7 @@ PLUS-MINUS
 .fenster {  
   display: inline-block;
   position: relative;
-  width: 5em;
+  width: 10em;
   height: 2em;
   overflow: hidden;
   white-space: nowrap;
@@ -849,6 +883,10 @@ PLUS-MINUS
 .record-mods, .record-lidos {
     overflow-x: scroll;
 }
+
+.CodeMirror { 
+  margin: -.5em -1em;
+  }
   
 
 

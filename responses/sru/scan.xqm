@@ -7,6 +7,7 @@ import module namespace db = "http://basex.org/modules/db";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
+import module namespace _ = "urn:sur2html" at "../localization.xqm";
 
 import module namespace cache = "japbib:cache" at "cache.xqm";
 import module namespace index = "japbib:index" at "../../index.xqm";
@@ -116,6 +117,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                                  <sru:displayTerm>{$v}</sru:displayTerm>
                              </sru:term>"
                      ) else '()',
+        $logXQuery := l:write-log('api:do-scan $xpath_or_diagnostics := '||$xpath_or_diagnostics||' $xquery := '||$xquery, 'DEBUG'),
         $terms_or_diagnostics := 
             if (not($xpath_or_diagnostics instance of xs:string)) then $xpath_or_diagnostics
             else try {

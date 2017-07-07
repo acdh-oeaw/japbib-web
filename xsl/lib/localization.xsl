@@ -24,4 +24,16 @@
         </xsl:choose>
     </xsl:function>
     
+    <xsl:function name="_:rdict">
+        <xsl:param name="text"/>
+        <xsl:choose>
+            <xsl:when test="exists($dict//string[text() = $text])">
+                <xsl:value-of select="$dict//string[text() = $text]/@xml:id"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$text"/> 
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+    
 </xsl:stylesheet>

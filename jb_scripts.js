@@ -1,5 +1,7 @@
-$(document).ready(jb_init);
-function jb_init() {
+$(document).ready(function(){if (!window.__karma__) {jb_init(jQuery, CodeMirror, hasher, crossroads, URI)}});
+function jb_init($, CodeMirror, hasher, crossroads, URI) {
+
+var m = {};
 
 var navs= $ ( '#navbar_items a' );
 var controls= $ ( '.control' );
@@ -55,43 +57,82 @@ for (i in nexts) {
 //////// Find-Page //////
 
   
-//var hideResults= $('.showResults').hide();
+var hideResults= $('.showResults').hide();
 
 var resultsFramework;
 
 /*var resultTogglingLinks= $('.suchOptionen a').click(function(e){
   e.preventDefault();
-  toggleResults($(this).attr('href'))});*/
+  getResultsHidden($(this).attr('href'))});*/
 
-function toggleResults(href) {  
+var getResultsLock = false;
+var originalStack = "";
+var raisedErrors = [];
+
+function getResultsHidden(href) {
+  if (getResultsLock) {
+    var raisedError = Error("Do not call getResultsHidden() while a request is in progress!") ;
+    raisedErrors.push(raisedError);
+    throw raisedError;
+  } else {
+    var e = Error('');
+    originalStack = e.stack.replace(/^Error.*/, '');
+  }
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
+  getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
+    var self = this;
+    /* chrome behaves synchronous here when the file is running from disk */
+    if (jqXHR.status === 0) {
+      /* emulate a delay that will always occur if the result is fetched from the real server */
+      setTimeout(function(){onResultLoaded.apply(self, [statusText, jqXHR]);}, 100);
+    } else {onResultLoaded.apply(self, [statusText, jqXHR]);}    
+  });  
+}
+
+function onResultLoaded(statusText, jqXHR) {
+  try {
     var ajaxParts = $('.content > .showResults .ajax-result'),
+        ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics'),
         searchResult = ajaxParts.find('.search-result > ol'),
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
-    if (statusText === 'success') {
-        $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
-        frameWork.find('#showList > .navResults').replaceWith(navResults);
-        frameWork.find('#showList > ol').replaceWith(searchResult);
-    } else {
-        frameWork.append($('<div class="ajax-error" data-errorCode="'+jqXHR.status+'">').append(ajaxParts));
-    }
+    if (statusText === 'success' && raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
+      $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
+      frameWork.find('#showList > .navResults').replaceWith(navResults);
+      frameWork.find('#showList > ol').replaceWith(searchResult);
+    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText)]) }
     $('.content > .showResults').replaceWith(frameWork);
-    $('.content > .showResults textarea.codemirror-data').each(function(){
+    $('.content > .showResults textarea.codemirror-data').each(function () {
       CodeMirror.fromTextArea(this,
-      {readOnly: true,
-      lineNumbers: true,
-      foldGutter: true,
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
-      });
+        {
+          readOnly: true,
+          lineNumbers: true,
+          foldGutter: true,
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        });
     });
     $('.showResults').show('slow');
-  });
-    
+  } finally {
+    getResultsLock = false;
   }
+}
+
+function handleGetErrors(frameWork, status, htmlErrorMessage) {  
+  if (raisedErrors.length === 0) {
+    frameWork.prepend($('<div class="ajax-error c'+(status-(status % 100))+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
+  } else {
+    var errors = '<pre>Original call:\n'+originalStack+'</pre>';          
+    for (var i = 0; i < raisedErrors.length; i++) {
+      var stack = raisedErrors[i].stack.replace(/^Error.*/, '');
+      errors += '<pre>'+raisedErrors[i].toString()+'\n'+stack+'</pre>'
+    }
+    frameWork.prepend($('<div class="ajax-error concurrency">').append(errors));
+  }
+  raisedErrors = [];
+}
   
 // Handler fuer .tipp (BS)
 
@@ -119,23 +160,61 @@ $( document )
 // Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
 // ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
 
+var navR = $( '.navResults' );
+var countR = $( '.countResults');
+var fenster = $( '#fenster1');
+var hitRow = $( '#hitRow');
+var hits = $( '#hitRow .hits' ); 
+var FW = 160;
+var hitsW = $( '#hitRow').width();
+
+function arrangeHitlist() {
+  // max. Weite für fenster
+  FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
+  // berechne width aller hits
+  //for (i=1;i<hits.length;i++) {
+    //hitsW += $( hits[i] ).outerWidth();
+  //}
+  
+alert ('FW = '+ FW + '; hitsW = ' + hitsW);
+  //verstecke Navigationselemente
+  $( '.pull' ).hide();
+  // Anpassen des Fensters an Hits
+  if(hits.length < 3) 
+    $( fenster ).hide();
+  else if (hitsW <= FW)
+    $( fenster ).width(hitsW);
+  else {
+    $( fenster ).width(FW);
+    $( '.pull' ).show();
+  }
+} 
+    
+//$( document ).on('click',  arrangeHitlist);
 $( document )
   .on('click', '#pullRight',
-  function () { 
+  function () {  
+    //alert ($( '#hitRow' ).position().left);
       if( $( '#hitRow' ).position().left < 0) {
-        $( '#hitRow' ).animate(  { left:'+='+ ($( '#fenster1').width()-16) }, 200 );
+        $( '#hitRow' ).animate(  { left: 0 }, 2000 );
       } 
     }
   )
   .on('click', '#pullLeft',
-  function () { 
-    if( $( '#hitRow' ).position().left > 
-        $( '#fenster1').width() - $( '#hitRow').width() ) {
-      $( '#hitRow' ).animate(  { left:'-='+ ($( '#fenster1').width()-16)  }, 200 );
+  function () {  
+    var maxL = ($( '#hitRow' ).width() - $(  '#fenster1' ).width())*-1;
+    if( $( '#hitRow' ).position().left > maxL ) {
+      $( '#hitRow' ).animate(  { left:  maxL }, 2000 );
       } 
     }
   ); 
-  
+
+$( document )
+  .on('click', '.hitList a.hits', onFetchMoreHits);
+function onFetchMoreHits(e) {
+  var query = findQueryPartInHref($(this).attr('href'));
+  doSearchOnReturn(query.startRecord);
+}
 ////////////////////////////////////////
 
 $('#searchInput1').keypress(searchOnReturn);
@@ -146,16 +225,21 @@ function searchOnReturn(e) {
   }
 }
 
-function doSearchOnReturn() {
-    var params = $('#searchform1').serialize(),
+function doSearchOnReturn(optStartRecord) {    
+    var startRecord = optStartRecord || 1,
         baseUrl = $('#searchform1').attr('action')
-    toggleResults(baseUrl+'?'+params);
+    $('#searchform1 input[name="startRecord"]').val(startRecord);
+    getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
 };
+
+m.doSearchOnReturn = doSearchOnReturn;
 
 function executeQuery(query) {
     $('#searchInput1').val(query);
     doSearchOnReturn();
 };
+
+m.executeQuery = executeQuery;
   
 // Handler fuer .showEntry select compact (BS)
 // todo:  mit MODS/ LIDOS Handler vereinheitlichen
@@ -201,12 +285,20 @@ var toggleAnd = $('.andOr').click(
   );
 */
 
+function findQueryPartInHref(href) {
+  var parsed = URI(href),
+      conventionalQuery = parsed.query(true),
+      fragment = parsed.fragment(),
+      query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
+  return query;
+}
   
-$ ( '#facet-subjects').on('click', 'a', function(e){
+$ ( '#facet-subjects').on('click', '.showResults a.zahl', function(e){
     e.preventDefault();
-    var subject = $(e.target).parent().children('.plusMinus').text();
+    var query = findQueryPartInHref($(this).attr('href')),
+        subject = query.query;
     var currentQuery = $('#searchInput1').val();
-    var newQuery = currentQuery === "" ? "subject="+subject : currentQuery + " AND " + "subject=" + subject;
+    var newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
     executeQuery(newQuery);
 });
 
@@ -223,10 +315,9 @@ $(document).on('click', '.results .plusMinus', function (e) {
 }); 
 
 // Handler für Klick auf "Resultate"
-$(document).on('click', '.showResults .zahl', function (e) {
+$('.content').on('click', '.showResults a.zahl', function (e) {
     e.preventDefault();
-    var caller = $ ( this ); 
-    var query = $ ( this ).attr("data-query");
+    var query = findQueryPartInHref($(this).attr('href')).query;
     executeQuery(query);
 });
 
@@ -239,7 +330,7 @@ $('.suchOptionen a').click(function(e){
     executeQuery(index+"="+term);
 });
  
-/*
+
 // Schlagwortbaum oeffnen und schliessen (BS)
 // Auskommentiert wegen moegl. Konflikt mit anderen Skripts (BS)
 
@@ -268,5 +359,6 @@ function toggleNext(e) {
     $ (this).toggleClass( 'close' );
     }
 
-*/
+window.jb80 = m;
+
 }
