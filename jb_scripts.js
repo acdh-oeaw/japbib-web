@@ -78,6 +78,7 @@ function getResultsHidden(href) {
     var e = Error('');
     originalStack = e.stack.replace(/^Error.*/, '');
   }
+  var currentSorting = $('#showList > .showOptions select').val();
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   getResultsLock = true;
@@ -86,12 +87,12 @@ function getResultsHidden(href) {
     /* chrome behaves synchronous here when the file is running from disk */
     if (jqXHR.status === 0) {
       /* emulate a delay that will always occur if the result is fetched from the real server */
-      setTimeout(function(){onResultLoaded.apply(self, [statusText, jqXHR]);}, 100);
-    } else {onResultLoaded.apply(self, [statusText, jqXHR]);}    
+      setTimeout(function(){onResultLoaded.apply(self, [statusText, jqXHR, currentSorting]);}, 100);
+    } else {onResultLoaded.apply(self, [statusText, jqXHR, currentSorting]);}    
   });  
 }
 
-function onResultLoaded(statusText, jqXHR) {
+function onResultLoaded(statusText, jqXHR, currentSorting) {
   try {
     var ajaxParts = $('.content > .showResults .ajax-result'),
         ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics'),
@@ -99,7 +100,6 @@ function onResultLoaded(statusText, jqXHR) {
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
-        currentSorting = $('#showList > .showOptions select').val();
     frameWork.find('.showOptions select').val(currentSorting);
     if (statusText === 'success' && raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
