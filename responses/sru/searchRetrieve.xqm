@@ -91,7 +91,7 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
         if ($results instance of element(sru:diagnostics))
         then $results
         else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql),
-        $response-with-stats := if ($response instance of element(sru:searchRetrieve)) then api:addStatScans($response) else $response
+        $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response
     let $response-formatted :=
         if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and 
             not($x-style eq 'none') and
@@ -169,6 +169,7 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else
              let $q := concat(string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
                     '//', index:index-as-xpath-from-map($i, index:map($context), 'match'))
+(:                 , $log := l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG'):)
              return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||replace(., '&quot;','\\&quot;')||'"')
         , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
     return $response update insert node $scans into ./sru:extraResponseData
