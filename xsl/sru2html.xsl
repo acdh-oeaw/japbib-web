@@ -179,8 +179,9 @@
             <div class="showOptions">
                 <form>
                     <label>Anzeige des Eintrags:
-                        <select name="top5" size="1">
-                            <option selected="selected" value="html">detailliert</option>
+                        <select size="4">
+                            <option value="html" selected="selected">detailliert</option>
+                            <option value="compact">kompakt</option>
                             <!--<option>Chicago Styles Manual</option>
                             <option>BibTeX</option>S-->
                             <xsl:if test="$lidos-serialized != ''">

@@ -208,6 +208,14 @@ $( document )
       } 
     }
   ); 
+  
+$( document )
+  .on('click', '.hitList a.hits', onFetchMoreHits);
+function onFetchMoreHits(e) {
+  var query = findQueryPartInHref($(this).attr('href'));
+  doSearchOnReturn(query.startRecord);
+}
+////////////////////////////////////////
 
 $( document )
   .on('click', '.hitList a.hits', onFetchMoreHits);
@@ -255,15 +263,24 @@ $( '.showOptions select' ).change( function() {
 
 // MODS/ LIDOS/  HTML umschalten (OS)
 $(document).on('change', '.showResults .showOptions select', function(e){
-   var target = $(e.target);
-   var dataFormat = target.data("format")
-   var curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html";
-   var format = target.val();
-   target.data("format", format);
-   var c = ".record-" + format;
-   var div = target.closest(".showEntry").find(c);
+   var target = $(e.target),
+       dataFormat = target.data("format")
+       curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html",
+       format = target.val(),
+       target.data("format", format),
+       c = ".record-" + format;
+   if (format === 'compact') {
+     c = ".record-html";
+   }
+   var entry = target.closest(".showEntry"),
+       div = entry.find(c);
    target.closest(".showEntry").find("[class^=record]").hide();
    div.show();
+   if (format === 'compact') {
+     entry.addClass('compact');
+   } else {
+     entry.removeClass('compact');
+   }
    if (format == 'lidos' || format == 'mods') {
         refreshCM(div);
    }
@@ -296,38 +313,54 @@ function findQueryPartInHref(href) {
 $ ( '#facet-subjects').on('click', '.showResults a.zahl', function(e){
     e.preventDefault();
     var query = findQueryPartInHref($(this).attr('href')),
-        subject = query.query;
-    var currentQuery = $('#searchInput1').val();
-    var newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
+        subject = query.query,
+        currentQuery = $('#searchInput1').val(),
+        newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject,
+        plusMinus = $(this).prevAll('.plusMinus');
+    if (plusMinus.length === 1 && !plusMinusDependentIsShown(plusMinus)) {
+      toggleNextSubtree.apply(plusMinus, [e]);
+      setTimeout(function(){
+        executeQuery(newQuery)
+      }, 2000);
+    } else {
     executeQuery(newQuery);
+    }
 });
+function plusMinusDependentIsShown(aPlusMinus) {
+  return $(aPlusMinus).hasClass("close")
+}
 
 // Handler für Klick auf (+) in Resultatliste
-$(document).on('click', '.results .plusMinus', function (e) {
+$(document).on('click', '.results .plusMinus', openOrCloseDetails);
+function openOrCloseDetails(e) {
     e.preventDefault();
-    var fullEntryIsShown = $(this).hasClass("close");
-    $ ( this ).toggleClass( 'close' );
-    if ( fullEntryIsShown ) {
+    if ( plusMinusDependentIsShown(this) ) {
         $ ( this ).nextAll( 'div' ).hide('fast');
     } else {
         $ ( this ).next('.showEntry').show('slow');
-    }
-}); 
+    }    
+    $ ( this ).toggleClass( 'close' );
+}
 
 // Handler für Klick auf "Resultate"
-$('.content').on('click', '.showResults a.zahl', function (e) {
+$('.content').on('click', '.showResults a.zahl, .showResults a.stichwort', function (e) {
     e.preventDefault();
     var query = findQueryPartInHref($(this).attr('href')).query;
     executeQuery(query);
 });
 
 // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
-// TODO: Anpassen an Kontext (BS)
-$('.suchOptionen a').click(function(e){
+$('.suchOptionen .abc a').click(function(e){
     e.preventDefault();
     var index = $(e.target).closest("td").attr("data-index");
     var term = $(e.target).text() + "*";
     executeQuery(index+"="+term);
+});
+
+$('a.code').click(function(e){
+    e.preventDefault();
+    var query = $(this).text();
+    executeQuery(query);
 });
  
 
@@ -353,8 +386,8 @@ var closeAll =  $ ( '#aC' ).click(
     $(plusMinus).removeClass( 'close' );     
     }
   ); 
-$(document).on('click', plusMinus, toggleNext);
-function toggleNext(e) {
+$(document).on('click', plusMinus, toggleNextSubtree);
+function toggleNextSubtree(e) {
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }

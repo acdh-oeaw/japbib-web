@@ -198,13 +198,13 @@ declare function cql:parse-searchClauses($parts as item()*) as item()* {
 };      
 
 declare function cql:parse-quotes($expr as xs:string) as item()* {
-    let $a := analyze-string($expr,'".*[^\\]?"')
+    let $a := analyze-string($expr,'"(?:\\"|[^"])*"')
     let $it := function($e as item(), $it){
         typeswitch($e)
             case element(fn:match) return <term>{for $i in $e/node() return $it($i, $it)}</term>
             case element(fn:non-match) return for $i in $e/node() return $it($i, $it)
             case text() return 
-                if (matches($e, '".*?"'))    
+                if (matches($e, '"(?:\\"|[^"])*"'))    
                 then xs:string(replace($e,'(\\")|"','$1'))
                 else xs:string($e)  
             default return $e/node()!$it(., $it)

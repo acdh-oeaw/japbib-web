@@ -30,7 +30,7 @@ declare function local:handle ($item as item()) {
         case element(error) return ()
         (: if there are comments in the input file ignore them :)
         case comment() return ()
-        case text() return ()
+        case text() return if ($item/ancestor::test) then $item else ()
         case element() return element {QName(namespace-uri($item), local-name($item))} { for $n in ($item/@*, $item/node()) return local:handle($n) }
         case document-node() return document { for $n in $item/node() return local:handle($n) }
         default return $item
