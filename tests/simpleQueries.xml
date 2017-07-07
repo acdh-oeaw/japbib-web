@@ -137,6 +137,34 @@
             </triple>
         </expected>
     </test>
+    <test title="two complex strings with simple relation boolean">
+        <query>publisher="Univ. Hamburg" and subject="Geschichte"</query>
+        <expected>            
+            <triple>
+                <boolean>
+                    <value>and</value>
+                </boolean>
+                <leftOperand>
+                    <searchClause>
+                        <index>publisher</index>
+                        <relation>
+                            <value>=</value>
+                        </relation>
+                        <term>Univ. Hamburg</term>
+                    </searchClause>
+                </leftOperand>
+                <rightOperand>
+                    <searchClause>
+                        <index>subject</index>
+                        <relation>
+                            <value>=</value>
+                        </relation>
+                        <term>Geschichte</term>
+                    </searchClause>
+                </rightOperand>
+            </triple>            
+        </expected>
+    </test>
     <test title="simple string with sorting">
         <query>Haus sortBy author</query>
         <expected>
