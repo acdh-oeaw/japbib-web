@@ -874,8 +874,9 @@ PLUS-MINUS
 .pull {
   display: inline-block;
   color: #aaa;
-  padding: 0 .5em; 
+  padding: 0 .5em;
   cursor:pointer;
+  /* visibility: hidden; */
   }
 .pull:hover {
   color: #000066;

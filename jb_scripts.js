@@ -115,6 +115,8 @@ function onResultLoaded(statusText, jqXHR) {
         });
     });
     $('.showResults').show('slow');
+    // Treffernavigation (BS) s.u.
+    arrangeHitlist();
   } finally {
     getResultsLock = false;
   }
@@ -155,66 +157,55 @@ $( document )
     } 
   );  
   
+   
   
-// Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.   
-// Vorläufige Funktionalität: #hitRow wird hinter #fenster (overflow: hidden) ruckweise vorbeigezogen 
-// ideal wäre: solang man die Maus gedrückt hält, scrollt das Feld, ev. mit zunemender Geschwindigkeit 
-
-var navR = $( '.navResults' );
-var countR = $( '.countResults');
-var fenster = $( '#fenster1');
-var hitRow = $( '#hitRow');
+// Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.    
+ 
 var hits = $( '#hitRow .hits' );
 var runTime = hits.length*50;
-var FW = 160;
-var hitsW = $( '#hitRow').width();
-/*
-function arrangeHitlist() {
-  // max. Weite für fenster
-  FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
-  // berechne width aller hits
-  //for (i=1;i<hits.length;i++) {
-    //hitsW += $( hits[i] ).outerWidth();
-  //}
-  
-alert ('FW = '+ FW + '; hitsW = ' + hitsW);
-  //verstecke Navigationselemente
-  $( '.pull' ).hide();
-  // Anpassen des Fensters an Hits
-  if(hits.length < 3) 
-    $( fenster ).hide();
-  else if (hitsW <= FW)
-    $( fenster ).width(hitsW);
-  else {
-    $( fenster ).width(FW);
-    $( '.pull' ).show();
-  }
-} 
-  */  
-//$( document ).on('click',  arrangeHitlist); 
+var FW = 160; 
 
+function arrangeHitlist() {
+  // max. Weite fuer fenster
+  var hitsW = $( '#hitRow').width();
+  FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
+  if (FW < hitsW) {
+    $( '#fenster1' ).width(FW);
+    $( '.pull').css( "visibility", "visible");
+  }
+  else{
+    $( '#fenster1' ).width(hitsW);
+    $( '.pull').css( "visibility", "hidden");
+  } 
+} 
+ 
 $( document ).on( 'mousedown', '#pullLeft', 
   function () {  
-      if( $( '#hitRow' ).position().left < 0) {
+    if( $( '#hitRow' ).position().left < 0) {
       $( '#hitRow' ).animate(  { left: 0 }, runTime );
-      } 
-    }
+    } 
+  }
 ); 
 $( document ).on( 'mousedown', ' #pullRight', 
-  function () {  
+  function () {     
     var maxL = ($( '#hitRow' ).width() - $(  '#fenster1' ).width())*-1;
     if( $( '#hitRow' ).position().left > maxL ) {
       $( '#hitRow' ).animate(  { left:  maxL }, runTime );
-      } 
-    }
-  );
-////////////////////////////////////////
+    } 
+  }
+); 
+$( document ).on( 'mouseup', '#pullLeft, #pullRight', 
+  function () {  
+      $( '#hitRow' ).stop(); 
+  }
+); 
+  
+///////////////////////////////////////
 
 $( document )
   .on('click', '.hitList a.hits', onFetchMoreHits);
 function onFetchMoreHits(e) {
   var query = findQueryPartInHref($(this).attr('href'));
-  e.preventDefault();
   doSearchOnReturn(query.startRecord);
 }
 ////////////////////////////////////////
