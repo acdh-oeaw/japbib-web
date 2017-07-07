@@ -84,11 +84,11 @@
     </xsl:template>
     
     <xsl:template match="mods:mods">
-        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
+        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')])"><span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
         <xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')]">
            <xsl:apply-templates select="."/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
         </xsl:for-each><xsl:text xml:space="prsserve"> </xsl:text>
-        <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
+        <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year no-year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
         <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/><xsl:text>,</xsl:text>
         <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
         <xsl:apply-templates select="." mode="detail"/>
@@ -218,8 +218,18 @@
                 <xsl:with-param name="index">publisher</xsl:with-param>
                 <xsl:with-param name="term" select="mods:publisher"/>
             </xsl:call-template>
-            <xsl:value-of select="', '||
-                (if (mods:dateIssued) then string-join((mods:dateIssued, ../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued), ', ') else _:dict('no-year-abbr'))"/></li>
+            <xsl:value-of select="', '"/>
+            <xsl:choose>
+                <xsl:when test="mods:dateIssued">
+                    <span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span><xsl:if test="../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued">
+                        <xsl:value-of select="', '"/><span class="original"><xsl:value-of select="../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued"/></span>
+                    </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <span class="no-year"><xsl:value-of select=" _:dict('no-year-abbr')"/></span>
+                </xsl:otherwise>
+            </xsl:choose> 
+         </li>
     </xsl:template>
     
     <xsl:template match="mods:relatedItem[@type eq 'series']" mode="more-detail">
