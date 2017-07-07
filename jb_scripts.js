@@ -243,17 +243,18 @@ function executeQuery(query) {
 
 m.executeQuery = executeQuery;
   
-// Handler fuer .showEntry select compact (BS)
-// todo:  mit MODS/ LIDOS Handler vereinheitlichen
-
-$( '.showOptions select' ).change( function() {  
-  if(this.value == 'compact') {
-    $( this ).closest('.showEntry').addClass('compact');
-    }
-  else {
-    $( this ).closest(".showEntry").removeClass('compact');
-    }
-  });
+// Handler fuer .showList select
+$(document).on('change', '#showList > .showOptions select', function(e){
+   var target = $(this),
+       sortBy = target.val(),
+       currentQuery = $('#searchInput1').val(),
+       sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
+       newQuery = sortLessQuery + ' sortBy ' + sortBy;
+   if (sortBy === '-') {return;}
+   target.data("sortBy", sortBy);
+   $('#searchInput1').val(newQuery);
+   doSearchOnReturn();
+});
 
 // MODS/ LIDOS/  HTML umschalten (OS)
 $(document).on('change', '.showResults .showOptions select', function(e){
