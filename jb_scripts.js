@@ -3,30 +3,58 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
 var m = {};
 
-var navs= $ ( '#navbar_items a' );
-var controls= $ ( '.control' );
-var slides= $ ( '.slide' );
-var item = 0;
+// Handler fuer Seitenwechsel (BS)
+var navs= $ ( '#navbar_items a' ),
+    controls= $ ( '.control' ),
+    slides= $ ( '.slide' ),
+    item = 0;
 
 function whichItem(e) { 
   for (i = 0; i < 3; i++) {
-  if ( e == controls[i] || e == navs[i]) {
+    if ( e == controls[i] || e == navs[i]) {
       item= i;   
-      }
     }
-  } 
-function toggleNav() {
-  $ ( slides ).addClass( 'hide' ); 
-  $ ( navs ).removeClass( 'hilite' ); 
-  $ ( controls ).removeClass( 'hilite' ); 
-  whichItem(this); 
-  $ ( slides[item] ).removeClass( 'hide' );     
-  $ ( navs[item] ).addClass( 'hilite' );    
-  $ ( controls[item] ).addClass( 'hilite' ); 
   }
-$ ( controls ).click( toggleNav ); 
-$ ( navs ).click( toggleNav ); 
+} 
 
+function toggleNav(aaa,bbb) {
+  $( slides ).addClass( 'hide' ); 
+  $( controls ).add( $( navs ) ).removeClass( 'hilite' );  
+  whichItem(aaa); 
+  myItem= bbb || item; // for later use...
+  $( slides[myItem] ).removeClass( 'hide' );     
+  $( controls[myItem] ).add( $( navs[myItem] ) ).addClass( 'hilite' );     
+}
+$( controls ).add ($( navs ) ).click( function() { toggleNav(this); } );
+
+// primitiver Versuch interne Links zu bearbeiten... (BS)
+
+var interneLinks = [
+  {ref:'#about', index:0}, 
+  {ref:'#find', index:1},
+  {ref:'#thesaurus', index:2 }
+  ];
+  /*
+for (i in interneLinks) { 
+  $( 'a[href~="'+interneLinks[i].ref+'"]' ).click( function() { 
+  alert (interneLinks[i].ref);
+  //e.preventDefault();
+  toggleNav( controls[interneLinks[i].index] );
+  });
+}   
+*/
+$( 'a[href~="#about"]' ).click( function(e) { 
+  e.preventDefault();
+  toggleNav( controls[0] );
+});
+$( 'a[href~="#find"]' ).click( function(e) { 
+  e.preventDefault();
+  toggleNav( controls[1] );
+});  
+$( 'a[href~="#thesaurus"]' ).click( function(e) { 
+  //e.preventDefault();
+  toggleNav( controls[2] );
+}); 
 //////// ABOUT-Page ////// 
 
 var divs= [$('#ziele'), $('#help'), $('#geschichte'), $('#impressum')];
@@ -235,6 +263,7 @@ $( document ).on( 'mouseup', '#pullLeft, #pullRight',
     stylePull();
   }
 ); 
+
   
 ///////////////////////////////////////
 

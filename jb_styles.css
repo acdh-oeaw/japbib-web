@@ -813,10 +813,9 @@ PLUS-MINUS
 
 .navResults {
  background: rgba(233, 220, 175, 0.3);
- padding: 1px 1em;
- }
-.navResults { 
+ padding: 1px 1em; 
  line-height: 2rem;
+ height: 2em;
  }
 .countResults {
  float: left;
@@ -828,12 +827,12 @@ PLUS-MINUS
   list-style: none;
   }
 .hits {
-  display: inline-block; 
+  display: inline-block;
   text-align: center;
   font-size: .8em;
   border: 0px solid #ccc;
   padding: 0 .3em;
-  margin-right: -.3em; 
+  margin-right: -.3em;
   }    
 .fenster {  
   display: inline-block;

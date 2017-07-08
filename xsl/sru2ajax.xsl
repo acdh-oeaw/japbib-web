@@ -58,21 +58,21 @@
         <div class="countResults">
             <span class="numberofRecords"><xsl:value-of select="$nOfRec"/></span>&#xa0;Treffer 
         </div>
+        <xsl:if test="$lastPage > 1">
         <div class="hitList">
-            <span id="pullLeft" class="pull" title="Liste nach links ziehen (hintere anzeigen)">≪</span>
+            <span id="pullLeft" class="pull" title="zum Anfang der Trefferliste">≪</span>
             <a class="hits first{if ($startRecord &lt;= $maximumRecords) then ' here' else ''}" href="#?startRecord=1" title="Treffer 1–{if ($nOfRec > $maximumRecords) then $maximumRecords else $nOfRec}">1</a>
             <span class="fenster" id="fenster1">
                 <span id="hitRow">
                     <xsl:for-each select="2 to $lastPage - 1">
-                        <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) then ' here' else ''}" href="#?startRecord={((. - 1) * $maximumRecords) + 1}" title="Treffer {(. - 1) * $maximumRecords + 1}—{(. - 1) * $maximumRecords + $maximumRecords}"><xsl:value-of select="."/></a>
+                        <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) then ' here' else ''}" href="#?startRecord={((. - 1) * $maximumRecords) + 1}" title="Treffer {(. - 1) * $maximumRecords + 1}–{(. - 1) * $maximumRecords + $maximumRecords}"><xsl:value-of select="."/></a>
                     </xsl:for-each>
                 </span>  
             </span> 
-            <xsl:if test="$lastPage > 1">
                 <a class="hits last{if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
-            </xsl:if>
-            <span id="pullRight" class="pull" title="Liste nach rechts ziehen (vordere anzeigen)">≫</span>
+            <span id="pullRight" class="pull" title="zum Ende der Trefferliste">≫</span>
         </div>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="sru:records">
