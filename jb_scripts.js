@@ -116,9 +116,8 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
     });
-    $('.showResults').show('slow');
-    // Treffernavigation (BS) s.u.
-    arrangeHitlist();
+    $('.showResults').show('slow');    
+    arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
     getResultsLock = false;
   }
@@ -157,20 +156,23 @@ $( document )
       }        
       $(this).attr('title', title);  
     } 
-  );  
-  
+  );   
    
-  
-// Handler fuer '<<' und '>>' (.hitList  scrollen), B.S.    
+// Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
-var hits = $( '#hitRow .hits' );
-var runTime = hits.length*50;
-var FW = 160; 
+var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
+    runTime = hits.length*50, // scroll-Dauer
+    hitsW = 160,  // Weite fuer HitRow
+    FW = 160, // Fensterweite
+    posLeft = 0, // Pos. v. hitRow
+    maxL = 0, // maximale Verschiebung nach links
+    spaceR = FW/2; 
 
-function arrangeHitlist() {
+function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
+  hitsW = $( '#hitRow').width();
   // max. Weite fuer fenster
-  var hitsW = $( '#hitRow').width();
   FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
+  // Nav-Pfeile anzeigen oder verstecken
   if (FW < hitsW) {
     $( '#fenster1' ).width(FW);
     $( '.pull').css( "visibility", "visible");
@@ -179,8 +181,32 @@ function arrangeHitlist() {
     $( '#fenster1' ).width(hitsW);
     $( '.pull').css( "visibility", "hidden");
   } 
+  
+  /////////  .here  positionieren /////////
+  maxL = FW - hitsW;  
+    // wenn hitRow > Fenster und .here innerhalb von hitRow
+  if ( maxL < 0 && $('#hitRow .here').length > 0 ) {
+      // wenn here nicht mehr sichtbar
+    if ( $('#hitRow .here').position().left > FW - $('#hitRow .here').width() ) {
+        // wenn rechts genug Platz
+      var spaceR = (FW - $('#hitRow .here').width())/2 ;
+      if ( $('#hitRow').width()-($('#hitRow .here').position().left) > spaceR ) {        
+        posLeft = -$('#hitRow .here').position().left + spaceR;
+      }
+      else { // maximale left-Verschiebung 
+        posLeft = maxL;
+      } 
+    } 
+  } 
+    // wenn .here an letzter Stelle
+  else if ($('.last.here').length > 0 ) {       
+    posLeft = maxL;
+  }
+    // hitRow in Hinblick auf .here verschieben 
+  $( '#hitRow' ).css( 'left', posLeft);
 } 
- 
+
+   ///////// hitRow scollen /////////
 $( document ).on( 'mousedown', '#pullLeft', 
   function () {  
     if( $( '#hitRow' ).position().left < 0) {
@@ -190,7 +216,6 @@ $( document ).on( 'mousedown', '#pullLeft',
 ); 
 $( document ).on( 'mousedown', ' #pullRight', 
   function () {     
-    var maxL = ($( '#hitRow' ).width() - $(  '#fenster1' ).width())*-1;
     if( $( '#hitRow' ).position().left > maxL ) {
       $( '#hitRow' ).animate(  { left:  maxL }, runTime );
     } 
