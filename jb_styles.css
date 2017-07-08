@@ -829,11 +829,11 @@ PLUS-MINUS
   }
 .hits {
   display: inline-block; 
-  text-align: center; 
-  font-size: .8em; 
-    border: 0px solid #ccc; 
-    padding: 0 .3em;
-    margin-right: -.3em;
+  text-align: center;
+  font-size: .8em;
+  border: 0px solid #ccc;
+  padding: 0 .3em;
+  margin-right: -.3em; 
   }    
 .fenster {  
   display: inline-block;
@@ -845,10 +845,10 @@ PLUS-MINUS
   vertical-align: bottom;  
   }
 .fenster span {
-  position: absolute; 
+  position: absolute;
   left: 0;
   bottom: 0;
-  right: auto;
+  right: auto; 
   } 
 .hits.first,
 .hits.last,  
@@ -873,15 +873,19 @@ PLUS-MINUS
  
 .pull {
   display: inline-block;
-  color: #aaa;
+  color: #d1d1d1;
   padding: 0 .5em;
-  cursor:pointer;
   /* visibility: hidden; */
   }
-.pull:hover {
+.pull.active {
+  color: #000066; 
+  cursor:pointer;
+  } 
+.pull.active:hover {
   color: #000066;
   background: #e6eff1;
   }
+  
 /* MODS und LIDOS */
 .record-mods, .record-lidos {
     overflow-x: scroll;

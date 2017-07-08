@@ -204,26 +204,35 @@ function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
   }
     // hitRow in Hinblick auf .here verschieben 
   $( '#hitRow' ).css( 'left', posLeft);
+  stylePull();
 } 
+function stylePull() { 
+  $('#pullLeft, #pullRight').addClass('active');
+  if ($( '#hitRow' ).position().left >= 0 ) 
+    $( '#pullLeft' ).removeClass('active');
+  if ($( '#hitRow' ).position().left-1 <= maxL ) 
+    $( '#pullRight' ).removeClass('active');
+}
 
    ///////// hitRow scollen /////////
 $( document ).on( 'mousedown', '#pullLeft', 
   function () {  
     if( $( '#hitRow' ).position().left < 0) {
-      $( '#hitRow' ).animate(  { left: 0 }, runTime );
+      $( '#hitRow' ).animate(  { left: 0 }, runTime, stylePull ); 
     } 
   }
 ); 
 $( document ).on( 'mousedown', ' #pullRight', 
   function () {     
     if( $( '#hitRow' ).position().left > maxL ) {
-      $( '#hitRow' ).animate(  { left:  maxL }, runTime );
+      $( '#hitRow' ).animate(  { left:  maxL }, runTime, stylePull );
     } 
   }
 ); 
 $( document ).on( 'mouseup', '#pullLeft, #pullRight', 
   function () {  
-      $( '#hitRow' ).stop(); 
+    $( '#hitRow' ).stop();  
+    stylePull();
   }
 ); 
   
