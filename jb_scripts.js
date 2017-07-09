@@ -30,31 +30,23 @@ $( controls ).add ($( navs ) ).click( function() { toggleNav(this); } );
 // primitiver Versuch interne Links zu bearbeiten... (BS)
 
 var interneLinks = [
-  {ref:'#about', index:0}, 
-  {ref:'#find', index:1},
-  {ref:'#thesaurus', index:2 }
-  ];
-  /*
-for (i in interneLinks) { 
-  $( 'a[href~="'+interneLinks[i].ref+'"]' ).click( function() { 
-  alert (interneLinks[i].ref);
-  //e.preventDefault();
-  toggleNav( controls[interneLinks[i].index] );
-  });
-}   
-*/
+  {ref:'#about', index:'0'}, 
+  {ref:'#find', index:'1'},
+  {ref:'#thesaurus', index:'2' }
+  ];   
+  
 $( 'a[href~="#about"]' ).click( function(e) { 
-  e.preventDefault();
+  //e.preventDefault();
   toggleNav( controls[0] );
 });
 $( 'a[href~="#find"]' ).click( function(e) { 
-  e.preventDefault();
+  //e.preventDefault();
   toggleNav( controls[1] );
 });  
 $( 'a[href~="#thesaurus"]' ).click( function(e) { 
   //e.preventDefault();
   toggleNav( controls[2] );
-}); 
+});  
 //////// ABOUT-Page ////// 
 
 var divs= [$('#ziele'), $('#help'), $('#geschichte'), $('#impressum')];
@@ -69,7 +61,8 @@ for (a in divs) {
   $( divs[0] ).show(); 
 
 
-function go2next() {  
+function go2next(e) {  
+  e.preventDefault();
   for (a in divs) { $( divs[a] ).hide(); } 
   for (a in go2s) { $( go2s[a] ).removeClass('here'); } 
   $('#'+this.name ).show();
