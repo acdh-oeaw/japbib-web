@@ -1,12 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <taxonomy>
    <category n="1">
       <catDesc>Thema</catDesc>
       <category n="1.1">
          <catDesc>Allgemeines und Varia</catDesc>
-         <category n="1.1.1">
-            <catDesc>allgemeine und fachübergreifende Werke</catDesc>
-         </category>
          <category n="1.1.1">
             <catDesc>allgemeine und fachübergreifende Werke</catDesc>
          </category>
@@ -124,7 +121,7 @@
                </category>
                <category n="1.3.3.6.3">
                   <catDesc>Schulbücher, Lehrpläne und Ausbildungsmethoden</catDesc>
-               </category> 
+               </category>
                <category n="1.3.3.6.4">
                   <catDesc>Universitäten und Hochschulen</catDesc>
                </category>
@@ -164,18 +161,6 @@
             </category>
             <category n="1.3.11.2">
                <catDesc>Kindheit und Jugend</catDesc>
-            </category>
-         </category>
-         <category n="1.3.12">
-            <catDesc>Minderheiten in Japan</catDesc>
-            <category n="1.3.12.1">
-               <catDesc>Ainu</catDesc>
-            </category>
-            <category n="1.3.12.2">
-               <catDesc>Burakumin</catDesc>
-            </category>
-            <category n="1.3.12.3">
-               <catDesc>Koreaner</catDesc>
             </category>
          </category>
          <category n="1.3.12">
@@ -273,9 +258,6 @@
             <category n="1.3.18.3">
                <catDesc>Tourismus und Fremdenverkehr</catDesc>
             </category>
-         </category>
-         <category n="1.3.19">
-            <catDesc>Wohlfahrt und Sozialarbeit</catDesc>
          </category>
          <category n="1.3.19">
             <catDesc>Wohlfahrt und Sozialarbeit</catDesc>
@@ -494,84 +476,6 @@
             <catDesc>Volkskunde</catDesc>
          </category>
       </category>
-      <category n="1.5">
-         <catDesc>Landeskunde</catDesc>
-         <category n="1.5.1">
-            <catDesc>Brauchtum und Feste</catDesc>
-         </category>
-         <category n="1.5.2">
-            <catDesc>Klima und Geodynamik</catDesc>
-         </category>
-         <category n="1.5.3">
-            <catDesc>materielle Kultur </catDesc>
-            <category n="1.5.3.1">
-               <catDesc>Bekleidung</catDesc>
-            </category>
-            <category n="1.5.3.2">
-               <catDesc>Ernährung</catDesc>
-            </category>
-            <category n="1.5.3.3">
-               <catDesc>Wohnen</catDesc>
-            </category>
-         </category>
-         <category n="1.5.4">
-            <catDesc>Natur, Fauna und Flora</catDesc>
-         </category>
-         <category n="1.5.5">
-            <catDesc>Physische Anthropologie</catDesc>
-         </category>
-         <category n="1.5.6">
-            <catDesc>Raumordnung</catDesc>
-         </category>
-         <category n="1.5.7">
-            <catDesc>Städte</catDesc>
-         </category>
-         <category n="1.5.8">
-            <catDesc>Umweltproblematik und -politik</catDesc>
-         </category>
-         <category n="1.5.9">
-            <catDesc>Volkskunde</catDesc>
-         </category>
-      </category>
-      <category n="1.5">
-         <catDesc>Landeskunde</catDesc>
-         <category n="1.5.1">
-            <catDesc>Brauchtum und Feste</catDesc>
-         </category>
-         <category n="1.5.2">
-            <catDesc>Klima und Geodynamik</catDesc>
-         </category>
-         <category n="1.5.3">
-            <catDesc>materielle Kultur </catDesc>
-            <category n="1.5.3.1">
-               <catDesc>Bekleidung</catDesc>
-            </category>
-            <category n="1.5.3.2">
-               <catDesc>Ernährung</catDesc>
-            </category>
-            <category n="1.5.3.3">
-               <catDesc>Wohnen</catDesc>
-            </category>
-         </category>
-         <category n="1.5.4">
-            <catDesc>Natur, Fauna und Flora</catDesc>
-         </category>
-         <category n="1.5.5">
-            <catDesc>Physische Anthropologie</catDesc>
-         </category>
-         <category n="1.5.6">
-            <catDesc>Raumordnung</catDesc>
-         </category>
-         <category n="1.5.7">
-            <catDesc>Städte</catDesc>
-         </category>
-         <category n="1.5.8">
-            <catDesc>Umweltproblematik und -politik</catDesc>
-         </category>
-         <category n="1.5.9">
-            <catDesc>Volkskunde</catDesc>
-         </category>
-      </category>
       <category n="1.6">
          <catDesc>Literatur</catDesc>
          <category n="1.6.1">
@@ -591,15 +495,6 @@
          </category>
          <category n="1.6.6">
             <catDesc>Literaturkritik und -essayistik</catDesc>
-         </category>
-         <category n="1.6.7">
-            <catDesc>Literaturwissenschaft und -geschichte</catDesc>
-            <category n="1.6.7.1">
-               <catDesc>Motivforschung</catDesc>
-            </category>
-            <category n="1.6.7.2">
-               <catDesc>Vergleichende Literaturwissenschaft</catDesc>
-            </category>
          </category>
          <category n="1.6.7">
             <catDesc>Literaturwissenschaft und -geschichte</catDesc>
@@ -679,9 +574,6 @@
       </category>
       <category n="1.8">
          <catDesc>Politik</catDesc>
-         <category n="1.8.10">
-            <catDesc>Agrarpolitik</catDesc>
-         </category>
          <category n="1.8.1">
             <catDesc>Außenbeziehungen</catDesc>
             <category n="1.8.1.1">
@@ -764,7 +656,7 @@
             </category>
             <category n="1.8.6.12">
                <catDesc>soziale und sozialistische Bewegungen</catDesc>
-            </category> 
+            </category>
             <category n="1.8.6.13">
                <catDesc>Umwelt- u. Naturschutzbewegung</catDesc>
             </category>
@@ -776,7 +668,7 @@
             </category>
             <category n="1.8.7.2">
                <catDesc>politische Kultur und Bewusstsein</catDesc>
-            </category> 
+            </category>
             <category n="1.8.7.3">
                <catDesc>Regierung, Ministerien, Verwaltung</catDesc>
             </category>
@@ -795,6 +687,9 @@
             <category n="1.8.9.1">
                <catDesc>Militärwesen</catDesc>
             </category>
+         </category>
+         <category n="1.8.10">
+            <catDesc>Agrarpolitik</catDesc>
          </category>
       </category>
       <category n="1.9">
@@ -892,6 +787,7 @@
       </category>
       <category n="1.11">
          <catDesc>Wirtschaft</catDesc>
+         <!-- 1.11.16 fehlt-->
          <category n="1.11.1">
             <catDesc>Allgemeine Wirtschaftspolitik</catDesc>
             <category n="1.11.1.1">
@@ -1116,7 +1012,8 @@
             <category n="1.11.15.2">
                <catDesc>Tierzucht</catDesc>
             </category>
-         </category> <!-- 1.11.16 fehlt-->
+         </category>
+         <!-- 1.11.16 fehlt-->
          <category n="1.11.17">
             <catDesc>Patente und Normen</catDesc>
          </category>
@@ -1130,9 +1027,6 @@
             <catDesc>Unternehmen allgemein</catDesc>
             <category n="1.11.20.1">
                <catDesc>Fusionen und Übernahmen</catDesc>
-            </category>
-            <category n="1.11.20.2">
-               <catDesc>Großunternehmen</catDesc>
             </category>
             <category n="1.11.20.2">
                <catDesc>Großunternehmen</catDesc>
@@ -1158,9 +1052,6 @@
          </category>
          <category n="1.11.21">
             <catDesc>Verkehr</catDesc>
-            <category n="1.11.21.1">
-               <catDesc>Güterverkehr, Transport</catDesc>
-            </category>
             <category n="1.11.21.1">
                <catDesc>Güterverkehr, Transport</catDesc>
             </category>
@@ -1246,8 +1137,8 @@
          <category n="1.12.6">
             <catDesc>Wissenschaftsgeschichte</catDesc>
          </category>
-      </category>  
-   </category> 
+      </category>
+   </category>
    <category n="2">
       <catDesc>Zeit</catDesc>
       <category n="2.1">
@@ -1304,7 +1195,7 @@
             </category>
          </category>
       </category>
-   </category> 
+   </category>
    <category n="3">
       <catDesc>Region</catDesc>
       <category n="3.1">
@@ -1490,7 +1381,7 @@
             <catDesc>Neuseeland</catDesc>
          </category>
       </category>
-   </category> 
+   </category>
    <category n="4">
       <catDesc>Form</catDesc>
       <category n="4.1">
@@ -1614,5 +1505,4 @@
          </category>
       </category>
    </category>
-</taxonomy> 
-
+</taxonomy>
