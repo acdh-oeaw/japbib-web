@@ -5,6 +5,9 @@ import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace http = "http://expath.org/ns/http-client";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace prof = "http://basex.org/modules/prof";
+import module namespace xquery = "http://basex.org/modules/xquery";
+import module namespace xslt = "http://basex.org/modules/xslt";
+import module namespace db = "http://basex.org/modules/db";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
@@ -24,10 +27,10 @@ declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
-  api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, 'false')
+  api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, false(), ())
 };
 
-declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean) {
+declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean, $accept as xs:string?) {
   if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else 
   let $xcql-initial := cql:parse($query),
       $xcql := if (contains($query, "sortBy")) then $xcql-initial else
@@ -35,7 +38,7 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
   return 
      if ($x-debug = true())
      then $xcql
-     else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style)
+     else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $accept)
 };
 
 declare 
@@ -50,6 +53,10 @@ declare
     %output:method("xml")
 function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?) {
     let $accept := request:header("ACCEPT")
+    return api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords,    $startRecord, $x-style, $accept)
+};
+
+declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?, $accept as xs:string?) {
     let $context := $sru-api:HOSTNAME
     let $ns := index:namespaces($context)
     
@@ -92,7 +99,8 @@ function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, 
         then $results
         else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql),
         $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response
-    let $response-formatted :=
+    let $log := l:write-log('api:searchRetrieveXCQL $accept := '||$accept , 'DEBUG'),
+        $response-formatted :=
         if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and 
             not($x-style eq 'none') and
             $response-with-stats instance of element(sru:searchRetrieveResponse))

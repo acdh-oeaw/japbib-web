@@ -3,6 +3,7 @@ module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace db = "http://basex.org/modules/db";
+import module namespace request = "http://exquery.org/ns/request";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "sru/diagnostics.xqm";
 import module namespace searchRetrieve = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve" at "sru/searchRetrieve.xqm";
 import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "sru/scan.xqm";
@@ -45,13 +46,14 @@ function api:sru($operation as xs:string, $query,
                  $x-mode, $x-filter,
                  $x-debug as xs:boolean) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
-    let $ns := index:namespaces($context)
+    let $ns := index:namespaces($context),
+        $accept := request:header('ACCEPT')
     return
         if (not($version)) then db:output(diag:diagnostics('param-missing', 'version')) else
         if ($version != $api:SRU.SUPPORTEDVERSION) then db:output(diag:diagnostics('unsupported-version', $version)) else
         try {
             switch($operation)
-                case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug))
+                case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $accept))
                 case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
                 default return db:output(api:explain())
         } catch diag:* {
