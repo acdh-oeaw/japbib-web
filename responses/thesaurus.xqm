@@ -5,6 +5,7 @@ import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace xslt = "http://basex.org/modules/xslt";
 import module namespace db = "http://basex.org/modules/db";
+import module namespace ft = "http://basex.org/modules/ft";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace cache = "japbib:cache" at "sru/cache.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
@@ -105,8 +106,9 @@ declare function api:topics-to-map($r) as map(*) {
         $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic)),
 (:        $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:)
         $matching-texts-nodes := (: prof:time( :)
+(:        ft:search($model:dbname, $matching-texts)[(ancestor::mods:genre|ancestor::mods:subject)],:)
         for $s in $matching-texts
-        return db:text($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject)],
+        return ft:search($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject)],
 (:        false(), 'api:topics-to-map all texts '),:)
         (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
         $intersection := (: prof:time( :)
