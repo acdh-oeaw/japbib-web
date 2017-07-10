@@ -25,7 +25,7 @@ declare %updating function c:thesaurus($xml as document-node()) {
 
 declare %updating function c:save-fn($xml as document-node(), $fn as xs:string) {
  try {
-      let $index-options := map:merge($c:index-options, map{'language': 'de'})
+      let $index-options := map:merge(($c:index-options, map{'language': 'de'}))
       return if (exists(c:get-fn($fn)))
       then 
         let $log := l:write-log('cache:scan replacing cached scan in '||$c:dbname||': '||$fn)
