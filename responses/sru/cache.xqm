@@ -6,24 +6,27 @@ import module namespace db = "http://basex.org/modules/db";
 import module namespace prof = "http://basex.org/modules/prof";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
+import module namespace index = "japbib:index" at "../../index.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 
 declare variable $c:dbname := $model:dbname||"__cache";
 declare variable $c:thesaurus-fn := 'thesaurus.xml';
+declare variable $c:index-options := map{'textindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false()};
 
 declare %updating function c:scan($terms as document-node(), $scanClauseParsed as element(scanClause), $sort as xs:string) {
     let $fn := c:scan-filename($scanClauseParsed, $sort)
-    return c:save-fn($terms, $fn, map{'textindex': true()})
+    return c:save-fn($terms, $fn)
 };
 
 declare %updating function c:thesaurus($xml as document-node()) {
-   c:save-fn($xml, $c:thesaurus-fn, map{'textindex': true()})
+   c:save-fn($xml, $c:thesaurus-fn)
 };
 
-declare %updating function c:save-fn($xml as document-node(), $fn as xs:string, $index-options as map(*)) {
+declare %updating function c:save-fn($xml as document-node(), $fn as xs:string) {
  try {
-      if (exists(c:get-fn($fn)))
+      let $index-options := map:merge($c:index-options, map{'language': 'de'})
+      return if (exists(c:get-fn($fn)))
       then 
         let $log := l:write-log('cache:scan replacing cached scan in '||$c:dbname||': '||$fn)
         return (db:replace($c:dbname, $fn,$xml), db:optimize($c:dbname, true(), $index-options))
