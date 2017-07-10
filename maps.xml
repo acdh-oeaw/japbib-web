@@ -3,7 +3,7 @@
     <map name="jp80" index="http://jb80.acdh.oeaw.ac.at" base-elt="mods:mods" description="MODS-based schema for JB 80 bibliographic records">
         <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>        
         <namespace prefix="_">urn:sur2html</namespace>;
-        <index key="cql.serverChoice" case="yes">
+        <index key="cql.serverChoice" case="yes" coll="?lang=de">
             <path label="." match="data(.)">mods:mods</path>
         </index>
         <index key="title" case="no" coll="?lang=de">
