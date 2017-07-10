@@ -27,7 +27,7 @@ declare %updating function api:taxonomy-cahce-as-xml($x-mode as xs:string?, $dat
 declare function api:create-data-with-stats($x-mode as xs:string?) as document-node()? {
     let $log := l:write-log('api:create-data-with-stats $x-mode := '||$x-mode, 'DEBUG'),
         $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map($model:db) else ()
-    return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map, $x-mode)} else ()
+    return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map, $x-mode)} else api:taxonomy-as-xml-cached()
 };
 
 declare function api:taxonomy-as-xml-cached() {
@@ -46,20 +46,20 @@ declare function api:addStatsToThesaurus($stats as map(*)) {
 declare function api:addStatsToThesaurus($stats as map(*), $x-mode as xs:string?) {
     api:doAddStatsToThesaurus(if ($x-mode eq 'refresh') 
     then (doc($api:path-to-thesaurus), l:write-log('loading doc '||$api:path-to-thesaurus||' and adding stats', 'DEBUG'))
-    else (api:taxonomy-as-xml-cached(), l:write-log('loading doc cached thesaurus and adding stats', 'DEBUG')), $stats)
+    else (api:taxonomy-as-xml-cached(), l:write-log('loading doc cached thesaurus and adding stats', 'DEBUG')), $stats, $x-mode = 'refresh')
 };
 
-declare %private function api:doAddStatsToThesaurus($thesaurus as item(), $stats as map(*)) {
+declare %private function api:doAddStatsToThesaurus($thesaurus as item(), $stats as map(*), $copyAll as xs:boolean) {
     typeswitch ($thesaurus)
-        case document-node() return api:doAddStatsToThesaurus($thesaurus/*, $stats)
+        case document-node() return api:doAddStatsToThesaurus($thesaurus/*, $stats, $copyAll)
         case element(category) return 
             let $cat-stats := map:get($stats, $thesaurus/catDesc) 
-            let $sub-topics := $thesaurus/*!api:doAddStatsToThesaurus(., $stats)
+            let $sub-topics := $thesaurus/*!api:doAddStatsToThesaurus(., $stats, $copyAll)
             return 
-                if (exists($cat-stats) or exists($sub-topics//numberOfRecords))
+                if ($copyAll or exists($cat-stats) or exists($sub-topics//numberOfRecords))
                 then 
                     element {QName(namespace-uri($thesaurus), local-name($thesaurus))} {(
-                        $thesaurus/@*!api:doAddStatsToThesaurus(., $stats),
+                        $thesaurus/@*!api:doAddStatsToThesaurus(., $stats, $copyAll),
                         if ($cat-stats)
                         then <numberOfRecords>{$cat-stats}</numberOfRecords>
                         else (),
@@ -71,7 +71,7 @@ declare %private function api:doAddStatsToThesaurus($thesaurus as item(), $stats
                 else ()
         case element(numberOfRecords) return ()
         case element(numberOfRecordsInGroup) return ()
-        case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:doAddStatsToThesaurus(., $stats) }
+        case element() return element {QName(namespace-uri($thesaurus), local-name($thesaurus))} { ($thesaurus/@*, $thesaurus/node())!api:doAddStatsToThesaurus(., $stats, $copyAll) }
         case attribute() return $thesaurus
         default return $thesaurus
 };
@@ -102,12 +102,15 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
 
 declare function api:topics-to-map($r) as map(*) {
     let $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
-        $matching-texts := (: prof:time( :)
-        for $s in distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
+        $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic)),
+(:        $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:)
+        $matching-texts-nodes := (: prof:time( :)
+        for $s in $matching-texts
         return db:text($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject)],
 (:        false(), 'api:topics-to-map all texts '),:)
+        (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
         $intersection := (: prof:time( :)
-        $matching-texts intersect ($r//mods:genre|$r//mods:subject)//text()
+        $r//(mods:genre|mods:subject)//text() intersect $matching-texts-nodes
 (:        , false(), 'api:topics-to-map intersection '):)
     return map:merge(
         for $t in $intersection
