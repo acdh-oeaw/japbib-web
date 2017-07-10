@@ -4,6 +4,7 @@ module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus";
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace xslt = "http://basex.org/modules/xslt";
+import module namespace db = "http://basex.org/modules/db";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace cache = "japbib:cache" at "sru/cache.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
@@ -100,12 +101,18 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
 };
 
 declare function api:topics-to-map($r) as map(*) {
-    let $log := l:write-log('api:topics-to-map base-ure($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG')
-    return map:merge(
+    let $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
+        $matching-texts := (: prof:time( :)
         for $s in distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
-        let $t := db:text($model:dbname, $s)/(ancestor::mods:genre|ancestor::mods:subject)
-        let $v := _:dict($s)
+        return db:text($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject)],
+(:        false(), 'api:topics-to-map all texts '),:)
+        $intersection := (: prof:time( :)
+        $matching-texts intersect ($r//mods:genre|$r//mods:subject)//text()
+(:        , false(), 'api:topics-to-map intersection '):)
+    return map:merge(
+        for $t in $intersection
+        let $v := _:dict($t)
         group by $v
-        return map:entry($v, count($t intersect ($r//mods:genre|$r//mods:subject)))
+        return map:entry($v, count($t))
     )
 };
