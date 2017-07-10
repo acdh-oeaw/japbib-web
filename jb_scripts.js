@@ -4,77 +4,53 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 var m = {};
 
 // Handler fuer Seitenwechsel (BS)
-var navs= $ ( '#navbar_items a' ),
-    controls= $ ( '.control' ),
-    slides= $ ( '.slide' ),
-    item = 0;
 
-function whichItem(e) { 
-  for (i = 0; i < 3; i++) {
-    if ( e == controls[i] || e == navs[i]) {
-      item= i;   
-    }
-  }
-} 
+var mainPages = ['about', 'find', 'thesaurus'];
+var aboutSubpages =  ['ziele', 'help', 'geschichte', 'impressum'];
 
-function toggleNav(aaa,bbb) {
-  $( slides ).addClass( 'hide' ); 
-  $( controls ).add( $( navs ) ).removeClass( 'hilite' );  
-  whichItem(aaa); 
-  myItem= bbb || item; // for later use...
-  $( slides[myItem] ).removeClass( 'hide' );     
-  $( controls[myItem] ).add( $( navs[myItem] ) ).addClass( 'hilite' );     
+function go2page(link) {  
+  $( '.slide' ).hide(); 
+  $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
+  $( '#'+link ).show();     
+  $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );    
 }
-$( controls ).add ($( navs ) ).click( function() { toggleNav(this); } );
+function go2subPage(link) {
+  $( '#about .content div').hide();
+  $( '#about .pageindex a' ).removeClass('here');
+  $( '#'+link ).show();
+  $( '#about .pageindex a[href~="#'+link+'"]' ).addClass( 'here' );
+  // go to #about
+  go2page('about');
+}
 
-// primitiver Versuch interne Links zu bearbeiten... (BS)
-
-var interneLinks = [
-  {ref:'#about', index:'0'}, 
-  {ref:'#find', index:'1'},
-  {ref:'#thesaurus', index:'2' }
-  ];   
-  
-$( 'a[href~="#about"]' ).click( function(e) { 
-  //e.preventDefault();
-  toggleNav( controls[0] );
+mainPages.forEach( function(link) {
+  crossroads.addRoute(link, function() {
+    go2page(link); 
+    hasher.setHash(link);
+  });
+}); 
+aboutSubpages.forEach( function(link) {
+  crossroads.addRoute(link, function() {
+    go2subPage(link); 
+    hasher.setHash(link);
+  });
 });
-$( 'a[href~="#find"]' ).click( function(e) { 
-  //e.preventDefault();
-  toggleNav( controls[1] );
-});  
-$( 'a[href~="#thesaurus"]' ).click( function(e) { 
-  //e.preventDefault();
-  toggleNav( controls[2] );
-});  
-//////// ABOUT-Page ////// 
 
-var divs= [$('#ziele'), $('#help'), $('#geschichte'), $('#impressum')];
-var go2s= [$('#go2ziele'), $('#go2help'), $('#go2geschichte'), $('#go2impressum')]; 
-var nexts= [$('#next_ziele'), $('#next_help'), $('#next_geschichte'), $('#next_impressum')]; 
+go2page('about');
+go2subPage('ziele');
 
-$(go2s[0]).addClass('here');
-
-for (a in divs) { 
-  $( divs[a] ).hide(); 
-  } 
-  $( divs[0] ).show(); 
-
-
-function go2next(e) {  
-  e.preventDefault();
-  for (a in divs) { $( divs[a] ).hide(); } 
-  for (a in go2s) { $( go2s[a] ).removeClass('here'); } 
-  $('#'+this.name ).show();
-  $('#go2'+this.name).addClass('here');
-  }
-for (i in go2s) {
-  $(go2s[i]).click(go2next);
-  }
-for (i in nexts) {
-  $(nexts[i]).click(go2next);
-  }
-  
+//setup crossroads
+crossroads.addRoute('lorem/ipsum');
+crossroads.routed.add(console.log, console); //log all routes
+ 
+//setup hasher
+function parseHash(newHash, oldHash){
+  crossroads.parse(newHash);
+}
+hasher.initialized.add(parseHash); //parse initial hash
+hasher.changed.add(parseHash); //parse hash changes
+hasher.init(); //start listening for history change
+ 
 //////// Find-Page //////
 
   
