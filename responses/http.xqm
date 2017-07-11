@@ -71,7 +71,7 @@ function api:index-file() as item()+ {
       $index-htm := api:base-dir()||'index.htm',
       $uri := rest:uri(),
       $log := l:write-log('api:index-file() $uri := '||$uri||' base-uri-public := '||api:get-base-uri-public(), 'DEBUG'),
-      $absolute-prefix := if (matches($uri, '/$')) then () else 'japbib-web/'
+      $absolute-prefix := if (matches($uri, '/$')) then () else $uri||'/'
   return if (exists($absolute-prefix)) then
     <rest:redirect>{$absolute-prefix}</rest:redirect>
   else if (file:exists($index-html)) then
