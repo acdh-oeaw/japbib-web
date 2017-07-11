@@ -892,9 +892,6 @@ PLUS-MINUS
   }
   
 /* MODS und LIDOS */
-.record-mods, .record-lidos {
-    overflow-x: scroll;
-}
 
 .CodeMirror {  
   }
