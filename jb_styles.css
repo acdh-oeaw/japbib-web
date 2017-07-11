@@ -431,17 +431,20 @@ td.control.hilite a {
     color: #000;
     border: 1px solid #ccc;
     margin: 0 -.5em .5em;
-    padding: .5em 1em;
+    padding: 0;
     border-radius: 5px;
-    background: rgba(0, 0, 255, 0.06);
     background: rgb(255, 247, 212);
-  }
+    position: relative;
+}
 .showEntry a { 
   color: #009;
   }
 .showEntry li { 
   margin-left: 9em;   
   }
+.showEntry .showOptions {
+    margin: 0;
+}
 .showEntry .eSegment {
   float:left;
   clear: left;
@@ -462,6 +465,9 @@ td.control.hilite a {
 .showEntry.compact li::after {
   content: ' ';
   } 
+.record-html {
+    padding: 1em;
+}
 .pubForm { 
   min-height: 40px;
   padding-right: 42px;  
@@ -738,11 +744,14 @@ code,
   }
 
 /**************
-PLUS-MINUS
-
-(statt .sup)
+PLUS-MINUS 
 **************/
- 
+
+.closeX {
+  margin-left: 1em;
+}
+
+.closeX::before,
 .sup::before,
 .plusMinus::before {  
  content: '+'; 
@@ -761,6 +770,11 @@ PLUS-MINUS
  vertical-align: text-top;
  overflow:hidden;
  } 
+ .closeX::before {  
+  content: 'X'; 
+  content: '✖'; /* 'HEAVY MULTIPLICATION X' (U+2716) */
+}
+.closeX:hover::before,
 .sup:hover::before,
 .plusMinus:hover::before { 
  background: #f8f8ff; 
@@ -892,6 +906,7 @@ PLUS-MINUS
   }
   
 /* MODS und LIDOS */
-
-.CodeMirror {  
-  }
+  } 
+.CodeMirror-sizer {
+    position: absolute;
+}
