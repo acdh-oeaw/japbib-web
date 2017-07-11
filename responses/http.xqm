@@ -1,7 +1,24 @@
 xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/http";
+import module namespace request = "http://exquery.org/ns/request";
+import module namespace l = "http://basex.org/modules/admin";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
+
+declare function api:get-base-uri-public() as xs:string {
+    let $forwarded-hostname := if (contains(request:header('X-Forwarded-Host'), ',')) 
+                                 then substring-before(request:header('X-Forwarded-Host'), ',')
+                                 else request:header('X-Forwarded-Host'),
+        $urlScheme := if ((lower-case(request:header('X-Forwarded-Proto')) = 'https') or 
+                          (lower-case(request:header('Front-End-Https')) = 'on')) then 'https' else 'http',
+        $port := if ($urlScheme eq 'http' and request:port() ne 80) then ':'||request:port()
+                 else if ($urlScheme eq 'https' and not(request:port() eq 80 or request:port() eq 443)) then ':'||request:port()
+                 else '',
+        (: FIXME: this is to naive. Works for ProxyPass / to /exist/apps/cr-xq-mets/project
+           but probably not for /x/y/z/ to /exist/apps/cr-xq-mets/project. Especially check the get module. :)
+        $xForwardBasedPath := (request:header('X-Forwarded-Request-Uri'), request:path())[1]
+    return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
+};
 
 (:~
  : Returns a html or related file.
@@ -53,6 +70,7 @@ function api:index-file() as item()+ {
   let $index-html := api:base-dir()||'index.html',
       $index-htm := api:base-dir()||'index.htm',
       $uri := rest:uri(),
+      $log := l:write-log('api:index-file() base-uri-public := '||api:get-base-uri-public(), 'DEBUG'),
       $absolute-prefix := if (matches($uri, '/$')) then () else 'japbib-web/'
   return if (exists($absolute-prefix)) then
     <rest:redirect>{$absolute-prefix}</rest:redirect>

@@ -10,6 +10,7 @@ import module namespace xslt = "http://basex.org/modules/xslt";
 import module namespace db = "http://basex.org/modules/db";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
+import module namespace http-util = "http://acdh.oeaw.ac.at/japbib/api/http" at "../http.xqm";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 
@@ -115,7 +116,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
                     "startRecord": $startRecord,
                     "maximumRecords": $maximumRecords,
                     "operation": 'searchRetrieve',
-                    "base-uri-public": api:get-base-uri-public(),
+                    "base-uri-public": http-util:get-base-uri-public(),
                     "base-uri": ""
                 },
                 if ($x-style) then map{"x-style": $x-style} else map{}
@@ -182,20 +183,3 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
     return $response update insert node $scans into ./sru:extraResponseData
 };
-
-declare %private function api:get-base-uri-public() as xs:string {
-    let $forwarded-hostname := if (contains(request:header('X-Forwarded-Host'), ',')) 
-                                 then substring-before(request:header('X-Forwarded-Host'), ',')
-                                 else request:header('X-Forwarded-Host'),
-        $urlScheme := if ((lower-case(request:header('X-Forwarded-Proto')) = 'https') or 
-                          (lower-case(request:header('Front-End-Https')) = 'on')) then 'https' else 'http',
-        $port := if ($urlScheme eq 'http' and request:port() ne 80) then ':'||request:port()
-                 else if ($urlScheme eq 'https' and not(request:port() eq 80 or request:port() eq 443)) then ':'||request:port()
-                 else '',
-        (: FIXME: this is to naive. Works for ProxyPass / to /exist/apps/cr-xq-mets/project
-           but probably not for /x/y/z/ to /exist/apps/cr-xq-mets/project. Especially check the get module. :)
-        $xForwardBasedPath := (request:header('X-Forwarded-Request-Uri'), request:path())[1]
-    return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
-};
-
-(: calling back leads to a service dead lock up to 8.6.4 :)
