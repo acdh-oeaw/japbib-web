@@ -26,13 +26,13 @@ function go2subPage(link) {
 mainPages.forEach( function(link) {
   crossroads.addRoute(link, function() {
     go2page(link); 
-    hasher.setHash(link);
+    //hasher.replaceHash(link);
   });
 }); 
 aboutSubpages.forEach( function(link) {
   crossroads.addRoute(link, function() {
     go2subPage(link); 
-    hasher.setHash(link);
+    //hasher.setHash(link);
   });
 });
 
@@ -40,9 +40,8 @@ go2page('about');
 go2subPage('ziele');
 
 //setup crossroads
-crossroads.addRoute('lorem/ipsum');
+
 crossroads.routed.add(console.log, console); //log all routes
- 
 //setup hasher
 function parseHash(newHash, oldHash){
   crossroads.parse(newHash);
@@ -50,6 +49,8 @@ function parseHash(newHash, oldHash){
 hasher.initialized.add(parseHash); //parse initial hash
 hasher.changed.add(parseHash); //parse hash changes
 hasher.init(); //start listening for history change
+
+ /**/
  
 //////// Find-Page //////
 
