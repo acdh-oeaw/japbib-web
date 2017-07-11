@@ -104,9 +104,11 @@
                         <option value="lidos">Lidos</option>
                     </select>
                 </label>
-                <span class="tipp" title="Tipp"><span class="display" style="display: none;">„Detailliert“ 
-                    enthält Stichworte, über die neue Suchabfragen möglich 
-                    sind.</span></span>
+                <span class="tipp" title="Tipp"><span class="display" style="display: none;">
+                     MODS: XML Dokument in MODS-Standard (<a href='http://www.loc.gov/standards/mods/' class="externalLink">Library of Congress</a>); Codierung der Daten in der Datenbank. <br/>
+                     LIDOS: Ursprüngliche Codierung im Datenbankprogramm LIDOS. 
+                </span></span>
+                <span id='x' class='closeX'></span>
             </div>
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>

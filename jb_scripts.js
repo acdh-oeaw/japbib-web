@@ -369,6 +369,11 @@ $('.content').on('click', '.showResults a.zahl, .showResults a.stichwort', funct
     executeQuery(query);
 });
 
+// Handler fuer Klick auf (x) in Einzeleintrag (BS)
+$(document).on('click', '.closeX', function() {
+  var closestPlusMinus=$( this ).closest( 'li' ).find(' .plusMinus ').trigger('click');
+});
+
 // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
 $('.suchOptionen .abc a').click(function(e){
     e.preventDefault();

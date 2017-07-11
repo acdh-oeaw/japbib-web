@@ -744,11 +744,14 @@ code,
   }
 
 /**************
-PLUS-MINUS
-
-(statt .sup)
+PLUS-MINUS 
 **************/
- 
+
+.closeX {
+  margin-left: 1em;
+}
+
+.closeX::before,
 .sup::before,
 .plusMinus::before {  
  content: '+'; 
@@ -767,6 +770,11 @@ PLUS-MINUS
  vertical-align: text-top;
  overflow:hidden;
  } 
+ .closeX::before {  
+  content: 'X'; 
+  content: '✖'; /* 'HEAVY MULTIPLICATION X' (U+2716) */
+}
+.closeX:hover::before,
 .sup:hover::before,
 .plusMinus:hover::before { 
  background: #f8f8ff; 
