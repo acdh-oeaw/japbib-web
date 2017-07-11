@@ -13,7 +13,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="yes" method="xhtml"/>
+    <xsl:output indent="no" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:include href="lib/serialization.xsl"/>
@@ -175,6 +175,7 @@
         <xsl:call-template name="link-with-number-of-records">
                 <xsl:with-param name="index">author</xsl:with-param>
                 <xsl:with-param name="term" select="mods:namePart"/>
+            <xsl:with-param name="isLast" select="position() eq last()"/>
         </xsl:call-template>        
     </xsl:template>
     
@@ -182,12 +183,14 @@
         <xsl:param name="index" as="xs:string"/>
         <xsl:param name="term" as="xs:string*"/>
         <xsl:param name="separator" as="xs:string" select="' /'"/>
+        <xsl:param name="isLast" as="xs:boolean" select="true()"/>
         <xsl:variable name="this" select="."/>
         <xsl:for-each select="$term">
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
-            <xsl:value-of select="_:dict(.)"/> <a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
-                test="position() ne last()"><xsl:value-of select="$separator"/></xsl:if>
+            <xsl:value-of select="_:dict(.)||' '"/><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
+                test="normalize-space($this//mods:roleTerm) = ('edt', 'trl', 'cbt')"><xsl:value-of select="', '||_:dict(normalize-space($this//mods:roleTerm))"/></xsl:if>
+            <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
     </xsl:template>
     
@@ -210,7 +213,7 @@
     
     <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="normalize-space(.)"/>.</xsl:template>
     
-    <xsl:template match="mods:originInfo" mode="detail">
+    <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
         <li><xsl:value-of select="(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))||': '||
             (if (not(mods:publisher)) then _:dict('no-pub-abbr') else '' )"/>
@@ -230,6 +233,46 @@
                 </xsl:otherwise>
             </xsl:choose> 
          </li>
+    </xsl:template>
+    
+    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'] eq 'journalArticle' and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
+        <li class="eSegment">In: </li>
+        <li><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')||' '||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/><xsl:choose>
+                <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
+                    /<span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
+                </xsl:when>
+                <xsl:when test="mods:dateIssued">                    
+                    <xsl:value-of select="', '"/><span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="', '"/><span class="no-year"><xsl:value-of select=" _:dict('no-year-abbr')"/></span>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'issue']) then ', '||_:dict('issue')||' '||../mods:part/mods:detail[@type eq 'issue']/mods:number else ''"/>
+            <xsl:value-of select="if (../mods:part/mods:extent[@unit eq 'page']) then ', '||_:dict('pages')||' '||string-join(../mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '-') else ''"/>
+        </li>
+    </xsl:template>
+    
+    <xsl:template match="mods:originInfo[parent::mods:relatedItem[ancestor::mods:mods/mods:genre[@authority='local'] eq 'bookSection' and @type eq 'host']]" mode="detail">
+        <li class="eSegment">In: </li>
+        <li>
+            <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
+            <xsl:value-of select="if (not(mods:publisher)) then ', '||_:dict('no-pub-abbr') else ', '"/><xsl:call-template name="link-with-number-of-records">                
+                <xsl:with-param name="index">publisher</xsl:with-param>
+                <xsl:with-param name="term" select="mods:publisher"/>    
+            </xsl:call-template>
+            <xsl:choose>
+                <xsl:when test="mods:dateIssued">
+                    <xsl:value-of select="', '"/><span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="', '"/><span class="no-year"><xsl:value-of select="_:dict('no-year-abbr')"/></span>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:value-of select="if (../mods:part/mods:extent[@unit eq 'page']) then ', '||_:dict('pages')||' '||string-join(../mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '-') else ''"/>
+        </li>
     </xsl:template>
     
     <xsl:template match="mods:relatedItem[@type eq 'series']" mode="more-detail">
