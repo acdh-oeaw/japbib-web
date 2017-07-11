@@ -393,8 +393,12 @@ td.control.hilite a {
  } 
  
 .suchOptionen {
+  /* display: block; */
   margin: 0 0 2em;
   position: relative;
+  /* width: 100%; */
+  /* border: 1px solid #ddd; */
+  min-width: 24em;
  }
 .suchOptionen th {
  text-align: right;
@@ -406,6 +410,12 @@ td.control.hilite a {
 .suchOptionen .top {
   vertical-align: top;  
   } 
+.chooseMaxHits {
+  text-align: right;
+  margin-bottom: -2em;
+  padding: 0 .45em;
+  font-style: italic;
+}
  
 /*******  Suchresultate ***********/
 
@@ -490,9 +500,10 @@ td.control.hilite a {
 }
 
 /* Is returned when the html file is opened from disk */
-.ajax-error.c0 {  
-  border: 1px solid green;  
+.ajax-error.c0 {
+  border: 1px solid green;
   background-color: lightgreen;
+  display: none;
 }
 
 .ajax-error * {
