@@ -395,8 +395,8 @@
 							<h2>Suche </h2> 
 
 							<table class="suchOptionen" >
-								<tr>
-									<th class="top">Autoren: </th>
+								<tr class="examples">
+									<th class="top  here">Autoren</th>
 									<td class="abc" data-index="author">
 										<!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=A*+sortBy+author"> 
 										--><a href="" title="Suche Autoren mit Anfangsbuchstabe A">A</a><!--
@@ -425,12 +425,13 @@
 										--><a href="" title="Suche Autoren mit Anfangsbuchstabe X">X</a><!--
 										--><a href="" title="Suche Autoren mit Anfangsbuchstabe V">Y</a><!--
 										--><a href="" title="Suche Autoren mit Anfangsbuchstabe Z">Z</a><!--
-										--><a href="" title="Suche Autoren mit nicht-alphbetischen Anfangszeichen">Sonstige</a><!--  
+										 <a href="" title="Suche Autoren mit nicht-alphbetischen Anfangszeichen">Sonstige</a> 										 
 										 <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author">alle</a> -->
+										 <small>nach Autoren suchen...</small>
 									</td>
 								</tr>
-								<tr>
-									<th class="top">Werktitel: </th>
+								<tr class="examples">
+									<th class="top">Werktitel</th>
 									<td class="abc" data-index="title">
 										<a href="" title="Suche Titel mit Anfangsbuchstabe A">A</a><!--
 										--><a href="" title="Suche Titel mit Anfangsbuchstabe B">B</a><!--
@@ -458,12 +459,26 @@
 										--><a href="" title="Suche Titel mit Anfangsbuchstabe X">X</a><!--
 										--><a href="" title="Suche Titel mit Anfangsbuchstabe Y">Y</a><!--
 										--><a href="" title="Suche Titel mit Anfangsbuchstabe Z">Z</a><!--
-										--><a href="" title="Suche Titel mit nicht-alphbetischen Anfangszeichen">Sonstige</a><!--  
+										<a href="" title="Suche Titel mit nicht-alphbetischen Anfangszeichen">Sonstige</a> 
 											<a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=title=*+sortBy+title">alle</a>-->
+										 <small>nach Titeln suchen...</small>
+									</td>
+								</tr>
+								<tr class="examples">
+									<th class="top">Suchbeispiele</th>
+									<td class="abc" data-index=""> 
+										<ol>
+											<li><a class="code" href="" title="Freie Suche">Buch</a></li>
+											<li><a class="code" href="" title="Autorensuche mit Platzhalter">author=Buch*</a></li>
+											<li><a class="code" href="" title="Titelsuche mit Platzhalter">title=*Buch*</a> </li> 
+											<li><a class="code" href="" title="Schlagwortsuche mit Platzhalter">subject=*Buch*</a> </li>
+											<li><a class="code" href="" title="Sowohl Schlagworte als auch Titel durchsuchen">subject=*Buch* OR title=*Buch*</a> </li>
+											<li><a class="code" href="" title="Einträge suchen, die A und B enthalten">subject=*Buch* AND subject=Japan*</a> </li> 
+										</ol> 
 									</td>
 								</tr>
 								<tr id="Beispiele" class="tipp" title="Tipp">
-									<td class="beispiele" data-index="fixThis" colspan="2">
+									<td class="beispiele"  colspan="2">
 										<div>
 											<p>Suche modifizieren: </p>
 											<ol>
@@ -480,20 +495,10 @@
 												<li><code title="Schlagworte suchen">subject=</code> (Suche wird auf Thesaurus-Schlagworte beschränkt)</li>
 											</ol>
 										</div>
-										<p>Beispiele:</p>
-										<ol style="column-count:2">
-											<li><a class="code" href="" title="freie Suche">Schule</a></li>
-											<li><a class="code" href="" title="Titel suchen">title=*Schule*</a> </li>
-											<li><a class="code" href="" title="Schlagwort suchen">subject=Schulwesen</a> </li>
-											<li><a class="code" href="" title="Schlagworte suchen">subject=*Schul*</a> </li>
-											<li><a class="code" href="" title="Autor und Schlagwort suchen">subject=*Schul* AND author=*Kosugi*</a> </li>
-											<li><a class="code" href="" title="Schlagworte A und Schlagworte B suchen">subject=*Schul* AND subject=Politik</a> </li>
-											<li><a class="code" href="" title="Schlagworte A oder Schlagworte B suchen">subject=*Vorschule* OR subject=*Kinder*</a></li>
-										</ol>
-										<p> Siehe auch <a href="#help"> Benützung dieser Seiten </a>.
+										<p> Siehe auch <a href="#help"> Benützung dieser Seiten </a>.</p>
 									</td>
 								</tr>
-								<tr>
+								<tr class="search">
 									<th>Suchbegriff: </th>
 									<td>
 										<form id="searchform1" action="sru">

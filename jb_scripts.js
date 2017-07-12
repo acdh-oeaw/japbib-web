@@ -155,7 +155,29 @@ $( document )
       $(this).attr('title', title);  
     } 
   );   
+// Handler fuer examples
+$('.examples th').mouseover(function() {
+  $('.examples th').removeClass('here');
+  $('.examples .abc').fadeOut('fast');
+  $(this).addClass('here');
+  $( this).siblings('.abc').fadeIn('fast');
+
+});
+var searchText = '';
+$('#searchInput1').on('keyup', function(){
+  //var qTerm=  $('.abc a').html();
+    //alert(qTerm);
+  searchText= ($(this).val());
+  searchText=searchText.slice(0,4);
+  if (searchText.length > 3) {
+    $('.abc a').each( function() {
+      if( $(this).html().length > 4) 
+        $(this).html(searchText+' ');
+    }); 
+  }
+});
    
+
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
 var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow

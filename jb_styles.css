@@ -393,12 +393,11 @@ td.control.hilite a {
  } 
  
 .suchOptionen {
-  /* display: block; */
   margin: 0 0 2em;
   position: relative;
-  /* width: 100%; */
-  /* border: 1px solid #ddd; */
+  width: 99%;
   min-width: 24em;
+  text-align: center;
  }
 .suchOptionen th {
  text-align: right;
@@ -410,13 +409,97 @@ td.control.hilite a {
 .suchOptionen .top {
   vertical-align: top;  
   } 
+
+/*** examples 
+   s.a. beispiele
+********** */
+.examples {  
+    display: inline-block;
+    background: #fff;
+    height: 8em;
+    overflow: hidden;
+    margin: 0;
+    list-style: none;
+}
+.examples:first-child {
+}
+.examples th {
+    display: inline-block;
+    border: 1px solid #d8c99f;
+    background: rgb(228, 211, 165);
+    border-radius: 7px 7px 0 0;
+    z-index:2;
+    color: #fff;
+    cursor: pointer;
+}
+.examples th:hover,
+.examples th.here {
+    background: #fff7d4;
+    border-bottom-color: #fff7d4;
+    z-index:3;
+    color:inherit; 
+}
+.examples th.here {
+}
+
+.examples .abc {
+    position: absolute;
+    width:100%;
+    left: 0;
+    display: block;
+    height: 4em;
+    background: rgba(255, 255, 255, 0.61);
+    background: #fff;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+.examples .abc[data-index="author"],
+.examples .abc[data-index="title"] {
+  padding-top: .8em;
+}
+.examples .abc[data-index="author"] {
+  z-index:2;
+}
+.examples:hover .abc,
+.examples.here .abc {
+}
+.examples ol, 
+.examples li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+.examples li {
+    margin: 1px;
+    padding: 0;
+    background: #f5faff;
+    background: rgb(248, 245, 231);
+    font-size: .9em;
+    border: 1px solid #f4edd7;
+    border-radius: 5px;
+}
+.examples small {
+    display: block;
+    color: #aaa;
+}
+tr.search {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 7em;
+}
+tr.search td {
+  width: 90%;
+}
+
 .chooseMaxHits {
   text-align: right;
   margin-bottom: -2em;
   padding: 0 .45em;
   font-style: italic;
 }
- 
 /*******  Suchresultate ***********/
 
 #showList {
@@ -841,6 +924,10 @@ PLUS-MINUS
   NavResults
   s.a. .showOptions
 *******************************/
+
+.showResults {
+  padding-top: 2em;
+}
 
 .navResults {
  background: rgba(233, 220, 175, 0.3);
