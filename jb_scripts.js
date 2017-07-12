@@ -163,20 +163,42 @@ $('.examples th').mouseover(function() {
   $( this).siblings('.abc').fadeIn('fast');
 
 });
-var searchText = '';
-$('#searchInput1').on('keyup', function(){
-  //var qTerm=  $('.abc a').html();
-    //alert(qTerm);
-  searchText= ($(this).val());
-  searchText=searchText.slice(0,4);
-  if (searchText.length > 3) {
+
+var oldSearchTerm = 'Buch'; 
+
+$('#searchInput1').on('keyup', function() {
+  var eingetippt= ($(this).val()); 
+  var rex1 = /[=*]([\w]{4})/;
+  var rex2= /[\w]{4}/;
+  var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
+  var q = '';
+  if ( match && match[1]) { q= match[1]; }
+  else if ( match ) { q= match[0]; }
+      console.log(q);
+});
+/* 
+  if (  c.test(oldSearchTerm) == false)  {
+    //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
+    alert (oldSearchTerm+c);
+    oldSearchTerm = c;
+  }
+  neg= newSearchTerm.test(' author subject title ');
+
+  //newSearchTerm= newSearchTerm.match(/[\w]{4}/); 
+  if (newSearchTerm 
+    && newSearchTerm != oldSearchTerm
+    //&& newSearchTerm.match(/auth/) == -1
+    ) {
+      //alert(newSearchTerm);
     $('.abc a').each( function() {
-      if( $(this).html().length > 4) 
-        $(this).html(searchText+' ');
+     this.innerHTML = this.innerHTML.replace(oldSearchTerm, newSearchTerm);  
     }); 
+  oldSearchTerm = new RegExp(newSearchTerm,"g");
   }
 });
-   
+  */
+/*
+   */
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
