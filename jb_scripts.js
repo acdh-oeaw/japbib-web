@@ -72,8 +72,8 @@ var getResultsErrorTracker = {
 function getResultsHidden(href) {
   checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
   var currentSorting = $('#showList > .showOptions select').val();
-  $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
+  $('.showResults').hide('slow');
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
       callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
@@ -376,8 +376,8 @@ var getCategoriesErrorTracker = {
 
 function getCategoryTree(href) {
   checkLock('getCategoryTree()', getCategoriesLock, getCategoriesErrorTracker);
-  $('#thesaurus #showList').hide('slow');
   categoryFramework = categoryFramework || $('#thesaurus #showList').clone();
+  $('#thesaurus #showList').hide('slow');
   getCategoriesLock = true;
   $('#thesaurus #showList').load(href, function(unused1, statusText, jqXHR){
       callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
@@ -394,13 +394,18 @@ function onCategoryLoaded(statusText, jqXHR) {
       frameWork.find('ol.schlagworte').replaceWith(categories);
     } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
     $('#thesaurus #showList').replaceWith(frameWork);
-    $('#thesaurus #showList').show('slow');
+    $('#thesaurus #showList').show('slow');  
   } finally {
     getCategoriesLock = false;
   }
 }
 
-getCategoryTree('sru?query=&version=1.2&operation=searchRetrieve&maximumRecords=1&startRecord=1&x-style=thesaurus2html.xsl');
+function doReloadCategory() {    
+    var baseUrl = $('#searchform2').attr('action')
+    getCategoryTree(baseUrl+'?'+$('#searchform2').serialize());
+};
+
+doReloadCategory();
 
 /* 
 // Handler für AND/OR, zu Demo-Zwecken (BS)
