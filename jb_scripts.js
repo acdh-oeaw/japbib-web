@@ -376,13 +376,12 @@ var getCategoriesErrorTracker = {
   raisedErrors:[]
 }
 
-function getCategoryTree(href) {
-  checkLock('getCategoryTree()', getCategoriesLock, getCategoriesErrorTracker);
+function loadCategory(href) {
+  checkLock('loadCategory()', getCategoriesLock, getCategoriesErrorTracker);
   categoryFramework = categoryFramework || $('#thesaurus #showList').clone();
   $('#thesaurus #showList').hide('slow');
-  $('.ladeSchlagworte').show();
   getCategoriesLock = true;
-  $('#thesaurus #showList').load(href, function(unused1, statusText, jqXHR){
+  $('#thesaurus #showList').load('thesaurus', function(unused1, statusText, jqXHR){
       callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
   });
 }
@@ -404,12 +403,7 @@ function onCategoryLoaded(statusText, jqXHR) {
   }
 }
 
-function doReloadCategory() {    
-    var baseUrl = $('#searchform2').attr('action')
-    getCategoryTree(baseUrl+'?'+$('#searchform2').serialize());
-};
-
-doReloadCategory();
+loadCategory();
 
 /* 
 // Handler für AND/OR, zu Demo-Zwecken (BS)
