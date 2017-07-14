@@ -183,10 +183,11 @@ declare %private function api:scanResponse($scanClause as xs:string,
         } catch * {
             error(xs:QName('diag:unableToInterpretScanClause'), $err:code||': '||$err:description||': '||$err:additional||' '||$scanClause||' parsed as XML scanClause: '||serialize($scanClauseParsed))
         },
-        $error := if (empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation||' '||$scanClause) else (),
+        $error := if (normalize-space($scanClauseParsed/term) ne '' and empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation||' '||$scanClause) else (),
         $start-term-position := (count($anchor-term/preceding-sibling::*) + 1) + (-$responsePosition + 1),
         $scan-clause := xs:string($scanClauseParsed)
     return
+    if (normalize-space($scanClauseParsed/term) ne '') then
     <sru:scanResponse xmlns:srw="//www.loc.gov/zing/srw/"
               xmlns:diag="//www.loc.gov/zing/srw/diagnostic/"
               xmlns:myServer="http://myServer.com/">
@@ -200,6 +201,7 @@ declare %private function api:scanResponse($scanClause as xs:string,
             <fcs:x-filter>{$x-filter}</fcs:x-filter>
         </sru:echoedScanRequest>
     </sru:scanResponse>
+    else ()
 };
 
 declare %private function api:t-unmask-quotes($t as element(term)) as xs:string {
