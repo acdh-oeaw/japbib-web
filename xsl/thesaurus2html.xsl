@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:sru="http://www.loc.gov/zing/srw/"
     xmlns="http://www.w3.org/1999/xhtml"
-    exclude-result-prefixes="xs"
+    exclude-result-prefixes="xs sru"
     version="3.0">
     
     <xsl:output indent="yes" method="xhtml"/>
@@ -10,7 +11,10 @@
     <xsl:import href="sru2ajax.xsl"/>
     
     <xsl:template match="/">
-        <xsl:apply-templates select="taxonomy"/>
+        <div class="ajax-result">
+            <xsl:apply-templates select="taxonomy"/>
+            <xsl:apply-templates select="sru:searchRetrieveResponse/sru:extraResponseData/subjects/taxonomy"/>
+        </div>
     </xsl:template>
         
     <xsl:template match="taxonomy">

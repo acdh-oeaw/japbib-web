@@ -64,30 +64,39 @@ var resultsFramework;
   getResultsHidden($(this).attr('href'))});*/
 
 var getResultsLock = false;
-var originalStack = "";
-var raisedErrors = [];
+var getResultsErrorTracker = {
+  originalStack:"",
+  raisedErrors:[]
+}
 
 function getResultsHidden(href) {
-  if (getResultsLock) {
-    var raisedError = Error("Do not call getResultsHidden() while a request is in progress!") ;
-    raisedErrors.push(raisedError);
-    throw raisedError;
-  } else {
-    var e = Error('');
-    originalStack = e.stack.replace(/^Error.*/, '');
-  }
+  checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
   var currentSorting = $('#showList > .showOptions select').val();
   $('.showResults').hide('slow');
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
-    var self = this;
+      callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
+  });  
+}
+
+function checkLock(callerName, aLock, anErrorTracker) {  
+  if (getResultsLock) {
+    var raisedError = Error("Do not call "+callerName+" while a request is in progress!") ;
+    anErrorTracker.raisedErrors.push(raisedError);
+    throw raisedError;
+  } else {
+    var e = Error('');
+    anErrorTracker.originalStack = e.stack.replace(/^Error.*/, '');
+  }
+}
+
+function callbackAlwaysAsync(self, jqXHR, onResultLoaded, argumentsList) {
     /* chrome behaves synchronous here when the file is running from disk */
     if (jqXHR.status === 0) {
       /* emulate a delay that will always occur if the result is fetched from the real server */
-      setTimeout(function(){onResultLoaded.apply(self, [statusText, jqXHR, currentSorting]);}, 100);
-    } else {onResultLoaded.apply(self, [statusText, jqXHR, currentSorting]);}    
-  });  
+      setTimeout(function(){onResultLoaded.apply(self, argumentsList);}, 100);
+    } else {onResultLoaded.apply(self, argumentsList);}    
 }
 
 function onResultLoaded(statusText, jqXHR, currentSorting) {
@@ -99,11 +108,11 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
     frameWork.find('.showOptions select').val(currentSorting);
-    if (statusText === 'success' && raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
+    if (statusText === 'success' && getResultsErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
       frameWork.find('#showList > ol').replaceWith(searchResult);
-    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText)]) }
+    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
     $('.content > .showResults').replaceWith(frameWork);
     $('.content > .showResults textarea.codemirror-data').each(function () {
       CodeMirror.fromTextArea(this,
@@ -121,18 +130,18 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
   }
 }
 
-function handleGetErrors(frameWork, status, htmlErrorMessage) {  
-  if (raisedErrors.length === 0) {
+function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {  
+  if (anErrorTracker.raisedErrors.length === 0) {
     frameWork.prepend($('<div class="ajax-error c'+(status-(status % 100))+'" data-errorCode="'+status+'">').append('<span>Server returned: '+status+'</span><br/>').append(htmlErrorMessage));
   } else {
-    var errors = '<pre>Original call:\n'+originalStack+'</pre>';          
-    for (var i = 0; i < raisedErrors.length; i++) {
-      var stack = raisedErrors[i].stack.replace(/^Error.*/, '');
-      errors += '<pre>'+raisedErrors[i].toString()+'\n'+stack+'</pre>'
+    var errors = '<pre>Original call:\n'+anErrorTracker.originalStack+'</pre>';          
+    for (var i = 0; i < anErrorTracker.raisedErrors.length; i++) {
+      var stack = anErrorTracker.raisedErrors[i].stack.replace(/^Error.*/, '');
+      errors += '<pre>'+anErrorTracker.raisedErrors[i].toString()+'\n'+stack+'</pre>'
     }
     frameWork.prepend($('<div class="ajax-error concurrency">').append(errors));
   }
-  raisedErrors = [];
+  anErrorTracker.raisedErrors = [];
 }
   
 // Handler fuer .tipp (BS)
@@ -358,6 +367,40 @@ function refreshCM(div) {
 
 //////// Schlagworte //////
 
+var categoryFramework;
+var getCategoriesLock = false;
+var getCategoriesErrorTracker = {
+  originalStack:"",
+  raisedErrors:[]
+}
+
+function getCategoryTree(href) {
+  checkLock('getCategoryTree()', getCategoriesLock, getCategoriesErrorTracker);
+  $('#thesaurus #showList').hide('slow');
+  categoryFramework = categoryFramework || $('#thesaurus #showList').clone();
+  getCategoriesLock = true;
+  $('#thesaurus #showList').load(href, function(unused1, statusText, jqXHR){
+      callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
+  });
+}
+
+function onCategoryLoaded(statusText, jqXHR) {
+  try {
+    var ajaxParts = $('#thesaurus #showList .ajax-result'),
+        ajaxPartsDiagnostics = $('#thesaurus #showList sru\\:diagnostics'),
+        categories = ajaxParts.find('ol.schlagworte'),
+        frameWork = categoryFramework.clone();
+    if (statusText === 'success' && getCategoriesErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
+      frameWork.find('ol.schlagworte').replaceWith(categories);
+    } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
+    $('#thesaurus #showList').replaceWith(frameWork);
+    $('#thesaurus #showList').show('slow');
+  } finally {
+    getCategoriesLock = false;
+  }
+}
+
+getCategoryTree('sru?query=&version=1.2&operation=searchRetrieve&maximumRecords=1&startRecord=1&x-style=thesaurus2html.xsl');
 
 /* 
 // Handler für AND/OR, zu Demo-Zwecken (BS)
