@@ -30,7 +30,7 @@ declare
 function api:file($file as xs:string) as item()+ {
   let $path := api:base-dir()|| $file
   return if (file:exists($path)) then
-    if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg)$', 'i')) then
+    if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg|woff|woff2)$', 'i')) then
     (
       web:response-header(map { 'media-type': web:content-type($path) }),
       file:read-binary($path)

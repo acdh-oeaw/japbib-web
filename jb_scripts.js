@@ -74,6 +74,7 @@ function getResultsHidden(href) {
   var currentSorting = $('#showList > .showOptions select').val();
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   $('.showResults').hide('slow');
+  $('.ladeResultate').show();
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR){
       callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
@@ -95,7 +96,7 @@ function callbackAlwaysAsync(self, jqXHR, onResultLoaded, argumentsList) {
     /* chrome behaves synchronous here when the file is running from disk */
     if (jqXHR.status === 0) {
       /* emulate a delay that will always occur if the result is fetched from the real server */
-      setTimeout(function(){onResultLoaded.apply(self, argumentsList);}, 100);
+      setTimeout(function(){onResultLoaded.apply(self, argumentsList);}, 1000);
     } else {onResultLoaded.apply(self, argumentsList);}    
 }
 
@@ -122,7 +123,8 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
           foldGutter: true,
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
-    });
+    });    
+    $('.ladeResultate').hide();
     $('.showResults').show('slow');    
     arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
@@ -378,6 +380,7 @@ function getCategoryTree(href) {
   checkLock('getCategoryTree()', getCategoriesLock, getCategoriesErrorTracker);
   categoryFramework = categoryFramework || $('#thesaurus #showList').clone();
   $('#thesaurus #showList').hide('slow');
+  $('.ladeSchlagworte').show();
   getCategoriesLock = true;
   $('#thesaurus #showList').load(href, function(unused1, statusText, jqXHR){
       callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
@@ -394,6 +397,7 @@ function onCategoryLoaded(statusText, jqXHR) {
       frameWork.find('ol.schlagworte').replaceWith(categories);
     } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
     $('#thesaurus #showList').replaceWith(frameWork);
+    $('.ladeSchlagworte').hide();
     $('#thesaurus #showList').show('slow');  
   } finally {
     getCategoriesLock = false;

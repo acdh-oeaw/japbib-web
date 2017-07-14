@@ -6,6 +6,7 @@
 <title>Japan-Bibliographie</title>
 <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
 <link href="bower_components/codemirror/addon/fold/foldgutter.css" rel="stylesheet" type="text/css" />
+<link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="jb_styles.css" rel="stylesheet" type="text/css" />
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/codemirror/lib/codemirror.js"></script>
@@ -823,6 +824,9 @@
 									</ol>
 								</div>
 							</div>
+						  <div class="ladeResultate" style="display:none;">
+						    <p>Lade Daten ... <i class="fa fa-refresh fa-spin fa-2x fa-fw" aria-hidden="true"></i></p>
+						  </div>
 						</div>
 					</td>
 					<td id="find_control" class="control">
@@ -3166,7 +3170,10 @@
       </ol>
    </li>
 </ol>
-							</div>
+							</div>						  
+						  <div class="ladeSchlagworte" style="display:none;">
+						    <p>Lade Daten ... <i class="fa fa-refresh fa-spin fa-2x fa-fw" aria-hidden="true"></i></p>
+						  </div>
 						</div>
 					</td>
 					<td id="thesaurus_control" class="control">
