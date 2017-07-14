@@ -393,8 +393,8 @@
 							</div>
 						</div>
 						<div class="content">
-							<h2>Suche </h2> 
-
+							<h2>Suche </h2> 						  
+						  <form id="searchform1" action="sru">
 							<table class="suchOptionen" >
 								<tr class="examples">
 									<th class="top  here">Autoren</th>
@@ -502,36 +502,30 @@
 								<tr class="search">
 									<th>Suchbegriff: </th>
 									<td>
-										<form id="searchform1" action="sru">
 											<input id="searchInput1" name="query" placeholder="oben aussuchen oder selbst eingeben..." size="40" title="JB80 durchsuchen " value="" />
 											<input name="version" type="hidden" value="1.2" />
 											<input name="operation" type="hidden" value="searchRetrieve" />
-											<input name="maximumRecords" type="hidden" value="10" />
 											<input name="startRecord" type="hidden" value="1" />
 											<input name="x-style" type="hidden" value="sru2ajax.xsl" />
-											<!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a> -->
-										</form>
+											<!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a> -->										
 									</td>
 								</tr>
 							</table>
-              <div class="chooseMaxHits">
-                <form>
-                  <label>
-                    Treffer/Seite: 
-                    <select size="1">
-                    <option value="10" selected="selected"> 10</option>
-                    <option value="20"> 20</option>
-                    <option value="20"> 50</option>
-                    <option value="20">100</option>
-                    <option value="20">200</option>
-                    </select>
-                    </label>
-                </form>
+						  <div class="chooseMaxHits">
+						    <label>
+						      Treffer/Seite: 
+						      <select size="1" name="maximumRecords" id="maximumRecords">
+						        <option value="10" selected="selected"> 10</option>
+						        <option value="20"> 20</option>
+						        <option value="50"> 50</option>
+						        <option value="100">100</option>
+						        <option value="200">200</option>
+						      </select>
+						    </label>
               </div>
+						  </form>
 							<div class="showResults">
-								<h2>Resultate</h2>
-								
-											 
+								<h2>Resultate</h2>											 
 								<div id="showList">
 									<div class="showOptions">
 										<form>

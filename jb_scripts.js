@@ -323,6 +323,12 @@ function executeQuery(query) {
 };
 
 m.executeQuery = executeQuery;
+
+// Handler fuer Resultate pro Seiten 
+
+$("#maximumRecords").change(function(e){
+   doSearchOnReturn();
+});
   
 // Handler fuer .showList select
 $(document).on('change', '#showList > .showOptions select', function(e){
