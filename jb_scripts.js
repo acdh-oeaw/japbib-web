@@ -169,9 +169,9 @@ $( document )
 // Handler fuer examples
 $('.examples th').mouseover(function() {
   $('.examples th').removeClass('here');
-  $('.examples .abc').fadeOut('fast');
+  $('.examples td[data-index]').fadeOut('fast');
   $(this).addClass('here');
-  $( this).siblings('.abc').fadeIn('fast');
+  $( this).siblings('td[data-index]').fadeIn('fast');
 
 });
 

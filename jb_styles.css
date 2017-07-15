@@ -442,7 +442,7 @@ td.control.hilite a {
 .examples th.here {
 }
 
-.examples .abc {
+.examples [data-index] {
     position: absolute;
     width:100%;
     left: 0;
@@ -454,16 +454,13 @@ td.control.hilite a {
     text-align: center;
 }
 
-.examples .abc[data-index="author"],
-.examples .abc[data-index="title"] {
+.examples [data-index="author"],
+.examples [data-index="title"] {
   padding-top: .8em;
 }
-.examples .abc[data-index="author"] {
+.examples [data-index="author"] {
   z-index:2;
-}
-.examples:hover .abc,
-.examples.here .abc {
-}
+} 
 .examples ol, 
 .examples li {
     margin: 0;
@@ -488,7 +485,7 @@ tr.search {
   position: absolute;
   left: 0;
   right: 0;
-  top: 7.4em;
+  top: 7em;
 }
 tr.search td {
   width: 90%;
