@@ -625,12 +625,19 @@ span.zahl {
   font-family: courier, monospace;
   }
 a.zahl::before {
-  content: '▶';
+  content: "\f0b0";
   padding-right: .2em;
-  font-family: arial unicode ms, sans serif;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   }
+#thesaurus a.zahl::before {
+  content: "\f0a4";
+}
 .showEntry a.zahl::before {
-  content: ' (▶';
+  content: ' (\f002';
   }
 .showEntry a.zahl::after {
   content: ')';
