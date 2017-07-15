@@ -15,9 +15,6 @@
         <index key="date" datatype="xs:integer">
             <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
         </index>
-        <index key="keyword">
-            <path label=".">mods:subject[@displayLabel = 'Stichworte']/mods:topic</path>
-        </index>
         <index key="subject" case="yes" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
