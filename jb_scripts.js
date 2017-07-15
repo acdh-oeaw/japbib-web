@@ -1,7 +1,12 @@
 $(document).ready(function(){if (!window.__karma__) {jb_init(jQuery, CodeMirror, hasher, crossroads, URI)}});
 function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
-var m = {};
+var m = {},
+    getResultsLock = false,
+    getResultsErrorTracker = {
+      originalStack:"",
+      raisedErrors:[]
+    }
 
 // Handler fuer Seitenwechsel (BS)
 
@@ -72,12 +77,6 @@ var resultsFramework;
   e.preventDefault();
   getResultsHidden($(this).attr('href'))});*/
 
-var getResultsLock = false;
-var getResultsErrorTracker = {
-  originalStack:"",
-  raisedErrors:[]
-}
-
 function getResultsHidden(href) {
   checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
   var currentSorting = $('#showList > .showOptions select').val();
@@ -91,7 +90,7 @@ function getResultsHidden(href) {
 }
 
 function checkLock(callerName, aLock, anErrorTracker) {  
-  if (getResultsLock) {
+  if (aLock) {
     var raisedError = Error("Do not call "+callerName+" while a request is in progress!") ;
     anErrorTracker.raisedErrors.push(raisedError);
     throw raisedError;
@@ -325,8 +324,13 @@ function fillInSearchFrom(query) {
 
 function doSearchOnReturn(optStartRecord) {    
     var startRecord = optStartRecord || 1,
-        baseUrl = $('#searchform1').attr('action')
+        baseUrl = $('#searchform1').attr('action'),
+        query = $('#searchform1 input[name="query"]').val(),
+        sortBy = query.indexOf('sortBy') === -1 ?
+                 query.replace(/^([^=]+).*/, '$1') :
+                 query.replace(/^.*sortBy\s+(.*)$/, '$1')
     $('#searchform1 input[name="startRecord"]').val(startRecord);
+    $('#showList > .showOptions select').val(sortBy);
     getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
 };
 
