@@ -876,12 +876,16 @@ PLUS-MINUS
  }
  
 .plusMinus ~ .zahl.gruppe,
-.plusMinus.close ~ .zahl.eintrag {
+.plusMinus.close ~ .zahl.eintrag,
+.plusMinus > .zahl.gruppe,
+.plusMinus.close > .zahl.eintrag {
     display: inline;
 }
 
 .plusMinus ~ .zahl.eintrag,
 .plusMinus.close ~ .zahl.gruppe,
+.plusMinus > .zahl.eintrag,
+.plusMinus.close > .zahl.gruppe,
 .li1 > .zahl.gruppe {
     display: none;
 }

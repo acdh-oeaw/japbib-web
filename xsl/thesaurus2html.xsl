@@ -27,10 +27,16 @@
     
     <xsl:template match="category">
         <li class="li{count(ancestor::category)+1}">
-            <xsl:apply-templates select="catDesc"/>
-            <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
-                <xsl:with-param name="href" select="'#thesaurus?query=subject%3D&quot;'||catDesc||'&quot;'"/>
-            </xsl:apply-templates>
+            <span>
+                <xsl:if test="not(matches(@n, '^[123456789]$')) and category">
+                    <xsl:attribute name="class">plusMinus</xsl:attribute>
+                </xsl:if>
+                <xsl:apply-templates select="catDesc"/>
+                <xsl:apply-templates select="numberOfRecords | numberOfRecordsInGroup">
+                    <xsl:with-param name="href"
+                        select="'#thesaurus?query=subject%3D&quot;' || catDesc || '&quot;'"/>
+                </xsl:apply-templates>
+            </span>
             <xsl:if test="category">
                 <ol>
                     <xsl:apply-templates select="category"/>
@@ -40,7 +46,7 @@
     </xsl:template>
     
     <xsl:template match="catDesc">
-        <a href="#find?query=subject%3D&quot;{.}&quot;" class='term{if (not(matches(../@n, "^[123456789]$")) and ../category) then " plusMinus" else ()}' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
+        <a href="#find?query=subject%3D&quot;{.}&quot;" class='term' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
     </xsl:template>
 
 </xsl:stylesheet>

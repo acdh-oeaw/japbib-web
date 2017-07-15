@@ -510,6 +510,7 @@ var closeAll =  $ ( '#aC' ).click(
   ); 
 $(document).on('click', plusMinus, toggleNextSubtree);
 function toggleNextSubtree(e) {
+    if (e.currentTarget !== e.target) {return;}
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }
