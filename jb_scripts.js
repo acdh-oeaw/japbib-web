@@ -24,7 +24,16 @@ function go2subPage(link) {
 }
 
 mainPages.forEach( function(link) {
-  crossroads.addRoute(link, function() {
+  crossroads.addRoute(link+'{?query}', function(query) {
+    switch(link) {
+    case 'thesaurus': break;
+    case 'find':
+    default: fillInSearchFrom(query);
+    }
+    go2page(link); 
+    doSearchOnReturn();
+  });
+  crossroads.addRoute(link, function(query) {
     go2page(link); 
     //hasher.replaceHash(link);
   });
@@ -306,6 +315,12 @@ function searchOnReturn(e) {
     e.preventDefault();
     doSearchOnReturn();
   }
+}
+
+function fillInSearchFrom(query) {
+  $.each(query, function(key, value){
+    $('#searchform1 input[name="'+key+'"]').val(value);
+  });
 }
 
 function doSearchOnReturn(optStartRecord) {    
