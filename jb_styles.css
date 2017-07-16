@@ -935,7 +935,7 @@ a.zahl::before {
   content: "\f00c";  /* fa-check */
 }
 #thesaurus a.zahl::after { 
-  content: " Treffer auswÃ¤hlen";  /* fa-check */
+  content: " Treffer ausw\00e4hlen";   
   position: absolute; 
   white-space: nowrap;
   display: inline-block; 
