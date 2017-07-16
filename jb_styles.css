@@ -626,29 +626,6 @@ fieldset {
   z-index: 2;
   width: 7em;  
   }
-a.zahl,
-span.zahl {
-  font-family: courier, monospace;
-  }
-a.zahl::before {
-  content: "\f0b0";
-  padding-right: .2em;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  }
-#thesaurus a.zahl::before {
-  content: "\f0a4";
-}
-.showEntry a.zahl::before {
-  content: ' (\f002';
-  }
-.showEntry a.zahl::after {
-  content: ')';
-  }
-  
 .schlagworte {
     max-width: 35em;
     margin: 0 auto;
@@ -852,47 +829,116 @@ PLUS-MINUS
 **************/
 .plusMinus {
   cursor: pointer;
+  position:relative;
+  color: #008;
 }
-
+.zahl {
+  font-family: calibri, arial;
+  opacity: .5;
+  font-size: .9em;
+  position: relative; 
+}
+.zahl:hover { 
+  opacity: 1;
+}
 .closeX {
   margin-left: 1em;
 }
-
+a.zahl::before,
 .closeX::before,
-.sup::before,
-.plusMinus::before {  
- content: '+'; 
- content: '➕';  /* 'HEAVY PLUS SIGN' (U+2795) */
- display: inline-block;
- font-size: .625em;
- border: 1px solid; 
+.plusMinus::before {
+ content: '+';
+ content: '\f196';  /* 'fa-plus-square-o */
+ font-family: fontawesome, calibri, arial;
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ font-size: 1em;
+ display: inline;
+ border: 0px solid;
  border-radius: 1em;
- height: 1.6em;
- width: 1em;  
- padding: 0 .3em;
- line-height: 1.7em; 
  text-align: center;
  cursor: pointer;
  opacity: 0.4;
- vertical-align: text-top;
  overflow:hidden;
  } 
- .closeX::before {  
-  content: 'X'; 
-  content: '✖'; /* 'HEAVY MULTIPLICATION X' (U+2716) */
-}
-.closeX:hover::before,
-.sup:hover::before,
-.plusMinus:hover::before { 
- background: #f8f8ff; 
- opacity: 0.8;
+.close::before {
+ content: '–'; 
+  content: '\f147' /* fa-minus-square-o */
  }
  
+ .closeX::before {  
+  content: 'X'; 
+  content: '\f147' /* fa-minus-square-o */
+}
+.closeX:hover::before, 
+.plusMinus:hover::before {  
+ opacity: 0.8;
+ }
+
+.schlagworte .plusMinus::before {
+ position: absolute;
+ left: -1.2em;
+ /* top: .2em; */
+ }
+.pageindex .schlagworte .plusMinus::before {
+ left: -2.3em; 
+ top: -.1em;  
+ }
+
+.showResults .sup::before, 
+.showResults .plusMinus::before {
+ margin-right: .5em;
+ }
+.showResults a.plusMinus {
+ padding: 0 .3em;
+ border-radius: 1em;
+ }
+/*  Zahl */ 
+
+a.zahl::before {
+  content: "\f0b0";
+  padding-right: .2em;  
+  }
+#thesaurus a.zahl::before { 
+  content: "\f00c";  /* fa-check */
+}
+#thesaurus a.zahl::after { 
+  content: " Treffer auswählen";  /* fa-check */
+  position: absolute; 
+  white-space: nowrap;
+  display: inline-block; 
+  padding-left: .3em;
+  opacity: 0;
+}
+#thesaurus a.zahl:hover::after {
+  opacity: .5;
+} 
+.showEntry a.zahl::before {
+  content: ' (\f002';
+  }
+.showEntry a.zahl::after {
+  content: ')';
+  }
+  
 .plusMinus ~ .zahl.gruppe,
 .plusMinus.close ~ .zahl.eintrag,
 .plusMinus > .zahl.gruppe,
+a.zahl,
+span.zahl { 
+  }
+#thesaurus a.zahl::before {
+  /* content: "\f0a4"; */
+}
+.showEntry a.zahl::before {
+  content: ' (\f002';
+  }
+.showEntry a.zahl::after {
+  content: ')';
+  }
+  
 .plusMinus.close > .zahl.eintrag {
-    display: inline;
+    display: inline-block;
 }
 
 .plusMinus ~ .zahl.eintrag,
@@ -902,33 +948,7 @@ PLUS-MINUS
 .li1 > .zahl.gruppe {
     display: none;
 }
-
-.schlagworte .sup::before,
-.schlagworte .plusMinus::before { 
- position: absolute;
- left: -1.8em; 
- top: .2em;  
- }
-.pageindex .schlagworte .plusMinus::before {
- left: -2.3em; 
- top: -.1em;  
- }
-
- 
-.showResults .sup::before, 
-.showResults .plusMinus::before {
- margin-right: .5em;
- }
-.showResults a.plusMinus {
- padding: 0 .3em;
- border-radius: 1em;
- }
   
-.close::before {
- content: '–'; 
- content: '➖'; /* 'HEAVY MINUS SIGN' (U+2796) */ 
- }
- 
 /*******************/
 
 .term {
