@@ -1,7 +1,7 @@
 /***************
    Schrift
 ****************/
-body {
+body { 
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
@@ -291,8 +291,9 @@ td.control.hilite a {
   right:  5%; 
   }
    
-#find .pageindex { 
-    width: 15em; 
+#find .pageindex {
+    width: 15em;
+    font-family: calibri, arial, sans-serif;
   }
 
 .pageindex h4 {
@@ -381,9 +382,10 @@ td.control.hilite a {
 
 #searchform1 input {
  box-sizing: border-box;
- width: 100%; 
+ width: 100%;
  padding: .5em;
  font-size: 1rem;
+ font-family: calibri, arial, sans-serif;
  }
 #searchform1 input:focus { 
  background: rgba(225, 247, 255, 0.3) 
@@ -413,13 +415,14 @@ td.control.hilite a {
 /*** examples 
    s.a. beispiele
 ********** */
-.examples {  
+.examples {
     display: inline-block;
     background: #fff;
-    height: 8em;
+    height: 9em;
     overflow: hidden;
     margin: 0;
     list-style: none;
+    height: 9em;
 }
 .examples:first-child {
 }
@@ -431,6 +434,7 @@ td.control.hilite a {
     z-index:2;
     color: #fff;
     cursor: pointer;
+  font-family: calibri, arial, sans-serif;
 }
 .examples th:hover,
 .examples th.here {
@@ -460,6 +464,7 @@ td.control.hilite a {
 }
 .examples [data-index="author"] {
   z-index:2;
+  height: 7em;
 } 
 .examples ol, 
 .examples li {
@@ -480,12 +485,14 @@ td.control.hilite a {
 .examples small {
     display: block;
     color: #aaa;
+  font-family: calibri, arial, sans-serif;
 }
 tr.search {
   position: absolute;
   left: 0;
   right: 0;
-  top: 7em;
+  top: 8em;
+  z-index: 5;
 }
 tr.search td {
   width: 90%;
@@ -624,11 +631,12 @@ fieldset {
   border-radius: .5em;
   position: relative;
   z-index: 2;
-  width: 7em;  
+  width: 6em;
   }
 .schlagworte {
     max-width: 35em;
     margin: 0 auto;
+    padding-bottom: 2em;
 }
 .schlagworte ul,
 .schlagworte ol {
@@ -691,8 +699,8 @@ fieldset {
 	  
 .showOptions, 
 .navResults { /* mehr zu navResults unten */
-  text-align: right; 
-  font-family: Arial, sans-serif;
+  text-align: right;  
+  font-family: calibri, arial, sans-serif;
   background: rgba(233, 220, 175, 0.5);
   padding: 1px 5px;
   margin: -.5em -1em .5em;
@@ -705,15 +713,17 @@ fieldset {
 .tipp {
   position: relative;
   display: inline;
-  color: rgba(0, 44, 88, 1);  
+  color: rgba(0, 44, 88, 1);
+  font-family: fontawesome, calibri, arial, sans-serif;
   }
-.tipp:before {
+.tipp::before {
   content: '❓'; /* 'BLACK QUESTION MARK ORNAMENT' (U+2753) */
+  content: '\f128'; /* 'fa-question */
   display: inline-block; 
-  font-family: sans-serif;
+  margin-left: .3em;
   color: rgb(21, 104, 165);
   background: rgb(225, 247, 255);
-  border: 1px solid rgba(200, 222, 228, 1);    
+  border: 1px solid rgba(200, 222, 228, 1);
   border-radius: 1em;
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
   line-height: 1.5em;
@@ -721,8 +731,8 @@ fieldset {
   text-align: center;
   cursor: pointer;
   } 
-.tipp.q2x:before {
-  content: '✖';  /* 'HEAVY MULTIPLICATION X' (U+2716) */
+.tipp.q2x:before { 
+   /*content: '\f00d'; 'fa-times */
   }
 .tipp:hover:before {    
   background: rgb(194, 238, 253);  
@@ -732,18 +742,18 @@ fieldset {
 .tipp > * {
   display: none;
   position: absolute;
-    z-index: 5;   
-    top: .8em; 
-    left: 0;
-  width: 16em;  
-  margin: 0;  
-  padding: 1em; 
+  z-index: 7;
+  top: .8em;
+  left: 0; 
+  width: 16em;
+  margin: 0;
+  padding: 1em;
   background: rgba(225, 247, 255, .93);
   border: 1px solid rgba(200, 222, 228, 1);
-    border-radius: 5px; 
+  border-radius: 5px;
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
-  text-align: left; 
-  font-family: initial; 
+  text-align: left;
+  /* font-family: initial; */
   }
 .tipp:hover > *, 
 .tipp.display > *,  {
@@ -771,11 +781,10 @@ fieldset {
 /**** Beispiele ******/
 
 #Beispiele {
-  position: absolute; 
+  position: absolute;
   display: block;
   width: 100%;
   top: -2.8em;
-  z-index: 3;    
   }  
 .beispiele div {
   display: inline-block;
@@ -836,13 +845,13 @@ PLUS-MINUS
   font-family: calibri, arial;
   opacity: .5;
   font-size: .9em;
-  position: relative; 
+  position: relative;
 }
 .zahl:hover { 
   opacity: 1;
 }
 .closeX {
-  margin-left: 1em;
+  margin-left: .3em;
 }
 a.zahl::before,
 .closeX::before,
@@ -869,7 +878,7 @@ a.zahl::before,
  
  .closeX::before {  
   content: 'X'; 
-  content: '\f147' /* fa-minus-square-o */
+  content: '\f00d' /* fa-times */
 }
 .closeX:hover::before, 
 .plusMinus:hover::before {  
@@ -878,17 +887,17 @@ a.zahl::before,
 
 .schlagworte .plusMinus::before {
  position: absolute;
- left: -1.2em;
- /* top: .2em; */
+ left: -1.6em;
+ display: inline-block;
+ width: 1.5em;
  }
 .pageindex .schlagworte .plusMinus::before {
- left: -2.3em; 
- top: -.1em;  
+ top: .15em;
  }
 
 .showResults .sup::before, 
 .showResults .plusMinus::before {
- margin-right: .5em;
+ margin-right: .3em;
  }
 .showResults a.plusMinus {
  padding: 0 .3em;
@@ -914,28 +923,20 @@ a.zahl::before {
 #thesaurus a.zahl:hover::after {
   opacity: .5;
 } 
-.showEntry a.zahl::before {
-  content: ' (\f002';
-  }
-.showEntry a.zahl::after {
-  content: ')';
-  }
-  
-.plusMinus ~ .zahl.gruppe,
-.plusMinus.close ~ .zahl.eintrag,
-.plusMinus > .zahl.gruppe,
-a.zahl,
-span.zahl { 
-  }
-#thesaurus a.zahl::before {
-  /* content: "\f0a4"; */
+.showEntry a.zahl { 
+  margin-left: .1em;
+  opacity: .7;
+}
+.showEntry a.zahl:hover {  
+  opacity: 1;
 }
 .showEntry a.zahl::before {
-  content: ' (\f002';
-  }
-.showEntry a.zahl::after {
-  content: ')';
-  }
+  content: ' \f002'; 
+  } 
+  
+#thesaurus a.zahl::before {
+  /* content: "\f0a4"; */
+} 
   
 .plusMinus.close > .zahl.eintrag {
     display: inline-block;
@@ -965,7 +966,9 @@ span.zahl {
 .showResults {
   padding-top: 2em;
 }
-
+.showResults h2 {
+    margin-top: 1.2em;
+}
 .navResults {
  background: rgba(233, 220, 175, 0.3);
  padding: 1px 1em; 
@@ -1041,7 +1044,7 @@ span.zahl {
   }
   
 /* MODS und LIDOS */
-  } 
+   
 .CodeMirror-sizer {
-    position: absolute;
+  position: absolute;
 }
