@@ -175,7 +175,7 @@ $( document )
     } 
   );   
 // Handler fuer examples
-$('.examples th').mouseover(function() {
+$('.examples th').click(function() {
   $('.examples th').removeClass('here');
   $('.examples td[data-index]').fadeOut('fast');
   $(this).addClass('here');

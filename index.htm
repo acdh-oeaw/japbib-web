@@ -3850,36 +3850,28 @@
 									</td>
 								</tr>
 							</table>
-						  <div class="chooseMaxHits">
-						    <label>
-						      Treffer/Seite: 
-						      <select size="1" name="maximumRecords" id="maximumRecords">
-						        <option value="10" selected="selected"> 10</option>
-						        <option value="20"> 20</option>
-						        <option value="50"> 50</option>
-						        <option value="100">100</option>
-						        <option value="200">200</option>
-						      </select>
-						    </label>
-              </div>
 						  </form>
 							<div class="showResults">
 								<h2>Resultate</h2>											 
 								<div id="showList">
-									<div class="showOptions">
-										<form>
-											<label>
-												<span id="countResults"></span>Resultate sortieren nach
-												<select size="1">
-													<option value="author" selected="selected">Autor</option>
-													<option value="title">Werktitel</option>
-													<!--<option>Diagramm (nach Jahren)</option>
-														<option>Diagramm (nach Themen)</option>-->
-												</select>
-											</label><!--
-											<span class="tipp"><span>Wählen Sie das Format, in dem die 
-											Resultate angezeigt werden. </span></span>-->
-										</form>
+									<div class="showOptions"> 
+									    <label class="chooseMaxHits">
+									      <select size="1" name="maximumRecords" id="maximumRecords" title="Maximale Treffer pro Seite">
+									        <option value="10" selected="selected"> 10</option>
+									        <option value="20"> 20</option>
+									        <option value="50"> 50</option>
+									        <option value="100">100</option>
+									        <option value="200">200</option>
+									      </select>
+									    </label> 
+										<label id="countResults" title="Sortierung der Resultate"></span>
+											<select size="1">
+												<option value="author" selected="selected">Autor</option>
+												<option value="title">Werktitel</option>
+												<!--<option>Diagramm (nach Jahren)</option>
+													<option>Diagramm (nach Themen)</option>-->
+											</select>
+										</label> 
 									</div>
 									<div class="navResults">
 										<div class="countResults">

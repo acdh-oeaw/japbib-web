@@ -336,7 +336,7 @@ td.control.hilite a {
   font-style: italic;
 }
 .pageindex .here:before {
- content: '∘ ';
+ content: 'âˆ˜ ';
  font-style: normal;
  }
 
@@ -498,12 +498,6 @@ tr.search td {
   width: 90%;
 }
 
-.chooseMaxHits {
-  text-align: right;
-  margin-bottom: -2em;
-  padding: 0 .45em;
-  font-style: italic;
-}
 /*******  Suchresultate ***********/
 
 #showList {
@@ -565,17 +559,24 @@ tr.search td {
 .record-html {
     padding: 1em;
 }
-.pubForm { 
-  min-height: 40px;
-  padding-right: 42px;  
-  background-repeat: no-repeat;
-  background-position: top right;
+.pubForm::before {
+  content: 'abc';
+  display: block;
+  float: right;
+  font-family: fontawesome;
+  font-size: 1.5em;
+  color: rgb(255, 247, 212);
+  background: #c1b994;
+  padding: .2em;
+  border-radius: .2em;
+  margin-left: 0.2em;
+  margin-bottom: .2em;
   }
 .article {
-  background-image:url('images/icon_article.png'); 
+  content: '\f15c'; /* fa-file-text */
   }
-.buch {
-  background-image:url('images/icon_book.png');  
+.buch::before { 
+  content: '\f02d'; /* fa-book  */
   } 
 
 /******* Fehlermeldungen ***********/
@@ -696,7 +697,26 @@ fieldset {
 	text-transform: uppercase;  
 	font-family: "Trebuchet MS", Arial, sans-serif;
 	} 
-	  
+.showOptions label::before {  
+  font-family:fontawesome; 
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+  padding-left: .5em;
+  padding-right: .2em;
+  opacity: .7;
+}
+.showOptions label.hover::before {   
+  opacity: 1; 
+}
+
+.chooseMaxHits::before   { 
+  content: '\f0cb'; /* fa-list-ol   */
+}
+#countResults::before {
+  content: '\f0dc'; /* fa-sort */
+  content: '\f161'; /* fa-sort-amount-desc   */
+}	  
 .showOptions, 
 .navResults { /* mehr zu navResults unten */
   text-align: right;  
@@ -715,9 +735,11 @@ fieldset {
   display: inline;
   color: rgba(0, 44, 88, 1);
   font-family: fontawesome, calibri, arial, sans-serif;
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
   }
-.tipp::before {
-  content: '❓'; /* 'BLACK QUESTION MARK ORNAMENT' (U+2753) */
+.tipp::before { 
   content: '\f128'; /* 'fa-question */
   display: inline-block; 
   margin-left: .3em;
@@ -872,7 +894,7 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: '–'; 
+ content: 'â€“'; 
   content: '\f147' /* fa-minus-square-o */
  }
  
@@ -913,7 +935,7 @@ a.zahl::before {
   content: "\f00c";  /* fa-check */
 }
 #thesaurus a.zahl::after { 
-  content: " Treffer auswählen";  /* fa-check */
+  content: " Treffer auswÃ¤hlen";  /* fa-check */
   position: absolute; 
   white-space: nowrap;
   display: inline-block; 
