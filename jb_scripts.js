@@ -506,27 +506,27 @@ $('a.code').click(function(e){
  
 
 // Schlagwortbaum oeffnen und schliessen (BS)
-// Auskommentiert wegen moegl. Konflikt mit anderen Skripts (BS)
 
 var plusMinus='.schlagworte .plusMinus';
-var ols= $ ( '.schlagworte li li ol' );
 
-  // Anfangszustand; spaeter aendern
-$ ( plusMinus ).addClass( 'close' );   
-$ ( ols ).show(); 
+  // Anfangszustand 
 
-var showAll =  $ ( '#aO' ).click( 
-  function ( ) { 
-    $ ( '.schlagworte li li ol' ).show ( 'slow' );
-    $(plusMinus).addClass( 'close' );     
-    }
-  );  
-var closeAll =  $ ( '#aC' ).click( 
-  function ( ) { 
-    $ ( '.schlagworte li li ol' ).hide ( 'slow' );
-    $(plusMinus).removeClass( 'close' );     
-    }
-  ); 
+$( plusMinus ).removeClass( 'close' );   
+$ ( '.schlagworte li li ol' ).hide ();  
+
+$(document).on('click', '#aO',  function ( ) { 
+  $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
+  $(plusMinus).addClass( 'close' );     
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aC').parent().fadeIn ('slow');
+}); 
+$(document).on('click', '#aC',  function ( ) { 
+    $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
+    $(plusMinus).removeClass( 'close' );       
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aO').parent().fadeIn ('slow');   
+}); 
+
 $(document).on('click', plusMinus, toggleNextSubtree);
 function toggleNextSubtree(e) {
     if (e.currentTarget !== e.target) {return;}
