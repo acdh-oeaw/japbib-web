@@ -1,4 +1,4 @@
-<profile when="2017_07_17_11_22_49" xml:id="dictProfile" xml:space="preserve">
+<profile when="2017_07_17_11_49_53" xml:id="dictProfile" xml:space="preserve">
 <ip></ip>
 <autoSwitchString></autoSwitchString>
 <basexRest>https://basex-dev.eos.arz.oeaw.ac.at</basexRest>
@@ -62,8 +62,17 @@
         </head>
         
         <body>
-            <h3><a class="aInternal" href="javascript:;"><xsl:attribute name="onMouseDown">omd1_('gotoid:<xsl:value-of select="//mds:titleInfo/mds:title/@cnt"/>')</xsl:attribute>
-                        <xsl:value-of select="//mds:titleInfo/mds:title"/></a></h3>
+            <h3>
+               <xsl:for-each select="mds:mods/mds:titleInfo/*">
+                  <a class="aInternal" href="javascript:;"><xsl:attribute name="onMouseDown">omd1_('gotoid:<xsl:value-of select="@cnt"/>')</xsl:attribute>
+                     <xsl:choose>
+                        <xsl:when test="self::mds:subTitle"><xsl:text>. </xsl:text></xsl:when>
+                        <xsl:otherwise><xsl:text> </xsl:text></xsl:otherwise>
+                     </xsl:choose>
+                     <xsl:value-of select="."/>
+                  </a>
+                </xsl:for-each>
+            </h3>
 
             <table>
                <tr>
