@@ -534,6 +534,24 @@ function toggleNextSubtree(e) {
     $ (this).toggleClass( 'close' );
     }
 
+// Handler fuer Kombinieren von Schlagworten im Thesaurus
+var wishList= $( '#thesaurus .pageindex ul'); 
+$( wishList ).empty();
+
+
+$( document).on( 'click', '.schlagworte a.zahl', function(e) {
+  e.preventDefault(); 
+  //var term= $( this ).prevAll( '.term:first' ).clone( true );
+  var term= $( this ).prevAll( '.term:first' ) ;
+  console.log( $( term ).html() );
+  //href.toString().match(/"(.*)"/)[1];
+  //alert( this.href.toString().match(/"(.*)"/)[1] );
+  //$( wishList ).append('<li>'+ $(term).text()  );
+}); 
+
+
+/////////////
+
 window.jb80 = m;
 
 }

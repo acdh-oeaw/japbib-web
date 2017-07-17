@@ -336,8 +336,12 @@ td.control.hilite a {
   font-style: italic;
 }
 .pageindex .here:before {
- content: 'âˆ˜ ';
+ content: '\f04b ';
  font-style: normal;
+ font-family: fontawesome;
+ font-size: .7em;
+ padding-right: .4em; 
+ opacity: .6;
  }
 
 #schlagworte .pageindex a {
@@ -894,7 +898,7 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: 'â€“'; 
+ content: 'Ã¢â‚¬â€œ'; 
   content: '\f147' /* fa-minus-square-o */
  }
  
@@ -932,10 +936,11 @@ a.zahl::before {
   padding-right: .2em;  
   }
 #thesaurus a.zahl::before { 
-  content: "\f00c";  /* fa-check */
+  content: "\f1db";  /* fa-circle-thin ... opacity: 1;*/
+  content: "\f00c";  /* fa-check */  
 }
 #thesaurus a.zahl::after { 
-  content: " Treffer ausw\00e4hlen";   
+  content: "  ausw\00e4hlen";   
   position: absolute; 
   white-space: nowrap;
   display: inline-block; 
