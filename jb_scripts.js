@@ -534,19 +534,52 @@ function toggleNextSubtree(e) {
     $ (this).toggleClass( 'close' );
     }
 
-// Handler fuer Kombinieren von Schlagworten im Thesaurus
-var wishList= $( '#thesaurus .pageindex ul'); 
+// Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList
+
+var wishList= $( '#wishList'); 
+var ausgewaehlt= []; 
 $( wishList ).empty();
 
+function neueAuswahl(term) {
+  var termIsNew = true;
+  if (ausgewaehlt.length == 0) {
+    ausgewaehlt.push(term);     
+  }   
+  for( i in ausgewaehlt ) 
+    if( ausgewaehlt[i] == term ) 
+      termIsNew = false;       
+  if( termIsNew ) 
+    ausgewaehlt.push(term);   
+    // auf 3 begrenzen
+  if (ausgewaehlt.length > 3)
+    ausgewaehlt.shift();
+  baueListe();
+}
+function baueListe(){
+  var newWishes= '';
+  var newQ= '';
+  $.each( ausgewaehlt, function( i, term ) { 
+    newWishes +='<li><label><input checked="checked" name="schlagwort" type="checkbox" />'+ term;
+    newQ += 'subject="' + term + '" ';
+    if(i < ausgewaehlt.length-1 ) {
+      newWishes+=' <a class="andOr">AND</a>';
+      newQ+=' AND ';
+    }
+    newWishes+= '</label></li>';
+  });   
+  newQ= encodeURIComponent(newQ);
+  $( wishList ).empty();  
+  $( wishList ).append( '<h4> Ausgewählte Schlagworte </h4>' );
+  $( wishList ).append( '<ul>' + newWishes );
+  $( wishList ).append( '<li><a href="#find?query=' + newQ + '">Q</a></li>' + '</ul>' );
+  //console.log( $('#thesaurus .pageindex ul li').length  );
+}
 
 $( document).on( 'click', '.schlagworte a.zahl', function(e) {
-  e.preventDefault(); 
-  //var term= $( this ).prevAll( '.term:first' ).clone( true );
-  var term= $( this ).prevAll( '.term:first' ) ;
-  console.log( $( term ).html() );
-  //href.toString().match(/"(.*)"/)[1];
-  //alert( this.href.toString().match(/"(.*)"/)[1] );
-  //$( wishList ).append('<li>'+ $(term).text()  );
+  e.preventDefault();  
+  var term= $( this ).prevAll( '.term:first' ).html();
+  neueAuswahl(term); 
+  //console.log( $( term ) );
 }); 
 
 
