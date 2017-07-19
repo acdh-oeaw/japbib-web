@@ -430,14 +430,6 @@ function onCategoryLoaded(statusText, jqXHR) {
 
 loadCategory();
 
-/* 
-// Handler für AND/OR, zu Demo-Zwecken (BS)
-var toggleAnd = $('.andOr').click(
-  function() { if (this.innerHTML== 'AND') this.innerHTML='OR'; 
-               else this.innerHTML= 'AND'; }
-  );
-*/
-
 function findQueryPartInHref(href) {
   var parsed = URI(href),
       conventionalQuery = parsed.query(true),
@@ -536,44 +528,70 @@ function toggleNextSubtree(e) {
 
 // Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList
 
-var wishList= $( '#wishList'); 
-var ausgewaehlt= []; 
-$( wishList ).empty();
+var wishList= $( '#wishList'), 
+    ausgewaehlt= [],
+    maxWishes= 5;
 
-function neueAuswahl(term) {
+$( wishList ).empty();
+/*
+$(window).scroll(function() {
+    $('#thesaurus .pageindex').css('top', $(this).scrollTop() + "px");
+});
+*/
+function neueAuswahl(term, remove) {
   var termIsNew = true;
   if (ausgewaehlt.length == 0) {
     ausgewaehlt.push(term);     
-  }   
+  }     
   for( i in ausgewaehlt ) 
     if( ausgewaehlt[i] == term ) 
       termIsNew = false;       
   if( termIsNew ) 
     ausgewaehlt.push(term);   
     // auf 3 begrenzen
-  if (ausgewaehlt.length > 3)
-    ausgewaehlt.shift();
+  if (ausgewaehlt.length > maxWishes)
+    ausgewaehlt.shift();  
+  if (remove){ 
+    ausgewaehlt = jQuery.grep(ausgewaehlt, function(value) {
+      return value !== term;
+    });
+    console.log(ausgewaehlt.length);
+    //ausgewaehlt.splice( $.inArray(term, ausgewaehlt), 1 );
+  }
   baueListe();
 }
 function baueListe(){
   var newWishes= '';
   var newQ= '';
   $.each( ausgewaehlt, function( i, term ) { 
-    newWishes +='<li><label><input checked="checked" name="schlagwort" type="checkbox" />'+ term;
+    newWishes +='<li><i class="fa fa-check-square-o"></i>'+ term;
     newQ += 'subject="' + term + '" ';
     if(i < ausgewaehlt.length-1 ) {
-      newWishes+=' <a class="andOr">AND</a>';
+      newWishes+=' <a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">AND</a>';
       newQ+=' AND ';
     }
     newWishes+= '</label></li>';
   });   
   newQ= encodeURIComponent(newQ);
   $( wishList ).empty();  
-  $( wishList ).append( '<h4> Ausgewählte Schlagworte </h4>' );
-  $( wishList ).append( '<ul>' + newWishes );
-  $( wishList ).append( '<li><a href="#find?query=' + newQ + '">Q</a></li>' + '</ul>' );
-  //console.log( $('#thesaurus .pageindex ul li').length  );
+  if (ausgewaehlt.length > 0) {
+    $( wishList ).append( '<h4> Ausgewählte Schlagworte </h4>' );
+    $( wishList ).append( '<ul>' + newWishes + '</ul>' );
+    $( wishList ).append( '<a class="fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>' );
+  }
 }
+$(document).on('click', '#wishList li .fa',  function () { 
+ neueAuswahl($( this ).parent().text(), 1)
+ //console.log($( this ).parent().text());
+});
+//  AND/OR/NOT[?]
+
+$( document).on( 'click', '.andOr', function(e) { 
+  e.preventDefault();
+  this.innerHTML = ( this.innerHTML == 'AND')? 'OR' : 
+    // ( this.innerHTML == 'OR')? 'NOT': 
+      'AND';
+});
 
 $( document).on( 'click', '.schlagworte a.zahl', function(e) {
   e.preventDefault();  

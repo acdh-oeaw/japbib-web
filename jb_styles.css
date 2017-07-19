@@ -37,6 +37,12 @@ h4 {
 p { 
   margin: 1em 0;
 }
+*[class^="fa-"]::before,
+*[class*=" fa-"]::before {
+  font-family: FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
 
 /***************
    STRUKTUR
@@ -276,13 +282,15 @@ td.control.hilite a {
   }
  
 .pageindex {
-    float: right;
-    width: 15rem;
-    margin: 0 0 1.5em 1.5em; 
-    border: 1px solid rgb(191, 207, 203);
-    border-radius: 5px 5px 0 0;
-    background-color: rgb(255, 247, 212);
-    }
+  float: right;
+  width: 15rem;
+  margin: 0 0 1.5em 1.5em; 
+  border: 1px solid rgb(191, 207, 203);
+  border-radius: 5px 5px 0 0;
+  background-color: rgb(255, 247, 212);
+  font-family: calibri, arial, sans-serif;
+  line-height: 1.2em;
+}
 
 #schlagworte .pageindex {
   position: fixed;
@@ -293,7 +301,6 @@ td.control.hilite a {
    
 #find .pageindex {
     width: 15em;
-    font-family: calibri, arial, sans-serif;
   }
 
 .pageindex h4 {
@@ -320,14 +327,6 @@ td.control.hilite a {
   padding-left: 1.2em;
   text-indent: -1em;
   }
-.pageindex a.andOr  {
-  display: inline;
-  padding: 0; 
-  text-indent: 0;
-    font-family: "Courier New", Courier, monospace;
-    font-weight: bold;
-    font-size: .8em;
-  }   
 
 .pageindex .here {
   color:#008;
@@ -354,6 +353,62 @@ td.control.hilite a {
     width: 100%; 
  margin-bottom:-5px;
  }
+
+ /*  Thesaurus, #wishList */
+
+#wishList li {
+  display: block;
+  padding: 0  1.5em 0 1em;
+  min-height: 2.2em;
+  position: relative;
+}
+#wishList li .fa {
+  display: inline-block;
+  margin-left: -1.8em;
+  margin-right: .5em;
+  padding: .2em;
+  color: #96855e;
+  cursor: pointer;
+  border-radius: 4px;
+} 
+#wishList a.andOr:hover,
+#wishList li .fa:hover {
+    color: #fff7d4;
+    background:rgba(150, 133, 94, 0.82);
+}
+#wishList a.andOr  { 
+  position: absolute;
+  right: -.5rem;
+  top: 0; 
+  display: block;
+  width: 2.4em;
+  height: 1rem;
+  font-size: .8em;
+  text-align: center;
+  text-indent: 0;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  background: rgba(233, 220, 175, 0.5);
+  padding: .5rem 0;
+  color: #a08628;
+  cursor: pointer;
+  }   
+#abfrage {
+  display: block; 
+  text-align: right; 
+  padding: 0 1em; 
+  line-height: 2em;
+  border-top: 1px solid rgb(228, 211, 165);
+  background: rgba(233, 220, 175, 0.5);
+}
+#abfrage:hover {
+  background: rgba(233, 220, 175, 0.8);
+}
+#abfrage::before {
+  font-size: 1.2em;
+  opacity: .5; 
+  padding-right:.5em;
+}
 
 /****** Impressum ******/
 
