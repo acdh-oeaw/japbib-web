@@ -543,7 +543,7 @@ function neueAuswahl(term, remove) {
   if (ausgewaehlt.length == 0) {
     ausgewaehlt.push(term);     
   }     
-  for( i in ausgewaehlt ) 
+  for( i in ausgewaehlt) 
     if( ausgewaehlt[i] == term ) 
       termIsNew = false;       
   if( termIsNew ) 
@@ -581,8 +581,9 @@ function baueListe(){
   }
 }
 $(document).on('click', '#wishList li .fa',  function () { 
- neueAuswahl($( this ).parent().text(), 1)
- //console.log($( this ).parent().text());
+ var term = $( this ).parent().clone().find('> a').remove().end().text();
+ neueAuswahl( $.trim( term ), 1 );
+ //console.log( term );
 });
 //  AND/OR/NOT[?]
 
@@ -597,7 +598,7 @@ $( document).on( 'click', '.schlagworte a.zahl', function(e) {
   e.preventDefault();  
   var term= $( this ).prevAll( '.term:first' ).html();
   neueAuswahl(term); 
-  //console.log( $( term ) );
+  //console.log( term );
 }); 
 
 
