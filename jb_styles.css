@@ -292,11 +292,18 @@ td.control.hilite a {
   line-height: 1.2em;
 }
 
-#schlagworte .pageindex {
-  position: fixed;
-  vertical-align: top;
-  z-index: 3;
+#wrapAbsolute {
+  position: absolute; 
+  width: 15rem;
   right:  5%; 
+}
+#wrapFixed {  
+  width: 15rem; 
+  } 
+#wrapAbsolute .pageindex {
+  margin:0;
+  position: static;
+  width: auto;
   }
    
 #find .pageindex {

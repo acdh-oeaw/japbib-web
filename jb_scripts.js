@@ -17,7 +17,8 @@ function go2page(link) {
   $( '.slide' ).hide(); 
   $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $( '#'+link ).show();     
-  $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );    
+  $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
+  fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
 function go2subPage(link) {
   $( '#about .content div').hide();
@@ -530,7 +531,7 @@ function toggleNextSubtree(e) {
 
 var wishList= $( '#wishList'), 
     ausgewaehlt= [],
-    maxWishes= 5;
+    maxWishes= 3;
 
 $( wishList ).empty();
 /*
@@ -585,6 +586,7 @@ $(document).on('click', '#wishList li .fa',  function () {
  neueAuswahl( $.trim( term ), 1 );
  //console.log( term );
 });
+
 //  AND/OR/NOT[?]
 
 $( document).on( 'click', '.andOr', function(e) { 
@@ -601,6 +603,24 @@ $( document).on( 'click', '.schlagworte a.zahl', function(e) {
   //console.log( term );
 }); 
 
+ //wishlist fixieren (BS)
+
+function fixWishlist() {
+  var top=  $( '#wrapAbsolute').offset().top -40;
+  if ($( document ).scrollTop() >= top) {
+    $( '#wrapFixed').css({
+     'position':'fixed', 
+     'top': 40+'px'
+    });
+  }
+  else {
+    $( '#wrapFixed').css({
+      'position':'static',
+      'top': 'auto'
+    });
+  }
+} 
+$( document ).on( 'scroll', fixWishlist);
 
 /////////////
 
