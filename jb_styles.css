@@ -362,11 +362,14 @@ td.control.hilite a {
  }
 
  /*  Thesaurus, #wishList */
-
+ 
+#wishList ul {
+    margin: 1em 1.3em .5em;
+}
 #wishList li {
   display: block;
   padding: 0  1.5em 0 1em;
-  min-height: 2.2em;
+  min-height: 2.1em;
   position: relative;
 }
 #wishList li .fa {
@@ -386,7 +389,7 @@ td.control.hilite a {
 #wishList a.andOr  { 
   position: absolute;
   right: -.5rem;
-  top: 0; 
+  top: .8em; 
   display: block;
   width: 2.4em;
   height: 1rem;
@@ -396,7 +399,7 @@ td.control.hilite a {
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   background: rgba(233, 220, 175, 0.5);
-  padding: .5rem 0;
+  padding: .3rem 0 .5rem;
   color: #a08628;
   cursor: pointer;
   }   

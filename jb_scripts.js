@@ -133,7 +133,8 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
     });    
-    $('.ladeResultate').hide();
+    $('.ladeResultate').hide();        
+    $('#find .schlagworte li li ol').hide ();  //Anfangszustand bei neuer Abfrage
     $('.showResults').show('slow');    
     arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
@@ -217,8 +218,6 @@ $('#searchInput1').on('keyup', function() {
   }
 });
   */
-/*
-   */
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
@@ -422,7 +421,8 @@ function onCategoryLoaded(statusText, jqXHR) {
       frameWork.find('ol.schlagworte').replaceWith(categories);
     } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
     $('#thesaurus #showList').replaceWith(frameWork);
-    $('.ladeSchlagworte').hide();
+    $('.ladeSchlagworte').hide();    
+    $('#thesaurus .schlagworte li li ol').hide ();  //Anfangszustand bei Neuladen
     $('#thesaurus #showList').show('slow');  
   } finally {
     getCategoriesLock = false;
@@ -503,7 +503,6 @@ $('a.code').click(function(e){
 var plusMinus='.schlagworte .plusMinus';
 
   // Anfangszustand 
-
 $( plusMinus ).removeClass( 'close' );   
 $ ( '.schlagworte li li ol' ).hide ();  
 
@@ -539,7 +538,7 @@ $(window).scroll(function() {
     $('#thesaurus .pageindex').css('top', $(this).scrollTop() + "px");
 });
 */
-function neueAuswahl(term, remove) {
+function neueAuswahl(term, remove) { 
   var termIsNew = true;
   if (ausgewaehlt.length == 0) {
     ausgewaehlt.push(term);     
@@ -556,8 +555,7 @@ function neueAuswahl(term, remove) {
     ausgewaehlt = jQuery.grep(ausgewaehlt, function(value) {
       return value !== term;
     });
-    console.log(ausgewaehlt.length);
-    //ausgewaehlt.splice( $.inArray(term, ausgewaehlt), 1 );
+    //console.log(ausgewaehlt.length); 
   }
   baueListe();
 }
