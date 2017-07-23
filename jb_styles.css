@@ -10,10 +10,10 @@ h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
   }
 a {
-  color:#005;
+  color:#005; 
   text-decoration: none;
   border-radius: 3px;
-  }
+  } 
 a:hover { 
   color:#008;
 	background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
@@ -451,26 +451,37 @@ td.control.hilite a {
 
 /**** Suchfelder ******/
 
+form#searchform1 {   
+ padding: 2em 2px 0;
+}
 #searchform1 input {
  box-sizing: border-box;
+ display: inline-block;
+ display: block; 
  width: 100%;
  padding: .5em;
  font-size: 1rem;
  font-family: calibri, arial, sans-serif;
  }
 #searchform1 input:focus { 
- background: rgba(225, 247, 255, 0.3) 
+ background: rgb(244, 249, 251) 
  }
 #searchform1 input::placeholder,
 #searchform1 input:placeholder-shown {
  } 
  
 .suchOptionen {
-  margin: 0 0 2em;
+  /* display: block; */
+  margin: 0;
   position: relative;
-  width: 99%;
+  width: 100%;
   min-width: 24em;
   text-align: center;
+  background: rgb(255, 247, 212);
+  border-collapse: collapse;
+  /* padding: .2em; */
+  /* border: .2em solid #eef; */
+  /* border-radius: 5px; */
  }
 .suchOptionen th {
  text-align: right;
@@ -487,46 +498,42 @@ td.control.hilite a {
    s.a. beispiele
 ********** */
 .examples {
-    display: inline-block;
-    background: #fff;
-    height: 9em;
-    overflow: hidden;
-    margin: 0;
-    list-style: none;
-    height: 9em;
+  display: inline-block; 
+  margin: 0;
+  list-style: none;
+  height: 6em;
 }
 .examples:first-child {
 }
 .examples th {
-    display: inline-block;
-    border: 1px solid #d8c99f;
-    background: rgb(228, 211, 165);
-    border-radius: 7px 7px 0 0;
-    z-index:2;
-    color: #fff;
-    cursor: pointer;
+  display: inline-block;
+  margin-top: -1.55em;
+  border: 1px solid #d8c99f;
+  background: rgb(228, 211, 165);
+  border-radius: 7px 7px 0 0;
+  z-index:2;
+  color: #fff;
+  cursor: pointer;
   font-family: calibri, arial, sans-serif;
 }
 .examples th:hover,
 .examples th.here {
-    background: #fff7d4;
-    border-bottom-color: #fff7d4;
-    z-index:3;
-    color:inherit; 
+  background: #fff7d4;
+  border-bottom-color: #fff7d4;
+  z-index:3;
+  color:inherit; 
 }
 .examples th.here {
 }
-
 .examples [data-index] {
-    position: absolute;
-    width:100%;
-    left: 0;
-    display: block;
-    height: 4em;
-    background: rgba(255, 255, 255, 0.61);
-    background: #fff;
-    border-top: 1px solid #ddd;
-    text-align: center;
+  position: absolute;
+  width:100%;
+  left: 0;
+  top: 0;
+  display: block;
+  height: 4em;
+  border-top: 1px solid rgba(216, 201, 159, 0.7);
+  text-align: center;
 }
 
 .examples [data-index="author"],
@@ -534,8 +541,7 @@ td.control.hilite a {
   padding-top: .8em;
 }
 .examples [data-index="author"] {
-  z-index:2;
-  height: 7em;
+  /* z-index:2; */
 } 
 .examples ol, 
 .examples li {
@@ -545,28 +551,56 @@ td.control.hilite a {
     display: inline-block;
 }
 .examples li {
-    margin: 1px;
+    margin: 1px 2px;
     padding: 0;
-    background: #f5faff;
-    background: rgb(248, 245, 231);
+    /* background: #f5faff; */
+    background: rgb(255, 252, 236);
     font-size: .9em;
-    border: 1px solid #f4edd7;
-    border-radius: 5px;
+    border: 1px solid #f2e6bd;
+    /* border-radius: 5px; */
 }
 .examples small {
     display: block;
     color: #aaa;
   font-family: calibri, arial, sans-serif;
 }
-tr.search {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 8em;
-  z-index: 5;
+tr.search  {
+  position: relative;
+  display: block; 
 }
 tr.search td {
-  width: 90%;
+  display: block;
+  /* padding-left: 2em; */
+  /* padding-right: 2em; */
+  /* padding: .5em 2em; */
+  margin: .5em 2.5em;
+}
+tr.search .fa {
+  position: absolute;
+  top: 1px;
+  cursor: pointer;
+}
+tr.search .fa[class*=fa-times] {
+  right: 2.5rem;
+  padding: .2em;
+  background: rgba(255, 255, 255, 0.68);
+  margin: 2px;
+  opacity: .3;
+}
+tr.search .fa-search:hover,
+tr.search .fa-times:hover {
+    opacity: 1;
+}
+tr.search .fa-search {
+  right: 0;
+  opacity: .6;
+  font-size: 1.5rem;
+  display: block;
+  /* border:  1px solid #888; */
+  line-height: 2.4rem;
+  padding: 0;
+  width: 2.5rem;
+  text-align: center;
 }
 
 /*******  Suchresultate ***********/
@@ -768,6 +802,20 @@ fieldset {
 	text-transform: uppercase;  
 	font-family: "Trebuchet MS", Arial, sans-serif;
 	} 
+
+/*  Suchoptionen */
+  
+.showOptions, 
+.navResults { /* mehr zu navResults unten */
+  text-align: right;  
+  font-family: calibri, arial, sans-serif;
+  background: rgba(233, 220, 175, 0.6);
+  padding: 1px 5px;
+  margin: -.5em -1em .5em;
+  } 
+.showOptions {
+  padding: .2em .5em;
+}
 .showOptions label::before {  
   font-family:fontawesome; 
  text-rendering: auto;
@@ -787,15 +835,7 @@ fieldset {
 #countResults::before {
   content: '\f0dc'; /* fa-sort */
   content: '\f161'; /* fa-sort-amount-desc   */
-}	  
-.showOptions, 
-.navResults { /* mehr zu navResults unten */
-  text-align: right;  
-  font-family: calibri, arial, sans-serif;
-  background: rgba(233, 220, 175, 0.5);
-  padding: 1px 5px;
-  margin: -.5em -1em .5em;
-  } 
+}	
   
 /*****************
    tipp 
@@ -904,8 +944,8 @@ fieldset {
   margin-bottom: 0;
 }
 .suchOptionen a {
- padding: 0 .35em;     
- border-radius: .4em; 
+ /* padding: 0 .35em; */
+ /* border-radius: .4em; */
  }
 .beispiele a {
  background: rgba(0, 0, 255, 0.03) 
@@ -915,6 +955,7 @@ fieldset {
  }
 .abc a {
  display: inline-block;
+ padding: 0 .35em;
  }
 code,
 .code {
@@ -1064,8 +1105,8 @@ a.zahl::before {
     margin-top: 1.2em;
 }
 .navResults {
- background: rgba(233, 220, 175, 0.3);
- padding: 1px 1em; 
+ /* background: rgba(233, 220, 175, 0.3); */
+ padding: 1px 1em;
  line-height: 2rem;
  height: 2em;
  }

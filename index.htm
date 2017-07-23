@@ -3809,10 +3809,15 @@
 									</td>
 								</tr>
 								<tr class="examples">
-									<th class="top">Suchbeispiele</th>
+									<th class="top">Zeit</th>
+									<td class="abc" data-index="title">
+									in Arbeit
+									</td>
+								</tr>
+								<tr class="examples">
+									<th class="top">Suchhilfe</th>
 									<td class="suggestion" data-index=""> 
-										<ol>
-											<li><a class="code" href="" title="Freie Suche">Buch</a></li>
+										<ol> 
 											<li><a class="code" href="" title="Autorensuche mit Platzhalter">author=Buch*</a></li>
 											<li><a class="code" href="" title="Titelsuche mit Platzhalter">title=*Buch*</a> </li> 
 											<li><a class="code" href="" title="Schlagwortsuche mit Platzhalter">subject=*Buch*</a> </li>
@@ -3842,41 +3847,44 @@
 										<p> Siehe auch <a href="#help"> Benützung dieser Seiten </a>.</p>
 									</td>
 								</tr>
-								<tr class="search">
-									<th>Suchbegriff: </th>
-									<td>
-											<input id="searchInput1" name="query" placeholder="oben aussuchen oder selbst eingeben..." size="40" title="JB80 durchsuchen " value="" />
+								<tr class="search">									 
+									<td colspan="2">
+											<input id="searchInput1" name="query" placeholder="Suchbegriff oben aussuchen oder selbst eingeben..." size="40" title="JB80 durchsuchen " value="" />
 											<input name="version" type="hidden" value="1.2" />
 											<input name="operation" type="hidden" value="searchRetrieve" />
 											<input name="startRecord" type="hidden" value="1" />
 											<input name="x-style" type="hidden" value="sru2ajax.xsl" />
+											<i class="fa fa-times"></i>
+											<a class="fa fa-search" href=""></a>
 											<!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a> -->										
 									</td>
+								</tr>
+								<tr>
+							    <td rowspan="2" class="showOptions"> 
+							    Anzeigeoptionen:
+								    <label class="chooseMaxHits fa">
+								      <select size="1" name="maximumRecords" id="maximumRecords" title="Maximale Treffer pro Seite">
+								        <option value="10" selected="selected"> 10</option>
+								        <option value="20"> 20</option>
+								        <option value="50"> 50</option>
+								        <option value="100">100</option>
+								        <option value="200">200</option>
+								      </select>
+								    </label> 
+									<label id="countResults" title="Sortierung der Resultate" class="fa"></span>
+										<select size="1">
+											<option value="author" selected="selected">Autor</option>
+											<option value="title">Titel</option>
+											<option value="date">Jahr</option> 
+										</select>
+									</label> 
+								</td>
 								</tr>
 							</table>
 						  </form>
 							<div class="showResults">
 								<h2>Resultate</h2>											 
-								<div id="showList">
-									<div class="showOptions"> 
-									    <label class="chooseMaxHits">
-									      <select size="1" name="maximumRecords" id="maximumRecords" title="Maximale Treffer pro Seite">
-									        <option value="10" selected="selected"> 10</option>
-									        <option value="20"> 20</option>
-									        <option value="50"> 50</option>
-									        <option value="100">100</option>
-									        <option value="200">200</option>
-									      </select>
-									    </label> 
-										<label id="countResults" title="Sortierung der Resultate"></span>
-											<select size="1">
-												<option value="author" selected="selected">Autor</option>
-												<option value="title">Werktitel</option>
-												<!--<option>Diagramm (nach Jahren)</option>
-													<option>Diagramm (nach Themen)</option>-->
-											</select>
-										</label> 
-									</div>
+								<div id="showList">									
 									<div class="navResults">
 										<div class="countResults">
 											<span class="numberofRecords">310</span> Treffer 

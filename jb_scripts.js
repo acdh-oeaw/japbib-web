@@ -177,6 +177,8 @@ $( document )
     } 
   );   
 // Handler fuer examples
+$('.examples td[data-index]').hide();
+$('.examples td[data-index]:first').show();
 $('.examples th').click(function() {
   $('.examples th').removeClass('here');
   $('.examples td[data-index]').fadeOut('fast');
