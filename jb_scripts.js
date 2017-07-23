@@ -526,72 +526,84 @@ function toggleNextSubtree(e) {
     $ (this).toggleClass( 'close' );
     }
 
-// Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList
+// Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
 
-var wishList= $( '#wishList'), 
+var $wishList= $( '#wishList' ), 
     ausgewaehlt= [],
     maxWishes= 3;
 
-$( wishList ).empty();
-/*
-$(window).scroll(function() {
-    $('#thesaurus .pageindex').css('top', $(this).scrollTop() + "px");
-});
-*/
-function neueAuswahl(term, remove) { 
-  var termIsNew = true;
-  if (ausgewaehlt.length == 0) {
-    ausgewaehlt.push(term);     
-  }     
-  for( i in ausgewaehlt) 
-    if( ausgewaehlt[i] == term ) 
-      termIsNew = false;       
+$wishList.empty();
+
+function neueAuswahl(newTerm, newConj, remove) {   
+  var termIsNew = true, 
+      conjIsNew = newConj? true: false,
+      newConj= newConj || 'AND';
+  if (ausgewaehlt.length)
+    for( i in ausgewaehlt) {
+      if( ausgewaehlt[i].term && ausgewaehlt[i].term == newTerm ) {
+        termIsNew = false;  
+        if (conjIsNew) ausgewaehlt[i].conj= newConj;
+      } 
+    }     
   if( termIsNew ) 
-    ausgewaehlt.push(term);   
+    ausgewaehlt.unshift( {term: newTerm, conj:newConj} );  
     // auf 3 begrenzen
   if (ausgewaehlt.length > maxWishes)
-    ausgewaehlt.shift();  
-  if (remove){ 
-    ausgewaehlt = jQuery.grep(ausgewaehlt, function(value) {
-      return value !== term;
-    });
+    ausgewaehlt.pop();  
+    // Zeile etfernen
+  if (remove) {   
+    for( i in ausgewaehlt)
+      if( ausgewaehlt[i].term && ausgewaehlt[i].term == newTerm )
+        ausgewaehlt.splice(i, 1); 
+  } 
+    // AND entfernen
+  if(ausgewaehlt.length)
+    ausgewaehlt[ausgewaehlt.length-1].conj='';
+  
+  /**/
     //console.log(ausgewaehlt.length); 
-  }
+    
   baueListe();
 }
 function baueListe(){
+  var $ue= $( '#thesaurus h4');
   var newWishes= '';
   var newQ= '';
-  $.each( ausgewaehlt, function( i, term ) { 
-    newWishes +='<li><i class="fa fa-check-square-o"></i>'+ term;
-    newQ += 'subject="' + term + '" ';
-    if(i < ausgewaehlt.length-1 ) {
-      newWishes+=' <a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">AND</a>';
-      newQ+=' AND ';
-    }
-    newWishes+= '</label></li>';
+  $.each( ausgewaehlt, function( i, qObj ) { 
+    newWishes +='<li><i class="fa fa-check-square-o" title="Auswahl löschen"></i>'+ 
+      qObj.term +
+      '<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
+      qObj.conj+
+      '</a></label></li>';
+    newQ += 'subject="' + qObj.term + '" ' +  qObj.conj + ' ';  
   });   
   newQ= encodeURIComponent(newQ);
-  $( wishList ).empty();  
+  $wishList.empty();
   if (ausgewaehlt.length > 0) {
-    $( wishList ).append( '<h4> Ausgewählte Schlagworte </h4>' );
-    $( wishList ).append( '<ul>' + newWishes + '</ul>' );
-    $( wishList ).append( '<a class="fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>' );
+    $ue.text( ' Ausgewählte Schlagworte ' );
+    $wishList
+      .append( '<ul>' + newWishes + '</ul>' )
+      .append( '<a class="fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>' );
+  }
+  else  {
+    $ue.text( 'Schlagworte auswählen' );
   }
 }
+
+  // Auswahl entfernen
 $(document).on('click', '#wishList li .fa',  function () { 
- var term = $( this ).parent().clone().find('> a').remove().end().text();
- neueAuswahl( $.trim( term ), 1 );
- //console.log( term );
+  var term = $( this ).parent().clone().find('> a').remove().end().text();
+  neueAuswahl( $.trim( term ),'', 1 ); 
 });
 
-//  AND/OR/NOT[?]
-
+  //  AND/OR/NOT[?]
 $( document).on( 'click', '.andOr', function(e) { 
   e.preventDefault();
-  this.innerHTML = ( this.innerHTML == 'AND')? 'OR' : 
+  var term = $( this ).parent().clone().find('> a').remove().end().text(),
+      conj = ( this.innerHTML == 'AND')? 'OR' : 
     // ( this.innerHTML == 'OR')? 'NOT': 
-      'AND';
+      'AND';       
+   neueAuswahl(term, conj); 
 });
 
 $( document).on( 'click', '.schlagworte a.zahl', function(e) {
