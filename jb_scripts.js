@@ -187,6 +187,7 @@ $('.examples th').click(function() {
 
 });
 
+/* 
 var oldSearchTerm = 'Buch'; 
 
 $('#searchInput1').on('keyup', function() {
@@ -197,9 +198,8 @@ $('#searchInput1').on('keyup', function() {
   var q = '';
   if ( match && match[1]) { q= match[1]; }
   else if ( match ) { q= match[0]; }
-      console.log(q);
+      //console.log(q);
 });
-/* 
   if (  c.test(oldSearchTerm) == false)  {
     //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
     alert (oldSearchTerm+c);
@@ -225,14 +225,14 @@ $('#searchInput1').on('keyup', function() {
  
 var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
     runTime = hits.length*50, // scroll-Dauer
-    hitsW = 160,  // Weite fuer HitRow
+    //hitsW = 160,  // Weite fuer HitRow
     FW = 160, // Fensterweite
     posLeft = 0, // Pos. v. hitRow
     maxL = 0, // maximale Verschiebung nach links
     spaceR = FW/2; 
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
-  hitsW = $( '#hitRow').width();
+  var hitsW = $( '#hitRow').width();
   // max. Weite fuer fenster
   FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
   // Nav-Pfeile anzeigen oder verstecken
@@ -499,6 +499,34 @@ $('a.code').click(function(e){
     executeQuery(query);
 });
  
+// Handler für Suchfeld:  Clear Search und search (BS)
+
+$(document).on('keyup mouseup', 'body', toggleXQ );
+
+function toggleXQ() {   
+  if ( $('#searchInput1').val().length < 1) {
+    $('#clearSearch').hide();
+    $('#doSearch').css({ 'opacity':'.1', 'cursor':'default', 'background': 'transparent' });
+  }
+  else { 
+    $('#clearSearch').show(); 
+    $('#doSearch').removeAttr("style");
+  }  
+}
+$(document).on( 'click', '#clearSearch', function() {  
+  $( '.showResults').hide(); 
+  $('#searchInput1').val('');
+  hasher.prependHash = '';
+  hasher.setHash('find');
+  toggleXQ();
+});
+$(document).on( 'click', '#doSearch', function(e) {   
+  e.preventDefault();
+  var query = $('#searchInput1').val();
+  if (query.length)
+    executeQuery(query); 
+  toggleXQ();
+});
 
 // Schlagwortbaum oeffnen und schliessen (BS)
 
