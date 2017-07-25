@@ -11,7 +11,7 @@ h2, h3, h4 {
   }
 a {
   color:#005;
-  text-decoration: none;
+  text-decoration: none;  
   border-radius: 3px;
   } 
 a:hover { 
@@ -515,7 +515,7 @@ tr.examples {
   border: 1px solid rgb(190, 199, 208);
   background: rgb(174, 197, 191);
   background: rgb(187, 199, 196);
-  background: rgb(208, 219, 216);
+  background: rgb(180, 190, 190);
   border-radius: 7px 7px 0 0;
   z-index:2;
   color: #fff;
@@ -820,7 +820,7 @@ fieldset {
   margin: 0;
   text-align: center;
   background: rgb(163, 174, 177);
-  background: rgb(208, 219, 216);
+  background: rgb(180, 190, 190);
   color: #fff;
   border-radius: 0 0 4px 7px;
 }
@@ -954,7 +954,7 @@ fieldset {
   list-style:none;
   font-size: .9rem;
  }
-.beispiele ol {
+.beispiele ol { 
   margin: 0 0 .5em;
  } 
 .beispiele li {
@@ -964,17 +964,7 @@ fieldset {
 .beispiele p {
   margin-bottom: 0;
 }
-.year a { 
- font-family: calibri, arial;
- padding: 0 .25em;
- font-size: .8em;
- opacity: .4;
- }
-.year a:hover,
-.year a.selected {
- opacity: 1;
- }
-   
+
 .beispiele a {
  background: rgba(0, 0, 255, 0.03) 
  }
@@ -997,6 +987,26 @@ code,
   padding: 0 .5em;
   }
 
+/**** Jahre ******/
+
+.examples td.year {
+  padding-top: 1em;
+} 
+.year  a {
+ font-family: calibri, arial;
+ padding: 0 .25em;
+ font-size: .8em;
+ line-height: 2em;
+ display: inline-block;
+ border: 1px solid transparent;
+ border-width: 1px 0;
+ }   
+.year a.selected {   
+ border-color: #78d; 
+ border-radius: 0;
+ background: #cdfdfd;   }   
+ }
+   
 /**************
 PLUS-MINUS 
 **************/

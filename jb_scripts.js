@@ -176,24 +176,56 @@ $( document )
       $(this).attr('title', title);  
     } 
   );   
-// Handler fuer year: suche nach Datum eingrenzen (BS)
-// in Arbeit...
+ 
+// Handler fuer Suche nach Datum (BS) 
 
 var years = $('.year a'),
-    yearsSelected= [];
-  var nothingSelected = true;
-  var startSelected;
+    rangeSelected = false,
+    startSelected = 0,
+    endSelected = 0;
+
 $(document).on('click', '.year a', function(e){
-  e.preventDefault();
-  $( this ).toggleClass('selected');
-  for (i in years)  {
-    if ($(years[i]).hasClass('selected')) {
-      startSelected = i;
-      break;
-    } 
-    else { startSelected = -1; }
+  e.preventDefault(); 
+     //fruehere Auswahl aufheben
+  if (rangeSelected === true) {
+    $( years ).removeClass('selected');
+    rangeSelected = false;
+    startSelected = 0;
+    endSelected = 0;
   }
-  alert(startSelected);
+  $( this ).toggleClass('selected');
+     //neue Gruppe auswaehlen
+     //erste Auswahl
+  $.each(years, function(i)  {
+    if( $(years[i]).hasClass('selected')) {
+      startSelected= i;
+      return false;
+    } 
+  }); 
+     //letzte Auswahl
+  $.each($(years), function(i) {
+    if( $(years[i]).hasClass('selected')) {
+      endSelected= i;
+    } 
+  }); 
+    // Gruppe selektieren    
+  if (startSelected < endSelected) {   
+    for (i= startSelected; i <= endSelected; i++) {
+      $( years[i] ).addClass('selected'); 
+    } 
+    rangeSelected = true;
+  }
+    // Suche formulieren
+  var inputQuery = $( '#searchInput1' ).val();  
+  inputQuery = inputQuery.replace(/ date=[\d-]*/,'');
+
+  if ( $('.year .selected').length > 0) {
+    var dateQuery = ' date=';
+    dateQuery += startSelected===endSelected ? (1980+startSelected) :
+      (1980+startSelected) + '-'+ (1980+endSelected);
+    inputQuery += dateQuery;
+  }
+  $( '#searchInput1' ).val(inputQuery);
 });
 
 // Handler fuer examples
