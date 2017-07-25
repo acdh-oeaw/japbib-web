@@ -176,6 +176,26 @@ $( document )
       $(this).attr('title', title);  
     } 
   );   
+// Handler fuer year: suche nach Datum eingrenzen (BS)
+// in Arbeit...
+
+var years = $('.year a'),
+    yearsSelected= [];
+  var nothingSelected = true;
+  var startSelected;
+$(document).on('click', '.year a', function(e){
+  e.preventDefault();
+  $( this ).toggleClass('selected');
+  for (i in years)  {
+    if ($(years[i]).hasClass('selected')) {
+      startSelected = i;
+      break;
+    } 
+    else { startSelected = -1; }
+  }
+  alert(startSelected);
+});
+
 // Handler fuer examples
 $('.examples td[data-index]').hide();
 $('.examples td[data-index]:first').show();

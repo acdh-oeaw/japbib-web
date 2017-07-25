@@ -1,11 +1,11 @@
 /***************
    Schrift
 ****************/
-body { 
+body {   
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
-  }
+  } 
 h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
   }
@@ -513,7 +513,9 @@ tr.examples {
   position:relative;
   margin-top: -1.55em;
   border: 1px solid rgb(190, 199, 208);
-  background: rgb(186, 207, 218);
+  background: rgb(174, 197, 191);
+  background: rgb(187, 199, 196);
+  background: rgb(208, 219, 216);
   border-radius: 7px 7px 0 0;
   z-index:2;
   color: #fff;
@@ -817,7 +819,10 @@ fieldset {
 .suchOptionen .showOptions {
   margin: 0;
   text-align: center;
-  background: rgb(225, 237, 243);
+  background: rgb(163, 174, 177);
+  background: rgb(208, 219, 216);
+  color: #fff;
+  border-radius: 0 0 4px 7px;
 }
 .showOptions label::before {  
   font-family:fontawesome; 
@@ -959,10 +964,17 @@ fieldset {
 .beispiele p {
   margin-bottom: 0;
 }
-.suchOptionen a {
- /* padding: 0 .35em; */
- /* border-radius: .4em; */
+.year a { 
+ font-family: calibri, arial;
+ padding: 0 .25em;
+ font-size: .8em;
+ opacity: .4;
  }
+.year a:hover,
+.year a.selected {
+ opacity: 1;
+ }
+   
 .beispiele a {
  background: rgba(0, 0, 255, 0.03) 
  }
@@ -1024,7 +1036,7 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: 'Ã¢â‚¬â€œ'; 
+ content: 'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“'; 
   content: '\f147' /* fa-minus-square-o */
  }
  
