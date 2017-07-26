@@ -210,16 +210,18 @@ td.control.hilite a {
     bottom: 0;
     padding-top: 20em;
 }
-.control a span { 
+.control a span {
   display: block;
   transform: rotate(90deg);
   position: absolute;
-  width: 12em;
-  left: -4.5em;
+  width: 3em;
+  white-space: nowrap;
+  /* left: -4.5em; */
   text-align: center;
   text-transform: uppercase;
   border: 0px solid #ddd;
   color: #000;
+  /* position: fixed; */
   }
   
   
@@ -515,10 +517,10 @@ tr.examples {
   border: 1px solid rgb(190, 199, 208);
   background: rgb(174, 197, 191);
   background: rgb(187, 199, 196);
-  background: rgb(180, 190, 190);
+  background: rgb(203, 226, 234);
   border-radius: 7px 7px 0 0;
   z-index:2;
-  color: #fff;
+  color: #555;
   cursor: pointer;
   font-family: calibri, arial, sans-serif;
 }
@@ -820,8 +822,8 @@ fieldset {
   margin: 0;
   text-align: center;
   background: rgb(163, 174, 177);
-  background: rgb(180, 190, 190);
-  color: #fff;
+  background: rgb(203, 226, 234);
+  color: #555;
   border-radius: 0 0 4px 7px;
 }
 .showOptions label::before {  
@@ -1046,7 +1048,7 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: 'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“'; 
+ content: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ'; 
   content: '\f147' /* fa-minus-square-o */
  }
  
