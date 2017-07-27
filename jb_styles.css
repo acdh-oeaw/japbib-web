@@ -1,22 +1,22 @@
 /***************
    Schrift
 ****************/
-body {
+body {   
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
-  }
+  } 
 h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
   }
 a {
   color:#005;
-  text-decoration: none;
+  text-decoration: none;  
   border-radius: 3px;
-  }
+  } 
 a:hover { 
   color:#008;
-	background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
+  background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
   }
 h2 {
   color: #8e843b;
@@ -36,6 +36,12 @@ h4 {
   }
 p { 
   margin: 1em 0;
+}
+*[class^="fa-"]::before,
+*[class*=" fa-"]::before {
+  font-family: FontAwesome;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
 }
 
 /***************
@@ -204,16 +210,18 @@ td.control.hilite a {
     bottom: 0;
     padding-top: 20em;
 }
-.control a span { 
+.control a span {
   display: block;
   transform: rotate(90deg);
   position: absolute;
-  width: 12em;
-  left: -4.5em;
+  width: 3em;
+  white-space: nowrap;
+  /* left: -4.5em; */
   text-align: center;
   text-transform: uppercase;
   border: 0px solid #ddd;
   color: #000;
+  /* position: fixed; */
   }
   
   
@@ -276,23 +284,32 @@ td.control.hilite a {
   }
  
 .pageindex {
-    float: right;
-    width: 15rem;
-    margin: 0 0 1.5em 1.5em; 
-    border: 1px solid rgb(191, 207, 203);
-    border-radius: 5px 5px 0 0;
-    background-color: rgb(255, 247, 212);
-    }
+  float: right;
+  width: 15rem;
+  margin: 0 0 1.5em 1.5em; 
+  border: 1px solid rgb(191, 207, 203);
+  border-radius: 5px 5px 0 0;
+  background-color: rgb(255, 247, 212);
+  font-family: calibri, arial, sans-serif;
+  line-height: 1.2em;
+}
 
-#schlagworte .pageindex {
-  position: fixed;
-  vertical-align: top;
-  z-index: 3;
+#wrapAbsolute {
+  position: absolute; 
+  width: 15rem;
   right:  5%; 
+}
+#wrapFixed {  
+  width: 15rem; 
+  } 
+#wrapAbsolute .pageindex {
+  margin:0;
+  position: static;
+  width: auto;
   }
    
-#find .pageindex { 
-    width: 15em; 
+#find .pageindex {
+    width: 15em;
   }
 
 .pageindex h4 {
@@ -319,24 +336,20 @@ td.control.hilite a {
   padding-left: 1.2em;
   text-indent: -1em;
   }
-.pageindex a.andOr  {
-  display: inline;
-  padding: 0; 
-  text-indent: 0;
-    font-family: "Courier New", Courier, monospace;
-    font-weight: bold;
-    font-size: .8em;
-  }   
 
 .pageindex .here {
   color:#008;
-	background: linear-gradient( rgba(0, 0, 255, 0.03), rgba(0, 0, 255, 0.07));
+  background: linear-gradient( rgba(0, 0, 255, 0.03), rgba(0, 0, 255, 0.07));
   cursor: text;
   font-style: italic;
 }
 .pageindex .here:before {
- content: '∘ ';
+ content: '\f04b ';
  font-style: normal;
+ font-family: fontawesome;
+ font-size: .7em;
+ padding-right: .4em; 
+ opacity: .6;
  }
 
 #schlagworte .pageindex a {
@@ -349,6 +362,67 @@ td.control.hilite a {
     width: 100%; 
  margin-bottom:-5px;
  }
+
+ /*  Thesaurus, #wishList */
+ 
+#wishList ul {
+    margin: 1em 1em .5em;
+}
+#wishList li {
+  display: block;
+  padding: 0  1em 0 1em;
+  min-height: 1.5em;
+  position: relative;
+}
+#wishList li .fa {
+  display: inline-block;
+  margin-left: -1.6em;
+  margin-right: .2em;
+  padding: .2em;
+  color: #96855e;
+  cursor: pointer;
+  border-radius: 4px;
+} 
+#wishList a.andOr:hover,
+#wishList li .fa:hover {
+    color: #fff7d4;
+    background:rgba(150, 133, 94, 0.82);
+}
+#wishList a.andOr  {
+  position: absolute;
+  right: -.5rem;
+  top: .75em;
+  font-size: .8em;
+  line-height:1.8em;
+  padding: 0; 
+  width: 2.4em;
+  text-align: center;
+  text-indent: 0;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  background: rgba(233, 220, 175, 0.5);
+  color: #a08628;
+  cursor: pointer;
+  }   
+.andOr:empty {
+  visibility: hidden;
+}
+#abfrage {
+  display: block; 
+  text-align: right; 
+  padding: 0 1em; 
+  line-height: 2em;
+  border-top: 1px solid rgb(228, 211, 165);
+  background: rgba(233, 220, 175, 0.5);
+}
+#abfrage:hover {
+  background: rgba(233, 220, 175, 0.8);
+}
+#abfrage::before {
+  font-size: 1.2em;
+  opacity: .5; 
+  padding-right:.5em;
+}
 
 /****** Impressum ******/
 
@@ -379,25 +453,40 @@ td.control.hilite a {
 
 /**** Suchfelder ******/
 
+form#searchform1 {   
+ padding: 2em 0 0;
+ margin: 1px;
+ border: 1px solid #ccc;
+ border-radius: 7px; 
+}
 #searchform1 input {
  box-sizing: border-box;
- width: 100%; 
+ display: inline-block;
+ display: block; 
+ width: 100%;
  padding: .5em;
  font-size: 1rem;
- }
-#searchform1 input:focus { 
- background: rgba(225, 247, 255, 0.3) 
- }
+ font-family: calibri, arial, sans-serif;
+ } 
 #searchform1 input::placeholder,
 #searchform1 input:placeholder-shown {
  } 
  
-.suchOptionen {
-  margin: 0 0 2em;
+table.suchOptionen,
+.suchOptionen tbody,
+.suchOptionen tr,
+.suchOptionen td  {
+  display: block;
   position: relative;
-  width: 99%;
+}
+.suchOptionen {
+  margin: 0;
+  position: relative;
+  width: 100%;
   min-width: 24em;
   text-align: center;
+  background: rgb(240, 251, 255);
+  border-collapse: collapse;
  }
 .suchOptionen th {
  text-align: right;
@@ -412,55 +501,53 @@ td.control.hilite a {
 
 /*** examples 
    s.a. beispiele
-********** */
-.examples {  
-    display: inline-block;
-    background: #fff;
-    height: 8em;
-    overflow: hidden;
-    margin: 0;
-    list-style: none;
-}
-.examples:first-child {
+********** */ 
+
+tr.examples {
+  display: inline-block; 
+  position:static;
+  margin: 0 -.15em;
+  list-style: none;
+  height: 6em;
 }
 .examples th {
-    display: inline-block;
-    border: 1px solid #d8c99f;
-    background: rgb(228, 211, 165);
-    border-radius: 7px 7px 0 0;
-    z-index:2;
-    color: #fff;
-    cursor: pointer;
+  display: inline-block;
+  position:relative;
+  margin-top: -1.55em;
+  border: 1px solid rgb(190, 199, 208);
+  background: rgb(174, 197, 191);
+  background: rgb(187, 199, 196);
+  background: rgb(203, 226, 234);
+  border-radius: 7px 7px 0 0;
+  z-index:2;
+  color: #555;
+  cursor: pointer;
+  font-family: calibri, arial, sans-serif;
 }
 .examples th:hover,
 .examples th.here {
-    background: #fff7d4;
-    border-bottom-color: #fff7d4;
-    z-index:3;
-    color:inherit; 
+  background: rgb(240, 251, 255);
+  border-bottom-color: rgb(230, 239, 249);
+  z-index:3;
+  color:inherit;
 }
 .examples th.here {
 }
-
-.examples [data-index] {
-    position: absolute;
-    width:100%;
-    left: 0;
-    display: block;
-    height: 4em;
-    background: rgba(255, 255, 255, 0.61);
-    background: #fff;
-    border-top: 1px solid #ddd;
-    text-align: center;
+.examples *[data-index] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 5em;
+  border-top: 1px solid rgba(216, 201, 159, 0.7);
+  text-align: center;
+  padding-top: .5em;
 }
 
 .examples [data-index="author"],
 .examples [data-index="title"] {
   padding-top: .8em;
 }
-.examples [data-index="author"] {
-  z-index:2;
-} 
 .examples ol, 
 .examples li {
     margin: 0;
@@ -468,41 +555,62 @@ td.control.hilite a {
     list-style: none;
     display: inline-block;
 }
-.examples li {
+.examples li { 
     margin: 1px;
-    padding: 0;
-    background: #f5faff;
-    background: rgb(248, 245, 231);
+    padding: 0 2px;
+    background: rgb(255, 252, 236);
+    background: rgba(249, 253, 255, 1);
     font-size: .9em;
-    border: 1px solid #f4edd7;
-    border-radius: 5px;
+    border: 1px solid #e1edf3;
 }
 .examples small {
     display: block;
     color: #aaa;
+  font-family: calibri, arial, sans-serif;
 }
-tr.search {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 7em;
+tr.search  {
+  position: relative;
+  display: block; 
 }
 tr.search td {
-  width: 90%;
+  display: block; 
+  margin: .5em 2.5em; 
+  position: static;
+}
+tr.search .fa {
+  position: absolute;
+  top: 1px;
+  cursor: pointer;
+}
+tr.search .fa[class*=fa-times] {
+  right: 2.5rem;
+  padding: .2em;
+  background: rgba(255, 255, 255, 0.68);
+  margin: 2px;
+  opacity: .3;
+}
+tr.search .fa-search:hover,
+tr.search .fa-times:hover {
+    opacity: 1;
+}
+tr.search .fa-search {
+  right: 0px;
+  opacity: .6;
+  font-size: 1.5rem;
+  display: block;
+  /* border:  1px solid #888; */
+  line-height: 2.4rem;
+  padding: 0;
+  width: 2.5rem;
+  text-align: center;
 }
 
-.chooseMaxHits {
-  text-align: right;
-  margin-bottom: -2em;
-  padding: 0 .45em;
-  font-style: italic;
-}
 /*******  Suchresultate ***********/
 
 #showList {
-  margin-left: -1rem;
+  /* margin-left: -1rem; */
   border: 1px solid #ccc;
-  border-radius: 5px; 
+  border-radius: 5px;
   padding: .5em 1em;
   background: rgba(255, 255, 255, 0.75);
   } 
@@ -558,17 +666,24 @@ tr.search td {
 .record-html {
     padding: 1em;
 }
-.pubForm { 
-  min-height: 40px;
-  padding-right: 42px;  
-  background-repeat: no-repeat;
-  background-position: top right;
+.pubForm::before {
+  content: 'abc';
+  display: block;
+  float: right;
+  font-family: fontawesome;
+  font-size: 1.5em;
+  color: rgb(255, 247, 212);
+  background: #c1b994;
+  padding: .2em;
+  border-radius: .2em;
+  margin-left: 0.2em;
+  margin-bottom: .2em;
   }
 .article {
-  background-image:url('images/icon_article.png'); 
+  content: '\f15c'; /* fa-file-text */
   }
-.buch {
-  background-image:url('images/icon_book.png');  
+.buch::before { 
+  content: '\f02d'; /* fa-book  */
   } 
 
 /******* Fehlermeldungen ***********/
@@ -606,8 +721,14 @@ fieldset {
   padding: 1.5em 16.5em 1em 3em;
   padding:0;
   }
-#expandAll {  
-    padding: 0.2em .5em; 
+#expandAll {
+    padding: 0.2em .5em;
+    position: relative;
+    height: 1.5em;
+}
+#expandAll > div {
+    position: absolute;
+    right: 0;
 }
 #expandAll a {
   text-transform: lowercase;
@@ -618,55 +739,33 @@ fieldset {
   border-radius: .5em;
   position: relative;
   z-index: 2;
-  width: 7em;  
+  width: 6em;
   }
-a.zahl,
-span.zahl {
-  font-family: courier, monospace;
-  }
-a.zahl::before {
-  content: "\f0b0";
-  padding-right: .2em;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  }
-#thesaurus a.zahl::before {
-  content: "\f0a4";
-}
-.showEntry a.zahl::before {
-  content: ' (\f002';
-  }
-.showEntry a.zahl::after {
-  content: ')';
-  }
-  
 .schlagworte {
     max-width: 35em;
     margin: 0 auto;
+    padding-bottom: 2em;
 }
 .schlagworte ul,
 .schlagworte ol {
-	margin: 0; 
-	padding: 0;
-	list-style: none;
+  margin: 0; 
+  padding: 0;
+  list-style: none;
   }
 .schlagworte li {
   position: relative;
-	margin: 1px 1.5em; 
-	padding: 0; 
-	list-style: none;
-	}
+  margin: 1px 1.5em; 
+  padding: 0; 
+  list-style: none;
+  }
 .schlagworte li::first-letter { 
   text-transform: uppercase;
   }
 .schlagworte span { 
   padding-right: .5em; 
   position: relative;
-	z-index: 2;
-	}  
+  z-index: 2;
+  }  
 .schlagworte li.li1  { 
   margin-top: 1em; 
   margin-left: 0; 
@@ -700,20 +799,53 @@ a.zahl::before {
 }
 .schlagworte .li1 > span { 
   margin-bottom: .5em; 
-	font-weight: bold;  
-	color: #8e843b;  
-	text-transform: uppercase;  
-	font-family: "Trebuchet MS", Arial, sans-serif;
-	} 
-	  
+  font-weight: bold;  
+  color: #8e843b;  
+  text-transform: uppercase;  
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  } 
+
+/*  Suchoptionen */
+  
 .showOptions, 
 .navResults { /* mehr zu navResults unten */
-  text-align: right; 
-  font-family: Arial, sans-serif;
-  background: rgba(233, 220, 175, 0.5);
+  text-align: right;
+  font-family: calibri, arial, sans-serif;
+  background: rgba(233, 220, 175, 0.6);
   padding: 1px 5px;
   margin: -.5em -1em .5em;
   } 
+.showOptions {
+  padding: .2em .5em;
+}
+.suchOptionen .showOptions {
+  margin: 0;
+  text-align: center;
+  background: rgb(163, 174, 177);
+  background: rgb(203, 226, 234);
+  color: #555;
+  border-radius: 0 0 4px 7px;
+}
+.showOptions label::before {  
+  font-family:fontawesome; 
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+  padding-left: .5em;
+  padding-right: .2em;
+  opacity: .7;
+}
+.showOptions label.hover::before {   
+  opacity: 1; 
+}
+
+.chooseMaxHits::before   { 
+  content: '\f0cb'; /* fa-list-ol   */
+}
+#countResults::before {
+  content: '\f0dc'; /* fa-sort */
+  content: '\f161'; /* fa-sort-amount-desc   */
+} 
   
 /*****************
    tipp 
@@ -722,15 +854,20 @@ a.zahl::before {
 .tipp {
   position: relative;
   display: inline;
-  color: rgba(0, 44, 88, 1);  
+  color: rgba(0, 44, 88, 1);
+  font-family: fontawesome, calibri, arial, sans-serif;
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
   }
-.tipp:before {
-  content: '❓'; /* 'BLACK QUESTION MARK ORNAMENT' (U+2753) */
+.tipp::before { 
+  content: '\f128'; /* 'fa-question */
+  content: '\f129'; /* 'fa-info */
   display: inline-block; 
-  font-family: sans-serif;
+  margin-left: .3em;
   color: rgb(21, 104, 165);
   background: rgb(225, 247, 255);
-  border: 1px solid rgba(200, 222, 228, 1);    
+  border: 1px solid rgba(200, 222, 228, 1);
   border-radius: 1em;
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
   line-height: 1.5em;
@@ -738,8 +875,8 @@ a.zahl::before {
   text-align: center;
   cursor: pointer;
   } 
-.tipp.q2x:before {
-  content: '✖';  /* 'HEAVY MULTIPLICATION X' (U+2716) */
+.tipp.q2x:before { 
+   /*content: '\f00d'; 'fa-times */
   }
 .tipp:hover:before {    
   background: rgb(194, 238, 253);  
@@ -749,18 +886,18 @@ a.zahl::before {
 .tipp > * {
   display: none;
   position: absolute;
-    z-index: 5;   
-    top: .8em; 
-    left: 0;
-  width: 16em;  
-  margin: 0;  
-  padding: 1em; 
+  z-index: 7;
+  top: .8em;
+  left: 0; 
+  width: 16em;
+  margin: 0;
+  padding: 1em;
   background: rgba(225, 247, 255, .93);
   border: 1px solid rgba(200, 222, 228, 1);
-    border-radius: 5px; 
+  border-radius: 5px;
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
-  text-align: left; 
-  font-family: initial; 
+  text-align: left;
+  /* font-family: initial; */
   }
 .tipp:hover > *, 
 .tipp.display > *,  {
@@ -779,6 +916,17 @@ a.zahl::before {
   top: -.2em;
   right: 0; 
   } 
+#Beispiele.tipp td::after  { 
+  content: '\f00d' ;  
+  position: absolute;
+  top: 0;
+  right: 0.4em;
+  z-index: 9; 
+  opacity:.3;
+  } 
+#Beispiele.tipp td:hover::after  { 
+  opacity:.8;
+  } 
 #thesaurus .tipp {
   position: absolute;
   top: -2.5em; 
@@ -788,11 +936,11 @@ a.zahl::before {
 /**** Beispiele ******/
 
 #Beispiele {
-  position: absolute; 
+  position: absolute;
   display: block;
   width: 100%;
-  top: -2.8em;
-  z-index: 3;    
+  top: -1.6em;
+  right: 3px;
   }  
 .beispiele div {
   display: inline-block;
@@ -808,7 +956,7 @@ a.zahl::before {
   list-style:none;
   font-size: .9rem;
  }
-.beispiele ol {
+.beispiele ol { 
   margin: 0 0 .5em;
  } 
 .beispiele li {
@@ -818,10 +966,7 @@ a.zahl::before {
 .beispiele p {
   margin-bottom: 0;
 }
-.suchOptionen a {
- padding: 0 .35em;     
- border-radius: .4em; 
- }
+
 .beispiele a {
  background: rgba(0, 0, 255, 0.03) 
  }
@@ -830,6 +975,9 @@ a.zahl::before {
  }
 .abc a {
  display: inline-block;
+ /* display: flex; */
+ padding: 0 .35em;
+ vertical-align: middle;
  }
 code,
 .code {
@@ -841,49 +989,134 @@ code,
   padding: 0 .5em;
   }
 
+/**** Jahre ******/
+
+.examples td.year {
+  padding-top: 1em;
+} 
+.year  a {
+ font-family: calibri, arial;
+ padding: 0 .25em;
+ font-size: .8em;
+ line-height: 2em;
+ display: inline-block;
+ border: 1px solid transparent;
+ border-width: 1px 0;
+ }   
+.year a.selected {   
+ border-color: #78d; 
+ border-radius: 0;
+ background: #cdfdfd;   }   
+ }
+   
 /**************
 PLUS-MINUS 
 **************/
-
-.closeX {
-  margin-left: 1em;
+.plusMinus {
+  cursor: pointer;
+  position:relative;
+  color: #008;
 }
-
+.zahl {
+  font-family: calibri, arial;
+  opacity: .5;
+  font-size: .9em;
+  position: relative;
+}
+.zahl:hover { 
+  opacity: 1;
+}
+.closeX {
+  margin-left: .3em;
+}
+a.zahl::before,
 .closeX::before,
-.sup::before,
-.plusMinus::before {  
- content: '+'; 
- content: '➕';  /* 'HEAVY PLUS SIGN' (U+2795) */
- display: inline-block;
- font-size: .625em;
- border: 1px solid; 
+.plusMinus::before {
+ content: '+';
+ content: '\f196';  /* 'fa-plus-square-o */
+ font-family: fontawesome, calibri, arial;
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+ font-size: 1em;
+ display: inline;
+ border: 0px solid;
  border-radius: 1em;
- height: 1.6em;
- width: 1em;  
- padding: 0 .3em;
- line-height: 1.7em; 
  text-align: center;
  cursor: pointer;
  opacity: 0.4;
- vertical-align: text-top;
  overflow:hidden;
  } 
- .closeX::before {  
-  content: 'X'; 
-  content: '✖'; /* 'HEAVY MULTIPLICATION X' (U+2716) */
-}
-.closeX:hover::before,
-.sup:hover::before,
-.plusMinus:hover::before { 
- background: #f8f8ff; 
- opacity: 0.8;
+.close::before {
+ content: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ'; 
+  content: '\f147' /* fa-minus-square-o */
  }
  
-.plusMinus ~ .zahl.gruppe,
-.plusMinus.close ~ .zahl.eintrag,
-.plusMinus > .zahl.gruppe,
+ .closeX::before {  
+  content: 'X'; 
+  content: '\f00d' /* fa-times */
+}
+.closeX:hover::before, 
+.plusMinus:hover::before {  
+ opacity: 0.8;
+ }
+
+.schlagworte .plusMinus::before {
+ position: absolute;
+ left: -1.6em;
+ display: inline-block;
+ width: 1.5em;
+ }
+.pageindex .schlagworte .plusMinus::before {
+ top: .15em;
+ }
+
+.showResults .sup::before, 
+.showResults .plusMinus::before {
+ margin-right: .3em;
+ }
+.showResults a.plusMinus {
+ padding: 0 .3em;
+ border-radius: 1em;
+ }
+/*  Zahl */ 
+
+a.zahl::before {
+  content: "\f0b0";
+  padding-right: .2em;  
+  }
+#thesaurus a.zahl::before { 
+  content: "\f1db";  /* fa-circle-thin ... opacity: 1;*/
+  content: "\f00c";  /* fa-check */  
+}
+#thesaurus a.zahl::after { 
+  content: "  ausw\00e4hlen";   
+  position: absolute; 
+  white-space: nowrap;
+  display: inline-block; 
+  padding-left: .3em;
+  opacity: 0;
+}
+#thesaurus a.zahl:hover::after {
+  opacity: .5;
+} 
+.showEntry a.zahl { 
+  margin-left: .1em;
+  opacity: .7;
+}
+.showEntry a.zahl:hover {  
+  opacity: 1;
+}
+.showEntry a.zahl::before {
+  content: ' \f002'; 
+  } 
+  
+#thesaurus a.zahl::before {
+  /* content: "\f0a4"; */
+} 
+  
 .plusMinus.close > .zahl.eintrag {
-    display: inline;
+    display: inline-block;
 }
 
 .plusMinus ~ .zahl.eintrag,
@@ -893,33 +1126,7 @@ PLUS-MINUS
 .li1 > .zahl.gruppe {
     display: none;
 }
-
-.schlagworte .sup::before,
-.schlagworte .plusMinus::before { 
- position: absolute;
- left: -1.8em; 
- top: .2em;  
- }
-.pageindex .schlagworte .plusMinus::before {
- left: -2.3em; 
- top: -.1em;  
- }
-
- 
-.showResults .sup::before, 
-.showResults .plusMinus::before {
- margin-right: .5em;
- }
-.showResults a.plusMinus {
- padding: 0 .3em;
- border-radius: 1em;
- }
   
-.close::before {
- content: '–'; 
- content: '➖'; /* 'HEAVY MINUS SIGN' (U+2796) */ 
- }
- 
 /*******************/
 
 .term {
@@ -936,13 +1143,15 @@ PLUS-MINUS
 .showResults {
   padding-top: 2em;
 }
-
+.showResults h2 {
+    margin-top: 1.2em;
+}
 .navResults {
- background: rgba(233, 220, 175, 0.3);
- padding: 1px 1em; 
+ /* background: rgba(233, 220, 175, 0.3); */
+ padding: 1px 1em;
  line-height: 2rem;
- height: 2em;
- }
+ height: 2em; 
+  } 
 .countResults {
  float: left;
  }
@@ -1012,7 +1221,7 @@ PLUS-MINUS
   }
   
 /* MODS und LIDOS */
-  } 
+   
 .CodeMirror-sizer {
-    position: absolute;
+  position: absolute;
 }

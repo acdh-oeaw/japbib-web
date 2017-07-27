@@ -17,7 +17,8 @@ function go2page(link) {
   $( '.slide' ).hide(); 
   $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $( '#'+link ).show();     
-  $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );    
+  $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
+  fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
 function go2subPage(link) {
   $( '#about .content div').hide();
@@ -132,7 +133,8 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
         });
     });    
-    $('.ladeResultate').hide();
+    $('.ladeResultate').hide();        
+    $('#find .schlagworte li li ol').hide ();  //Anfangszustand bei neuer Abfrage
     $('.showResults').show('slow');    
     arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
@@ -174,8 +176,62 @@ $( document )
       $(this).attr('title', title);  
     } 
   );   
+ 
+// Handler fuer Suche nach Datum (BS) 
+
+var years = $('.year a'),
+    rangeSelected = false,
+    startSelected = 0,
+    endSelected = 0;
+
+$(document).on('click', '.year a', function(e){
+  e.preventDefault(); 
+     //fruehere Auswahl aufheben
+  if (rangeSelected === true) {
+    $( years ).removeClass('selected');
+    rangeSelected = false;
+    startSelected = 0;
+    endSelected = 0;
+  }
+  $( this ).toggleClass('selected');
+     //neue Gruppe auswaehlen
+     //erste Auswahl
+  $.each(years, function(i)  {
+    if( $(years[i]).hasClass('selected')) {
+      startSelected= i;
+      return false;
+    } 
+  }); 
+     //letzte Auswahl
+  $.each($(years), function(i) {
+    if( $(years[i]).hasClass('selected')) {
+      endSelected= i;
+    } 
+  }); 
+    // Gruppe selektieren    
+  if (startSelected < endSelected) {   
+    for (i= startSelected; i <= endSelected; i++) {
+      $( years[i] ).addClass('selected'); 
+    } 
+    rangeSelected = true;
+  }
+    // Suche formulieren
+  var inputQuery = $( '#searchInput1' ).val();  
+  inputQuery = inputQuery.replace(/ date=[\d-]*/,'');
+
+  if ( $('.year .selected').length > 0) {
+    var dateQuery = ' date=';
+    dateQuery += startSelected===endSelected ? (1980+startSelected) :
+      (1980+startSelected) + '-'+ (1980+endSelected);
+    inputQuery += dateQuery;
+  }
+  $( '#searchInput1' ).val(inputQuery);
+});
+
 // Handler fuer examples
-$('.examples th').mouseover(function() {
+$('.examples td[data-index]').hide();
+$('.examples td[data-index]:first').show();
+$('.examples th').click(function() {
   $('.examples th').removeClass('here');
   $('.examples td[data-index]').fadeOut('fast');
   $(this).addClass('here');
@@ -183,6 +239,7 @@ $('.examples th').mouseover(function() {
 
 });
 
+/* 
 var oldSearchTerm = 'Buch'; 
 
 $('#searchInput1').on('keyup', function() {
@@ -193,9 +250,8 @@ $('#searchInput1').on('keyup', function() {
   var q = '';
   if ( match && match[1]) { q= match[1]; }
   else if ( match ) { q= match[0]; }
-      console.log(q);
+      //console.log(q);
 });
-/* 
   if (  c.test(oldSearchTerm) == false)  {
     //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
     alert (oldSearchTerm+c);
@@ -216,21 +272,19 @@ $('#searchInput1').on('keyup', function() {
   }
 });
   */
-/*
-   */
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
 var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
     runTime = hits.length*50, // scroll-Dauer
-    hitsW = 160,  // Weite fuer HitRow
+    //hitsW = 160,  // Weite fuer HitRow
     FW = 160, // Fensterweite
     posLeft = 0, // Pos. v. hitRow
     maxL = 0, // maximale Verschiebung nach links
     spaceR = FW/2; 
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
-  hitsW = $( '#hitRow').width();
+  var hitsW = $( '#hitRow').width();
   // max. Weite fuer fenster
   FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
   // Nav-Pfeile anzeigen oder verstecken
@@ -421,7 +475,8 @@ function onCategoryLoaded(statusText, jqXHR) {
       frameWork.find('ol.schlagworte').replaceWith(categories);
     } else { handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker]) }
     $('#thesaurus #showList').replaceWith(frameWork);
-    $('.ladeSchlagworte').hide();
+    $('.ladeSchlagworte').hide();    
+    $('#thesaurus .schlagworte li li ol').hide ();  //Anfangszustand bei Neuladen
     $('#thesaurus #showList').show('slow');  
   } finally {
     getCategoriesLock = false;
@@ -429,14 +484,6 @@ function onCategoryLoaded(statusText, jqXHR) {
 }
 
 loadCategory();
-
-/* 
-// Handler für AND/OR, zu Demo-Zwecken (BS)
-var toggleAnd = $('.andOr').click(
-  function() { if (this.innerHTML== 'AND') this.innerHTML='OR'; 
-               else this.innerHTML= 'AND'; }
-  );
-*/
 
 function findQueryPartInHref(href) {
   var parsed = URI(href),
@@ -504,35 +551,170 @@ $('a.code').click(function(e){
     executeQuery(query);
 });
  
+// Handler für Suchfeld:  Clear Search und search (BS)
+
+$(document).on('keyup mouseup', 'body', toggleXQ );
+
+function toggleXQ() {   
+  if ( $('#searchInput1').val().length < 1) {
+    $('#clearSearch').hide();
+    $('#doSearch').css({ 'opacity':'.1', 'cursor':'default', 'background': 'transparent' });
+  }
+  else { 
+    $('#clearSearch').show(); 
+    $('#doSearch').removeAttr("style");
+  }  
+}
+$(document).on( 'click', '#clearSearch', function() {  
+  $( '.showResults').hide(); 
+  $('#searchInput1').val('');
+  hasher.prependHash = '';
+  hasher.setHash('find');
+  toggleXQ();
+});
+$(document).on( 'click', '#doSearch', function(e) {   
+  e.preventDefault();
+  var query = $('#searchInput1').val();
+  if (query.length)
+    executeQuery(query); 
+  toggleXQ();
+});
 
 // Schlagwortbaum oeffnen und schliessen (BS)
-// Auskommentiert wegen moegl. Konflikt mit anderen Skripts (BS)
 
 var plusMinus='.schlagworte .plusMinus';
-var ols= $ ( '.schlagworte li li ol' );
 
-  // Anfangszustand; spaeter aendern
-$ ( plusMinus ).addClass( 'close' );   
-$ ( ols ).show(); 
+  // Anfangszustand 
+$( plusMinus ).removeClass( 'close' );   
+$ ( '.schlagworte li li ol' ).hide ();  
 
-var showAll =  $ ( '#aO' ).click( 
-  function ( ) { 
-    $ ( '.schlagworte li li ol' ).show ( 'slow' );
-    $(plusMinus).addClass( 'close' );     
-    }
-  );  
-var closeAll =  $ ( '#aC' ).click( 
-  function ( ) { 
-    $ ( '.schlagworte li li ol' ).hide ( 'slow' );
-    $(plusMinus).removeClass( 'close' );     
-    }
-  ); 
+$(document).on('click', '#aO',  function ( ) { 
+  $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
+  $(plusMinus).addClass( 'close' );     
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aC').parent().fadeIn ('slow');
+}); 
+$(document).on('click', '#aC',  function ( ) { 
+    $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
+    $(plusMinus).removeClass( 'close' );       
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aO').parent().fadeIn ('slow');   
+}); 
+
 $(document).on('click', plusMinus, toggleNextSubtree);
 function toggleNextSubtree(e) {
     if (e.currentTarget !== e.target) {return;}
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
     $ (this).toggleClass( 'close' );
     }
+
+// Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
+
+var $wishList= $( '#wishList' ), 
+    ausgewaehlt= [],
+    maxWishes= 3;
+
+$wishList.empty();
+
+function neueAuswahl(newTerm, newConj, remove) {   
+  var termIsNew = true, 
+      conjIsNew = newConj? true: false,
+      newConj= newConj || 'AND';
+  if (ausgewaehlt.length)
+    for( i in ausgewaehlt) {
+      if( ausgewaehlt[i].term && ausgewaehlt[i].term == newTerm ) {
+        termIsNew = false;  
+        if (conjIsNew) ausgewaehlt[i].conj= newConj;
+      } 
+    }     
+  if( termIsNew ) 
+    ausgewaehlt.unshift( {term: newTerm, conj:newConj} );  
+    // auf 3 begrenzen
+  if (ausgewaehlt.length > maxWishes)
+    ausgewaehlt.pop();  
+    // Zeile etfernen
+  if (remove) {   
+    for( i in ausgewaehlt)
+      if( ausgewaehlt[i].term && ausgewaehlt[i].term == newTerm )
+        ausgewaehlt.splice(i, 1); 
+  } 
+    // AND entfernen
+  if(ausgewaehlt.length)
+    ausgewaehlt[ausgewaehlt.length-1].conj='';
+  
+  /**/
+    //console.log(ausgewaehlt.length); 
+    
+  baueListe();
+}
+function baueListe(){
+  var $ue= $( '#thesaurus h4');
+  var newWishes= '';
+  var newQ= '';
+  $.each( ausgewaehlt, function( i, qObj ) { 
+    newWishes +='<li><i class="fa fa-check-square-o" title="Auswahl löschen"></i>'+ 
+      qObj.term +
+      '<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
+      qObj.conj+
+      '</a></label></li>';
+    newQ += 'subject="' + qObj.term + '" ' +  qObj.conj + ' ';  
+  });   
+  newQ= encodeURIComponent(newQ);
+  $wishList.empty();
+  if (ausgewaehlt.length > 0) {
+    $ue.text( ' Ausgewählte Schlagworte ' );
+    $wishList
+      .append( '<ul>' + newWishes + '</ul>' )
+      .append( '<a class="fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>' );
+  }
+  else  {
+    $ue.text( 'Schlagworte auswählen' );
+  }
+}
+
+  // Auswahl entfernen
+$(document).on('click', '#wishList li .fa',  function () { 
+  var term = $( this ).parent().clone().find('> a').remove().end().text();
+  neueAuswahl( $.trim( term ),'', 1 ); 
+});
+
+  //  AND/OR/NOT[?]
+$( document).on( 'click', '.andOr', function(e) { 
+  e.preventDefault();
+  var term = $( this ).parent().clone().find('> a').remove().end().text(),
+      conj = ( this.innerHTML == 'AND')? 'OR' : 
+    // ( this.innerHTML == 'OR')? 'NOT': 
+      'AND';       
+   neueAuswahl(term, conj); 
+});
+
+$( document).on( 'click', '.schlagworte a.zahl', function(e) {
+  e.preventDefault();  
+  var term= $( this ).prevAll( '.term:first' ).html();
+  neueAuswahl(term); 
+  //console.log( term );
+}); 
+
+ //wishlist fixieren (BS)
+
+function fixWishlist() {
+  var top=  $( '#wrapAbsolute').offset().top -40;
+  if ($( document ).scrollTop() >= top) {
+    $( '#wrapFixed').css({
+     'position':'fixed', 
+     'top': 40+'px'
+    });
+  }
+  else {
+    $( '#wrapFixed').css({
+      'position':'static',
+      'top': 'auto'
+    });
+  }
+} 
+$( document ).on( 'scroll', fixWishlist);
+
+/////////////
 
 window.jb80 = m;
 
