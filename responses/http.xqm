@@ -32,7 +32,8 @@ function api:file($file as xs:string) as item()+ {
   return if (file:exists($path)) then
     if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg|woff|woff2)$', 'i')) then
     (
-      web:response-header(map { 'media-type': web:content-type($path) }),
+      web:response-header(map { 'media-type': web:content-type($path) }, 
+                          map { 'X-UA-Compatible': 'IE=11' }),
       file:read-binary($path)
     ) else
     api:forbidden-file($file)
