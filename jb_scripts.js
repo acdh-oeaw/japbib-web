@@ -137,9 +137,9 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
     $('.ladeResultate').hide();        
     $('#find .schlagworte li li ol').hide ();  //Anfangszustand bei neuer Abfrage
     $('.showResults').show('slow');    
-    arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
     getResultsLock = false;
+    arrangeHitlist(); // Treffernavigation (BS) s.u.
   }
 }
 
@@ -184,11 +184,7 @@ var years = $('.year a'),
     rangeSelected = false,
     startSelected = 0,
     endSelected = 0;
-$(document).on('click', function(e){
-  if (!$( '#searchInput1' ).val()) {
-    $( years ).removeClass('selected');
-  }
-});
+
 $(document).on('click', '.year a', function(e){
   e.preventDefault(); 
      //fruehere Auswahl aufheben
