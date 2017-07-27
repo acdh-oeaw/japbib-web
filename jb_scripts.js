@@ -184,7 +184,11 @@ var years = $('.year a'),
     rangeSelected = false,
     startSelected = 0,
     endSelected = 0;
-
+$(document).on('click', function(e){
+  if (!$( '#searchInput1' ).val()) {
+    $( years ).removeClass('selected');
+  }
+});
 $(document).on('click', '.year a', function(e){
   e.preventDefault(); 
      //fruehere Auswahl aufheben
