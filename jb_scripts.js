@@ -96,8 +96,9 @@ function checkLock(callerName, aLock, anErrorTracker) {
     anErrorTracker.raisedErrors.push(raisedError);
     throw raisedError;
   } else {
-    var e = Error('');
+    try {throw Error('')} catch(e) { 
     anErrorTracker.originalStack = e.stack.replace(/^Error.*/, '');
+    }
   }
 }
 
