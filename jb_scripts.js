@@ -14,9 +14,9 @@ var mainPages = ['about', 'find', 'thesaurus'];
 var aboutSubpages =  ['ziele', 'help', 'geschichte', 'impressum'];
 
 function go2page(link) {  
-  $( '.slide' ).fadeOut('fast'); 
+  $( '.slide' ).hide(); 
   $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
-  $( '#'+link ).fadeIn('fast');     
+  $( '#'+link ).show();     
   $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
   fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
@@ -250,7 +250,7 @@ $(document).on('click', '.year a', function(e){
 
 $('#searchInput1').on('keyup', function() {
   var eingetippt= ($(this).val()); 
-  var rex1 = /[=* ]([\wäüöÄÜÖß]{4})/;
+  var rex1 = /[=*" ]([\wäüöÄÜÖß]{4})/;
   var rex2= /[\wäüöÄÜÖß]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
@@ -579,20 +579,22 @@ $(document).on( 'click', '#doSearch', function(e) {
 var plusMinus='.schlagworte .plusMinus';
 
   // Anfangszustand 
+/*
 $( plusMinus ).removeClass( 'close' );   
-$ ( '.schlagworte li li ol' ).hide ();  
+//$ ( '.schlagworte li li ol' ).hide ();  
 
+*/
 $(document).on('click', '#aO',  function ( ) { 
   $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
-  $(plusMinus).addClass( 'close' );     
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aC').parent().fadeIn ('slow');
+  //$(plusMinus).addClass( 'close' );     
+  //$( this ).parent().fadeOut( 'slow');  
+  //$( '#aC').parent().fadeIn ('slow');
 }); 
 $(document).on('click', '#aC',  function ( ) { 
     $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
-    $(plusMinus).removeClass( 'close' );       
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aO').parent().fadeIn ('slow');   
+ //   $(plusMinus).removeClass( 'close' );       
+ // $( this ).parent().fadeOut( 'slow');  
+ // $( '#aO').parent().fadeIn ('slow');   
 }); 
 
 $(document).on('click', plusMinus, toggleNextSubtree);

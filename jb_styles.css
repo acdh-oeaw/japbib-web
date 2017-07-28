@@ -10,7 +10,7 @@ h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
   } 
 a {
-  color:#005;
+  color:#005; 
   text-decoration: none;  
   border-radius: 3px;
   } 
@@ -173,13 +173,14 @@ table.main {
   position:relative;
   padding: 0;
   width: 100%;
-  min-height: 35em;
   border: 1px solid #fff7d4;
   border-width: 0 0 0 3px;
   }
-#nav {
-}
+#about,
+#thesaurus,  
 #find {
+  display: block;
+  min-height: 25em;
 }
  
 td.control {
@@ -189,15 +190,13 @@ td.control {
     background: rgb(228, 211, 165);
     width: 3em;
     overflow: hidden;
-    border-right: 3px solid #fff7d4;
-    min-height: 20em;
+    border-right: 3px solid #fff7d4; 
     cursor: pointer;
     font-family: calibri, arial;
     font-weight:bold;
 }
-td.control.hilite a {
-  background:rgb(208, 219, 216); 
-  cursor: default;
+.control.hilite {
+  background:rgb(208, 219, 216);  
 } 
 .control a {
   position: absolute;
@@ -207,19 +206,20 @@ td.control.hilite a {
   bottom: 0;
   padding-top: 15em;
 }
+.control.hilite a { 
+  cursor: default;
+  background: transparent;
+} 
 .control a span {
   display: block;
   transform: rotate(90deg);
-  position: absolute;
   width: 3em;
   white-space: nowrap;
-  /* left: -4.5em; */
   text-align: center;
   text-transform: uppercase;
   border: 0px solid #ddd;
   color: #000;
   position: fixed;
-  /* position: absolute; */
 }
   
 /* foot */
@@ -672,8 +672,8 @@ tr.search .fa {
   cursor: pointer;
 }
 tr.search .fa[class*=fa-times] {
-  right: 2.5rem;
-  padding: .2em;
+  right: 2.75rem;
+  padding: .5em;
   background: rgba(255, 255, 255, 0.68);
   margin: 2px;
   opacity: .3;
@@ -827,13 +827,11 @@ fieldset {
   padding:0;
   }
 #expandAll {
-    padding: 0.2em .5em;
-    position: relative;
-    height: 1.5em;
+    padding: 0 .5em;
+    position: relative; 
 }
 #expandAll > div {
-    position: absolute;
-    right: 0;
+    line-height: 1.2em;
 }
 #expandAll a {
   text-transform: lowercase;
@@ -1093,9 +1091,8 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ'; 
   content: '\f147' /* fa-minus-square-o */
- }
+}
  
  .closeX::before {  
   content: 'X'; 
