@@ -124,57 +124,90 @@
 							</div>
 							<div id="help">
 								<h2>Hinweise zur Benützung</h2>
-								<p>Die vorliegende Website ist in drei Hauptbereiche unterteilt: </p>
-								<ol>
-									<li>Metainformationen (Über JB 80)</li>
-									<li>Suchen und Finden</li>
-									<li>Thesaurus</li>
-								</ol>
-								<h3>Metainformationen</h3>
-								<p>Dazu zählen mehrere Einzelseiten, die im Menü rechts aufgelistet sind.</p>
-								<h3>Suchen und Finden </h3>
-								<p>Im Bereich <i><a href="#find">Suchen und Finden</a></i> ist zunächst 
-									nur ein Suchfeld zu sehen, in das beliebige Begriffe zur globalen Suche 
-									in allen Datensätzen eingegeben werden können. Außerdem gibt es einen 
-									Nominal- und einen Werktitelindex. 
-								</p>
-								<p>Resultate mit mehr als 200 Einträgen werden standardmäßig als Balkendiagramm 
-									angezeigt. Die Balken repräsentieren dabei die Anzahl der gefunden Publikationen 
-									aus einem bestimmten Publikationsjahr. Es lässt sich so ein Überblick 
-									über die Entwicklung des gesuchten Themas während des erfassten Zeitraums 
-									generieren. Darüber hinaus können auch nach Themen geordnete Diagramme 
-									erstellt werden. 
-								</p>
-								<p>Resultate, die weniger als 200 Einträge umfassen, werden standardmäßig 
-									in Listen dargestellt. Die Listen enthalten Autoren und Haupttitel der 
-									gefundenen Werke und sind standardmäßig nach Autorennamen in alphabetischer 
-									Reihenfolge geordnet. Es kann allerdings auch eine Reihung nach Werktiteln 
-									vorgenommen werden. Neben der Liste mit den Resultaten werden verschiedene 
-									Filter angezeigt, mithilfe derer die Ergebnisse weiter eingegrenzt werden 
-									können. Diese Filterbegriffe entsprechen dem Schlagwortbaum des
-									<a href="#thesaurus">Thesaurus</a>.
-								</p>
-								<p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen 
-									Datensatz sowie eine Liste von Schlag- und Stichworten, mit deren Hilfe 
-									man eine neue Suche nach verwandten Einträgen starten kann. <i>Stichworte</i> 
-									wurden im Lauf der Recherchearbeiten unsystematisch vergeben. Das Anklicken 
-									eines Stichworts führt zu einer Volltextsuche innerhalb der gesamten Datensätze.
-									<i>Schlagworte</i> wurden hingegen nach einem systematischen, hierarchisierten 
-									System vergeben, das im Thesaurus abgebildet ist. 
-								</p>
-								<h3>Thesaurus</h3>
-								<p>Der <a href="#thesaurus">Thesaurus</a> eröffnet eine alternative 
-									Form der Suche nach Themen. Auf dieser Seite können ein oder mehrere Schlagworte 
-									selektiert werden. Die entsprechende Suchabfrage wird wieder im Bereich
-									<i><a href="#find">Suchen und Finden</a></i> dargestellt. 
-								</p>
-								<p>Das Schlagwortschema wurde im Zuge der Recherchen zu diesem Projekt 
-									sukzessive entwickelt und verfeinert. Die umfangreichste Schlagwortgruppe 
-									„Thema“ bezieht sich auf Sachgebiete und umfasst über 500 Schlagworte 
-									in 12 Gruppen. Die Verschlagwortung wurde dabei extensiv durchgeführt, 
-									das heißt, eine Publikation wurde zumeist nicht nur einem, sondern mehreren 
-									relevanten Themen zugeordnet. 
-								</p>
+								<p>Die vorliegende Website ist in drei Hauptbereiche unterteilt: 1) Metainformationen (Über JB 80, s. Menü rechts); 2) Thesaurus; und 3) Suchen und Finden. Im Folgenden werden die verschiedenen Suchfunktionen auf Thesaurus und Suchseite erklärt. </p>
+  
+<h3>Thesaurus</h3>
+
+<p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Das Schlagwortschema wurde im Zuge der Recherchen zu diesem Projekt sukzessive entwickelt und verfeinert. Die umfangreichste Schlagwortgruppe „Thema“ bezieht sich auf Sachgebiete und umfasst über 500 Schlagworte in 12 Hauptgruppen. Die Verschlagwortung wurde dabei extensiv durchgeführt, das heißt, eine Publikation wurde zumeist nicht nur einem, sondern mehreren relevanten Themen zugeordnet.</p>
+
+<p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten gesucht werden. Ein Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. Es können auch kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man auf die neben dem Schlagwort stehende Zahl klicken. Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt werden.</p>
+
+<p>Ausgewählte Begriffe sind üblicherweise durch „AND“ verbunden, das heißt, der gesuchte Eintrag muss alle Schlagworte enthalten. Wenn man allerdings „AND“ manuell auf „OR“ umstellt, wird nach Einträgen gesucht die entweder Schlagwort A oder Schlagwort B enthalten.</p>
+
+<h4>Beispiele</h4> 
+
+<ul>
+<li>Finde Beiträge zur Religion im Altertum: <br>
+<a href="#find?query=subject%3D%22Philosophie%20und%20Religion%22%20AND%20subject%3D%22Altertum%20(bis%201192)%22%20%20" class='code'>subject="Philosophie und Religion" AND subject="Altertum (bis 1192)"  </a></li> 
+
+<li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:<br/>
+<a href="#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20" class='code'>subject="selbständige Publikation" AND subject="Gesellschaft" OR subject="Politik"  </a></li>
+</ul>
+
+<p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erhebt. Daher ist es ratsam, auch andere Suchstrategien auszuprobieren.</p>
+
+<h4>Zahlenangaben</h4>
+
+<p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class="plusMinus"></span>“ als Zeichen dafür, dass dahinter noch weitere Schlagworte versteckt sind. Öffnet man die unteren Ebenen, ändert sich üblicherweise auch die Zahl neben dem Schlagwort. Diese umfasst im <span class="plusMinus"></span>-Zustand sämtliche Einträge, die mit dem jeweiligen Schlagworten und seinen Untergruppen gekennzeichnet sind. Öffnet man allerdings die Untergruppen (<span class="plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber keiner Untergruppe zugeordnet sind.</p>
+
+<p style="float: left;">Beispiel:</p> 
+<ul style="list-style: none; padding-left: 5em;">
+<li class="plusMinus">&nbsp;Geschichte <span class='zahl'>2633</span></li>
+<li class="plusMinus close">&nbsp;Geschichte <span class='zahl'>340</span></li>
+</ul>
+
+<p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>    
+
+<h3>Suchen und Finden</h3>
+
+<p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige Suchvorschläge (Autor, Werktitel, Jahr, Suchhilfe) zu sehen. Beim Eintippen eines beliebigen Schlagworts öffnet sich das Feld „Suchhilfe“ und schlägt Modifikationen, etwa „Sternchensuche“ oder Suche nach Titeln vor. Sobald man einen Vorschlag anklickt, wird die Suche ausgeführt. Der exakte Suchbegriff erscheint aber auch im Suchfeld und lässt sich hier händisch weiter modifizieren. Mit der Return-Taste oder einem Klick auf die Lupe kann man alles, was im Suchfeld steht, erneut abfragen.</p>
+
+<p>Ähnlich funktioniert die Suche nach Autoren und Werktiteln. Mit Hilfe des Feldes „Jahr“ im Suchmenü lassen sich die Suchtreffer auf bestimmte Jahre oder Perioden der Publikation eingrenzen. </p>
+
+<h4>Suchparameter</h4>
+
+<p>Folgende Suchparameter werden verwendet:</p>
+<ul>
+<li><code>author=</code> Suche wird auf Autoren eingegrenzt</li>
+<li><code>title=</code>  Suche wird auf Werktitel eingegrenzt</li>
+<li><code>subject=</code> Suche wird auf Schlagworte eingegrenzt</li> 
+<li><code>publisher=</code> Suche wird auf Verlage eingegrenzt</li>
+<li><code>series=</code> Suche wird auf Reihen eingegrenzt</li>
+<li><code>date=</code> Such wird auf Publikationszeitraum eingegrenzt</li>
+</ul>
+
+<p>Alle Parameter können auch in Kombination (verbunden durch „AND“ oder „OR“) eingesetzt werden. </p>
+
+<h4>Suchfilter</h4>
+
+<p>Sobald eine Suche ausgeführt wurde öffnet sich im Feld „Such-Filter“ ein Schlagwortbaum, der im Wesentlichen dem des Thesaurus entspricht. Er enthält allerdings nur jene Schlagworte, die im gefundenen Sample enthalten sind. AUch die Zahlen beziehen sich auf das gefundene Sample. Damit lässt sich die Suche effizient filtern oder „thrillen“.</p>
+
+<h4>Sortierung der Ergebnisse</h4>
+
+<p>Die Sortierung der Treffer erfolgt standardmäßig alphabetisch nach Autor, kann aber im Suchmenü auch auf „Titel“ oder „Jahr“ umgestellt werden. „Jahr“ bedeutet Sortierung nach Publiaktionsjahr/ Autor.</p>
+
+<h4>Trefferanzahl</h4>
+
+<p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 10, kann aber auf bis zu 200 erhöht werden. Der Suchfilter bezieht auch die nicht angezeigten Treffer mit ein.</p>
+
+<h3>Detailergebnisse</h3>
+
+<p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen Datensatz sowie eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der Trefferzahl neben den Schlagworten startet eine neue Suche nach dem betreffenden Schlagwort. Das Gleiche gilt für Autoren, Verlage, Reihen und Werktitel.</p>
+
+<p>Zusätzlich gibt es oft auch noch „Stichworte“, die im Lauf der Recherchearbeiten unsystematisch vergeben wurden. Das Anklicken eines Stichworts führt zu einer Volltextsuche innerhalb der gesamten Datensätze.</p> 
+
+<h4>MODS und Lidos</h4>
+
+<p>Die Anzeige des Eintrags kann auch modifiziert werden.</p>
+<ul> 
+<li>„Kompakt“ reduziert die Information auf das in Printmedien übliche Format.</li> 
+<li>„MODS“ zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich nach dem „Metadata Object Description Schema“ (MODS) der Library of Congress, Washington DC.</li> 
+<li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde großteils maschinell in den MODS-Standard übersetzt.</li> 
+</ul>
+
+<h4>Fehler in der Datenbank</h4>
+
+<p>Die mechanische Übertragung der Daten hat mitunter zu Fehlinterpretationen oder Informationsverlust geführt. Derartige Fehler sowie Fehler bei der ursprünglichen Dateneingabe werden sukzessive ausgebessert. Jeder entsprechende <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback">Hinweis</a> wird mit großem Dank entgegen genommen. </p>
 								<p class="next">Weiter zu:
 									<a href="#geschichte">Geschichte des Projekts</a>
 								</p>
@@ -253,16 +286,15 @@
 									<li>
 									<i>Offenlegung gemäß §§ 24, 25 Mediengesetz und § 5 E-Commerce-Gesetz
 										Medieninhaberin, Dienstanbieterin:</i>
-									<p>Österreichische Akademie der Wissenschaften</p>
-									<i>Juristische Person öffentlichen Rechts (BGBl 569/1921 idF BGBl I 130/2003):</i>
-									<p>Austrian Centre for Digital Humanities (ACDH)<br/>
-											Dr. Ignaz Seipel-Platz 2, 1010 Wien, Österreich<br/>
-											E-Mail: <a href="mailto:acdh-tech@oeaw.ac.at">acdh-tech@oeaw.ac.at</a> </p>
+									<p>Österreichische Akademie der Wissenschaften als juristische Person öffentlichen Rechts (BGBl 569/1921 idF BGBl I 130/2003)</p>
 									<i>Herausgeber, inhaltliche und redaktionelle Verantwortung:</i>
-									<p>Institut für Kultur- und Geistesgeschichte Asiens<br/>
+									<p>Institut für Kultur- und Geistesgeschichte Asiens (IKGA)<br/>
 										 Hollandstraße 11–13, 1020 Wien, Österreich <br/>
 										 E-Mail: <a href="mailto:office.ikga@oeaw.ac.at">office.ikga@oeaw.ac.at</a>
 									</p>
+									<p>Austrian Centre for Digital Humanities (ACDH)<br/>
+											Dr. Ignaz Seipel-Platz 2, 1010 Wien, Österreich<br/>
+											E-Mail: <a href="mailto:acdh-tech@oeaw.ac.at">acdh-tech@oeaw.ac.at</a> </p>
 									<i>Redaktion:</i>
 									<p>Dr. Bernhard Scheid <br/>
 										 E-Mail: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a>
@@ -4200,7 +4232,8 @@
 			
 -->
 		<div id="footer">
-			JB 80 &copy; 2016 
+			JB 80 &copy; 2016 <br/>
+			<a href='#about'>Startseite</a> | <a href='#impressum'>Impressum</a>
 		</div>
 	</body>
 </html>
