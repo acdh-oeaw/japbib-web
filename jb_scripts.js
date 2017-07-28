@@ -14,9 +14,9 @@ var mainPages = ['about', 'find', 'thesaurus'];
 var aboutSubpages =  ['ziele', 'help', 'geschichte', 'impressum'];
 
 function go2page(link) {  
-  $( '.slide' ).hide(); 
+  $( '.slide' ).fadeOut('fast'); 
   $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
-  $( '#'+link ).show();     
+  $( '#'+link ).fadeIn('fast');     
   $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
   fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
@@ -254,6 +254,7 @@ $('#searchInput1').on('keyup', function() {
   var rex2= /[\wäüöÄÜÖß]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
+    //wenn 4 Buchstaben getippt sind...
   if ( match && match[1]) { q= match[1]; }
   else if ( match ) { q= match[0]; }
   console.log(q);
