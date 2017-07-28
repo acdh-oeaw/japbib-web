@@ -158,10 +158,9 @@ h1 {
   display: inline-block; 
   position: relative;
   padding: .2em 1em; 
-  background: #eee;  
-    background: rgb(237, 227, 185);
-    border: 1px solid rgb(255, 247, 212);
-    border-color: #e4d3a5 #e4d3a5 rgb(255, 247, 212);
+  background: rgb(237, 227, 185);
+  border: 1px solid rgb(255, 247, 212);
+  border-color: #e4d3a5 #e4d3a5 rgb(255, 247, 212);
   border-radius: .6em .6em .1em .1em;
   }
 #navbar a:hover {
@@ -193,20 +192,20 @@ td.control {
     border-right: 3px solid #fff7d4;
     min-height: 20em;
     cursor: pointer;
-    font-family:"Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    font-family: calibri, arial;
     font-weight:bold;
 }
 td.control.hilite a {
   background:rgb(208, 219, 216); 
-    cursor: default;
+  cursor: default;
 } 
 .control a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding-top: 15em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 15em;
 }
 .control a span {
   display: block;
@@ -228,14 +227,10 @@ td.control.hilite a {
 #footer {
   clear: both;
   text-align: center;
- 
-    border-top: 3px solid #fff7d4;
+  border-top: 3px solid #fff7d4;
   padding: .5em;
   background-color: rgba(233, 220, 175, 0.5);
-  /*  position: absolute;
-    width: 100%;
-    bottom: 0; */
-  }
+}
 .next {
  text-align: right;
  }
@@ -315,8 +310,9 @@ td.control.hilite a {
   padding: .4em;
   text-align: center;
   background: #eed;
-    background: rgb(208, 219, 216);
-    color: #005;
+  background: rgb(208, 219, 216);
+  color: #005;
+  font-family: calibri, arial;
   }
 .pageindex ul { 
   max-width: 13em;
@@ -505,7 +501,7 @@ tr.examples {
   border: 1px solid #ccc;
   border-radius: 7px 7px 0 0;
   z-index:2;
-  color: #555;
+  color: #555; 
   cursor: pointer;
   font-family: calibri, arial, sans-serif;
 }
@@ -748,6 +744,7 @@ tr.search .fa-search {
   }
 .showEntry .showOptions {
     margin: 0;
+    /* text-align: center; */
 }
 .showEntry .eSegment {
   float:left;
