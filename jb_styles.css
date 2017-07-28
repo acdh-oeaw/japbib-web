@@ -8,7 +8,7 @@ body {
   } 
 h2, h3, h4 {
   font-family: "Trebuchet MS", Arial, sans-serif;
-  }
+  } 
 a {
   color:#005;
   text-decoration: none;  
@@ -168,15 +168,13 @@ h1 {
   background: #fff;  
   }
 
-
-
 /* main body */
 
 table.main {
   position:relative;
   padding: 0;
   width: 100%;
-  min-height: 30em; 
+  min-height: 35em;
   border: 1px solid #fff7d4;
   border-width: 0 0 0 3px;
   }
@@ -208,7 +206,7 @@ td.control.hilite a {
     left: 0;
     right: 0;
     bottom: 0;
-    padding-top: 20em;
+    padding-top: 15em;
 }
 .control a span {
   display: block;
@@ -221,9 +219,9 @@ td.control.hilite a {
   text-transform: uppercase;
   border: 0px solid #ddd;
   color: #000;
-  /* position: fixed; */
-  }
-  
+  position: fixed;
+  /* position: absolute; */
+}
   
 /* foot */
 
@@ -448,30 +446,20 @@ td.control.hilite a {
  
 
 /*******************
-   Spezielle Felder
+
+   SUCHOPTIONEN
+
 ********************/
 
 /**** Suchfelder ******/
 
-form#searchform1 {   
+#searchform1 {
  padding: 2em 0 0;
  margin: 1px;
  border: 1px solid #ccc;
- border-radius: 7px; 
+ border-radius: 7px;
 }
-#searchform1 input {
- box-sizing: border-box;
- display: inline-block;
- display: block; 
- width: 100%;
- padding: .5em;
- font-size: 1rem;
- font-family: calibri, arial, sans-serif;
- } 
-#searchform1 input::placeholder,
-#searchform1 input:placeholder-shown {
- } 
- 
+
 table.suchOptionen,
 .suchOptionen tbody,
 .suchOptionen tr,
@@ -485,8 +473,8 @@ table.suchOptionen,
   width: 100%;
   min-width: 24em;
   text-align: center;
-  background: rgb(240, 251, 255);
   border-collapse: collapse;
+  border-radius: 9px;
  }
 .suchOptionen th {
  text-align: right;
@@ -499,9 +487,9 @@ table.suchOptionen,
   vertical-align: top;  
   } 
 
-/*** examples 
-   s.a. beispiele
-********** */ 
+/********************************
+ examples, s.a. beispiele
+********************************/  
 
 tr.examples {
   display: inline-block; 
@@ -514,10 +502,7 @@ tr.examples {
   display: inline-block;
   position:relative;
   margin-top: -1.55em;
-  border: 1px solid rgb(190, 199, 208);
-  background: rgb(174, 197, 191);
-  background: rgb(187, 199, 196);
-  background: rgb(203, 226, 234);
+  border: 1px solid #ccc;
   border-radius: 7px 7px 0 0;
   z-index:2;
   color: #555;
@@ -526,10 +511,9 @@ tr.examples {
 }
 .examples th:hover,
 .examples th.here {
-  background: rgb(240, 251, 255);
-  border-bottom-color: rgb(230, 239, 249);
   z-index:3;
   color:inherit;
+  border-bottom-color: rgba(0,0,0,0);
 }
 .examples th.here {
 }
@@ -539,7 +523,7 @@ tr.examples {
   top: 0;
   right: 0;
   height: 5em;
-  border-top: 1px solid rgba(216, 201, 159, 0.7);
+  border-top: 1px solid #ccc;
   text-align: center;
   padding-top: .5em;
 }
@@ -555,19 +539,128 @@ tr.examples {
     list-style: none;
     display: inline-block;
 }
-.examples li { 
-    margin: 1px;
-    padding: 0 2px;
-    background: rgb(255, 252, 236);
-    background: rgba(249, 253, 255, 1);
+.examples li {
+    margin: 1px; 
     font-size: .9em;
-    border: 1px solid #e1edf3;
+    border: 1px solid #ccc;
 }
 .examples small {
     display: block;
     color: #aaa;
   font-family: calibri, arial, sans-serif;
 }
+/**** Anker ******/
+ 
+.examples .year {
+ padding-top: .8em;
+ font-family: calibri, arial;
+} 
+.examples  a {
+ padding: 0 .25em;
+ display: inline-block;
+ border: 1px solid transparent;
+ border-width: 1px 0;
+ border-radius: 0;
+ }  
+
+/*  Suchoptionen */
+  
+.showOptions {
+  text-align: right;
+  font-family: calibri, arial, sans-serif;
+  background: rgba(233, 220, 175, 0.6);
+  margin: -.5em -1em .5em;
+  padding: .2em .5em;
+}
+.suchOptionen .showOptions {
+  margin: 0;
+  text-align: center;
+  color: #555;
+  border-radius: 0 0 7px 7px;
+}
+.showOptions label::before {  
+  font-family:fontawesome; 
+ text-rendering: auto;
+ -webkit-font-smoothing: antialiased;
+ -moz-osx-font-smoothing: grayscale;
+  padding-left: .5em;
+  padding-right: .2em;
+  opacity: .7;
+}
+.showOptions label.hover::before {   
+  opacity: 1; 
+}
+
+.chooseMaxHits::before   { 
+  content: '\f0cb'; /* fa-list-ol   */
+}
+#countResults::before {
+  content: '\f0dc'; /* fa-sort */
+  content: '\f161'; /* fa-sort-amount-desc   */
+} 
+/* Suchrahmen gelb */
+
+#searchform1 { 
+ background-color: rgb(255, 247, 212);
+} 
+.suchOptionen,
+.examples th:hover,
+.examples th.here {
+  background: rgb(255, 252, 239);
+} 
+.suchOptionen .showOptions,
+.examples th { 
+  background: rgb(242, 230, 189);
+  color: #555; 
+} 
+#searchform1,
+.examples th,
+.examples *[data-index], 
+.examples li  {
+  border-color: #e4d3a5;
+}  
+.examples  a:hover, 
+.examples  a.selected { 
+ background: #fbefc5;
+ }   
+.examples year a:hover {   
+ border-color: #bd8f0d;
+ }
+/* Suchrahmen blau */
+
+#searchform1 { 
+ background-color: rgb(248, 255, 255);
+} 
+.suchOptionen,
+.examples th:hover,
+.examples th.here {
+  background-color: rgb(240, 251, 255); 
+} 
+.suchOptionen .showOptions,
+.examples th {
+  background-color: rgb(208, 234, 243);
+  color: rgba(0, 40, 80, 1);
+} 
+#searchform1,
+.examples th,
+.examples *[data-index], 
+.examples li  {
+  border-color: #d0dbd8;
+}
+.examples  a:hover, 
+.examples  a.selected { 
+  background: #c5f9fb;
+}  
+.examples .year a:hover {  
+  border-color: #0d95bd;
+}
+ 
+.examples .code {
+  background: #f8ffff;
+}
+
+ /*******  Suchfeld *********/
+
 tr.search  {
   position: relative;
   display: block; 
@@ -604,8 +697,21 @@ tr.search .fa-search {
   width: 2.5rem;
   text-align: center;
 }
+#searchform1 input {
+ box-sizing: border-box;
+ display: inline-block;
+ display: block; 
+ width: 100%;
+ padding: .5em;
+ font-size: 1rem;
+ font-family: calibri, arial, sans-serif;
+ } 
 
-/*******  Suchresultate ***********/
+/*************************
+
+     Suchresultate 
+
+*************************/
 
 #showList {
   /* margin-left: -1rem; */
@@ -637,9 +743,8 @@ tr.search .fa-search {
 .showEntry a { 
   color: #009;
   }
-.showEntry li {
-  margin-left: 9em;
-  min-height: 1.5em;
+.showEntry li { 
+  margin-left: 9em;   
   }
 .showEntry .showOptions {
     margin: 0;
@@ -713,7 +818,9 @@ tr.search .fa-search {
 
   
 /*******************
+
    Schlagworte
+
 ********************/
 fieldset {
   border: 0;
@@ -806,47 +913,6 @@ fieldset {
   font-family: "Trebuchet MS", Arial, sans-serif;
   } 
 
-/*  Suchoptionen */
-  
-.showOptions, 
-.navResults { /* mehr zu navResults unten */
-  text-align: right;
-  font-family: calibri, arial, sans-serif;
-  background: rgba(233, 220, 175, 0.6);
-  padding: 1px 5px;
-  margin: -.5em -1em .5em;
-  } 
-.showOptions {
-  padding: .2em .5em;
-}
-.suchOptionen .showOptions {
-  margin: 0;
-  text-align: center;
-  background: rgb(163, 174, 177);
-  background: rgb(203, 226, 234);
-  color: #555;
-  border-radius: 0 0 4px 7px;
-}
-.showOptions label::before {  
-  font-family:fontawesome; 
- text-rendering: auto;
- -webkit-font-smoothing: antialiased;
- -moz-osx-font-smoothing: grayscale;
-  padding-left: .5em;
-  padding-right: .2em;
-  opacity: .7;
-}
-.showOptions label.hover::before {   
-  opacity: 1; 
-}
-
-.chooseMaxHits::before   { 
-  content: '\f0cb'; /* fa-list-ol   */
-}
-#countResults::before {
-  content: '\f0dc'; /* fa-sort */
-  content: '\f161'; /* fa-sort-amount-desc   */
-} 
   
 /*****************
    tipp 
@@ -983,32 +1049,13 @@ fieldset {
 code,
 .code {
   font-family: "Courier New", Courier, monospace;
-  font-size: .9em;
+  /* font-size: .9em; */
   } 
 .beispiele code, 
 .beispiele .code {
   padding: 0 .5em;
   }
 
-/**** Jahre ******/
-
-.examples td.year {
-  padding-top: 1em;
-} 
-.year  a {
- font-family: calibri, arial;
- padding: 0 .25em;
- font-size: .8em;
- line-height: 2em;
- display: inline-block;
- border: 1px solid transparent;
- border-width: 1px 0;
- }   
-.year a.selected {   
- border-color: #78d; 
- border-radius: 0;
- background: #cdfdfd;   }   
- }
    
 /**************
 PLUS-MINUS 
@@ -1049,7 +1096,7 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
- content: 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ'; 
+ content: 'ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ'; 
   content: '\f147' /* fa-minus-square-o */
  }
  
@@ -1148,10 +1195,13 @@ a.zahl::before {
     margin-top: 1.2em;
 }
 .navResults {
- /* background: rgba(233, 220, 175, 0.3); */
- padding: 1px 1em;
- line-height: 2rem;
- height: 2em; 
+  font-family: calibri, arial, sans-serif;
+  padding: 1px 1em;
+  line-height: 2rem;
+  height: 2em; 
+  text-align: right;
+  background: rgba(233, 220, 175, 0.6); 
+  margin: -.5em -1em .5em;
   } 
 .countResults {
  float: left;
