@@ -7,7 +7,7 @@ body {
   overflow-y: scroll;
   } 
 h2, h3, h4 {
-  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-family: "Trebuchet MS", Arial, sans-serif; 
   } 
 a {
   color:#005; 
@@ -181,22 +181,24 @@ table.main {
 #find {
   display: block;
   min-height: 25em;
+  min-height: 50vh;
 }
  
 td.control {
-    position: relative;
-    vertical-align: top;
-    padding-top: 20em;
-    background: rgb(228, 211, 165);
-    width: 3em;
-    overflow: hidden;
-    border-right: 3px solid #fff7d4; 
-    cursor: pointer;
-    font-family: calibri, arial;
-    font-weight:bold;
+  position: relative;
+  vertical-align: top;
+  background: rgb(228, 211, 165);
+  width: 2.5vw;
+  min-width: 2.5em;
+  font-size: 1em;
+  overflow: hidden;
+  border-right: 3px solid #fff7d4;
+  cursor: pointer;
+  font-family: calibri, arial;
+  font-weight:bold;
 }
 .control.hilite {
-  background:rgb(208, 219, 216);  
+  background:rgb(208, 219, 216); 
 } 
 .control a {
   position: absolute;
@@ -204,7 +206,8 @@ td.control {
   left: 0;
   right: 0;
   bottom: 0;
-  padding-top: 12em;
+  padding-top: 11em;
+  padding-top: 15vh;
 }
 .control.hilite a { 
   cursor: default;
@@ -213,14 +216,18 @@ td.control {
 .control a span {
   display: block;
   transform: rotate(90deg);
-  width: 3em;
+  width: 2.5vw;
+  min-width: 2.5em;
   white-space: nowrap;
   text-align: center;
   text-transform: uppercase;
   border: 0px solid #ddd;
   color: #000;
   position: fixed;
+  /* top: 50vh; */
 }
+.control.hilite a span {  
+} 
   
 /* foot */
 
@@ -228,9 +235,26 @@ td.control {
   clear: both;
   text-align: center;
   border-top: 3px solid #fff7d4;
-  padding: .5em;
+  padding: .5em 0 .8em;
   background-color: rgba(233, 220, 175, 0.5);
 }
+#footer span {
+  display: inline-block; 
+  width: 10em;
+}
+#footer span:nth-of-type(3n+1) {
+  text-align: right;
+} 
+#footer span:nth-of-type(3n+2) {
+  text-align: center;
+  width: auto;
+  padding: 0 .2em;
+}
+#footer span:nth-of-type(3n) {
+  text-align: left;
+} 
+
+/*************/
 .next {
  text-align: right;
  }
@@ -239,14 +263,14 @@ td.control {
  }
 
 /*******************
-   JS-Funktionen
+   JS-Funktionen 
 ********************/
 
 .hide {
   display: none;
   }
 #navbar .hilite {
-  z-index: 3!important;
+  z-index: 4!important;
   background: #fff;
   border-bottom-color: #fff;
   cursor: default;
@@ -262,6 +286,7 @@ td.control {
   vertical-align:top;
   background:#fff;
   padding: 3.5rem 5%;
+  min-height: 50vh;
   }
  
 .white {
@@ -357,7 +382,23 @@ td.control {
  margin-bottom:-5px;
  }
 
- /*  Thesaurus, #wishList */
+/******* #about #help ***********/
+
+.helpExample {
+  list-style:none;
+  padding-left: 8em;  
+}
+.helpExample li  { 
+  padding-left: 1em ;
+  text-indent: -1em; 
+}
+.helpExample li:first-child {
+  float: left;
+  padding: 0; 
+  margin-left: -6em;
+  font-style: italic;
+}
+/********  Thesaurus, #wishList ***********/
  
 #wishList ul {
     margin: 1em 1em .5em;
@@ -739,12 +780,14 @@ tr.search .fa-search {
 .showEntry a { 
   color: #009;
   }
-.showEntry li { 
+.showEntry li {  
   margin-left: 9em;   
   }
 .showEntry .showOptions {
     margin: 0;
     /* text-align: center; */
+    text-align: left;
+    padding-left: 1em;
 }
 .showEntry .eSegment {
   float:left;
@@ -960,14 +1003,16 @@ fieldset {
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
   text-align: left;
   /* font-family: initial; */
-  }
-.tipp:hover > *, 
-.tipp.display > *,  {
-  display: block;
-  }
+  } 
 .tipp ul, 
-.tipp ol {
+.showEntry .tipp ul {
   padding-left: 2em;
+  }
+.tipp li, 
+.showEntry .tipp li {
+  padding-left: 0;
+  margin: 0;
+  list-style: disc;
   } 
 #Beispiele.tipp > * {
   padding: 0 1.5em 1em;  
@@ -978,7 +1023,7 @@ fieldset {
   top: -.2em;
   right: 0; 
   } 
-#Beispiele.tipp td::after  { 
+.tipp > *::after  { 
   content: '\f00d' ;  
   position: absolute;
   top: 0;
@@ -986,7 +1031,7 @@ fieldset {
   z-index: 9; 
   opacity:.3;
   } 
-#Beispiele.tipp td:hover::after  { 
+.tipp > *:hover::after  { 
   opacity:.8;
   } 
 #thesaurus .tipp {
@@ -1092,8 +1137,7 @@ a.zahl::before,
  } 
 .close::before {
   content: '\f147' /* fa-minus-square-o */
-}
- 
+} 
  .closeX::before {  
   content: 'X'; 
   content: '\f00d' /* fa-times */
@@ -1102,6 +1146,9 @@ a.zahl::before,
 .plusMinus:hover::before {  
  opacity: 0.8;
  }
+.showEntry .closeX {
+  float:right;
+}
 
 .schlagworte .plusMinus::before {
  position: absolute;
@@ -1172,7 +1219,8 @@ a.zahl::before {
 /*******************/
 
 .term {
-  margin-right: .5em; 
+  margin-right: .5em;
+  margin-left: -.3em;
   border-radius: .5em;
   padding: 0 .3em;
 }

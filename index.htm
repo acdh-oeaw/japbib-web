@@ -45,7 +45,7 @@
 				<ul id="navbar_items">
 					<li><a class="hilite" href="#about" style="z-index: 3">Über JB 80 </a></li>
 					<li><a href="#thesaurus" style="z-index: 2">Thesaurus </a></li>
-					<li><a href="#find" style="z-index: 3">Suchen und Finden </a></li>
+					<li><a href="#find" style="z-index: 1">Suchen und Finden </a></li>
 				</ul>
 			</div>
 		</div>
@@ -133,28 +133,30 @@
 <p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten gesucht werden. Ein Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. Es können auch kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man auf die neben dem Schlagwort stehende Zahl klicken. Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt werden.</p>
 
 <p>Ausgewählte Begriffe sind üblicherweise durch „AND“ verbunden, das heißt, der gesuchte Eintrag muss alle Schlagworte enthalten. Wenn man allerdings „AND“ manuell auf „OR“ umstellt, wird nach Einträgen gesucht die entweder Schlagwort A oder Schlagwort B enthalten.</p>
-
-<h4>Beispiele</h4> 
-
-<ul>
+ 
+<ul class="helpExample">
+<li>Beispiele</li>
 <li>Finde Beiträge zur Religion im Altertum: <br>
 <a href="#find?query=subject%3D%22Philosophie%20und%20Religion%22%20AND%20subject%3D%22Altertum%20(bis%201192)%22%20%20" class='code'>subject="Philosophie und Religion" AND subject="Altertum (bis 1192)"  </a></li> 
 
 <li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:<br/>
-<a href="#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20" class='code'>subject="selbständige Publikation" AND subject="Gesellschaft" OR subject="Politik"  </a></li>
-</ul>
+<a href="#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20" class='code'>subject="selbständige Publikation" AND subject="Gesellschaft" OR subject="Politik"  </a></li> 
 
-<p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erhebt. Daher ist es ratsam, auch andere Suchstrategien auszuprobieren.</p>
+<li>Finde Übersetzungen moderner Lyrik:<br/>
+<a href="#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20AND%20subject%3D%22Gegenwart%20(ab%201945)%22%20AND%20subject%3D%22Lyrik%22%20%20" class='code'>subject="Literaturübersetzung" AND subject="Gegenwart (ab 1945)" AND subject="Lyrik"</a></li>
+</ul> 
+
+<p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erheben kann. Daher ist es ratsam, verschiedene Schlagworte und Suchstrategien auszuprobieren.</p>
 
 <h4>Zahlenangaben</h4>
 
 <p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class="plusMinus"></span>“ als Zeichen dafür, dass dahinter noch weitere Schlagworte versteckt sind. Öffnet man die unteren Ebenen, ändert sich üblicherweise auch die Zahl neben dem Schlagwort. Diese umfasst im <span class="plusMinus"></span>-Zustand sämtliche Einträge, die mit dem jeweiligen Schlagworten und seinen Untergruppen gekennzeichnet sind. Öffnet man allerdings die Untergruppen (<span class="plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber keiner Untergruppe zugeordnet sind.</p>
-
-<p style="float: left;">Beispiel:</p> 
-<ul style="list-style: none; padding-left: 5em;">
+  
+<ul class="helpExample">
+<li>Beispiel</li>
 <li class="plusMinus">&nbsp;Geschichte <span class='zahl'>2633</span></li>
 <li class="plusMinus close">&nbsp;Geschichte <span class='zahl'>340</span></li>
-</ul>
+</ul> 
 
 <p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>    
 
@@ -167,7 +169,9 @@
 <h4>Suchparameter</h4>
 
 <p>Folgende Suchparameter werden verwendet:</p>
-<ul>
+  
+<ul class="helpExample">
+<li> </li>
 <li><code>author=</code> Suche wird auf Autoren eingegrenzt</li>
 <li><code>title=</code>  Suche wird auf Werktitel eingegrenzt</li>
 <li><code>subject=</code> Suche wird auf Schlagworte eingegrenzt</li> 
@@ -207,7 +211,7 @@
 
 <h4>Fehler in der Datenbank</h4>
 
-<p>Die mechanische Übertragung der Daten hat mitunter zu Fehlinterpretationen oder Informationsverlust geführt. Derartige Fehler sowie Fehler bei der ursprünglichen Dateneingabe werden sukzessive ausgebessert. Jeder entsprechende <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback">Hinweis</a> wird mit großem Dank entgegen genommen. </p>
+<p>Die mechanische Übertragung der Daten hat mitunter zu Fehlinterpretationen oder Informationsverlusten geführt. Derartige Fehler sowie Fehler bei der ursprünglichen Dateneingabe werden sukzessive ausgebessert. Jeder entsprechende <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback">Hinweis</a> wird mit großem Dank entgegen genommen. </p>
 								<p class="next">Weiter zu:
 									<a href="#geschichte">Geschichte des Projekts</a>
 								</p>
@@ -4010,17 +4014,19 @@
 												ihre Urheber</a>.                      
 											<div class="showEntry">
 												<div class="showOptions">
-															Anzeige des Eintrags: 
+															Anzeige: 
 															<select size="1">
 																<option value="html" selected="selected">detailliert</option>
 																<option value="compact">kompakt</option>
 																<option value="mods">MODS</option>
 																<option value="lidos">LIDOS</option>
 															</select>
-														<span class="tipp" title="Tipp"><span class="display" style="display: none;">
-														* MODS: XML Dokument in MODS-Standard (<a href='http://www.loc.gov/standards/mods/' class="externalLink">Library of Congress</a>); Codierung der Daten in der Datenbank.
-														* LIDOS: Ursprüngliche Codierung im Datenbankprogramm LIDOS. 
-														</span></span>
+														<div class="tipp" title="Tipp"> 
+														    <ul class="display" style="display: none;">
+														      <li> MODS: XML Dokument in MODS-Standard (<a href='http://www.loc.gov/standards/mods/' class="externalLink">Library of Congress</a>); Codierung der Daten in der Datenbank.</li>
+														      <li> Lidos: Ursprüngliche Codierung im Datenbankprogramm LIDOS.</li>
+														    </ul> 
+														</div>
 														<span id='x' class='closeX'></span>
 												</div>
 													<div class="record-html">
@@ -4232,8 +4238,10 @@
 			
 -->
 		<div id="footer">
-			JB 80 &copy; 2016 <br/>
-			<a href='#about'>Startseite</a> | <a href='#impressum'>Impressum</a>
+			<span>JB 80</span><span> &copy; </span><span>2016&ndash;<script type="text/javascript">
+			document.write(new Date().getFullYear());
+			</script></span><br/>
+			<span><a href='#about'>Startseite</a></span><span>|</span><span><a href='#impressum'>Impressum</a></span>
 		</div>
 	</body>
 </html>
