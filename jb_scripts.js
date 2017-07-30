@@ -80,7 +80,7 @@ var resultsFramework;
 
 function getResultsHidden(href) {
   checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
-  var currentSorting = $('#showList > .showOptions select').val();
+  var currentSorting = $('#sortBy').val();
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   $('.showResults').hide('slow');
   $('.ladeResultate').show();
@@ -118,7 +118,7 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
-    frameWork.find('.showOptions select').val(currentSorting);
+    //frameWork.find('.showOptions select').val(currentSorting);
     if (statusText === 'success' && getResultsErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
@@ -137,9 +137,9 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
     $('.ladeResultate').hide();        
     $('#find .schlagworte li li ol').hide ();  //Anfangszustand bei neuer Abfrage
     $('.showResults').show('slow');    
+    arrangeHitlist(); // Treffernavigation (BS) s.u.
   } finally {
     getResultsLock = false;
-    arrangeHitlist(); // Treffernavigation (BS) s.u.
   }
 }
 
@@ -175,24 +175,10 @@ $( document )
         title = 'Tipp ausblenden';
       }        
       $(this).attr('title', title);  
-   } 
-);   
-
-// Handler fuer Suchoptionen (BS)
-
-// Navigation 
-
-$('.examples td[data-index]').hide();
-$('.examples td[data-index]:first').show();
-$('.examples th').click(function() {
-  $('.examples th').removeClass('here');
-  $('.examples td[data-index]').fadeOut('slow');
-  $(this).addClass('here');
-  $( this).siblings('td[data-index]').fadeIn('slow');
-
-});
-
-// Suche nach Datum  
+    } 
+  );   
+ 
+// Handler fuer Suche nach Datum (BS) 
 
 var years = $('.year a'),
     rangeSelected = false,
@@ -232,41 +218,62 @@ $(document).on('click', '.year a', function(e){
   }
     // Suche formulieren
   var inputQuery = $( '#searchInput1' ).val();  
-  inputQuery = inputQuery.replace(/( AND )?date=[\d-]*/,'');
+  inputQuery = inputQuery.replace(/ date=[\d-]*/,'');
 
   if ( $('.year .selected').length > 0) {
-    var dateQuery = 'date=';
+    var dateQuery = ' date=';
     dateQuery += startSelected===endSelected ? (1980+startSelected) :
       (1980+startSelected) + '-'+ (1980+endSelected);
-    if (inputQuery)
-      inputQuery += ' AND ' + dateQuery;
-    else 
-      inputQuery = dateQuery;
+    inputQuery += dateQuery;
   }
   $( '#searchInput1' ).val(inputQuery);
 });
 
-//Suchhilfe
+// Handler fuer examples
+$('.examples td[data-index]').hide();
+$('.examples td[data-index]:first').show();
+$('.examples th').click(function() {
+  $('.examples th').removeClass('here');
+  $('.examples td[data-index]').fadeOut('fast');
+  $(this).addClass('here');
+  $( this).siblings('td[data-index]').fadeIn('fast');
+
+});
+
+/* 
+var oldSearchTerm = 'Buch'; 
 
 $('#searchInput1').on('keyup', function() {
   var eingetippt= ($(this).val()); 
-  var rex1 = /[=*" ]([\wäüöÄÜÖß]{4})/;
-  var rex2= /[\wäüöÄÜÖß]{4}/;
+  var rex1 = /[=*]([\w]{4})/;
+  var rex2= /[\w]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
-    //wenn 4 Buchstaben getippt sind...
   if ( match && match[1]) { q= match[1]; }
   else if ( match ) { q= match[0]; }
-  console.log(q);
-  if (q) {
-      //neuen Text einsetzen
-    $('.suggestion b').text(q); 
-      // Suchhilfe-Panel oeffnen
-    if (!$('#searchHelp th').hasClass('here'))
-      $('#searchHelp th').trigger('click');
+      //console.log(q);
+});
+  if (  c.test(oldSearchTerm) == false)  {
+    //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
+    alert (oldSearchTerm+c);
+    oldSearchTerm = c;
   }
-}); 
- 
+  neg= newSearchTerm.test(' author subject title ');
+
+  //newSearchTerm= newSearchTerm.match(/[\w]{4}/); 
+  if (newSearchTerm 
+    && newSearchTerm != oldSearchTerm
+    //&& newSearchTerm.match(/auth/) == -1
+    ) {
+      //alert(newSearchTerm);
+    $('.abc a').each( function() {
+     this.innerHTML = this.innerHTML.replace(oldSearchTerm, newSearchTerm);  
+    }); 
+  oldSearchTerm = new RegExp(newSearchTerm,"g");
+  }
+});
+  */
+
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
 var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
@@ -378,7 +385,8 @@ function doSearchOnReturn(optStartRecord) {
                  query.replace(/^([^=]+).*/, '$1') :
                  query.replace(/^.*sortBy\s+(.*)$/, '$1')
     $('#searchform1 input[name="startRecord"]').val(startRecord);
-    $('#showList > .showOptions select').val(sortBy);
+    //$('#showList > .showOptions select').val(sortBy);
+    $('#sortBy').val(sortBy);
     getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
 };
 
@@ -398,7 +406,8 @@ $("#maximumRecords").change(function(e){
 });
   
 // Handler fuer .showList select
-$(document).on('change', '#showList > .showOptions select', function(e){
+//$(document).on('change', '#showList > .showOptions select', function(e){
+$(document).on('change', '#sortBy', function(e){
    var target = $(this),
        sortBy = target.val(),
        currentQuery = $('#searchInput1').val(),
@@ -410,7 +419,7 @@ $(document).on('change', '#showList > .showOptions select', function(e){
    doSearchOnReturn();
 });
 
-// MODS/ LIDOS/  HTML umschalten (OS)
+// MODS/ LIDOS/  HTML umschalten (OS) 
 $(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target),
        dataFormat = target.data("format")
@@ -579,22 +588,20 @@ $(document).on( 'click', '#doSearch', function(e) {
 var plusMinus='.schlagworte .plusMinus';
 
   // Anfangszustand 
-/*
 $( plusMinus ).removeClass( 'close' );   
-//$ ( '.schlagworte li li ol' ).hide ();  
+$ ( '.schlagworte li li ol' ).hide ();  
 
-*/
 $(document).on('click', '#aO',  function ( ) { 
   $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
-  //$(plusMinus).addClass( 'close' );     
-  //$( this ).parent().fadeOut( 'slow');  
-  //$( '#aC').parent().fadeIn ('slow');
+  $(plusMinus).addClass( 'close' );     
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aC').parent().fadeIn ('slow');
 }); 
 $(document).on('click', '#aC',  function ( ) { 
     $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
- //   $(plusMinus).removeClass( 'close' );       
- // $( this ).parent().fadeOut( 'slow');  
- // $( '#aO').parent().fadeIn ('slow');   
+    $(plusMinus).removeClass( 'close' );       
+  $( this ).parent().fadeOut( 'slow');  
+  $( '#aO').parent().fadeIn ('slow');   
 }); 
 
 $(document).on('click', plusMinus, toggleNextSubtree);

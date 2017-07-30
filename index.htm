@@ -144,6 +144,10 @@
 
 <li>Finde Übersetzungen moderner Lyrik:<br/>
 <a href="#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20AND%20subject%3D%22Gegenwart%20(ab%201945)%22%20AND%20subject%3D%22Lyrik%22%20%20" class='code'>subject="Literaturübersetzung" AND subject="Gegenwart (ab 1945)" AND subject="Lyrik"</a></li>
+
+<li>In welchen Zeitschriften wurden vergleichende linguistische Studien mit Japanbezug publiziert?<br/>
+<a href="#find?query=subject%3D%22Japan%20im%20internationalen%20Vergleich%22%20AND%20subject%3D%22Grammatik%20und%20Syntax%22%20AND%20subject%3D%22Zeitschriftenartikel%22%20%20" class="code">subject="Japan im internationalen Vergleich" and subject="Grammatik und Syntax" and subject="Zeitschriftenartikel"</a></li>
+
 </ul> 
 
 <p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erheben kann. Daher ist es ratsam, verschiedene Schlagworte und Suchstrategien auszuprobieren.</p>
@@ -3921,7 +3925,7 @@
 								<tr>
 							    <td rowspan="2" class="showOptions"> 
 							    <em>Anzeigeoptionen:</em>
-								    <label class="chooseMaxHits fa">
+								    <label id="chooseMaxHits" class="fa">
 								      <select size="1" name="maximumRecords" id="maximumRecords" title="Maximale Treffer pro Seite">
 								        <option value="10" selected="selected"> 10</option>
 								        <option value="20"> 20</option>
@@ -3931,7 +3935,7 @@
 								      </select>
 								    </label> 
 									<label id="countResults" title="Sortierung der Resultate" class="fa"></span>
-										<select size="1">
+										<select size="1" id="sortBy" title="Sortierung der Treffer">
 											<option value="author" selected="selected">Autor</option>
 											<option value="title">Titel</option>
 											<option value="date">Jahr</option> 

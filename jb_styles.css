@@ -628,6 +628,7 @@ tr.examples {
   opacity: 1; 
 }
 
+#chooseMaxHits::before,
 .chooseMaxHits::before   { 
   content: '\f0cb'; /* fa-list-ol   */
 }
