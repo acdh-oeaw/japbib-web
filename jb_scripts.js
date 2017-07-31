@@ -11,7 +11,7 @@ var m = {},
 // Handler fuer Seitenwechsel (BS)
 
 var mainPages = ['about', 'find', 'thesaurus'];
-var aboutSubpages =  ['ziele', 'help', 'geschichte', 'impressum'];
+var aboutSubpages =  ['ziele', 'help', 'geschichte', 'bildnachweise', 'impressum'];
 
 function go2page(link) {  
   $( '.slide' ).hide(); 

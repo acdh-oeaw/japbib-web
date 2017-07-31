@@ -459,6 +459,20 @@ td.control {
   padding-right:.5em;
 }
 
+/****** Bildnachweise ******/
+
+.bildnachweise tr {
+}
+.bildnachweise td:nth-of-type(2) {
+  padding-left: 1em;
+  width: 30%
+}
+
+.bildnachweise img {
+    width: 100%;
+    height: inherit;
+}
+
 /****** Impressum ******/
 
 .impressum, 
