@@ -161,24 +161,31 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
 
 $( '.tipp' )
   .attr('title', 'Tipp')
-  .children()
-    .addClass('display') // :hover ausschalten
-    .hide();  
-$( document )
-  .on('click', '.tipp',
-    function () {
-      $( this )
-        .toggleClass ( 'q2x' )  // ? --> X
-        .children().slideToggle( 'slow' );
-      var title= 'Tipp'; 
-      if( $(this).hasClass('q2x')){
-        title = 'Tipp ausblenden';
-      }        
-      $(this).attr('title', title);  
-    } 
-  );   
- 
-// Handler fuer Suche nach Datum (BS) 
+  .children().hide();  
+$( document ).on('click', '.tipp', function () {
+  $( this )
+    .toggleClass ( 'q2x' )  // ? --> X
+    .children().slideToggle( 'slow' );
+  var title= 'Tipp'; 
+  if( $(this).hasClass('q2x')){
+    title = 'Tipp ausblenden';
+  }        
+  $(this).attr('title', title);  
+});    
+
+// Handler fuer suchOptionen (BS)
+
+// Navigation
+$('.examples td[data-index]').hide();
+$('.examples td[data-index]:first').show();
+$('.examples th').click(function() {
+  $('.examples th').removeClass('here');
+  $('.examples td[data-index]').fadeOut('slow');
+  $(this).addClass('here');
+  $( this).siblings('td[data-index]').fadeIn('slow');
+});
+
+// Suche nach Datum  
 
 var years = $('.year a'),
     rangeSelected = false,
@@ -229,50 +236,26 @@ $(document).on('click', '.year a', function(e){
   $( '#searchInput1' ).val(inputQuery);
 });
 
-// Handler fuer examples
-$('.examples td[data-index]').hide();
-$('.examples td[data-index]:first').show();
-$('.examples th').click(function() {
-  $('.examples th').removeClass('here');
-  $('.examples td[data-index]').fadeOut('fast');
-  $(this).addClass('here');
-  $( this).siblings('td[data-index]').fadeIn('fast');
-
-});
-
-/* 
-var oldSearchTerm = 'Buch'; 
+// Suchhilfe
 
 $('#searchInput1').on('keyup', function() {
   var eingetippt= ($(this).val()); 
-  var rex1 = /[=*]([\w]{4})/;
-  var rex2= /[\w]{4}/;
+  var rex1 = /[=* "]([\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4})/;
+  var rex2= /[\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
-  if ( match && match[1]) { q= match[1]; }
-  else if ( match ) { q= match[0]; }
-      //console.log(q);
-});
-  if (  c.test(oldSearchTerm) == false)  {
-    //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
-    alert (oldSearchTerm+c);
-    oldSearchTerm = c;
-  }
-  neg= newSearchTerm.test(' author subject title ');
+    // Ergebnisse vor ..= ausschließen
+  if ( match && match[1]) 
+    q= match[1];
+  else if ( match ) 
+    q= match[0]; 
 
-  //newSearchTerm= newSearchTerm.match(/[\w]{4}/); 
-  if (newSearchTerm 
-    && newSearchTerm != oldSearchTerm
-    //&& newSearchTerm.match(/auth/) == -1
-    ) {
-      //alert(newSearchTerm);
-    $('.abc a').each( function() {
-     this.innerHTML = this.innerHTML.replace(oldSearchTerm, newSearchTerm);  
-    }); 
-  oldSearchTerm = new RegExp(newSearchTerm,"g");
-  }
-});
-  */
+  if (q) { 
+    $('#searchHelp b').text(q);
+    if($('#searchHelp td').is(':hidden'))
+       $('#searchHelp th').trigger('click');
+  }      
+}); 
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
@@ -691,7 +674,7 @@ $( document).on( 'click', '.andOr', function(e) {
    neueAuswahl(term, conj); 
 });
 
-$( document).on( 'click', '.schlagworte a.zahl', function(e) {
+$( document).on( 'click', '#thesaurus .schlagworte a.zahl', function(e) {
   e.preventDefault();  
   var term= $( this ).prevAll( '.term:first' ).html();
   neueAuswahl(term); 
