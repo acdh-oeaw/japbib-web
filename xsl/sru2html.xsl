@@ -147,8 +147,10 @@
     
     <xsl:template match="sru:recordData">
         <xsl:variable name="title" select="mods:mods/mods:titleInfo/*[not(self::mods:subTitle)]"/>
-        <xsl:variable name="subtitle" select="mods:mods/mods:titleInfo/*[self::mods:subTitle]"/>
+        <xsl:variable name="subtitle" select="mods:mods/mods:titleInfo/*[self::mods:subTitle]"/><!--TODO: <xsl:value-of select="capitalize([selector])" />-->
         <xsl:variable name="authors" select="mods:mods/mods:name[mods:role/mods:roleTerm = 'aut']/mods:namePart"/>
+        <xsl:variable name="editors" select="mods:mods/mods:name[mods:role/mods:roleTerm = 'edt']/mods:namePart"/>
+        <xsl:variable name="translators" select="mods:mods/mods:name[mods:role/mods:roleTerm = 'trl']/mods:namePart"/>
         <xsl:variable name="year" select="mods:mods/mods:originInfo/mods:dateIssued"/>
         <xsl:variable name="pubPlace" select="mods:mods//mods:originInfo/mods:place/mods:placeTerm"/>
         <xsl:variable name="publisher" select="mods:mods//mods:originInfo/mods:publisher"/>
@@ -169,6 +171,7 @@
                     </xsl:if>
                 </xsl:for-each>
                 <xsl:text> </xsl:text>
+                <!-- TODO: Add ranslators if no author; add editors if no aut or trl-->
             </span>
             <span class="year"><xsl:value-of select="($year,concat('[',_:dict('no-year-abbr'),']'))[1]"/></span>
             <xsl:text>,&#160;</xsl:text>
@@ -178,7 +181,7 @@
         <div class="showEntry">
             <div class="showOptions">
                 <form>
-                    <label>Anzeige des Eintrags:
+                    <label>Anzeige des Eintrags:&nbsp;
                         <select size="4">
                             <option value="html" selected="selected">detailliert</option>
                             <option value="compact">kompakt</option>
@@ -226,7 +229,7 @@
                         <li>
                             <xsl:choose>
                                 <xsl:when test="$host/mods:titleInfo != ''">
-                                    <xsl:value-of select="string-join($host/mods:titleInfo/*,'. ')"/>
+                                    <xsl:value-of select="string-join($host/mods:titleInfo/*,'. ')"/><!--TODO: kein Punkt nach ?!,;.:-->
                                     <xsl:call-template name="numberOfRecordsTemplate">
                                         <xsl:with-param name="index">title</xsl:with-param>
                                         <xsl:with-param name="value"><xsl:value-of select="$host/mods:titleInfo/mods:title"/></xsl:with-param>

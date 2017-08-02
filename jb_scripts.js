@@ -11,22 +11,27 @@ var m = {},
 // Handler fuer Seitenwechsel (BS)
 
 var mainPages = ['about', 'find', 'thesaurus'];
-var aboutSubpages =  ['ziele', 'help', 'geschichte', 'impressum'];
+var aboutSubpages =  ['ziele', 'help', 'geschichte', 'bildnachweise', 'impressum'];
 
 function go2page(link) {  
   $( '.slide' ).hide(); 
-  $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $( '#'+link ).show();     
+  $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
   fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
 function go2subPage(link) {
-  $( '#about .content div').hide();
-  $( '#about .pageindex a' ).removeClass('here');
-  $( '#'+link ).show();
-  $( '#about .pageindex a[href~="#'+link+'"]' ).addClass( 'here' );
-  // go to #about
   go2page('about');
+  document.body.scrollTop= // For Chrome, Safari and Opera
+  document.documentElement.scrollTop = 0; // Firefox and IE 
+  $.each($( '#about .content div'), function() {
+    if( $(this).is(':visible') && this.id !== link)
+       $(this).fadeOut( 'slow', function() { 
+         $( '#'+link ).fadeIn('slow');
+       });
+  });
+  $( '#about .pageindex a' ).removeClass('here');
+  $( '#about .pageindex a[href~="#'+link+'"]' ).addClass( 'here' );
 }
 
 mainPages.forEach( function(link) {
@@ -51,8 +56,8 @@ aboutSubpages.forEach( function(link) {
   });
 });
 
-go2page('about');
-go2subPage('ziele');
+//go2page('about');
+//go2subPage('ziele');
 
 //setup crossroads
 
@@ -80,7 +85,7 @@ var resultsFramework;
 
 function getResultsHidden(href) {
   checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
-  var currentSorting = $('#showList > .showOptions select').val();
+  var currentSorting = $('#sortBy').val();
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   $('.showResults').hide('slow');
   $('.ladeResultate').show();
@@ -118,7 +123,7 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
         categoryFilter = ajaxParts.find('.categoryFilter > ol'),
         navResults = ajaxParts.find('.navResults'),
         frameWork = resultsFramework.clone();
-    frameWork.find('.showOptions select').val(currentSorting);
+    //frameWork.find('.showOptions select').val(currentSorting);
     if (statusText === 'success' && getResultsErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
       $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
       frameWork.find('#showList > .navResults').replaceWith(navResults);
@@ -161,24 +166,31 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
 
 $( '.tipp' )
   .attr('title', 'Tipp')
-  .children()
-    .addClass('display') // :hover ausschalten
-    .hide();  
-$( document )
-  .on('click', '.tipp',
-    function () {
-      $( this )
-        .toggleClass ( 'q2x' )  // ? --> X
-        .children().slideToggle( 'slow' );
-      var title= 'Tipp'; 
-      if( $(this).hasClass('q2x')){
-        title = 'Tipp ausblenden';
-      }        
-      $(this).attr('title', title);  
-    } 
-  );   
- 
-// Handler fuer Suche nach Datum (BS) 
+  .children().hide();  
+$( document ).on('click', '.tipp', function () {
+  $( this )
+    .toggleClass ( 'q2x' )  // ? --> X
+    .children().slideToggle( 'slow' );
+  var title= 'Tipp'; 
+  if( $(this).hasClass('q2x')){
+    title = 'Tipp ausblenden';
+  }        
+  $(this).attr('title', title);  
+});    
+
+// Handler fuer suchOptionen (BS)
+
+// Navigation
+$('.examples td[data-index]').hide();
+$('.examples td[data-index]:first').show();
+$('.examples th').click(function() {
+  $('.examples th').removeClass('here');
+  $('.examples td[data-index]').fadeOut('slow');
+  $(this).addClass('here');
+  $( this).siblings('td[data-index]').fadeIn('slow');
+});
+
+// Suche nach Datum  
 
 var years = $('.year a'),
     rangeSelected = false,
@@ -229,50 +241,26 @@ $(document).on('click', '.year a', function(e){
   $( '#searchInput1' ).val(inputQuery);
 });
 
-// Handler fuer examples
-$('.examples td[data-index]').hide();
-$('.examples td[data-index]:first').show();
-$('.examples th').click(function() {
-  $('.examples th').removeClass('here');
-  $('.examples td[data-index]').fadeOut('fast');
-  $(this).addClass('here');
-  $( this).siblings('td[data-index]').fadeIn('fast');
-
-});
-
-/* 
-var oldSearchTerm = 'Buch'; 
+// Suchhilfe
 
 $('#searchInput1').on('keyup', function() {
   var eingetippt= ($(this).val()); 
-  var rex1 = /[=*]([\w]{4})/;
-  var rex2= /[\w]{4}/;
+  var rex1 = /[=* "]([\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4})/;
+  var rex2= /[\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
-  if ( match && match[1]) { q= match[1]; }
-  else if ( match ) { q= match[0]; }
-      //console.log(q);
-});
-  if (  c.test(oldSearchTerm) == false)  {
-    //newSearchTerm= newSearchTerm.replace(/[=*]/, '');  
-    alert (oldSearchTerm+c);
-    oldSearchTerm = c;
-  }
-  neg= newSearchTerm.test(' author subject title ');
+    // Ergebnisse vor ..= ausschließen
+  if ( match && match[1]) 
+    q= match[1];
+  else if ( match ) 
+    q= match[0]; 
 
-  //newSearchTerm= newSearchTerm.match(/[\w]{4}/); 
-  if (newSearchTerm 
-    && newSearchTerm != oldSearchTerm
-    //&& newSearchTerm.match(/auth/) == -1
-    ) {
-      //alert(newSearchTerm);
-    $('.abc a').each( function() {
-     this.innerHTML = this.innerHTML.replace(oldSearchTerm, newSearchTerm);  
-    }); 
-  oldSearchTerm = new RegExp(newSearchTerm,"g");
-  }
-});
-  */
+  if (q) { 
+    $('#searchHelp b').text(q);
+    if($('#searchHelp td').is(':hidden'))
+       $('#searchHelp th').trigger('click');
+  }      
+}); 
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
@@ -385,7 +373,8 @@ function doSearchOnReturn(optStartRecord) {
                  query.replace(/^([^=]+).*/, '$1') :
                  query.replace(/^.*sortBy\s+(.*)$/, '$1')
     $('#searchform1 input[name="startRecord"]').val(startRecord);
-    $('#showList > .showOptions select').val(sortBy);
+    //$('#showList > .showOptions select').val(sortBy);
+    $('#sortBy').val(sortBy);
     getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
 };
 
@@ -405,7 +394,8 @@ $("#maximumRecords").change(function(e){
 });
   
 // Handler fuer .showList select
-$(document).on('change', '#showList > .showOptions select', function(e){
+//$(document).on('change', '#showList > .showOptions select', function(e){
+$(document).on('change', '#sortBy', function(e){
    var target = $(this),
        sortBy = target.val(),
        currentQuery = $('#searchInput1').val(),
@@ -417,7 +407,7 @@ $(document).on('change', '#showList > .showOptions select', function(e){
    doSearchOnReturn();
 });
 
-// MODS/ LIDOS/  HTML umschalten (OS)
+// MODS/ LIDOS/  HTML umschalten (OS) 
 $(document).on('change', '.showResults .showOptions select', function(e){
    var target = $(e.target),
        dataFormat = target.data("format")
@@ -519,7 +509,7 @@ $(document).on('click', '.results .plusMinus', openOrCloseDetails);
 function openOrCloseDetails(e) {
     e.preventDefault();
     if ( plusMinusDependentIsShown(this) ) {
-        $ ( this ).nextAll( 'div' ).hide('fast');
+        $ ( this ).nextAll( 'div' ).hide('slow');
     } else {
         $ ( this ).next('.showEntry').show('slow');
     }    
@@ -583,26 +573,23 @@ $(document).on( 'click', '#doSearch', function(e) {
 
 // Schlagwortbaum oeffnen und schliessen (BS)
 
-var plusMinus='.schlagworte .plusMinus';
+var plusMinus = '.schlagworte .plusMinus', 
+    ols=  '#thesaurus .schlagworte li li ol';
 
   // Anfangszustand 
 $( plusMinus ).removeClass( 'close' );   
-$ ( '.schlagworte li li ol' ).hide ();  
+$( ols ).hide();  
 
 $(document).on('click', '#aO',  function ( ) { 
-  $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
-  $(plusMinus).addClass( 'close' );     
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aC').parent().fadeIn ('slow');
+  $( ols ).show( 'slow' );
+  $( plusMinus ).addClass( 'close' );     
 }); 
 $(document).on('click', '#aC',  function ( ) { 
-    $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
-    $(plusMinus).removeClass( 'close' );       
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aO').parent().fadeIn ('slow');   
+  $( ols ).hide( 'slow' );
+  $( plusMinus ).removeClass( 'close' );     
 }); 
 
-$(document).on('click', plusMinus, toggleNextSubtree);
+$(document).on('click', '.schlagworte .plusMinus', toggleNextSubtree);
 function toggleNextSubtree(e) {
     if (e.currentTarget !== e.target) {return;}
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
@@ -689,7 +676,7 @@ $( document).on( 'click', '.andOr', function(e) {
    neueAuswahl(term, conj); 
 });
 
-$( document).on( 'click', '.schlagworte a.zahl', function(e) {
+$( document).on( 'click', '#thesaurus .schlagworte a.zahl', function(e) {
   e.preventDefault();  
   var term= $( this ).prevAll( '.term:first' ).html();
   neueAuswahl(term); 
