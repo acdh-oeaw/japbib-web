@@ -179,7 +179,7 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
              let $q := concat(string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
                     '//', index:index-as-xpath-from-map($i, index:map($context), 'match'))
 (:                 , $log := l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG'):)
-             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||replace(., '&quot;','\\&quot;')||'"')
+             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')
         , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
     return $response update insert node $scans into ./sru:extraResponseData
 };
