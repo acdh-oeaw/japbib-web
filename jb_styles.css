@@ -212,6 +212,7 @@ td.control {
   bottom: 0;
   padding-top: 11em;
   padding-top: 15vh;
+  padding-top: 5.95em;
 }
 .control.hilite a { 
   cursor: default;
@@ -324,7 +325,7 @@ td.control {
 }
 .pageindex,
 #wrapAbsolute {
-  margin-top: 1.8em;
+  margin-top: 0em;
 }
 #wrapFixed {  
   width: 15rem; 
@@ -341,8 +342,7 @@ td.control {
 
 .pageindex h4 {
   margin: 0;
-  padding: .4em;
-  /* min-width: 1em; */
+  line-height: 2.5rem;
   min-height: 1.1em;
   text-align: center;
   background: #eed;
@@ -523,6 +523,7 @@ td.control {
 }
 #searchform1 h2 {
     margin: 1rem;
+    /* color: #3f3f92; */
 }
 
 table.suchOptionen,
@@ -582,7 +583,7 @@ tr.examples {
 }
 .examples th.here {
 }
-.examples *[data-index] {
+.examples td {
   position: absolute;
   left: 0;
   top: 0;
@@ -590,12 +591,12 @@ tr.examples {
   height: 5em;
   border-top: 1px solid #ccc;
   text-align: center;
-  padding-top: .5em;
+  padding-top: 1.5em; 
 }
 
 .examples [data-index="author"],
 .examples [data-index="title"] {
-  padding-top: .8em;
+  /* padding-top: .8em; */
 }
 .examples ol, 
 .examples li {
@@ -617,7 +618,7 @@ tr.examples {
 /**** Anker ******/
  
 .examples .year {
- padding-top: .8em;
+ /* padding-top: .8em; */
  font-family: calibri, arial;
 } 
 .examples  a {
@@ -634,7 +635,7 @@ tr.examples {
   text-align: right;
   font-family: calibri, arial, sans-serif;
   background: rgba(233, 220, 175, 0.6);
-  margin: -.5em -1em .5em;
+  margin: -.5em -1em 1.5em;
   padding: .2em .5em;
 }
 .suchOptionen .showOptions {
@@ -664,39 +665,39 @@ tr.examples {
   content: '\f0dc'; /* fa-sort */
   content: '\f161'; /* fa-sort-amount-desc   */
 } 
+
 /* Suchrahmen gelb */
 
 #searchform1 { 
- background-color: rgb(255, 247, 212);
+ background-color: rgb(242, 234, 207);
+ background-color: rgb(240, 231, 196);
 } 
 .suchOptionen,
 .examples th:hover,
 .examples th.here {
-  background: rgb(255, 252, 239);
+ background-color: rgba(255, 247, 212, 0.55);
+  background: rgba(255, 255, 245, 0.49);
 } 
-.suchOptionen .showOptions,
-.examples th { 
-  background: rgb(242, 230, 189);
-  color: #555; 
+.examples th {
+  background: rgb(228, 211, 165);
+ background-color: rgb(222, 230, 228);
+ background-color: rgba(248, 243, 218, 0.27);
+  color: #555;
 } 
+
 #searchform1,
 .examples th,
 .examples *[data-index], 
 .examples li  {
-  border-color: #e4d3a5;
-}  
-.examples  a:hover, 
-.examples  a.selected { 
- background: #fbefc5;
- }   
-.examples year a:hover {   
- border-color: #bd8f0d;
- }
-/* Suchrahmen blau */
+  border-color: #ccc;
+} 
+
+/* Suchrahmen bunt */
 
 #searchform1 {
  background-color: rgb(250, 253, 253);
- background-color: rgb(230, 243, 243);
+ /* background-color: rgb(230, 243, 243); */
+ /* background-image: url('images/bg.png'); */
 } 
 .suchOptionen,
 .examples th:hover,
@@ -726,6 +727,33 @@ tr.examples {
  
 .examples .code {
   background: rgb(250, 255, 255);
+}
+
+/* Suchrahmen blau */
+ 
+.suchOptionen .showOptions,
+#searchform1 { 
+ background-color: rgb(215, 230, 230);
+ background-color: rgb(220, 235, 230);
+} 
+.suchOptionen,
+.examples th:hover,
+.examples th.here {
+  background: rgba(255, 255, 245, 0.7);
+} 
+.examples th {
+  background: rgba(255, 255, 245, 0.3);
+  color: #555;
+} 
+
+#searchform1,
+.examples th,
+.examples *[data-index], 
+.examples li  {
+  border-color: #ccc;
+} 
+#searchform1 h2 { 
+    color: #005; 
 }
 
  /*******  Suchfeld *********/
@@ -782,13 +810,23 @@ tr.search .fa-search {
 
 *************************/
 
+.showResults {
+  padding-top: 3em;
+} 
 #showList {
   /* margin-left: -1rem; */
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: .5em 1em;
-  background: rgb(255, 255, 255);
+  padding: 0;
+  /* background: rgb(196, 179, 130); */
   } 
+
+.results { 
+  margin: 0;
+  padding: 1em;
+  padding-left: 3em;
+}
 
 #show_entry th {
   text-align: right;
@@ -865,6 +903,28 @@ tr.search .fa-search {
   content: '\f02d'; /* fa-book  */
   } 
 
+/*  results Farben*/
+.showEntry,
+#find #showList {  
+  background: rgb(228, 211, 165); 
+  }
+
+.navResults { 
+  background: rgba(255, 255, 216, 0.5);
+  }
+.results {
+  background: rgba(255, 255, 216, 0.97);
+  background: rgba(255, 255, 255, 1);
+  color: #463a2e;
+} 
+.showEntry .showOptions { 
+  background: rgba(255, 255, 216, 0.1);
+  }
+.record-html {
+  background: rgba(255, 255, 225, 0.98); 
+  background: rgba(255, 255, 216, 0.97);
+} 
+
 /******* Fehlermeldungen ***********/
 
 .ajax-error {
@@ -892,7 +952,7 @@ tr.search .fa-search {
   
 /*******************
 
-   Schlagworte
+   Thesaurus, Schlagworte
 
 ********************/
 fieldset {
@@ -902,6 +962,13 @@ fieldset {
   padding: 1.5em 16.5em 1em 3em;
   padding:0;
   }
+.showOptions h2 {
+  text-align: left;
+  float: left;
+  padding-left: 1rem;
+  line-height: 3.5rem;
+  margin: 0;
+}
 #expandAll {
     padding: .5em;
     position: relative;
@@ -1052,10 +1119,10 @@ fieldset {
   padding: 0 1.5em 1em;  
   width: 120%;
   } 
-#Beispiele.tipp::before { 
-  position: absolute; 
-  top: -.2em;
-  right: 0; 
+#Beispiele.tipp::before {
+  position: absolute;
+  top: -0.2em;
+  right: 0;
   } 
 .tipp > *::after  { 
   content: '\f00d' ;  
@@ -1080,7 +1147,7 @@ fieldset {
   position: absolute;
   display: block;
   width: 100%;
-  top: -1.6em;
+  top: -5.6em;
   right: 3px;
   }  
 .beispiele div {
@@ -1263,31 +1330,27 @@ a.zahl::before {
   NavResults
   s.a. .showOptions
 *******************************/
-
-.showResults {
-  padding-top: 1em;
-}
-.showResults h2 {
-    margin-top: 1.2em;
-}
+ 
 .navResults {
   font-family: calibri, arial, sans-serif;
   padding: 1px 1em;
   line-height: 2rem;
-  height: 4em; 
-  text-align: right;
-  background: rgba(233, 220, 175, 0.6); 
-  margin: -.5em -1em .5em;
-  } 
-.navResults h2 {
-    float: left;
-    margin: 1rem;
-}
+  height: 3.5em;
+  text-align: right;  
+  }  
 .countResults {
- /* float: left; */
- line-height: 1.5em;
+ float: left;
+ /* line-height: 1.5em; */
  padding-top: .5em;
- }
+ font-size: 1.5rem;
+ color: #8e843b;
+ font-family: 'trebuchet ms';
+ font-weight: bold;
+}
+.hitList {
+  line-height: 2rem; 
+  padding-top: .75rem;
+}
 .navResults ul,
 .navResults li {
   margin: 0; 
