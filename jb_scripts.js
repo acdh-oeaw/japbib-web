@@ -15,18 +15,23 @@ var aboutSubpages =  ['ziele', 'help', 'geschichte', 'bildnachweise', 'impressum
 
 function go2page(link) {  
   $( '.slide' ).hide(); 
-  $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $( '#'+link ).show();     
+  $( '.control' ).add( $( '#navbar_items a' ) ).removeClass( 'hilite' ); 
   $('#'+link+'_control' ).add( $( '#navbar_items a[href~="#'+link+'"]' ) ).addClass( 'hilite' );   
   fixWishlist();  // toggle position thesaurus wishlist, s.u.
 }
 function go2subPage(link) {
-  $( '#about .content div').hide();
-  $( '#about .pageindex a' ).removeClass('here');
-  $( '#'+link ).show();
-  $( '#about .pageindex a[href~="#'+link+'"]' ).addClass( 'here' );
-  // go to #about
   go2page('about');
+  document.body.scrollTop= // For Chrome, Safari and Opera
+  document.documentElement.scrollTop = 0; // Firefox and IE 
+  $.each($( '#about .content div'), function() {
+    if( $(this).is(':visible') && this.id !== link)
+       $(this).fadeOut( 'slow', function() { 
+         $( '#'+link ).fadeIn('slow');
+       });
+  });
+  $( '#about .pageindex a' ).removeClass('here');
+  $( '#about .pageindex a[href~="#'+link+'"]' ).addClass( 'here' );
 }
 
 mainPages.forEach( function(link) {
@@ -51,8 +56,8 @@ aboutSubpages.forEach( function(link) {
   });
 });
 
-go2page('about');
-go2subPage('ziele');
+//go2page('about');
+//go2subPage('ziele');
 
 //setup crossroads
 
@@ -504,7 +509,7 @@ $(document).on('click', '.results .plusMinus', openOrCloseDetails);
 function openOrCloseDetails(e) {
     e.preventDefault();
     if ( plusMinusDependentIsShown(this) ) {
-        $ ( this ).nextAll( 'div' ).hide('fast');
+        $ ( this ).nextAll( 'div' ).hide('slow');
     } else {
         $ ( this ).next('.showEntry').show('slow');
     }    
@@ -568,26 +573,23 @@ $(document).on( 'click', '#doSearch', function(e) {
 
 // Schlagwortbaum oeffnen und schliessen (BS)
 
-var plusMinus='.schlagworte .plusMinus';
+var plusMinus = '.schlagworte .plusMinus', 
+    ols=  '#thesaurus .schlagworte li li ol';
 
   // Anfangszustand 
 $( plusMinus ).removeClass( 'close' );   
-$ ( '.schlagworte li li ol' ).hide ();  
+$( ols ).hide();  
 
 $(document).on('click', '#aO',  function ( ) { 
-  $( '#thesaurus .schlagworte li li ol' ).show( 'slow' );
-  $(plusMinus).addClass( 'close' );     
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aC').parent().fadeIn ('slow');
+  $( ols ).show( 'slow' );
+  $( plusMinus ).addClass( 'close' );     
 }); 
 $(document).on('click', '#aC',  function ( ) { 
-    $ ( '#thesaurus .schlagworte li li ol' ).hide( 'slow' );
-    $(plusMinus).removeClass( 'close' );       
-  $( this ).parent().fadeOut( 'slow');  
-  $( '#aO').parent().fadeIn ('slow');   
+  $( ols ).hide( 'slow' );
+  $( plusMinus ).removeClass( 'close' );     
 }); 
 
-$(document).on('click', plusMinus, toggleNextSubtree);
+$(document).on('click', '.schlagworte .plusMinus', toggleNextSubtree);
 function toggleNextSubtree(e) {
     if (e.currentTarget !== e.target) {return;}
     $ (this).nextAll( 'ol' ).toggle( 'slow' );
