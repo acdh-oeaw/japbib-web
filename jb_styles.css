@@ -19,8 +19,8 @@ a:hover {
   background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
   }
 h2 {
-  color: #8e843b; 
-  margin: 0 0 1em;
+  color: #8e843b;
+  margin: 0 0 1.5em;
   }
 h2:first-child {
     /* margin-top: 30px; */
@@ -612,8 +612,9 @@ tr.examples {
 }
 .examples small {
     display: block;
-    color: #aaa;
-  font-family: calibri, arial, sans-serif;
+    color: #888;
+    font-family: calibri, arial, sans-serif;
+    font-size: 1em;
 }
 /**** Anker ******/
  
@@ -634,8 +635,8 @@ tr.examples {
 .showOptions {
   text-align: right;
   font-family: calibri, arial, sans-serif;
-  background: rgba(233, 220, 175, 0.6);
-  margin: -.5em -1em 1.5em;
+  background: rgba(233, 220, 175, 0.7);
+  /* margin: -.5em -1em 1.5em; */
   padding: .2em .5em;
 }
 .suchOptionen .showOptions {
@@ -732,9 +733,9 @@ tr.examples {
 /* Suchrahmen blau */
  
 .suchOptionen .showOptions,
-#searchform1 { 
+#searchform1 {
  background-color: rgb(215, 230, 230);
- background-color: rgb(220, 235, 230);
+ /* background-color: rgba(220, 230, 230, 1); */
 } 
 .suchOptionen,
 .examples th:hover,
@@ -921,8 +922,8 @@ tr.search .fa-search {
   background: rgba(255, 255, 216, 0.1);
   }
 .record-html {
-  background: rgba(255, 255, 225, 0.98); 
-  background: rgba(255, 255, 216, 0.97);
+  background: rgba(255, 255, 225, 0.98);
+  background: rgb(255, 247, 212);
 } 
 
 /******* Fehlermeldungen ***********/
@@ -990,7 +991,7 @@ fieldset {
   }
 .schlagworte {
     max-width: 35em;
-    margin: 0 auto;
+    margin: 2em auto;
     padding-bottom: 2em;
 }
 .schlagworte ul,
