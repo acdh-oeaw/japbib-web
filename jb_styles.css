@@ -1,13 +1,16 @@
-/***************
-   Schrift
-****************/ 
+/**********************
+   Schrift & basic tags
+**********************/ 
 body {   
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
   } 
 h2, h3, h4 {
-  font-family: "Trebuchet MS", Arial, sans-serif; 
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  margin-top: 1.5em;
+  margin-bottom: 1rem;
+  color: #8e843b;
   } 
 a {
   color:#005; 
@@ -19,33 +22,24 @@ a:hover {
   background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
   }
 h2 {
-  color: #8e843b; 
-  margin: 0 0 1em;
+  color: #8e843b;
+  margin: 0 0 1.5em;
   }
 h2:first-child {
     /* margin-top: 30px; */
     position: relative;
     z-index: 2;
     /* margin-bottom: -34px; */
-}
-h3 {
-  color: #8e843b;
-  }
-
-h4 {
-  color: #8e843b;
-  }
-.white {
-  background-color:#fff; 
-  }
+} 
 p { 
   margin: 1em 0;
 }
-*[class^="fa-"]::before,
-*[class*=" fa-"]::before {
-  font-family: FontAwesome;
+*::before,
+*::before {
+  font-family: FontAwesome, calibri, arial;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /***************
@@ -63,9 +57,7 @@ body {
   background-image:url('images/bg.png');  
 }
  
-
 /* head */
-
 
 #main,
 #navbar {
@@ -85,26 +77,19 @@ top:0;
 right:0;
   
 }
-#logo1,
-#logo2 {
+#logo1  {
   position: absolute;
   top: 0;
   left: 0; 
   right: 0; 
-  bottom: 0;  
-  }
-#logo1 {
+  bottom: 0;   
   padding-left: 30px;
   padding-top: 42px; 
   background: -webkit-linear-gradient(left, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For  Safari 5.1 to 6.0 */
     background: -o-linear-gradient(right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* For Firefox 3.6 to 15 */
     background: linear-gradient(to right, #c5b582, rgba(197, 181, 130, 0.1), rgba(0,0,0, 0)) ; /* #e7d5a7 Standard syntax (must be last) */
-  }
-#logo2 {
-  right: 0; 
-  display: none;
-  }
+} 
 h1 {
   position: relative;
   text-align: center;
@@ -113,17 +98,17 @@ h1 {
   font-family: "trebuchet ms";
   font-size: 32px;
   z-index: 1;
-  }
+}
 .H1_big span {
   display:block;
   margin: 0 100px;
   font-size: .7em;
 }
 .H1_big em {
-    font-style: normal;
-    text-shadow: 2px 2px 6px #e4d3a5, -2px -2px 6px #e4d3a5;    
-    border-radius: 5px;
-    color: #615a2c;
+  font-style: normal;
+  text-shadow: 2px 2px 6px #e4d3a5, -2px -2px 6px #e4d3a5;    
+  border-radius: 5px;
+  color: #615a2c;
 }
 #subhead {
     background: rgba(174, 158, 108, 0.21);
@@ -141,7 +126,7 @@ h1 {
   line-height:15px;
   font-family: calibri, arial, sans-serif;
   position:relative;
-  }
+}
 #navbar_items {
   display: block;
   position: absolute;
@@ -259,14 +244,6 @@ td.control {
   text-align: left;
 } 
 
-/*************/
-.next {
- text-align: right;
- }
-.next a {
- font-style: italic;
- }
-
 /*******************
    JS-Funktionen 
 ********************/
@@ -292,20 +269,20 @@ td.control {
   background:#fff;
   padding: 4.5rem 5%;
   min-height: 50vh;
-  }
- 
-.white {
 }
+
 .content {
   margin-right: 16.5rem;
   margin-left: auto;
   max-width: 50em; 
   line-height: 1.5em;
-  }
+}
 #about .content {
   margin-right: auto;
-  }
- 
+}
+
+/* pageindex  */
+
 .pageindex {
   float: right;
   width: 15rem;
@@ -393,8 +370,14 @@ td.control {
  margin-bottom:-5px;
  }
 
-/******* #about #help ***********/
+/******* #about  ***********/
 
+.next {
+ text-align: right;
+ }
+.next a {
+ font-style: italic;
+ }
 .helpExample {
   list-style:none;
   padding-left: 8em;  
@@ -409,6 +392,145 @@ td.control {
   margin-left: -6em;
   font-style: italic;
 }
+/* Bildnachweise */
+
+.bildnachweise tr {
+}
+.bildnachweise td:nth-of-type(2) {
+  padding-left: 1em;
+  width: 30%
+}
+
+.bildnachweise img {
+    width: 100%;
+    height: inherit;
+}
+
+/*  Impressum  */
+
+.impressum, 
+.impressum li {
+ list-style: none; 
+ margin: 0;
+ padding: 0;
+ }
+.impressum li {
+ margin-left:3em;
+ margin-bottom:1em;
+ }
+.impressum i {
+ display: block; 
+ text-indent: -3em;
+ }
+.impressum span {
+ display: block; 
+ line-height: 1.25em;
+ margin-bottom: 1em;
+ }
+
+  
+/*******************
+
+   Thesaurus, Schlagworte
+
+********************/
+fieldset {
+  border: 0;
+  }
+#schlagworte { 
+  padding: 1.5em 16.5em 1em 3em;
+  padding:0;
+  }
+.showOptions h2 {
+  text-align: left;
+  float: left;
+  padding-left: 1rem;
+  line-height: 3.5rem;
+  margin: 0;
+}
+#expandAll {
+    padding: .5em;
+    position: relative;
+    /* float: right; */
+}
+#expandAll > div {
+    line-height: 1.2em;
+}
+#expandAll a {
+  text-transform: lowercase;
+  color: #333300;
+  display: inline-block;
+  margin-left: -1.5em;
+  padding: 0 .5em 0 2.5em;
+  border-radius: .5em;
+  position: relative;
+  z-index: 2;
+  width: 6em;
+  }
+.schlagworte {
+    max-width: 35em;
+    margin: 2em auto;
+    padding-bottom: 2em;
+}
+.schlagworte ul,
+.schlagworte ol {
+  margin: 0; 
+  padding: 0;
+  list-style: none;
+  }
+.schlagworte li {
+  position: relative;
+  margin: 1px 1.5em; 
+  padding: 0; 
+  list-style: none;
+  }
+.schlagworte li::first-letter { 
+  text-transform: uppercase;
+  }
+.schlagworte span { 
+  padding-right: .5em; 
+  position: relative;
+  z-index: 2;
+  }  
+.schlagworte li.li1  { 
+  margin-top: 1em; 
+  margin-left: 0; 
+  }  
+.pageindex ol.schlagworte {
+    margin: 1em;
+    padding: 0;
+    font-size: .85rem;
+}
+.pageindex .schlagworte li.li1 {
+    margin: .5em 0;
+    padding: 0;
+}
+.pageindex .schlagworte li {
+  margin-right:0;
+  }
+.pageindex .schlagworte a {  
+  padding: 0;
+  text-indent: 0;
+}
+  
+  
+#hint_result .schlagworte {
+  padding-left: 1em;
+  }
+#hint_result .schlagworte li.li1  {  
+  margin-left: -1.5em; 
+  }
+#hint_result .schlagworte li   {  
+  margin-right: 0; 
+}
+.schlagworte .li1 > span { 
+  margin-bottom: .5em; 
+  font-weight: bold;  
+  color: #8e843b;  
+  text-transform: uppercase;  
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  } 
+
 /********  Thesaurus, #wishList ***********/
  
 #wishList ul {
@@ -469,42 +591,6 @@ td.control {
   opacity: .5; 
   padding-right:.5em;
 }
-
-/****** Bildnachweise ******/
-
-.bildnachweise tr {
-}
-.bildnachweise td:nth-of-type(2) {
-  padding-left: 1em;
-  width: 30%
-}
-
-.bildnachweise img {
-    width: 100%;
-    height: inherit;
-}
-
-/****** Impressum ******/
-
-.impressum, 
-.impressum li {
- list-style: none; 
- margin: 0;
- padding: 0;
- }
-.impressum li {
- margin-left:3em;
- margin-bottom:1em;
- }
-.impressum i {
- display: block; 
- text-indent: -3em;
- }
-.impressum span {
- display: block; 
- line-height: 1.25em;
- margin-bottom: 1em;
- }
  
 
 /*******************
@@ -522,8 +608,8 @@ td.control {
  border-radius: 7px;
 }
 #searchform1 h2 {
-    margin: 1rem;
-    /* color: #3f3f92; */
+ margin: 1rem;
+ /* color: #3f3f92; */
 }
 
 table.suchOptionen,
@@ -540,7 +626,7 @@ table.suchOptionen,
   min-width: 24em;
   text-align: center;
   border-collapse: collapse;
-  border-radius: 9px;
+  border-radius: 0 0 9px 9px;
  }
 .suchOptionen th {
  text-align: right;
@@ -571,7 +657,7 @@ tr.examples {
   border: 1px solid #ccc;
   border-radius: 7px 7px 0 0;
   z-index:2;
-  color: #555; 
+  color: #555;
   cursor: pointer;
   font-family: calibri, arial, sans-serif;
 }
@@ -579,7 +665,7 @@ tr.examples {
 .examples th.here {
   z-index:3;
   color:inherit;
-  border-bottom-color: rgba(0,0,0,0);
+  /* border-bottom-color: rgba(0,0,0,0); */
 }
 .examples th.here {
 }
@@ -590,8 +676,9 @@ tr.examples {
   right: 0;
   height: 5em;
   border-top: 1px solid #ccc;
+  border-radius: 0;
   text-align: center;
-  padding-top: 1.5em; 
+  padding-top: 1.5em;
 }
 
 .examples [data-index="author"],
@@ -612,8 +699,9 @@ tr.examples {
 }
 .examples small {
     display: block;
-    color: #aaa;
-  font-family: calibri, arial, sans-serif;
+    color: #888;
+    font-family: calibri, arial, sans-serif;
+    font-size: 1em;
 }
 /**** Anker ******/
  
@@ -634,8 +722,8 @@ tr.examples {
 .showOptions {
   text-align: right;
   font-family: calibri, arial, sans-serif;
-  background: rgba(233, 220, 175, 0.6);
-  margin: -.5em -1em 1.5em;
+  background: rgba(233, 220, 175, 0.7);
+  /* margin: -.5em -1em 1.5em; */
   padding: .2em .5em;
 }
 .suchOptionen .showOptions {
@@ -645,10 +733,6 @@ tr.examples {
   border-radius: 0 0 7px 7px;
 }
 .showOptions label::before {  
-  font-family:fontawesome; 
- text-rendering: auto;
- -webkit-font-smoothing: antialiased;
- -moz-osx-font-smoothing: grayscale;
   padding-left: .5em;
   padding-right: .2em;
   opacity: .7;
@@ -717,30 +801,23 @@ tr.examples {
 .examples li  {
   border-color: rgb(208, 218, 218);
 }
-.examples  a:hover, 
-.examples  a.selected { 
-  background: #c5f9fb;
-}  
-.examples .year a:hover {  
-  border-color: #0d95bd;
-}
- 
-.examples .code {
-  background: rgb(250, 255, 255);
-}
 
 /* Suchrahmen blau */
  
 .suchOptionen .showOptions,
-#searchform1 { 
+#searchform1 {
  background-color: rgb(215, 230, 230);
- background-color: rgb(220, 235, 230);
+ /* background-color: rgba(220, 230, 230, 1); */
 } 
 .suchOptionen,
 .examples th:hover,
 .examples th.here {
   background: rgba(255, 255, 245, 0.7);
 } 
+.examples th:hover, 
+.examples th.here { 
+  border-bottom-color: rgb(243, 247, 240);
+}
 .examples th {
   background: rgba(255, 255, 245, 0.3);
   color: #555;
@@ -755,8 +832,29 @@ tr.examples {
 #searchform1 h2 { 
     color: #005; 
 }
+.examples  a:hover, 
+.examples  a.selected { 
+  background: #c5f9fb;
+}  
+.examples .year a:hover {  
+  border-color: #0d95bd;
+}
+ 
+.examples .code {
+  background: rgb(250, 255, 255);
+}
+
 
  /*******  Suchfeld *********/
+
+#searchform1 input {
+  box-sizing: border-box; 
+  display: block; 
+  width: 100%;
+  padding: .5em;
+  font-size: 1rem;
+  font-family: calibri, arial, sans-serif;
+} 
 
 tr.search  {
   position: relative;
@@ -772,7 +870,7 @@ tr.search .fa {
   top: 1px;
   cursor: pointer;
 }
-tr.search .fa[class*=fa-times] {
+tr.search .fa-times {
   right: 2.75rem;
   padding: .5em;
   background: rgba(255, 255, 255, 0.68);
@@ -787,22 +885,12 @@ tr.search .fa-search {
   right: 0px;
   opacity: .6;
   font-size: 1.5rem;
-  display: block;
-  /* border:  1px solid #888; */
+  display: block; 
   line-height: 2.4rem;
   padding: 0;
   width: 2.5rem;
   text-align: center;
 }
-#searchform1 input {
- box-sizing: border-box;
- display: inline-block;
- display: block; 
- width: 100%;
- padding: .5em;
- font-size: 1rem;
- font-family: calibri, arial, sans-serif;
- } 
 
 /*************************
 
@@ -813,8 +901,7 @@ tr.search .fa-search {
 .showResults {
   padding-top: 3em;
 } 
-#showList {
-  /* margin-left: -1rem; */
+#showList { 
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: .5em 1em;
@@ -830,8 +917,10 @@ tr.search .fa-search {
 
 #show_entry th {
   text-align: right;
+} 
+.record-html {
+  padding: 1em;
 }
- 
 .showEntry, 
 .showEntry li {
   list-style:none;
@@ -844,8 +933,6 @@ tr.search .fa-search {
     margin: 0 -.5em .5em;
     padding: 0;
     border-radius: 5px;
-    background: rgb(255, 247, 212);
-    /* background: rgb(255, 255, 255); */
     position: relative;
 }
 .showEntry a { 
@@ -855,8 +942,7 @@ tr.search .fa-search {
   margin-left: 9em;   
   }
 .showEntry .showOptions {
-    margin: 0;
-    /* text-align: center; */
+    margin: 0; 
     text-align: left;
     padding-left: 1em;
 }
@@ -880,9 +966,6 @@ tr.search .fa-search {
 .showEntry.compact li::after {
   content: ' ';
   } 
-.record-html {
-    padding: 1em;
-}
 .pubForm::before {
   content: 'abc';
   display: block;
@@ -896,7 +979,7 @@ tr.search .fa-search {
   margin-left: 0.2em;
   margin-bottom: .2em;
   }
-.article {
+.article::before {
   content: '\f15c'; /* fa-file-text */
   }
 .buch::before { 
@@ -921,8 +1004,8 @@ tr.search .fa-search {
   background: rgba(255, 255, 216, 0.1);
   }
 .record-html {
-  background: rgba(255, 255, 225, 0.98); 
-  background: rgba(255, 255, 216, 0.97);
+  background: rgba(255, 255, 225, 0.98);
+  background: rgb(255, 247, 212);
 } 
 
 /******* Fehlermeldungen ***********/
@@ -948,109 +1031,6 @@ tr.search .fa-search {
 .ajax-error h1 {
   margin: 0 0 0 0;
 }
-
-  
-/*******************
-
-   Thesaurus, Schlagworte
-
-********************/
-fieldset {
-  border: 0;
-  }
-#schlagworte { 
-  padding: 1.5em 16.5em 1em 3em;
-  padding:0;
-  }
-.showOptions h2 {
-  text-align: left;
-  float: left;
-  padding-left: 1rem;
-  line-height: 3.5rem;
-  margin: 0;
-}
-#expandAll {
-    padding: .5em;
-    position: relative;
-    /* float: right; */
-}
-#expandAll > div {
-    line-height: 1.2em;
-}
-#expandAll a {
-  text-transform: lowercase;
-  color: #333300;
-  display: inline-block;
-  margin-left: -1.5em;
-  padding: 0 .5em 0 2.5em;
-  border-radius: .5em;
-  position: relative;
-  z-index: 2;
-  width: 6em;
-  }
-.schlagworte {
-    max-width: 35em;
-    margin: 0 auto;
-    padding-bottom: 2em;
-}
-.schlagworte ul,
-.schlagworte ol {
-  margin: 0; 
-  padding: 0;
-  list-style: none;
-  }
-.schlagworte li {
-  position: relative;
-  margin: 1px 1.5em; 
-  padding: 0; 
-  list-style: none;
-  }
-.schlagworte li::first-letter { 
-  text-transform: uppercase;
-  }
-.schlagworte span { 
-  padding-right: .5em; 
-  position: relative;
-  z-index: 2;
-  }  
-.schlagworte li.li1  { 
-  margin-top: 1em; 
-  margin-left: 0; 
-  }  
-.pageindex ol.schlagworte {
-    margin: 1em;
-    padding: 0;
-    font-size: .85rem;
-}
-.pageindex .schlagworte li.li1 {
-    margin: .5em 0;
-    padding: 0;
-}
-.pageindex .schlagworte li {
-  margin-right:0;
-  }
-.pageindex .schlagworte a {  
-  padding: 0;
-  text-indent: 0;
-}
-  
-  
-#hint_result .schlagworte {
-  padding-left: 1em;
-  }
-#hint_result .schlagworte li.li1  {  
-  margin-left: -1.5em; 
-  }
-#hint_result .schlagworte li   {  
-  margin-right: 0; 
-}
-.schlagworte .li1 > span { 
-  margin-bottom: .5em; 
-  font-weight: bold;  
-  color: #8e843b;  
-  text-transform: uppercase;  
-  font-family: "Trebuchet MS", Arial, sans-serif;
-  } 
 
   
 /*****************

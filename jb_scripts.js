@@ -57,7 +57,7 @@ aboutSubpages.forEach( function(link) {
 });
 
 //go2page('about');
-//go2subPage('ziele');
+go2subPage('ziele');
 
 //setup crossroads
 
@@ -245,8 +245,8 @@ $(document).on('click', '.year a', function(e){
 
 $('#searchInput1').on('keyup', function() {
   var eingetippt= ($(this).val()); 
-  var rex1 = /[=* "]([\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4})/;
-  var rex2= /[\wäöüÄÜÖßâêîôûÂÊÎÔÛ]{4}/;
+  var rex1 = /[=* "]([^=* "]{4})/;
+  var rex2= /^(?!auth|subj|titl)[^=* "]{4}/;
   var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
   var q = '';
     // Ergebnisse vor ..= ausschließen
