@@ -55,7 +55,7 @@ declare %updating %private function api:scan-filter-limit-response-and-cache($sc
                   $x-sort as xs:string?, $x-mode as xs:string?,
                   $x-filter as xs:string?, $x-debug as xs:boolean) {
    let $try-scan := api:scan-filter-limit-response($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug, false()),
-       $ret := $try-scan[1],
+       $ret := if ($try-scan[1] instance of element(api:empty)) then () else $try-scan[1],
        $terms := $try-scan[2],
        $cached-scan := $try-scan[3]
    return (db:output($ret), if ($terms instance of document-node() and empty($cached-scan)) then cache:scan($terms, api:parseScanClause($scanClause), $x-sort) else ())
@@ -79,7 +79,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
        $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
        $logRuntime := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
-   return ($ret, $terms, $cached-scan)
+   return (if (empty($ret)) then <api:empty/> else $ret, $terms, $cached-scan)
 };
 
 (:~
@@ -106,7 +106,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                      concat(
                          string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
                          "for $t in ", $xpath_or_diagnostics, "
-                          let $v := data($t)
+                          let $v := normalize-space(data($t))
                           group by $v
                           let $c := count($t) 
                           order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
@@ -133,6 +133,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
         $ret :=
             if ($x-debug = true()) then <debug>{$xquery}</debug>
             else $terms_or_diagnostics
+(:        , $logRet := l:write-log('api:do-scan return '||substring(serialize($ret), 1, 240)||' instance of document-node() '||$ret instance of document-node(), 'DEBUG'):)
     return $ret
 };
 
@@ -185,9 +186,9 @@ declare %private function api:scanResponse($scanClause as xs:string,
         },
         $error := if (normalize-space($scanClauseParsed/term) ne '' and empty($anchor-term)) then error(xs:QName('diag:noAnchor'), 'Anchor term '||$scanClauseParsed/term||' was not found in scan using relation '||$scanClauseParsed/relation||' '||$scanClause) else (),
         $start-term-position := (count($anchor-term/preceding-sibling::*) + 1) + (-$responsePosition + 1),
-        $scan-clause := xs:string($scanClauseParsed)
-    return
-    if (normalize-space($scanClauseParsed/term) ne '') then
+        $scan-clause := xs:string($scanClauseParsed),
+        $ret :=
+    if (normalize-space($scanClauseParsed/term) ne '' or $maximumTerms ne 1) then
     <sru:scanResponse xmlns:srw="//www.loc.gov/zing/srw/"
               xmlns:diag="//www.loc.gov/zing/srw/diagnostic/"
               xmlns:myServer="http://myServer.com/">
@@ -202,6 +203,8 @@ declare %private function api:scanResponse($scanClause as xs:string,
         </sru:echoedScanRequest>
     </sru:scanResponse>
     else ()
+(:        , $logRet := l:write-log('api:scanResponse return '||substring(serialize($ret), 1, 240), 'DEBUG'):)
+    return $ret
 };
 
 declare %private function api:t-unmask-quotes($t as element(term)) as xs:string {
