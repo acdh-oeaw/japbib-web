@@ -75,7 +75,9 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
                         if ($sort-xpath != '')
                         then
                             concat("for $m in ",$xpath," ", 
-                                   "let $o := normalize-space(($m/",$sort-xpath,")[1]) ",
+                                   switch ($sort-index/@datatype)
+                                     case"xs:integer" return concat("let $o := ($m/",$sort-xpath,")[1] ")
+                                     default return concat("let $o := normalize-space(($m/",$sort-xpath,")[1]) "),
                                    "order by ($o, ", $max-sort-value, ")[1] ",
                                    if ($sort-index/@coll) then "collation '"||$sort-index/@coll||"'" else "",
                                    "return $m"
