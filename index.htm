@@ -117,12 +117,16 @@
               anzustellen.</p>
               <p class="next">Weiter zu: <a href="#help">Hinweise zur Benützung</a></p>
             </div>
-            <div id="help">
+            <div id="help"> 
+
               <h2>Hinweise zur Benützung</h2>
+
               <p>Die vorliegende Website ist in drei Hauptbereiche unterteilt: 1) Metainformationen (Über JB 80, s.
               Menü rechts); 2) Thesaurus; und 3) Suchen und Finden. Im Folgenden werden die verschiedenen
               Suchfunktionen auf Thesaurus und Suchseite erklärt.</p>
+
               <h3>Thesaurus</h3>
+
               <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Das Schlagwortschema wurde
               im Zuge der Recherchen zu diesem Projekt sukzessive entwickelt und verfeinert. Die umfangreichste
               Schlagwortgruppe „Thema“ bezieht sich auf Sachgebiete und umfasst über 500 Schlagworte in 12
@@ -131,7 +135,14 @@
               <p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten gesucht werden. Ein
               Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. Es können auch
               kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man auf die neben dem Schlagwort stehende
-              Zahl klicken. Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können
+              Zahl klicken.</p>
+
+              <ul class="helpExample thesaurus">
+                <li>Beispiel</li>
+                <li class="plusMinus">&nbsp;Wirtschaft <span class='aZahl aHover'>13949</span></li> 
+              </ul>
+
+              <p>Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können
               von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt
               werden.</p>
               <p>Ausgewählte Begriffe sind üblicherweise durch „AND“ verbunden, das heißt, der gesuchte Eintrag muss
@@ -139,24 +150,24 @@
               gesucht die entweder Schlagwort A oder Schlagwort B enthalten.</p>
               <ul class="helpExample">
                 <li>Beispiele</li>
-                <li>Finde Beiträge zur Religion im Altertum:<br>
-                  <a class='code' href=
+                <li>Finde Beiträge zur Religion im Altertum:
+                  <a class='code aHover' href=
                   "#find?query=subject%3D%22Philosophie%20und%20Religion%22%20AND%20subject%3D%22Altertum%20(bis%201192)%22%20%20">
                   subject="Philosophie und Religion" AND subject="Altertum (bis 1192)"</a>
                 </li>
-                <li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:<br>
-                  <a class='code' href=
+                <li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:
+                  <a class='code aHover' href=
                   "#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20">
                   subject="selbständige Publikation" AND subject="Gesellschaft" OR subject="Politik"</a>
                 </li>
-                <li>Finde Übersetzungen moderner Lyrik:<br>
-                  <a class='code' href=
+                <li>Finde Übersetzungen moderner Lyrik:
+                  <a class='code aHover' href=
                   "#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20AND%20subject%3D%22Gegenwart%20(ab%201945)%22%20AND%20subject%3D%22Lyrik%22%20%20">
                   subject="Literaturübersetzung" AND subject="Gegenwart (ab 1945)" AND subject="Lyrik"</a>
                 </li>
-                <li>In welchen Zeitschriften wurden vergleichende linguistische Studien mit Japanbezug publiziert?<br>
+                <li>In welchen Zeitschriften wurden vergleichende linguistische Studien mit Japanbezug publiziert? 
 
-                  <a class="code" href=
+                  <a class="code aHover" href=
                   "#find?query=subject%3D%22Japan%20im%20internationalen%20Vergleich%22%20AND%20subject%3D%22Grammatik%20und%20Syntax%22%20AND%20subject%3D%22Zeitschriftenartikel%22%20%20">
                   subject="Japan im internationalen Vergleich" and subject="Grammatik und Syntax" and
                   subject="Zeitschriftenartikel"</a>
@@ -165,7 +176,9 @@
               <p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung
               historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erheben kann. Daher ist es ratsam,
               verschiedene Schlagworte und Suchstrategien auszuprobieren.</p>
+
               <h4>Zahlenangaben</h4>
+              
               <p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class="plusMinus"></span>“
               als Zeichen dafür, dass dahinter noch weitere Schlagworte versteckt sind. Öffnet man die unteren Ebenen,
               ändert sich üblicherweise auch die Zahl neben dem Schlagwort. Diese umfasst im <span class=
@@ -173,46 +186,63 @@
               Untergruppen gekennzeichnet sind. Öffnet man allerdings die Untergruppen (<span class=
               "plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber
               keiner Untergruppe zugeordnet sind.</p>
-              <ul class="helpExample">
+              <ul class="helpExample thesaurus">
                 <li>Beispiel</li>
-                <li class="plusMinus">&nbsp;Geschichte <span class='zahl'>2633</span></li>
-                <li class="plusMinus close">&nbsp;Geschichte <span class='zahl'>340</span></li>
+                <li class="plusMinus">&nbsp;Geschichte <span class='aZahl'>2633</span></li>
+                <li class="plusMinus close">&nbsp;Geschichte <span class='aZahl'>340</span></li> 
               </ul>
               <p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort
               „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>
+
               <h3>Suchen und Finden</h3>
-              <p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige Suchvorschläge (Autor,
-              Werktitel, Jahr, Suchhilfe) zu sehen. Beim Eintippen eines beliebigen Schlagworts öffnet sich das Feld
-              „Suchhilfe“ und schlägt Modifikationen, etwa „Sternchensuche“ oder Suche nach Titeln vor. Sobald man
-              einen Vorschlag anklickt, wird die Suche ausgeführt. Der exakte Suchbegriff erscheint aber auch im
+              
+              <p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige „Reiter“ mit Suchvorschlägen zu sehen. 
+              Ins Suchfeld können beliebige, frei gewählte Suchbegriffe einbgetragen werden. Die „Reiter“ vereinfachen folgende 
+              Suchvorgänge: 
+              <ul>
+                <li> Alphabetische Suche nach Autoren</li>
+                <li> Alphabetische Suche nach Werktiteln</li>
+                <li> Suche nach Publikationszeitraum (sinnvoll in Kombination mit anderen Suchbegriffen)</li>
+                <li> Suche mit Platzhaltern (*): Beim Eintippen eines beliebigen Schlagworts öffnet sich das Feld
+              „Suchhilfe“ und schlägt Modifikationen, etwa „Sternchensuche“ oder Suche nach Titeln vor.</li>
+              </ul> 
+
+              Sobald man einen Vorschlag anklickt, wird die Suche ausgeführt. Der Suchbegriff erscheint aber auch im
               Suchfeld und lässt sich hier händisch weiter modifizieren. Mit der Return-Taste oder einem Klick auf die
               Lupe kann man alles, was im Suchfeld steht, erneut abfragen.</p>
-              <p>Ähnlich funktioniert die Suche nach Autoren und Werktiteln. Mit Hilfe des Feldes „Jahr“ im Suchmenü
-              lassen sich die Suchtreffer auf bestimmte Jahre oder Perioden der Publikation eingrenzen.</p>
+
               <h4>Suchparameter</h4>
-              <p>Folgende Suchparameter werden verwendet:</p>
-              <ul class="helpExample">
-                <li></li>
+
+              <p>Für spezifische Fragen stehen folgende Suchparameter zur Verfügung:</p>
+              <ul> 
                 <li><code>author=</code> Suche wird auf Autoren eingegrenzt</li>
                 <li><code>title=</code> Suche wird auf Werktitel eingegrenzt</li>
                 <li><code>subject=</code> Suche wird auf Schlagworte eingegrenzt</li>
                 <li><code>publisher=</code> Suche wird auf Verlage eingegrenzt</li>
                 <li><code>series=</code> Suche wird auf Reihen eingegrenzt</li>
-                <li><code>date=</code> Such wird auf Publikationszeitraum eingegrenzt</li>
+                <li><code>date=</code> Suche wird auf Publikationszeitraum eingegrenzt</li>
               </ul>
               <p>Alle Parameter können auch in Kombination (verbunden durch „AND“ oder „OR“) eingesetzt werden.</p>
+
               <h4>Suchfilter</h4>
-              <p>Sobald eine Suche ausgeführt wurde öffnet sich im Feld „Such-Filter“ ein Schlagwortbaum, der im
+              
+              <p>Sobald eine Suche ausgeführt wurde, öffnet sich im Feld „Such-Filter“ ein Schlagwortbaum, der im
               Wesentlichen dem des Thesaurus entspricht. Er enthält allerdings nur jene Schlagworte, die im gefundenen
-              Sample enthalten sind. AUch die Zahlen beziehen sich auf das gefundene Sample. Damit lässt sich die Suche
+              Sample enthalten sind. Auch die Zahlen beziehen sich auf das gefundene Sample. Damit lässt sich die Suche
               effizient filtern oder „thrillen“.</p>
+
               <h4>Sortierung der Ergebnisse</h4>
+              
               <p>Die Sortierung der Treffer erfolgt standardmäßig alphabetisch nach Autor, kann aber im Suchmenü auch
               auf „Titel“ oder „Jahr“ umgestellt werden. „Jahr“ bedeutet Sortierung nach Publiaktionsjahr/ Autor.</p>
+
               <h4>Trefferanzahl</h4>
+
               <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 10, kann aber auf bis zu 200 erhöht
               werden. Der Suchfilter bezieht auch die nicht angezeigten Treffer mit ein.</p>
+
               <h3>Detailergebnisse</h3>
+              
               <p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen Datensatz sowie
               eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der Trefferzahl
               neben den Schlagworten startet eine neue Suche nach dem betreffenden Schlagwort. Das Gleiche gilt für
@@ -220,8 +250,11 @@
               <p>Zusätzlich gibt es oft auch noch „Stichworte“, die im Lauf der Recherchearbeiten unsystematisch
               vergeben wurden. Das Anklicken eines Stichworts führt zu einer Volltextsuche innerhalb der gesamten
               Datensätze.</p>
+
               <h4>MODS und Lidos</h4>
+
               <p>Die Anzeige des Eintrags kann auch modifiziert werden.</p>
+
               <ul>
                 <li>„Kompakt“ reduziert die Information auf das in Printmedien übliche Format.</li>
                 <li>„MODS“ zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich nach dem „Metadata
@@ -229,7 +262,9 @@
                 <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde großteils maschinell in den
                 MODS-Standard übersetzt.</li>
               </ul>
+              
               <h4>Fehler in der Datenbank</h4>
+              
               <p>Die mechanische Übertragung der Daten hat mitunter zu Fehlinterpretationen oder Informationsverlusten
               geführt. Derartige Fehler sowie Fehler bei der ursprünglichen Dateneingabe werden sukzessive
               ausgebessert. Jeder entsprechende <a href=
@@ -237,8 +272,11 @@
               genommen.</p>
               <p class="next">Weiter zu: <a href="#geschichte">Geschichte des Projekts</a></p>
             </div>
+
             <div id="geschichte">
+
               <h2>Geschichte des Projekts</h2>
+
               <p>Die vorliegende Bibliographie wurde 1989 von Dr. Peter Getreuer, Studienassistent und Bibliothekar am
               Institut für Japanologie der Universität initiiert und entworfen. Nach seinem frühen Tod wurde das
               Projekt am IKGA unter der Leitung von Dr. Susanne Formanek weiter geführt. Die Recherchen und die
@@ -255,7 +293,9 @@
               Softwareumgebung migriert. Das ACDH übernahm die Anpassung der Daten an das „Metadata Object Description
               Schema“ (MODS) der Library of Congress sowie die Datenbank-Programmierung. Das IKGA blieb für die
               Verschlagwortung und die Gestaltung des Benutzinterfaces verantwortlich.</p>
+
               <h3>Publizierte Bände</h3>
+              
               <ul>
                 <li>Susanne Formanek, Peter Getreuer, 1989<br>
                 Verzeichnis des deutschsprachigen Japan-Schrifttums, 1980–1987. (MKGA 1.) Wien: VÖAW, 1989</li>
@@ -394,7 +434,7 @@
                     THESAURUS
                         
 ==========================================-->
-        <td class="slide hide" id="thesaurus" style="display: none;">
+        <td class="slide thesaurus hide" id="thesaurus" style="display: none;">
           <div id="wrapAbsolute">
             <div id="wrapFixed">
               <div class="pageindex">
@@ -3456,7 +3496,10 @@
                 </tr>
                 <tr class="tipp" id="Beispiele" title="Tipp">
                   <td class="beispiele" colspan="2">
+                      <p>Über das Suchfeld lässt sich eine einfache freie Suche durchführen. Komlexere Abfragen lassen sich 
+                      mithilfe der Suchhilfen realisieren. Grundsätzlich stehen folgende Tools zur Verfügung: </p>
                     <div>
+
                       <p>Suche modifizieren:</p>
                       <ol>
                         <li><code title="Platzhalter">*</code> (Platzhalter für beliebige andere Zeichen)</li>

@@ -6,8 +6,13 @@ body {
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
   } 
-h2, h3, h4 {
+h2, h3  {
   font-family: "Trebuchet MS", Arial, sans-serif;
+  margin-top: 1.5em;
+  margin-bottom: 1rem;
+  color: #8e843b;
+  } 
+ h4 { 
   margin-top: 1.5em;
   margin-bottom: 1rem;
   color: #8e843b;
@@ -17,7 +22,8 @@ a {
   text-decoration: none;  
   border-radius: 3px;
   } 
-a:hover { 
+a:hover,
+.aHover { 
   color:#008;
   background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
   }
@@ -1251,23 +1257,28 @@ a.zahl::before,
  }
 /*  Zahl */ 
 
-a.zahl::before {
+a.zahl::before, 
+.aZahl::before {
   content: "\f0b0";
   padding-right: .2em;  
   }
-#thesaurus a.zahl::before { 
+.thesaurus a.zahl::before,
+.thesaurus .aZahl::before { 
   content: "\f1db";  /* fa-circle-thin ... opacity: 1;*/
   content: "\f00c";  /* fa-check */  
 }
-#thesaurus a.zahl::after { 
+.thesaurus a.zahl::after, 
+.thesaurus .aZahl::after { 
   content: "  ausw\00e4hlen";   
-  position: absolute; 
-  white-space: nowrap;
-  display: inline-block; 
+  position: absolute;  
   padding-left: .3em;
   opacity: 0;
-}
-#thesaurus a.zahl:hover::after {
+} 
+.thesaurus .aHover::after {
+  opacity: .5;
+  padding-left: 1.3em;
+} 
+.thesaurus a.zahl:hover::after {
   opacity: .5;
 } 
 .showEntry a.zahl { 
@@ -1279,11 +1290,7 @@ a.zahl::before {
 }
 .showEntry a.zahl::before {
   content: ' \f002'; 
-  } 
-  
-#thesaurus a.zahl::before {
-  /* content: "\f0a4"; */
-} 
+  }  
   
 .plusMinus.close > .zahl.eintrag {
     display: inline-block;
