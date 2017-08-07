@@ -97,18 +97,22 @@
     <xsl:template match="mods:mods" mode="detail">
         <div class="showEntry" style="display:none;">
             <div class="showOptions">
-                <label>Anzeige des Eintrags: <select size="1" data-format="html">
+                <label><em>Ansicht:</em> <select size="1" data-format="html">
                         <option value="html" selected="selected">detailliert</option>
                         <option value="compact">kompakt</option>
                         <option value="mods">MODS</option>
                         <option value="lidos">Lidos</option>
                     </select>
                 </label>
-                <span class="tipp" title="Tipp"><span class="display" style="display: none;">
-                     MODS: XML Dokument in MODS-Standard (<a href='http://www.loc.gov/standards/mods/' class="externalLink">Library of Congress</a>); Codierung der Daten in der Datenbank. <br/>
-                     LIDOS: Ursprüngliche Codierung im Datenbankprogramm LIDOS. 
-                </span></span>
-                <span id='x' class='closeX'></span>
+                        <div class="tipp" title="Tipp">
+                          <ul class="display" style="display: none;">
+                            <li>MODS: XML Dokument in MODS-Standard (<a class="externalLink" href=
+                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>); Codierung der Daten in der
+                            Datenbank.
+                            </li>
+                            <li>Lidos: Ursprüngliche Codierung im Datenbankprogramm LIDOS.</li>
+                          </ul>
+                        </div><span class='closeX' id='x'></span>
             </div>
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
@@ -136,7 +140,7 @@
     
     <xsl:template name="detail-list-items">        
         <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
-        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt')][not(./ancestor::mods:relatedItem)]">
+        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
             <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
         </xsl:for-each></li>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
