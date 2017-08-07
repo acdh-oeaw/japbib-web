@@ -1209,6 +1209,8 @@ a.zahl::before,
 .plusMinus::before {
  content: '+';
  content: '\f196';  /* 'fa-plus-square-o */
+ content: '\f138' /* fa-chevron-circle-right */;
+ content: '\f055' /* fa-plus-circle */;
  font-family: fontawesome, calibri, arial;
  text-rendering: auto;
  -webkit-font-smoothing: antialiased;
@@ -1223,8 +1225,12 @@ a.zahl::before,
  overflow:hidden;
  } 
 .close::before {
-  content: '\f147' /* fa-minus-square-o */
+  content: '\f147' /* fa-minus-square-o */;
+  content: '\f138' /* fa-chevron-circle-right */;
+ content: '\f13a' /* fa-chevron-circle-down */;
+ content: '\f056' /* fa-minus-circle */; 
 } 
+
  .closeX::before {  
   content: 'X'; 
   content: '\f00d' /* fa-times */
