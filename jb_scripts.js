@@ -230,12 +230,14 @@ $(document).on('click', '.year a', function(e){
   }
     // Suche formulieren
   var inputQuery = $( '#searchInput1' ).val();  
-  inputQuery = inputQuery.replace(/ date=[\d-]*/,'');
+  inputQuery = inputQuery.replace(/[and ]*date[=><]+[\d-and te=><]+/,'');
 
   if ( $('.year .selected').length > 0) {
-    var dateQuery = ' date=';
-    dateQuery += startSelected===endSelected ? (1980+startSelected) :
-      (1980+startSelected) + '-'+ (1980+endSelected);
+    var dateQuery= inputQuery? ' and date': 'date' ;
+    if (startSelected===endSelected) 
+      dateQuery += '='+(1980+startSelected);
+    else 
+      dateQuery += '>='+(1980+startSelected) + ' and date<='+ (1980+endSelected);
     inputQuery += dateQuery;
   }
   $( '#searchInput1' ).val(inputQuery);
