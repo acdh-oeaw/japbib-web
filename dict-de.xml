@@ -8,7 +8,7 @@
     <string xml:id="publisher">Verlag</string>
     <string xml:id="place">Ort</string>
     <string xml:id="series">Reihe</string>
-    <string xml:id="vol-abbr">Band</string>
+    <string xml:id="vol-abbr">Bd.</string>
     <string xml:id="no-year-abbr">o.J.</string>
     <string xml:id="no-aut-abbr">o.A.</string>
     <string xml:id="no-value-abbr">o.A.</string>
@@ -22,9 +22,9 @@
     <string xml:id="book">Einzelwerk</string>
     <string xml:id="journalArticle">Zeitschriftenartikel</string>
     <string xml:id="newspaperArticle">Zeitungsartikel</string>
-    <string xml:id="thesis">Dissertation</string>
+    <string xml:id="thesis">Hochschulschrift</string>
     <string xml:id="volumeJournal">Jg.</string>
-    <string xml:id="volume">Bd.</string>
+    <string xml:id="volume">Band</string>
     <string xml:id="issue">Ausg.</string>
     <!-- Interface -->
     <string xml:id="numberOfRefords">Number of Records</string>
