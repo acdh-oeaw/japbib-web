@@ -47,6 +47,9 @@ p {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.flUp::first-letter {
+  text-transform: uppercase;
+} 
 
 /***************
    STRUKTUR
