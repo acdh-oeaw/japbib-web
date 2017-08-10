@@ -348,6 +348,7 @@ $( document ).on( 'mouseup', '#pullLeft, #pullRight',
 $( document )
   .on('click', '.hitList a.hits', onFetchMoreHits);
 function onFetchMoreHits(e) {
+  e.preventDefault();
   var query = findQueryPartInHref($(this).attr('href'));
   doSearchOnReturn(query.startRecord);
 }
