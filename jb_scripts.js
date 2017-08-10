@@ -538,7 +538,7 @@ $('.suchOptionen .abc a').click(function(e){
     executeQuery(index+"="+term);
 });
 
-$('a.code').click(function(e){
+$('#find a.code').click(function(e){
     e.preventDefault();
     var query = $(this).text();
     executeQuery(query);
