@@ -496,8 +496,7 @@ fieldset {
 .schlagworte li::first-letter { 
   text-transform: uppercase;
   }
-.schlagworte span { 
-  padding-right: .5em; 
+.schlagworte span {
   position: relative;
   z-index: 2;
   }  
@@ -1187,73 +1186,71 @@ code,
   }
 
    
-/**************
-PLUS-MINUS 
-**************/
-.plusMinus {
-  cursor: pointer;
-  position:relative;
-  color: #008;
-}
-.zahl {
-  font-family: calibri, arial;
-  opacity: .5;
-  font-size: .9em;
-  position: relative;
-}
-.zahl:hover { 
-  opacity: 1;
-}
-.closeX {
-  margin-left: .3em;
-}
-a.zahl::before,
+/*****************
+PLUS-MINUS, ZAHL
+******************/
+
+.zahl::before,
 .closeX::before,
 .plusMinus::before {
  content: '+';
  content: '\f196';  /* 'fa-plus-square-o */
  content: '\f138' /* fa-chevron-circle-right */;
  content: '\f055' /* fa-plus-circle */;
- font-family: fontawesome, calibri, arial;
- text-rendering: auto;
- -webkit-font-smoothing: antialiased;
- -moz-osx-font-smoothing: grayscale;
  font-size: 1em;
  display: inline;
  border: 0px solid;
  border-radius: 1em;
  text-align: center;
- cursor: pointer;
  opacity: 0.4;
- overflow:hidden;
  } 
+.plusMinus {
+  cursor: pointer;
+  position:relative;
+  color: #008;
+  top: -.1em;
+}
+.plusMinus::before {
+  opacity: .3;
+}
+.zahl {
+  font-family: calibri, arial;
+  opacity: .7;
+  font-size: .9em;
+  position: relative;
+}
+.zahl:hover,
+*:hover > .zahl { 
+  opacity: 1;
+}
+.closeX {
+  margin-left: .3em;
+}
 .close::before {
   content: '\f147' /* fa-minus-square-o */;
   content: '\f138' /* fa-chevron-circle-right */;
- content: '\f13a' /* fa-chevron-circle-down */;
- content: '\f056' /* fa-minus-circle */; 
+  content: '\f13a' /* fa-chevron-circle-down */;
+  content: '\f056' /* fa-minus-circle */; 
 } 
-
- .closeX::before {  
+.closeX::before {  
   content: 'X'; 
   content: '\f00d' /* fa-times */
 }
 .closeX:hover::before, 
 .plusMinus:hover::before {  
- opacity: 0.8;
- }
+  opacity: 0.8;
+}
 .showEntry .closeX {
   float:right;
 }
 
 .schlagworte .plusMinus::before {
- position: absolute;
- left: -1.6em;
- display: inline-block;
- width: 1.5em;
- }
+  position: absolute;
+  left: -1.6em;
+  width: 1.5em;
+} 
 .pageindex .schlagworte .plusMinus::before {
- top: .15em;
+ top: 0;
  }
 
 .showResults .sup::before, 
@@ -1266,10 +1263,11 @@ a.zahl::before,
  }
 /*  Zahl */ 
 
-a.zahl::before, 
+.zahl::before, 
 .aZahl::before {
-  content: "\f0b0";
+  content: "\f0b0"; /* fa-filter */
   padding-right: .2em;  
+  padding-left: .5em;
   }
 .thesaurus a.zahl::before,
 .thesaurus .aZahl::before { 
