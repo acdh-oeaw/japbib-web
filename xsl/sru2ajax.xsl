@@ -217,7 +217,7 @@
     
     <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/>.</xsl:template><!-- TODO: Punkt sollte nicht stehen nach /[\.\?,:;!]/-->
     
-    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> <span class='flUp'></xsl:text><xsl:value-of select="normalize-space(.)"/></span>.</xsl:template><!-- TODO: Punkt sollte nicht stehen nach /[\.\?,:;!]/-->
+    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><span class='flUp'><xsl:value-of select="normalize-space(.)"/></span>.</xsl:template><!-- TODO: Punkt sollte nicht stehen nach /[\.\?,:;!]/-->
     
     <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
