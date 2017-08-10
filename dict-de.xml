@@ -4,6 +4,7 @@
     <string xml:id="trl">Übersetzer</string>
     <string xml:id="trl-abbr">Übers.</string>
     <string xml:id="edt">Hrsg.</string>
+    <string xml:id="red">Redaktion</string>
     <string xml:id="year">Jahr</string>
     <string xml:id="publisher">Verlag</string>
     <string xml:id="place">Ort</string>
