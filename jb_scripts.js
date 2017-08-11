@@ -141,8 +141,7 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
     });    
     $('.ladeResultate').hide();        
     $('#find .schlagworte li li ol').hide ();  //Anfangszustand bei neuer Abfrage
-    $('.showResults').show('slow');    
-    arrangeHitlist(); // Treffernavigation (BS) s.u.
+    $('.showResults').show('slow', arrangeHitlist);    // arrangeHitlist = Treffernavigation (BS) s.u.     
   } finally {
     getResultsLock = false;
   }
