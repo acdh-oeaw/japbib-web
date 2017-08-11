@@ -946,8 +946,9 @@ tr.search .fa-search {
 .showEntry a { 
   color: #009;
   }
-.showEntry li {  
-  margin-left: 9em;   
+.showEntry li {
+  margin-left: 9em;
+  min-height: 1.5em; 
   }
 .showEntry .showOptions {
     margin: 0; 
