@@ -22,14 +22,28 @@ declare %private function api:response($status, $msg, $payload) {
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/xqueryui/{$file=.+\.(html|js|map|css|png|gif|jpg|jpeg|PNG|GIF|JPG|JPEG)}")
-function api:file(
-  $file as xs:string
-) as item()+ {
-  let $path := file:base-dir() || $file
-  return (
-    web:response-header(map { 'media-type': web:content-type($path) }),
-    file:read-binary($path)
+  %rest:path("japbib-web/xqueryui/{$file=.+}")
+function api:file($file as xs:string) as item()+ {    
+    let $path := file:base-dir() || $file
+    return if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg|woff|woff2)$', 'i')) then
+    (
+      web:response-header(map { 'media-type': web:content-type($path) }, 
+                          map { 'X-UA-Compatible': 'IE=11' }),
+      file:read-binary($path)
+    ) else
+  (
+  <rest:response>
+    <http:response status="404" message="{$file} was not found.">
+      <http:header name="Content-Language" value="en"/>
+      <http:header name="Content-Type" value="text/html; charset=utf-8"/>
+    </http:response>
+  </rest:response>,
+  <html xmlns="http://www.w3.org/1999/xhtml">
+    <title>{$file||' was not found'}</title>
+    <body>        
+       <h1>{$file||' was not found'}</h1>
+    </body>
+  </html>
   )
 };
 
