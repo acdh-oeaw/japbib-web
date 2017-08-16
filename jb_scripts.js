@@ -265,17 +265,14 @@ $('#searchInput1').on('keyup', function() {
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
 var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
-    runTime = hits.length*50, // scroll-Dauer
-    //hitsW = 160,  // Weite fuer HitRow
-    FW = 160, // Fensterweite
-    posLeft = 0, // Pos. v. hitRow
-    maxL = 0, // maximale Verschiebung nach links
-    spaceR = FW/2; 
+    runTime = hits.length*50, // scroll-Dauer 
+    maxL = 0; // maximale Verschiebung nach links 
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
-  var hitsW = $( '#hitRow').width();
-  // max. Weite fuer fenster
-  FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2; 
+  var hitsW = $( '#hitRow').width(), // Weite fuer HitRow
+      posLeft = 0, // Pos. v. hitRow
+      FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2, // max. Weite fuer fenster    
+      spaceR = FW/2; 
   // Nav-Pfeile anzeigen oder verstecken
   if (FW < hitsW) {
     $( '#fenster1' ).width(FW);
@@ -287,7 +284,7 @@ function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
   } 
   
   /////////  .here  positionieren /////////
-  maxL = FW - hitsW;  
+  maxL = FW - hitsW;
     // wenn hitRow > Fenster und .here innerhalb von hitRow
   if ( maxL < 0 && $('#hitRow .here').length > 0 ) {
       // wenn here nicht mehr sichtbar
