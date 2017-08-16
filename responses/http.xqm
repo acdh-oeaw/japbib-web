@@ -36,7 +36,7 @@ function api:file($file as xs:string) as item()+ {
                           map { 'X-UA-Compatible': 'IE=11' }),
       file:read-binary($path)
     ) else if (matches($file, 'xqueryui')) then
-    <rest:redirect>xqueryui/index.html</rest:redirect>
+    <rest:redirect>{api:get-base-uri-public()}/index.html</rest:redirect>
     else api:forbidden-file($file)
   else if (matches($file, 'runTests/.+\.(xml)$')) then
 	api:run-tests(replace($file, 'runTests/', ''))
