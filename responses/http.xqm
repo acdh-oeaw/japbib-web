@@ -26,7 +26,7 @@ declare function api:get-base-uri-public() as xs:string {
  : @return rest response and binary file
  :)
 declare
-  %rest:path("japbib-web/{$file=.+}")
+  %rest:path("japbib-web/{$file=[^/]+}")
 function api:file($file as xs:string) as item()+ {
   let $path := api:base-dir()|| $file
   return if (file:exists($path)) then
@@ -35,8 +35,9 @@ function api:file($file as xs:string) as item()+ {
       web:response-header(map { 'media-type': web:content-type($path) }, 
                           map { 'X-UA-Compatible': 'IE=11' }),
       file:read-binary($path)
-    ) else
-    api:forbidden-file($file)
+    ) else if (matches($file, 'xqueryui')) then
+    <rest:redirect>xqueryui/index.html</rest:redirect>
+    else api:forbidden-file($file)
   else if (matches($file, 'runTests/.+\.(xml)$')) then
 	api:run-tests(replace($file, 'runTests/', ''))
   else
@@ -54,6 +55,18 @@ function api:file($file as xs:string) as item()+ {
     </body>
   </html>
   )
+};
+
+declare
+  %rest:path("japbib-web/bower_components/{$file=.+}")
+function api:bower_components-file($file as xs:string) as item()+ {
+  api:file('bower_components/'||$file)
+};
+
+declare
+  %rest:path("japbib-web/images/{$file=.+}")
+function api:images-file($file as xs:string) as item()+ {
+  api:file('images/'||$file)
 };
 
 declare %private function api:base-dir() as xs:string {
