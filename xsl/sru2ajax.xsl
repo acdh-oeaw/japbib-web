@@ -194,11 +194,14 @@
         <xsl:param name="separator" as="xs:string" select="' /'"/>
         <xsl:param name="isLast" as="xs:boolean" select="true()"/>
         <xsl:variable name="this" select="."/>
+        <!-- Default role is aut -->
+        <xsl:variable name="knownSpecialRoles" select="('edt', 'trl', 'cbt')"/>
         <xsl:for-each select="$term">
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
+            <xsl:variable name="roles" select="$this//mods:roleTerm!normalize-space(.)"/>
             <xsl:value-of select="_:dict(.)||' '"/><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
-                test="normalize-space($this//mods:roleTerm) = ('edt', 'trl', 'cbt')"><xsl:value-of select="', '||_:dict(normalize-space($this//mods:roleTerm))"/></xsl:if>
+                test="$roles = $knownSpecialRoles"><xsl:value-of select="', '||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')"/></xsl:if>
             <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
     </xsl:template>

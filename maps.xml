@@ -10,7 +10,7 @@
             <path label=".">mods:titleInfo[parent::mods:mods]/mods:title</path>
         </index>
         <index key="author" case="no" coll="?lang=de">
-            <path label="." match="mods:namePart">mods:name[(mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt')]</path>
+            <path label="." match="mods:namePart">mods:name[(mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
         </index>
         <index key="date" datatype="xs:integer">
             <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
