@@ -74,7 +74,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
        $fail := if (empty($cached-scan) and $fail-on-not-cached) then error(xs:QName('diag:scanNotCached'), 'Scan for index '||$scanClauseParsed/index||' needs to be cached!') else (),
        $terms := if (empty($cached-scan) or $x-mode eq 'refresh') then api:do-scan($scanClauseParsed, $sort, $x-debug) else $cached-scan,
        $ret := if ($terms instance of document-node())
-               then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-filter)
+               then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-sort, $x-filter)
                else $terms,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
        $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
@@ -169,7 +169,7 @@ declare function api:parseScanClause($scanClause as xs:string, $map as element(m
 declare %private function api:scanResponse($scanClause as xs:string,
                                            $scanClauseParsed as element(scanClause), $terms as document-node(),
                                            $maximumTerms as xs:integer?, $responsePosition as xs:integer,
-                                           $x-filter as xs:string?){
+                                           $x-sort as xs:string?, $x-filter as xs:string?){
     let $anchor-term :=
         try {
         switch($scanClauseParsed/relation)
@@ -200,6 +200,7 @@ declare %private function api:scanResponse($scanClause as xs:string,
             <sru:scanClause>{$scan-clause}</sru:scanClause>
             <sru:maximumTerms>{$maximumTerms}</sru:maximumTerms>
             <fcs:x-filter>{$x-filter}</fcs:x-filter>
+            <fcs:x-sort>{$x-sort}</fcs:x-sort>
         </sru:echoedScanRequest>
     </sru:scanResponse>
     else ()
