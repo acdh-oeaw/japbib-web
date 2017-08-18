@@ -49,6 +49,9 @@ p {
 }
 .flUp::first-letter {
   text-transform: uppercase;
+}
+span.flUp {
+  display: inline-block; /* notwendig fuer first-letter*/
 } 
 
 /***************
