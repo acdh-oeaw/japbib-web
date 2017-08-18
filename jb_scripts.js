@@ -265,79 +265,79 @@ $('#searchInput1').on('keyup', function() {
 
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
  
-var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
-    runTime = hits.length*50, // scroll-Dauer 
-    maxL = 0; // maximale Verschiebung nach links 
+var maxL, posLeft, runTime;
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
-  var hitsW = $( '#hitRow').width(), // Weite fuer HitRow
-      posLeft = 0, // Pos. v. hitRow
-      FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2, // max. Weite fuer fenster    
-      spaceR = FW/2; 
-  // Nav-Pfeile anzeigen oder verstecken
-  if (FW < hitsW) {
-    $( '#fenster1' ).width(FW);
-    $( '.pull').css( "visibility", "visible");
-  }
-  else{
-    $( '#fenster1' ).width(hitsW);
-    $( '.pull').css( "visibility", "hidden");
-  } 
+  if ( $( '#hitRow' ) !== 'undefined') {
+    var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
+        hitsW = $( '#hitRow').width(), // Weite fuer HitRow
+        FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2, // max. Weite fuer fenster    
+        spaceR = FW/2; 
+    runTime = hits.length*50; // scroll-Dauer  
+    // Nav-Pfeile anzeigen oder verstecken
+    if (FW < hitsW) {
+      $( '#fenster1' ).width(FW);
+      $( '.pull').css( "visibility", "visible");
+    }
+    else{
+      $( '#fenster1' ).width(hitsW);
+     $( '.pull').css( "visibility", "hidden");
+    } 
   
-  /////////  .here  positionieren /////////
-  maxL = FW - hitsW;
-    // wenn hitRow > Fenster und .here innerhalb von hitRow
-  if ( maxL < 0 && $('#hitRow .here').length > 0 ) {
-      // wenn here nicht mehr sichtbar
-    if ( $('#hitRow .here').position().left > FW - $('#hitRow .here').width() ) {
-        // wenn rechts genug Platz
-      var spaceR = (FW - $('#hitRow .here').width())/2 ;
-      if ( $('#hitRow').width()-($('#hitRow .here').position().left) > spaceR ) {        
-        posLeft = -$('#hitRow .here').position().left + spaceR;
-      }
-      else { // maximale left-Verschiebung 
-        posLeft = maxL;
+    /////////  .here  positionieren /////////
+    maxL = FW - hitsW;
+      // wenn hitRow > Fenster und .here innerhalb von hitRow
+    if ( maxL < 0 && $('#hitRow .here').length > 0 ) {
+        // wenn here nicht mehr sichtbar
+      if ( $('#hitRow .here').position().left > FW - $('#hitRow .here').width() ) {
+          // wenn rechts genug Platz
+        var spaceR = (FW - $('#hitRow .here').width())/2 ;
+        if ( $('#hitRow').width()-($('#hitRow .here').position().left) > spaceR ) {        
+          posLeft = -$('#hitRow .here').position().left + spaceR;
+        }
+        else { // maximale left-Verschiebung 
+          posLeft = maxL;
+        } 
       } 
     } 
-  } 
-    // wenn .here an letzter Stelle
-  else if ($('.last.here').length > 0 ) {       
-    posLeft = maxL;
-  }
-    // hitRow in Hinblick auf .here verschieben 
-  $( '#hitRow' ).css( 'left', posLeft);
-  stylePull();
-} 
-function stylePull() { 
-  $('#pullLeft, #pullRight').addClass('active');
-  if ($( '#hitRow' ).position().left >= 0 ) 
-    $( '#pullLeft' ).removeClass('active');
-  if ($( '#hitRow' ).position().left-1 <= maxL ) 
-    $( '#pullRight' ).removeClass('active');
-}
-
-   ///////// hitRow scollen /////////
-$( document ).on( 'mousedown', '#pullLeft', 
-  function () {  
-    if( $( '#hitRow' ).position().left < 0) {
-      $( '#hitRow' ).animate(  { left: 0 }, runTime, stylePull ); 
-    } 
-  }
-); 
-$( document ).on( 'mousedown', ' #pullRight', 
-  function () {     
-    if( $( '#hitRow' ).position().left > maxL ) {
-      $( '#hitRow' ).animate(  { left:  maxL }, runTime, stylePull );
-    } 
-  }
-); 
-$( document ).on( 'mouseup', '#pullLeft, #pullRight', 
-  function () {  
-    $( '#hitRow' ).stop();  
+      // wenn .here an letzter Stelle
+    else if ($('.last.here').length > 0 ) {       
+      posLeft = maxL;
+    }
+      // hitRow in Hinblick auf .here verschieben 
+    $( '#hitRow' ).css( 'left', posLeft);
     stylePull();
   }
-); 
+  function stylePull() { 
+    $('#pullLeft, #pullRight').addClass('active');
+    if ($( '#hitRow' ).position().left >= 0 ) 
+      $( '#pullLeft' ).removeClass('active');
+    if ($( '#hitRow' ).position().left-1 <= maxL ) 
+      $( '#pullRight' ).removeClass('active');
+  }
 
+     ///////// hitRow scollen /////////
+  $( document ).on( 'mousedown', '#pullLeft', 
+    function () {  
+      if( $( '#hitRow' ).position().left < 0) {
+        $( '#hitRow' ).animate(  { left: 0 }, runTime, stylePull ); 
+      } 
+    }
+  ); 
+  $( document ).on( 'mousedown', ' #pullRight', 
+    function () {     
+      if( $( '#hitRow' ).position().left > maxL ) {
+        $( '#hitRow' ).animate(  { left:  maxL }, runTime, stylePull );
+      } 
+    }
+  ); 
+  $( document ).on( 'mouseup', '#pullLeft, #pullRight', 
+    function () {  
+      $( '#hitRow' ).stop();  
+      stylePull();
+    }
+  ); 
+} 
   
 ///////////////////////////////////////
 
