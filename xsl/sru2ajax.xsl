@@ -224,11 +224,11 @@
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
     
-    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)||' '"/></xsl:template><!-- TODO: Space sollte nur nach Artikeln stehen, daher nicht nach /\W/ -->
+    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), '[\w]$')) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
     <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), '[\w&#x22;&#x27;]$')) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
-    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><span class='flUp'><xsl:value-of select="normalize-space(.)"/></span><xsl:value-of select="if (matches(normalize-space(.), '[\w&#x22;&#x27;]$')) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><span class='flUp'><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), '[\w&#x22;&#x27;]$')) then '.' else ''"/></span></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
     <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
@@ -355,7 +355,8 @@
     
     <xsl:template match="category[matches(@n, '^[123456789]$')]">
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
-        <li class="li1"><span><xsl:apply-templates select="catDesc"/></span>
+        <!--<li class="li1"><span><xsl:apply-templates select="catDesc"/></span>-->
+        <li class="li1"><span><xsl:value-of select="catDesc"></span><!-- auf der obersten Ebene kein query-link! BS-->
             <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
                 <xsl:with-param name="href" select="$base-path||'query=subject%3D&quot;'||catDesc||'&quot;'"/>
                 <xsl:with-param name="showGroup" select="true()"/>
