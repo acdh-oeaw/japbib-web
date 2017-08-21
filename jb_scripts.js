@@ -263,25 +263,25 @@ $('#searchInput1').on('keyup', function() {
   }      
 }); 
 
-// Handler fuer positionieren und scrollen der Trefferliste << >> (BS)       
- 
-var maxL, posLeft, runTime;
+// Handler fuer positionieren und scrollen der Trefferliste << >> (BS)        
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
   if ( $( '#hitRow' ) !== 'undefined') {
-    var hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
-        hitsW = $( '#hitRow').width(), // Weite fuer HitRow
+    var maxL = 0, 
+        posLeft = 0,
+        hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
+        hitsW = $( '#hitRow').width(), 
         FW =  ($( '.navResults' ).width()-$( '.countResults' ).width() )/2, // max. Weite fuer fenster    
-        spaceR = FW/2; 
-    runTime = hits.length*50; // scroll-Dauer  
+        spaceR = FW/2,
+        runTime = hits.length*50; // scroll-Dauer  
     // Nav-Pfeile anzeigen oder verstecken
     if (FW < hitsW) {
       $( '#fenster1' ).width(FW);
       $( '.pull').css( "visibility", "visible");
     }
-    else{
+    else {
       $( '#fenster1' ).width(hitsW);
-     $( '.pull').css( "visibility", "hidden");
+      $( '.pull').css( "visibility", "hidden");
     } 
   
     /////////  .here  positionieren /////////
