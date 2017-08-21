@@ -181,7 +181,7 @@
         <div class="showEntry">
             <div class="showOptions">
                 <form>
-                    <label>Anzeige des Eintrags:&nbsp;
+                    <label>Anzeige des Eintrags:&#xA0;
                         <select size="4">
                             <option value="html" selected="selected">detailliert</option>
                             <option value="compact">kompakt</option>
