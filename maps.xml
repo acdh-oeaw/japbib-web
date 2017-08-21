@@ -3,7 +3,7 @@
     <map name="jp80" index="http://jb80.acdh.oeaw.ac.at" base-elt="mods:mods" description="MODS-based schema for JB 80 bibliographic records">
         <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>        
         <namespace prefix="_">urn:sur2html</namespace>;
-        <index key="cql.serverChoice" case="yes" coll="?lang=de">
+        <index key="cql.serverChoice" case="no" coll="?lang=de">
             <path label="." match="data(.)">mods:mods</path>
         </index>
         <index key="title" case="no" coll="?lang=de">
@@ -15,13 +15,13 @@
         <index key="date" datatype="xs:integer">
             <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
         </index>
-        <index key="subject" case="yes" coll="?lang=de">
+        <index key="subject" case="no" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
-        <index key="series" case="yes" coll="?lang=de">
+        <index key="series" case="no" coll="?lang=de">
             <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
         </index>
-        <index key="publisher" case="yes" coll="?lang=de">
+        <index key="publisher" case="no" coll="?lang=de">
             <path label=".">mods:publisher</path>
         </index>
         <index key="id">
