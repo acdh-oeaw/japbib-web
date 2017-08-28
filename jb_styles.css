@@ -1300,7 +1300,8 @@ PLUS-MINUS, ZAHL
   opacity: 1;
 }
 .showEntry a.zahl::before {
-  content: ' \f002'; 
+  content: ' \f002';
+  padding-left: 0;
   }  
   
 .plusMinus.close > .zahl.eintrag {
@@ -1383,6 +1384,9 @@ PLUS-MINUS, ZAHL
 .hits.here {
   font-size: 1em;
   }  
+.hits:hover {  
+  background: #c5f9fb;
+}
 .hits.here a,
 .hits.here,
 .hits.here:hover,
@@ -1401,8 +1405,10 @@ PLUS-MINUS, ZAHL
  
 .pull {
   display: inline-block;
+  line-height: 2;
   color: #d1d1d1;
   padding: 0 .5em;
+  opacity: .6;
   /* visibility: hidden; */
   }
 .pull.active {
@@ -1410,8 +1416,8 @@ PLUS-MINUS, ZAHL
   cursor:pointer;
   } 
 .pull.active:hover {
-  color: #000066;
-  background: #e6eff1;
+  color: #000066; 
+  background: #c5f9fb;
   }
   
 /* MODS und LIDOS */
