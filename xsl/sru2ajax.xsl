@@ -211,6 +211,14 @@
         </xsl:for-each>
     </xsl:template>
     
+    <xsl:template match="mods:dateIssued[@point eq 'start']">
+        <span class="year"><xsl:value-of select="."/>-</span>
+    </xsl:template>
+    
+    <xsl:template match="mods:dateIssued[@point eq 'end']">
+        <span class="year"><xsl:value-of select="."/></span>
+    </xsl:template>
+    
     <xsl:template match="mods:dateIssued">
         <span class="year"><xsl:value-of select="."/></span><!-- TODO: Angaben wie 19880801 oder 198512 /^[12][90]\d\d[01]\d[0-3]*\d*$/ abfangen-->
     </xsl:template>
@@ -243,6 +251,9 @@
             </xsl:call-template>
             <xsl:value-of select="', '"/>
             <xsl:choose>
+                <xsl:when test="mods:dateIssued[@point]">
+                    <span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, '-')"/><xsl:if test="not(mods:dateIssued/@point = 'end')">-</xsl:if></span>
+                </xsl:when>
                 <xsl:when test="mods:dateIssued">
                     <span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span><xsl:if test="../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued">
                         <xsl:value-of select="', '"/><span class="original"><xsl:value-of select="../../mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued"/></span>
