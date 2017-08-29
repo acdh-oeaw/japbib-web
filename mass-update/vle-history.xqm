@@ -4,6 +4,31 @@ module namespace _ = "https://acdh.oeaw.ac.at/vle/history";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
+import module namespace session = "http://basex.org/modules/session";
+
+declare function _:add-change-record($e as element()) as element() {
+  let $user := try {session:get('dba')} catch bxerr:BXSE0003 {user:current()},
+      $newEntry :=
+      element {QName($e/namespace-uri(),'fs')} {
+        namespace {''} {$e/namespace-uri()},
+        attribute type {'change'},
+        <f name="who">
+          <symbol>{attribute value {$user}}</symbol>
+        </f>,
+        <f name="when">
+          <symbol>{attribute value {format-dateTime(current-dateTime(),'[Y0001]_[M01]_[D01]')}}</symbol>
+        </f>
+      }
+  return $e update {
+    if (not(exists($e/*:fs[@type='change']))) then
+      let $fs := $newEntry update delete node ./*
+      return insert node $fs into .
+    else ()
+  } update {
+    insert node $newEntry/*:f as last into ./*:fs
+  }
+};
+
 declare %updating function _:save-entry-in-history($db-base-name as xs:string, $cur-node as node()) {
   let $hist-db-name := $db-base-name||'__hist',
       $hist-node :=_:add-timestamp($cur-node)
