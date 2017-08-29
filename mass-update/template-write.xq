@@ -8,7 +8,7 @@ declare namespace _ = "urn:_";
 
 declare variable $_:db-name := 'japbib_06';
 
-declare function _:select-entries as element(mods:mods)* {
+declare function _:select-entries() as element(mods:mods)* {
   collection($_:db-name)//mods:mods[mods:genre[@authority="local" and . eq 'Series'] and mods:originInfo[matches(., '^[^:]+:[^,]+,\s\d{4}-\d{0,4}$')]]
 };
 
