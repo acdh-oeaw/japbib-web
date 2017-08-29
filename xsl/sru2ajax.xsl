@@ -212,12 +212,10 @@
     </xsl:template>
     
     <xsl:template match="mods:dateIssued[@point eq 'start']">
-        <span class="year"><xsl:value-of select="."/>-</span>
+        <span class="year"><xsl:value-of select="."/>-<xsl:value-of select="../mods:dateIssued[@point eq 'end']"/></span>
     </xsl:template>
     
-    <xsl:template match="mods:dateIssued[@point eq 'end']">
-        <span class="year"><xsl:value-of select="."/></span>
-    </xsl:template>
+    <xsl:template match="mods:dateIssued[@point eq 'end']"/><!-- see start -->
     
     <xsl:template match="mods:dateIssued">
         <span class="year"><xsl:value-of select="."/></span><!-- TODO: Angaben wie 19880801 oder 198512 /^[12][90]\d\d[01]\d[0-3]*\d*$/ abfangen-->
