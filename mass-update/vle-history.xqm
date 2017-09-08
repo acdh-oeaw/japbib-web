@@ -20,12 +20,7 @@ declare function _:add-change-record($e as element()) as element() {
         </f>
       }
   return $e update {
-    if (not(exists($e/*:fs[@type='change']))) then
-      let $fs := $newEntry update delete node ./*
-      return insert node $fs into .
-    else ()
-  } update {
-    insert node $newEntry/*:f as last into ./*:fs
+    insert node $fs as last into .
   }
 };
 
