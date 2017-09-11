@@ -20,7 +20,7 @@ declare function _:add-change-record($e as element()) as element() {
         </f>
       }
   return $e update {
-    insert node $fs as last into .
+    insert node $newEntry as last into .
   }
 };
 
