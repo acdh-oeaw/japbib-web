@@ -6,7 +6,7 @@ declare namespace tei = "http://www.tei-c.org/ns/1.0";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
 declare variable $api:database-LIDOS := "japbib4";
-declare variable $api:database-MODS := "japbib_05";
+declare variable $api:database-MODS := "japbib_06";
 
 declare %private function api:response($status, $msg, $payload) {
     element {$status} {(
