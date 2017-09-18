@@ -2,7 +2,7 @@ xquery version "3.1";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
-import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "/tmp/dba/vle-history.xqm";
+import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-history.xqm";
 
 declare namespace _ = "urn:_";
 
