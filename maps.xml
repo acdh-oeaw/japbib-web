@@ -10,10 +10,10 @@
             <path label=".">mods:titleInfo[parent::mods:mods]/mods:title</path>
         </index>
         <index key="author" case="no" coll="?lang=de">
-            <path label="." match="mods:namePart">mods:name[(mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
+            <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
         </index>
         <index key="date" datatype="xs:integer">
-            <path label=".">mods:mods/mods:originInfo/mods:dateIssued</path>
+            <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:dateIssued</path>
         </index>
         <index key="subject" case="no" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
@@ -22,7 +22,7 @@
             <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
         </index>
         <index key="publisher" case="no" coll="?lang=de">
-            <path label=".">mods:publisher</path>
+            <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
         </index>
         <index key="id">
             <path>mods:recordIdentifier</path>
