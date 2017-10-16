@@ -6,7 +6,7 @@ declare namespace mods = "http://www.loc.gov/mods/v3";
 
 import module namespace session = "http://basex.org/modules/session";
 
-declare function _:add-change-record($e as element()) as element() {
+declare %updating function _:add-change-record($e as element()) {
   let $user := try {session:get('dba')} catch bxerr:BXSE0003 {user:current()},
       $newEntry :=
       element {QName($e/namespace-uri(),'fs')} {
@@ -19,18 +19,16 @@ declare function _:add-change-record($e as element()) as element() {
           <symbol>{attribute value {format-dateTime(current-dateTime(),'[Y0001]_[M01]_[D01]')}}</symbol>
         </f>
       }
-  return $e update {
-    insert node $newEntry as last into .
-  }
+  return insert node $newEntry as last into $e
 };
 
-declare %updating function _:save-entry-in-history($db-base-name as xs:string, $cur-node as node()) {
+declare %updating function _:save-entry-in-history($db-base-name as xs:string, $cur-nodes as node()+) {
   let $hist-db-name := $db-base-name||'__hist',
-      $hist-node :=_:add-timestamp($cur-node)
+      $hist-nodes := <_>{$cur-nodes}</_> update {./*!_:add-timestamp(.) }
   return try {
-    insert node $hist-node as last into collection($hist-db-name)/hist
+    insert node $hist-nodes/* as last into collection($hist-db-name)/hist
   } catch err:* {
-    _:create-hist-db($hist-db-name, $hist-node)
+    _:create-hist-db($hist-db-name, $hist-nodes/*)
   }
 };
 
@@ -40,6 +38,6 @@ declare %updating function _:create-hist-db($dict as xs:string, $hist-element as
    else ()
 };
 
-declare function _:add-timestamp($cur-node as node()) {
-   $cur-node update insert node (attribute dt {format-dateTime(current-dateTime(),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]')}) into . 
+declare %updating function _:add-timestamp($cur-node as node()) {
+   insert node (attribute dt {format-dateTime(current-dateTime(),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]')}) into $cur-node 
 };

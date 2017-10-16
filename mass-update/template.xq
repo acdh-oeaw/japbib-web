@@ -9,18 +9,19 @@ declare namespace _ = "urn:_";
 declare variable $_:db-name := 'japbib_06';
 
 declare function _:select-entries() as element(mods:mods)* {
-  collection($_:db-name)//mods:mods[mods:genre[@authority="local" and . eq 'Series'] and mods:originInfo[matches(., '^[^:]+:[^,]+,\s\d{4}-\d{0,4}$')]]
+  collection($_:db-name)//mods:mods[mods:genre[@authority="local" and . eq 'Series'] and mods:originInfo[matches(., '^[^:]+:[^,]+')]]
 };
 
-declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
+declare %updating function _:transform($e as element(mods:mods)) {
   let $comment := 'Changed!'
-  return $e update
-  { insert node comment {$comment}  as first into . }
+  return insert node comment {$comment}  as first into $e
 };
 
 declare function _:main() {
-  for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
+  for $e in subsequence(_:select-entries(), 1, 200)
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()
