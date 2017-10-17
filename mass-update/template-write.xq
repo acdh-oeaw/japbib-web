@@ -28,16 +28,17 @@ declare %updating function _:transform($e as element(mods:mods)) {
 };
 
 declare %updating function _:main() {
-  let $entries-subset := subsequence(_:select-entries(), 1, $_:maxNumberOfChangesPerJob)
-  return ( 
-     hist:save-entry-in-history($_:db-name, $entries-subset),
+  let $entries-subset := subsequence(_:select-entries(), 1, $_:maxNumberOfChangesPerJob),
+      $store-in-history := hist:save-entry-in-history($_:db-name, $entries-subset)
+  return (
   for $e in $entries-subset
   return (
      _:transform($e),     
      hist:add-change-record($e) ,
      db:output(serialize($e update
      { _:transform(.),     
-       hist:add-change-record(.) })) )
+       hist:add-change-record(.) })) ),
+  jobs:wait($store-in-history)
   )
 };
 
