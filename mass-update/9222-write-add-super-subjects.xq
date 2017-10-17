@@ -16,7 +16,6 @@ declare namespace _ = "urn:_";
 declare variable $_:maxNumberOfChangesPerJob external := 10;
 declare variable $_:firstChangeJob external := 1;
 declare variable $_:onlyGetNumberOfEntries external := false();
-declare variable $_:db-name := 'japbib_06';
 declare variable $_:thesaurus := 
   for $c in doc('../../japbib-web/thesaurus.xml')//catDesc return
     <topic xmlns="http://www.loc.gov/mods/v3" primary="{$c}">{
@@ -26,7 +25,7 @@ declare variable $_:thesaurus :=
     </topic>;
 
 declare function _:select-entries() as element(mods:mods)* {
-  collection($_:db-name)//mods:mods[not(mods:subject/@usage)]
+  collection('japbib_06')//mods:mods[not(./mods:subject/@usage)]
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {  
@@ -34,7 +33,7 @@ declare %updating function _:transform($e as element(mods:mods)) {
     return for $subject in $subjects
       let $newSubject := (
         <subject usage="primary" xmlns="http://www.loc.gov/mods/v3">
-        {(comment {'#Task #9222 add super categories'||$subject/mods:topic}, $subject/*)}
+        {(comment {'#Task #9222 add super categories '||$subject/mods:topic}, $subject/*)}
         </subject>,
         <subject usage="secondary" xmlns="http://www.loc.gov/mods/v3">
         {$_:thesaurus[@primary = $subject/mods:topic]/*}
@@ -44,9 +43,9 @@ declare %updating function _:transform($e as element(mods:mods)) {
 };
 
 declare %updating function _:main() {
-  let $entries-subset := subsequence(_:select-entries(), 1, $_:maxNumberOfChangesPerJob)
-  return ( 
-     hist:save-entry-in-history($_:db-name, $entries-subset),
+  let $entries-subset := subsequence(_:select-entries(), 1, $_:maxNumberOfChangesPerJob),
+      $store-in-history := hist:save-entry-in-history('japbib_06', $entries-subset)
+  return (
   for $e in $entries-subset
   return (
      _:transform($e),     
