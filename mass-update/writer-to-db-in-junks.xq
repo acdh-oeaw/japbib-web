@@ -12,6 +12,7 @@ declare variable $_:maxNumberOfChangesPerJob := 100;
 declare variable $_:basePath := string-join(tokenize(static-base-uri(), '/')[position() < last()], '/');
 declare variable $script_to_run external := 'writer.xq';
 declare variable $keep_chnaged_xml_until_finished := true();
+declare variable $stage_2 external := false();
 
 declare function _:start-jobs-or-get-results() {
   let $update-jobs := jobs:list-details()[starts-with(@id, 'updWrite_')]
@@ -21,7 +22,7 @@ declare function _:start-jobs-or-get-results() {
     return 
       if ($countUnfinished > 0) then <message>{$countUnfinished||' queued for execution.'}</message>
       else $update-jobs[@state="cached"]!jobs:result(@id)
-  else
+  else if ($stage_2) then
   let $slaveScript := unparsed-text($_:basePath||'/'||$script_to_run),
       $jobids := for $i in (0 to xs:integer(ceiling(_:number_of_changed_entries() div $_:maxNumberOfChangesPerJob)) - 1)
         return jobs:eval($slaveScript, map {
@@ -32,7 +33,18 @@ declare function _:start-jobs-or-get-results() {
           'id': 'updWrite_'||$i,
           'base-uri': $_:basePath||'/'
         })
-  return 'Started '||count($jobids)||' jobs. Run again to get results.'
+  return ()
+  else if (jobs:finished('writeInJunks')) then
+  let $oldResult := jobs:result('writeInJunks'),
+      $mainId := jobs:eval(unparsed-text($_:basePath||'/writer-to-db-in-junks.xq'), map {
+        'stage_2': true()
+        }, map {
+        'cache': true(),
+        'id': 'writeInJunks',
+        'base-uri': $_:basePath||'/'
+        })
+  return 'Run again to get results.'
+  else 'Should not happen'
 };
 
 declare function _:number_of_changed_entries() as xs:integer {
