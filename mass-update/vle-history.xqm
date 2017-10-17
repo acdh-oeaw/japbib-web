@@ -22,20 +22,25 @@ declare %updating function _:add-change-record($e as element()) {
   return insert node $newEntry as last into $e
 };
 
-declare %updating function _:save-entry-in-history($db-base-name as xs:string, $cur-nodes as node()+) {
+declare function _:save-entry-in-history($db-base-name as xs:string, $cur-nodes as node()+) as xs:string {
   let $hist-db-name := $db-base-name||'__hist',
-      $hist-nodes := <_>{$cur-nodes}</_> update {./*!_:add-timestamp(.) }
-  return try {
-    insert node $hist-nodes/* as last into collection($hist-db-name)/hist
-  } catch err:* {
-    _:create-hist-db($hist-db-name, $hist-nodes/*)
-  }
+      $hist-nodes := <_/> update {insert node $cur-nodes into .} update {./*!_:add-timestamp(.) },
+      $script := 
+      'import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-history.xqm";
+       declare variable $hist-nodes external;       
+       try { hist:_save-entry-in-history(collection("'||$hist-db-name||'"), "'||$hist-db-name||'", $hist-nodes) }
+       catch err:FODC0002 { db:create("'||$hist-db-name||'", <hist>{$hist-nodes/*}</hist>, "'||$hist-db-name||'.xml") }',
+      $jid := jobs:eval($script, map {
+        'hist-nodes': $hist-nodes
+      }, map {
+        'cache': false(),
+        'base-uri': static-base-uri()
+      }) 
+  return $jid
 };
 
-declare %updating function _:create-hist-db($dict as xs:string, $hist-element as element()?) {
-   if (not(db:exists($dict)))
-   then db:create($dict, <hist>{$hist-element}</hist>, $dict||'.xml')
-   else ()
+declare %updating function _:_save-entry-in-history($hist-db as document-node(), $hist-db-name as xs:string, $hist-nodes as node()+) {
+  insert node $hist-nodes/* as last into $hist-db/hist
 };
 
 declare %updating function _:add-timestamp($cur-node as node()) {
