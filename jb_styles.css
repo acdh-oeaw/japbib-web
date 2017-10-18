@@ -1307,14 +1307,6 @@ PLUS-MINUS, ZAHL
 .plusMinus.close > .zahl.eintrag {
     display: inline-block;
 }
-
-.plusMinus ~ .zahl.eintrag,
-.plusMinus.close ~ .zahl.gruppe,
-.plusMinus > .zahl.eintrag,
-.plusMinus.close > .zahl.gruppe,
-.li1 > .zahl.gruppe {
-    display: none;
-}
   
 /*******************/
 
