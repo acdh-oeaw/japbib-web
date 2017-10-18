@@ -182,7 +182,8 @@
     
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
-        <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')"/></span>
+        <xsl:variable name="etal" select="if (mods:etal) then _:dict(' et al.') else ''"/>
+        <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')||$etal"/></span>
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]" mode="detail">
@@ -190,7 +191,8 @@
                 <xsl:with-param name="index">author</xsl:with-param>
                 <xsl:with-param name="term" select="mods:namePart"/>
             <xsl:with-param name="isLast" select="position() eq last()"/>
-        </xsl:call-template>        
+        </xsl:call-template>
+        <xsl:value-of select="if (mods:etal) then _:dict(' et al.') else ''"/>
     </xsl:template>
     
     <xsl:template name="link-with-number-of-records">
@@ -402,19 +404,6 @@
         <xsl:param name="href" as="xs:string">#</xsl:param>
         <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
-    </xsl:template>
-    
-    <xsl:template match="numberOfRecordsInGroup">
-        <xsl:param name="href"/>
-        <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
-        <xsl:choose>
-            <xsl:when test="exists(../numberOfRecords)">
-                <a href="{$href}" class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></a>            
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="zahl gruppe" title="{$title}"><xsl:value-of select="."/></span>                            
-            </xsl:otherwise>                
-        </xsl:choose>
     </xsl:template>
     
 </xsl:stylesheet>
