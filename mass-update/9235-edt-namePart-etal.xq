@@ -13,9 +13,8 @@ declare function _:select-entries() as element(mods:mods)* {
   collection($_:db-name)//mods:mods[.//mods:namePart[matches(., $_:regex)]]
 };
 
-declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
-  $e update
-  { let $oldNames := .//mods:name[mods:namePart[matches(., $_:regex)]]
+declare %updating function _:transform($e as element(mods:mods)) {
+let $oldNames := $e//mods:name[mods:namePart[matches(., $_:regex)]]
     for $oldName in $oldNames
     return
     let $namePart := $oldName/mods:namePart/text(),
@@ -35,12 +34,14 @@ declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
              <roleTerm type="code" authority="marcrelator">edt</roleTerm>
           </role>
         </name>)
-    return replace node $oldName with $newName }
+    return replace node $oldName with $newName
 };
 
 declare function _:main() {
   for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()

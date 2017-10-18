@@ -61,7 +61,9 @@ declare function _:createEtal($originalName as xs:string) as element(mods:name) 
 
 declare function _:main() {
   for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()

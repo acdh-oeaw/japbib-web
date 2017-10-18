@@ -12,18 +12,17 @@ declare function _:select-entries() as element(mods:mods)+ {
   collection($_:db-name)//mods:mods[.//mods:namePart[matches(., '^(\p{L}+)\s+(\p{L}+)$')]]
 };
 
-declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
-  $e update
-  { for $name in .//mods:name[mods:namePart[matches(., '^(\p{L}+)\s+(\p{L}+)$')]]  
+declare %updating function _:transform($e as element(mods:mods)) {
+  for $name in $e//mods:name[mods:namePart[matches(., '^(\p{L}+)\s+(\p{L}+)$')]]  
     return (replace value of node $name/mods:namePart with replace($name/mods:namePart, '^(\p{L}+)\s+(\p{L}+)$', '$2, $1'),
-            insert node comment{'Task #9274 '||$name/mods:namePart} as first into $name)}
+            insert node comment{'Task #9274 '||$name/mods:namePart} as first into $name)
 };
 
 declare function _:main() {
-let $ret := 
   for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
-return (count($ret), $ret)
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()

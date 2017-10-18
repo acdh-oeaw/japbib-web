@@ -22,7 +22,9 @@ declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
 
 declare function _:main() {
   for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()

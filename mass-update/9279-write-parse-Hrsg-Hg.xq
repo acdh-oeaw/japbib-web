@@ -18,9 +18,8 @@ declare function _:select-entries() as element(mods:mods)* {
   collection($_:db-name)//mods:mods[.//mods:name[matches(mods:namePart, $_:regex)]]
 };
 
-declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
-  $e update
-  { for $name in .//mods:name[matches(mods:namePart, $_:regex)]
+declare %updating function _:transform($e as element(mods:mods)) {
+  for $name in .//mods:name[matches(mods:namePart, $_:regex)]
     let $analyzed := analyze-string($name/mods:namePart, $_:regex),
         $vns := _:getMatches($_:vns, $analyzed),
         $mns := _:getMatches($_:mns, $analyzed),
@@ -30,7 +29,7 @@ declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
              if ($nns[3]/text()) then _:createName($name/mods:namePart, $nns[3]/text(), $vns[3]/text(), $mns[3]/text()) else (),
              if ($analyzed//fn:group[@nr = $_:etal]) then _:createEtal($name/mods:namePart) else ())
     return (replace node $name with _:createName($name/mods:namePart, $nns[1]/text(), $vns[1]/text(), $mns[1]/text()),
-            if ($nns[2]/text() or $analyzed//fn:group[@nr = $_:etal]) then insert node $newNameNodes after $name else ())}
+            if ($nns[2]/text() or $analyzed//fn:group[@nr = $_:etal]) then insert node $newNameNodes after $name else ())
 };
 
 declare function _:getMatches($seq as xs:integer+, $analyzed as element()) as element(fn:group)+ {
@@ -60,12 +59,18 @@ declare function _:createEtal($originalName as xs:string) as element(mods:name) 
 };
 
 declare %updating function _:main() {
-  for $e in _:select-entries()
-  return
-    let $transformed-entry := hist:add-change-record(_:transform($e))
-    return (hist:save-entry-in-history($_:db-name, $e),
-     replace node $e with $transformed-entry,
-     db:output($transformed-entry))
+  let $entries-subset := _:select-entries(),
+      $store-in-history := hist:save-entry-in-history($_:db-name, $entries-subset)
+  return (
+  for $e in $entries-subset
+  return (
+     _:transform($e),     
+     hist:add-change-record($e) ,
+     db:output(serialize($e update
+     { _:transform(.),     
+       hist:add-change-record(.) })) ),
+  jobs:wait($store-in-history)
+  )
 };
 
 _:main()

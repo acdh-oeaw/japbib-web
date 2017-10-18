@@ -9,11 +9,10 @@ declare namespace _ = "urn:_";
 declare variable $_:db-name := 'japbib_06';
 
 declare %updating function _:main() {
-  let $entries := collection($_:db-name)//mods:mods[mods:genre[@authority="local" and . eq 'series']]
+  let $entries := collection($_:db-name)//mods:mods[mods:genre[@authority="local" and . eq 'series']],
+      $store-in-history := hist:save-entry-in-history($_:db-name, $entries)
   for $e in $entries
-  return
-    (hist:save-entry-in-history($_:db-name, $e),
-     replace value of node $e/mods:genre with 'Series',
+  return (replace value of node $e/mods:genre with 'Series',
      db:output($e/mods:genre))
 };
 

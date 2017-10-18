@@ -9,13 +9,12 @@ declare namespace _ = "urn:_";
 declare variable $_:db-name := 'japbib_06';
 declare variable $_:regex := '\s*/\s*Übers\.\s*$';
 
-declare function _:select-entries() as element(mods:mods)* {
+declare function _:select-entries() as element(mods:mods)+ {
   collection($_:db-name)//mods:mods[.//mods:namePart[matches(., $_:regex)]]
 };
 
-declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
-  $e update
-  { let $oldNames := .//mods:name[mods:namePart[matches(., $_:regex)]]
+declare %updating function _:transform($e as element(mods:mods)) {
+  let $oldNames := $e//mods:name[mods:namePart[matches(., $_:regex)]]
     for $oldName in $oldNames
     return
     let $namePart := $oldName/mods:namePart/text(),
@@ -27,12 +26,14 @@ declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
              <roleTerm type="code" authority="marcrelator">trl</roleTerm>
           </role>
         </name>
-    return replace node $oldName with $newName }
+    return replace node $oldName with $newName
 };
 
 declare function _:main() {
-  for $e in _:select-entries()
-  return hist:add-change-record(_:transform($e))
+  for $e in subsequence(_:select-entries(), 1, 200)
+  return $e update {
+     _:transform(.),
+     hist:add-change-record(.)}
 };
 
 _:main()

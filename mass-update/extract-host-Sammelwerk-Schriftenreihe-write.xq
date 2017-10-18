@@ -13,11 +13,11 @@ declare %updating function _:main() {
     'Sammelwerk': 'Book',
     'Schriftenreihe': 'Series'
   }
-  let $wrongRelatedItemEntry := collection($_:db-name)//mods:mods[not(exists(.//mods:genre)) and not(exists(mods:originInfo)) and mods:relatedItem[@type='host'] and mods:subject[. = map:keys($subjectToGenre)]]
+  let $wrongRelatedItemEntry := collection($_:db-name)//mods:mods[not(exists(.//mods:genre)) and not(exists(mods:originInfo)) and mods:relatedItem[@type='host'] and mods:subject[. = map:keys($subjectToGenre)]],
+      $store-in-history := hist:save-entry-in-history($_:db-name, $wrongRelatedItemEntry)
   for $e in $wrongRelatedItemEntry
   return (
-    hist:save-entry-in-history($_:db-name, $e),
-    (: keine Wirkung wegen n‰chster Zeile if ($e/mods:subject[. eq 'Schriftenreihe']) then insert node <issuance>series</issuance> into $e/mods:relatedItem[@type='host']/mods:originInfo else (),:)
+    (: keine Wirkung wegen n√§chster Zeile if ($e/mods:subject[. eq 'Schriftenreihe']) then insert node <issuance>series</issuance> into $e/mods:relatedItem[@type='host']/mods:originInfo else (),:)
     replace node $e/mods:relatedItem[@type='host'] with $e/mods:relatedItem[@type='host']/(*|text()|comment()), 
     insert node <genre authority="local">{$e/mods:subject!$subjectToGenre(.)}</genre> after $e/mods:typeOfResource
 )

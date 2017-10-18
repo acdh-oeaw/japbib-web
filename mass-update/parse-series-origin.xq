@@ -32,9 +32,9 @@ declare function _:transform($e as element(mods:mods)) as element(mods:mods) {
 declare %updating function _:main() {
   for $e in _:select-entries()
   return
-    let $transformed-entry := hist:add-change-record(_:transform($e))
-    return (hist:save-entry-in-history($_:db-name, $e),
-     replace node $e with $transformed-entry,
+    let $transformed-entry := _:transform($e) update hist:add-change-record(.),
+        $store-in-history := hist:save-entry-in-history($_:db-name, $e)
+    return (replace node $e with $transformed-entry,
      db:output($transformed-entry))
 };
 
