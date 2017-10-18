@@ -64,9 +64,6 @@ declare %private function api:doAddStatsToThesaurus($thesaurus as item(), $stats
                         if ($cat-stats)
                         then <numberOfRecords>{$cat-stats}</numberOfRecords>
                         else (),
-                        if ($sub-topics//numberOfRecords)
-                        then <numberOfRecordsInGroup>{sum(($cat-stats, $sub-topics//numberOfRecords))}</numberOfRecordsInGroup>
-                        else (),
                         $sub-topics
                     )}
                 else ()
@@ -103,21 +100,17 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
 
 declare function api:topics-to-map($r) as map(*) {
     let $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
-        $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic)),
-(:        $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:)
-        $matching-texts-nodes := (: prof:time( :)
+        $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
+(:       , $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:)
+        return (: prof:time( :)
 (:        ft:search($model:dbname, $matching-texts)[(ancestor::mods:genre|ancestor::mods:subject)],:)
-        for $s in $matching-texts
-        return ft:search($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject)],
-(:        false(), 'api:topics-to-map all texts '),:)
-        (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
-        $intersection := (: prof:time( :)
-        $r//(mods:genre|mods:subject)//text() intersect $matching-texts-nodes
-(:        , false(), 'api:topics-to-map intersection '):)
-    return map:merge(
-        for $t in $intersection
-        let $v := _:dict($t)
-        group by $v
-        return map:entry($v, count($t))
+        map:merge(for $s in $matching-texts 
+        let $all-occurences := ft:search($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
+(:          false(), 'api:topics-to-map all texts '),:)
+           (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
+            $intersection := (: prof:time( :)
+                 $r/descendant-or-self::mods:mods intersect $all-occurences
+(:          , false(), 'api:topics-to-map intersection '):)
+        return map:entry($s, count($intersection))
     )
 };
