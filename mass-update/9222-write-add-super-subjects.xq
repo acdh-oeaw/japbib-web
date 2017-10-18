@@ -13,7 +13,7 @@ import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-his
 
 declare namespace _ = "urn:_";
 
-declare variable $_:maxNumberOfChangesPerJob external := 10;
+declare variable $_:maxNumberOfChangesPerJob external := 300;
 declare variable $_:firstChangeJob external := 1;
 declare variable $_:onlyGetNumberOfEntries external := false();
 declare variable $_:thesaurus := 
@@ -25,7 +25,7 @@ declare variable $_:thesaurus :=
     </topic>;
 
 declare function _:select-entries() as element(mods:mods)* {
-  collection('japbib_06')//mods:mods[not(./mods:subject/@usage)]
+  collection('japbib_06')//mods:mods[mods:subject[not(@displayLabel)] and not(mods:subject[@usage])]
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {  

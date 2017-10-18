@@ -6,7 +6,6 @@ import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-his
 
 declare namespace _ = "urn:_";
 
-declare variable $_:db-name := 'japbib_06';
 declare variable $_:thesaurus := 
   for $c in doc('../../japbib-web/thesaurus.xml')//catDesc return
     <topic xmlns="http://www.loc.gov/mods/v3" primary="{$c}">{
@@ -16,7 +15,7 @@ declare variable $_:thesaurus :=
     </topic>;
 
 declare function _:select-entries() as element(mods:mods)* {
-  collection($_:db-name)//mods:mods[not(mods:subject/@usage)]
+  collection('japbib_06')//mods:mods[mods:subject[not(@displayLabel)] and not(mods:subject[@usage])]
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {  
@@ -24,7 +23,7 @@ declare %updating function _:transform($e as element(mods:mods)) {
     return for $subject in $subjects
       let $newSubject := (
         <subject usage="primary" xmlns="http://www.loc.gov/mods/v3">
-        {(comment {'#Task #9222 add super categories'||$subject/mods:topic}, $subject/*)}
+        {(comment {'#Task #9222 add super categories '||$subject/mods:topic}, $subject/*)}
         </subject>,
         <subject usage="secondary" xmlns="http://www.loc.gov/mods/v3">
         {$_:thesaurus[@primary = $subject/mods:topic]/*}
