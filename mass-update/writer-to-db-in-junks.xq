@@ -6,6 +6,9 @@ xquery version "3.1";
    call with $_:onlyGetNumberOfEntries := true() )
 :)
 
+
+import module namespace session = "http://basex.org/modules/session";
+
 declare namespace _ = "urn:_";
 
 declare variable $_:maxNumberOfChangesPerJob := 100;
@@ -13,6 +16,7 @@ declare variable $_:basePath := string-join(tokenize(static-base-uri(), '/')[pos
 declare variable $script_to_run external := 'writer.xq';
 declare variable $keep_chnaged_xml_until_finished := true();
 declare variable $stage_2 external := false();
+declare variable $run_as_user external := '';
 
 declare function _:start-jobs-or-get-results() {
   let $update-jobs := jobs:list-details()[starts-with(@id, 'updWrite_')]
@@ -27,7 +31,8 @@ declare function _:start-jobs-or-get-results() {
       $jobids := for $i in (0 to xs:integer(ceiling(_:number_of_changed_entries() div $_:maxNumberOfChangesPerJob)) - 1)
         return jobs:eval($slaveScript, map {
           '{urn:_}firstChangeJob': $i * $_:maxNumberOfChangesPerJob + 1,
-          '{urn:_}maxNumberOfChangesPerJob': $_:maxNumberOfChangesPerJob
+          '{urn:_}maxNumberOfChangesPerJob': $_:maxNumberOfChangesPerJob,
+          '{https://acdh.oeaw.ac.at/vle/history}user': $run_as_user
         }, map {
           'cache': $keep_chnaged_xml_until_finished,
           'id': 'updWrite_'||$i,
@@ -35,11 +40,11 @@ declare function _:start-jobs-or-get-results() {
         })
   return ()
   else if (jobs:finished('writeInJunks')) then
-  let $oldResult := jobs:result('writeInJunks'),
-      $mainId := jobs:eval(unparsed-text($_:basePath||'/writer-to-db-in-junks.xq'), map {
-        'stage_2': true()
+  let $mainId := jobs:eval(unparsed-text($_:basePath||'/writer-to-db-in-junks.xq'), map {
+        'stage_2': true(),
+        'run_as_user': try {session:get('dba')} catch bxerr:BXSE0003 {user:current()}
         }, map {
-        'cache': true(),
+        'cache': false(),
         'id': 'writeInJunks',
         'base-uri': $_:basePath||'/'
         })
