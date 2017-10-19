@@ -21,7 +21,7 @@ declare variable $api:path-to-thesaurus := "../thesaurus.xml";
 declare variable $api:path-to-stylesheets := replace($sru-api:path-to-stylesheets, '../(.*)', '$1');
 declare variable $api:thesaurus2html := $api:path-to-stylesheets||"thesaurus2html.xsl";
 
-declare %updating function api:taxonomy-cahce-as-xml($x-mode as xs:string?, $data-with-stats as document-node()) {
+declare %updating function api:taxonomy-cache-as-xml($x-mode as xs:string?, $data-with-stats as document-node()) {
     if ($x-mode eq 'refresh') then cache:thesaurus($data-with-stats) else ()
 };
 
@@ -89,7 +89,7 @@ function api:taxonomy-as-html-cached($x-mode, $x-style) {
     let $data-with-stats := api:create-data-with-stats($x-mode),
         $style := if (some $a in tokenize(request:header("ACCEPT"), ',') satisfies $a = ('text/xml', 'application/xml')) then 'none' else $x-style,
         $ret := api:taxonomy-as-html($data-with-stats/*, $style)
-    return (db:output($ret) , api:taxonomy-cahce-as-xml($x-mode, $data-with-stats))
+    return (db:output($ret) , api:taxonomy-cache-as-xml($x-mode, $data-with-stats))
 };
 
 declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:string?) as node() {
@@ -105,7 +105,7 @@ declare function api:topics-to-map($r) as map(*) {
         return (: prof:time( :)
 (:        ft:search($model:dbname, $matching-texts)[(ancestor::mods:genre|ancestor::mods:subject)],:)
         map:merge(for $s in $matching-texts 
-        let $all-occurences := ft:search($model:dbname, $s)[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
+        let $all-occurences := ft:search($model:dbname, $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
 (:          false(), 'api:topics-to-map all texts '),:)
            (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
             $intersection := (: prof:time( :)
