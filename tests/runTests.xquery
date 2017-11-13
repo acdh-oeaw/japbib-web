@@ -8,20 +8,22 @@ declare function local:runTests($item as document-node()){
 };
 
 declare function local:compare($s1, $s2) {
-    try {
-        let $deep-equal := function-lookup(xs:QName('saxon:deep-equal'), 4)
-        return
+    let $deep-equal := function-lookup(xs:QName('saxon:deep-equal'), 4)
+    return
           if (exists($deep-equal))
           then $deep-equal($s1, $s2, default-collation(), 'wS')
           else deep-equal($s1, $s2, default-collation())
-    } catch * {
-        ()
-    }
 };
 
 declare function local:handle ($item as item()) {
     typeswitch ($item) 
-        case element(test) return try { local:handleTestElt ($item) } catch * {($item, <error>{$err:code||": "||$err:description|| " (module "||$err:module||", line "||$err:line-number||")"}</error>)}
+        case element(test) return
+        try {
+          local:handleTestElt ($item)
+        } catch * {
+          ($item,
+           <error>{$err:code||": "||$err:description|| " (module "||$err:module||", line "||$err:line-number||")"}</error>)
+        }
         (: @result is always generated anew :)
         case attribute(result) return ()
         (: <actual> is always generated anew :)
