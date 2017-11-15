@@ -196,15 +196,16 @@ var years = $('.year a'),
     startSelected = 0,
     endSelected = 0;
 
-$(document).on('click', '.year a', function(e){
-  e.preventDefault(); 
-     //fruehere Auswahl aufheben
-  if (rangeSelected === true) {
+function unselectDate() {
     $( years ).removeClass('selected');
     rangeSelected = false;
     startSelected = 0;
     endSelected = 0;
-  }
+}
+$(document).on('click', '.year a', function(e){
+  e.preventDefault(); 
+     //fruehere Auswahl aufheben
+  if (rangeSelected === true) unselectDate();
   $( this ).toggleClass('selected');
      //neue Gruppe auswaehlen
      //erste Auswahl
@@ -382,6 +383,7 @@ m.doSearchOnReturn = doSearchOnReturn;
 function executeQuery(query) {
     $('#searchInput1').val(query);
     doSearchOnReturn();
+    unselectDate();
 };
 
 m.executeQuery = executeQuery;
