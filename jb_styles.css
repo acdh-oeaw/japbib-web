@@ -1,4 +1,4 @@
-﻿/**********************
+/**********************
    Schrift & basic tags
 **********************/ 
 body {   
@@ -978,10 +978,14 @@ tr.search .fa-search {
   content: ' ';
   } 
 .pubForm::before {
-  content: 'abc';
+  display: inline-block;
+  margin-right: 0.3em;
+  color:#c1b994;
+}
+.pubForm .record-html > ul::before {
+  content: '';
   display: block;
   float: right;
-  font-family: fontawesome;
   font-size: 1.5em;
   color: rgb(255, 247, 212);
   background: #c1b994;
@@ -990,17 +994,29 @@ tr.search .fa-search {
   margin-left: 0.2em;
   margin-bottom: .2em;
   }
-.article::before {
-  content: '\f15c'; /* fa-file-text */
+.book::before,
+.book .record-html > ul::before { 
+  content: '\f02d'; /* fa-book  */  
+  } 
+.bookSection::before, 
+.bookSection .record-html > ul::before, 
+.journalArticle::before, 
+.journalArticle .record-html > ul::before {
+  content: '\f0f6'; /* fa-file-text-o */
   }
-.buch::before { 
-  content: '\f02d'; /* fa-book  */
+.journal::before,
+.journal .record-html > ul::before { 
+  content: '\f022'; /* fa-list-alt  */ 
+  } 
+.series::before,
+.series .record-html > ul::before { 
+  content: '\f0c5'; /* fa-files-o   */ 
   } 
 
 /*  results Farben*/
 .showEntry,
-#find #showList {  
-  background: rgb(228, 211, 165); 
+#find #showList {
+  background: rgb(228, 211, 165);
   }
 
 .navResults { 
@@ -1011,7 +1027,7 @@ tr.search .fa-search {
   background: rgba(255, 255, 255, 1);
   color: #463a2e;
 } 
-.showEntry .showOptions { 
+.showEntry .showOptions {
   background: rgba(255, 255, 216, 0.1);
   }
 .record-html {
