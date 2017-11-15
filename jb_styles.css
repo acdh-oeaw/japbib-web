@@ -1264,7 +1264,7 @@ PLUS-MINUS, ZAHL
  padding: 0 .3em;
  border-radius: 1em;
  }
-/*  Zahl */ 
+/*  Zahl */  
 
 .zahl::before, 
 .aZahl::before {
