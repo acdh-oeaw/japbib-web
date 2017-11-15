@@ -1,4 +1,4 @@
-/**********************
+﻿/**********************
    Schrift & basic tags
 **********************/ 
 body {   
@@ -692,8 +692,7 @@ tr.examples {
   padding-top: 1.5em;
 }
 
-.examples [data-index="author"],
-.examples [data-index="title"] {
+.examples [data-index=author], .examples [data-index=title] {
   /* padding-top: .8em; */
 }
 .examples ol, 
@@ -1307,7 +1306,10 @@ PLUS-MINUS, ZAHL
 .plusMinus.close > .zahl.eintrag {
     display: inline-block;
 }
-  
+.li1 > .zahl, 
+.li1 > .eintrag {
+  display: none;
+}
 /*******************/
 
 .term {
