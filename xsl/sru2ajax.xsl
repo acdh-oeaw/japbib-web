@@ -13,7 +13,7 @@
         </xd:desc>
     </xd:doc>
     
-    <xsl:output indent="no" method="xhtml"/>
+    <xsl:output indent="yes" method="xhtml"/>
     <xsl:strip-space elements="*"/>
     
     <xsl:include href="lib/serialization.xsl"/>
@@ -148,7 +148,7 @@
     
     <xsl:template name="detail-list-items">        
         <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
-        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
+        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
             <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
         </xsl:for-each></li>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
@@ -186,7 +186,7 @@
         <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')||$etal"/></span>
     </xsl:template>
     
-    <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]" mode="detail">
+    <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl', 'ctb')]" mode="detail">
         <xsl:call-template name="link-with-number-of-records">
                 <xsl:with-param name="index">author</xsl:with-param>
                 <xsl:with-param name="term" select="mods:namePart"/>
@@ -202,7 +202,7 @@
         <xsl:param name="isLast" as="xs:boolean" select="true()"/>
         <xsl:variable name="this" select="."/>
         <!-- Default role is aut -->
-        <xsl:variable name="knownSpecialRoles" select="('edt', 'trl', 'cbt')"/>
+        <xsl:variable name="knownSpecialRoles" select="('edt', 'trl', 'ctb')"/>
         <xsl:for-each select="$term">
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
