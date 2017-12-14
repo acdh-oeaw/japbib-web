@@ -20,7 +20,7 @@ declare variable $get-db-list-query := '"japbib_06"';
 (: Note: assumes 9174-MagDiplArb-subject.xq does the very same for test purpose! :)
 declare variable $keep_changed_xml_until_finished := true();
 declare variable $stage_2 external := false();
-declare variable $run_as_user external := '';
+declare variable $run_as_user external := try {session:get('dba')} catch bxerr:BXSE0003 {user:current()};
 
 declare function _:start-jobs-or-get-results() {
   let $update-jobs := jobs:list-details()[ends-with(@id, '_updWrite')]
