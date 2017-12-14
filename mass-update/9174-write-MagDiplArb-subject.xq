@@ -13,16 +13,15 @@ import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-his
 
 declare namespace _ = "urn:_";
 
-declare variable $_:maxNumberOfChangesPerJob external := 300;
+declare variable $_:maxNumberOfChangesPerJob external := 1500;
 declare variable $_:onlyGetNumberOfEntries external := false();
-declare variable $_:db-name := 'japbib_06';
 declare variable $_:getParams external := false();
 
 declare variable $__db__ external := "japbib_06";
 declare variable $__helper_tables__ external := "helper_tables";
 
 declare function _:select-entries() as element(mods:mods)* {
-  collection($__db__)//mods:mods[mods:genre[@authority="local" and . eq 'Series'] and mods:originInfo[matches(., '^[^:]+:[^,]+')]]
+  collection($__db__)//LIDOS-Dokument/Fußnoten[matches(., '(Mag.*[Aa]rb)|(Dipl.*[Aa]rb)')]/ancestor::mods:mods[not(mods:subject[@usage="primary"]/mods:topic[. eq 'Magister-, Diplomarbeit'])]
 };
 
 declare function _:get-params() as element(params) {
@@ -31,13 +30,20 @@ declare function _:get-params() as element(params) {
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {
-  let $comment := 'Changed!'
-  return insert node comment {$comment}  as first into $e
+   insert nodes
+  (<subject usage="primary"><!--Bug #9174 Mag./Dipl.-Arb. subject-->
+      <topic>Magister-, Diplomarbeit</topic>
+   </subject>,
+   <subject usage="secondary">
+      <topic>Form</topic>
+      <topic>Literaturgattung</topic>
+      <topic>Hochschulschrift</topic>
+   </subject>) before $e/mods:recordInfo
 };
 
 declare %updating function _:main() {
   let $entries-subset := subsequence(_:select-entries(), 1, $_:maxNumberOfChangesPerJob),
-      $store-in-history := hist:save-entry-in-history($_:db-name, $entries-subset)
+      $store-in-history := hist:save-entry-in-history($__db__, $entries-subset)
   return (
     for $e in $entries-subset
   return (
