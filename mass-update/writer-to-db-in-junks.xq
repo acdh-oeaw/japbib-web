@@ -20,7 +20,7 @@ declare variable $get-db-list-query := '"japbib_06"';
 (: Note: assumes 9174-MagDiplArb-subject.xq does the very same for test purpose! :)
 declare variable $keep_changed_xml_until_finished := true();
 declare variable $stage_2 external := false();
-declare variable $run_as_user external := try {session:get('dba')} catch bxerr:BXSE0003 {user:current()};
+declare variable $run_as_user external := '';
 
 declare function _:start-jobs-or-get-results() {
   let $update-jobs := jobs:list-details()[ends-with(@id, '_updWrite')]
@@ -50,7 +50,7 @@ declare function _:start-jobs-or-get-results() {
         'stage_2': true(),
         'run_as_user': try {session:get('dba')} catch bxerr:BXSE0003 {user:current()}
         }, map {
-        'cache': true(),
+        'cache': $keep_changed_xml_until_finished,
         'id': 'writeInJunks',
         'base-uri': $_:basePath||'/'
         })
@@ -96,7 +96,7 @@ declare function _:number_of_changed_entries($db_names as xs:string+) as element
       return jobs:eval($slaveScript, map {
           '{urn:_}onlyGetNumberOfEntries': true()
           }, map {
-          'cache': $keep_changed_xml_until_finished,
+          'cache': true(),
           'id': $db_name||'_numberOfEntries',
           'base-uri': $_:basePath||'/'
           }),
