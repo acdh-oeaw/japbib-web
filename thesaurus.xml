@@ -1402,54 +1402,57 @@
             <catDesc>Bibliographie, Katalog</catDesc>
          </category>
          <category n="4.3.4">
-            <catDesc>Graue Literatur</catDesc>
+            <catDesc>Festschrift</catDesc>
          </category>
          <category n="4.3.5">
+            <catDesc>Graue Literatur</catDesc>
+         </category>
+         <category n="4.3.6">
             <catDesc>Hochschulschrift</catDesc>
-            <category n="4.3.5.1">
+            <category n="4.3.6.1">
                <catDesc>Dissertation</catDesc>
             </category>
-            <category n="4.3.5.2">
+            <category n="4.3.6.2">
                <catDesc>Habilitationsschrift</catDesc>
             </category>
-            <category n="4.3.5.3">
+            <category n="4.3.6.3">
                <catDesc>Magister-, Diplomarbeit</catDesc>
             </category>
          </category>
-         <category n="4.3.6">
+         <category n="4.3.7">
             <catDesc>Informationsschrift</catDesc>
          </category>
-         <category n="4.3.7">
+         <category n="4.3.8">
             <catDesc>Interview, Stellungnahme</catDesc>
          </category>
-         <category n="4.3.8">
+         <category n="4.3.9">
             <catDesc>Lehrmaterial</catDesc>
          </category>
-         <category n="4.3.9">
+         <category n="4.3.10">
             <catDesc>Nachschlagewerk</catDesc>
          </category>
-         <category n="4.3.10">
+         <category n="4.3.11">
             <catDesc>nicht-deutschsprachige Veröffentlichung</catDesc>
          </category>
-         <category n="4.3.11">
+         <category n="4.3.12">
             <catDesc>Quellenwerk</catDesc>
          </category>
-         <category n="4.3.12">
+         <category n="4.3.13">
             <catDesc>praktische Anleitung</catDesc>
          </category>
-         <category n="4.3.13">
+         <category n="4.3.14">
             <catDesc>Rezension</catDesc>
          </category>
-         <category n="4.3.14">
+         <category n="4.3.15">
             <catDesc>Tagungsbericht</catDesc>
          </category>
-         <category n="4.3.15">
+         <category n="4.3.16">
             <catDesc>Übersetzung</catDesc>
-            <category n="4.3.15.1">
+            <category n="4.3.16.1">
                <catDesc>Literaturübersetzung</catDesc>
             </category>
          </category>
-         <category n="4.3.16">
+         <category n="4.3.17">
             <catDesc>Vortrag, unveröffentlichtes Manuskript</catDesc>
          </category>
       </category>

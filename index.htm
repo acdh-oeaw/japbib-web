@@ -148,25 +148,25 @@
               <p>Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können
               von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt
               werden.</p>
-              <p>Ausgewählte Begriffe sind üblicherweise durch „AND“ verbunden, das heißt, der gesuchte Eintrag muss
-              alle Schlagworte enthalten. Wenn man allerdings „AND“ manuell auf „OR“ umstellt, wird nach Einträgen
+              <p>Ausgewählte Begriffe sind üblicherweise durch „and“ verbunden, das heißt, der gesuchte Eintrag muss
+              alle Schlagworte enthalten. Wenn man allerdings „and“ manuell auf „or“ umstellt, wird nach Einträgen
               gesucht die entweder Schlagwort A oder Schlagwort B enthalten.</p>
               <ul class="helpExample">
                 <li>Beispiele</li>
                 <li>Finde Beiträge zur Religion im Altertum:
                   <a class='code aHover' href=
                   "#find?query=subject%3D%22Philosophie%20und%20Religion%22%20AND%20subject%3D%22Altertum%20(bis%201192)%22%20%20">
-                  subject="Philosophie und Religion" AND subject="Altertum (bis 1192)"</a>
+                  subject="Philosophie und Religion" and subject="Altertum (bis 1192)"</a>
                 </li>
                 <li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:
                   <a class='code aHover' href=
                   "#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20">
-                  subject="selbständige Publikation" AND subject="Gesellschaft" OR subject="Politik"</a>
+                  subject="selbständige Publikation" and subject="Gesellschaft" or subject="Politik"</a>
                 </li>
                 <li>Finde Übersetzungen moderner Lyrik:
                   <a class='code aHover' href=
                   "#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20AND%20subject%3D%22Gegenwart%20(ab%201945)%22%20AND%20subject%3D%22Lyrik%22%20%20">
-                  subject="Literaturübersetzung" AND subject="Gegenwart (ab 1945)" AND subject="Lyrik"</a>
+                  subject="Literaturübersetzung" and subject="Gegenwart (ab 1945)" and subject="Lyrik"</a>
                 </li>
                 <li>In welchen Zeitschriften wurden vergleichende linguistische Studien mit Japanbezug publiziert? 
 
@@ -226,7 +226,7 @@
                 <li><code>series=</code> Suche wird auf Reihen eingegrenzt</li>
                 <li><code>date=</code> Suche wird auf Publikationszeitraum eingegrenzt</li>
               </ul>
-              <p>Alle Parameter können auch in Kombination (verbunden durch „AND“ oder „OR“) eingesetzt werden.</p>
+              <p>Alle Parameter können auch in Kombination (verbunden durch „and“ oder „or“) eingesetzt werden.</p>
 
               <ul class="helpExample">
                 <li>Beispiele</li>
@@ -455,9 +455,9 @@
                 <div id="wishList">
                   <ul>
                     <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Shintō"> Shintō
-                    <a class="andOr">AND</a></label></li>
+                    <a class="andOr">and</a></label></li>
                     <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Buddhismus ">
-                    Buddhismus <a class="andOr">AND</a></label></li>
+                    Buddhismus <a class="andOr">and</a></label></li>
                     <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Altertum (bis 1192)">
                     Altertum (bis 1192)</label></li>
                     <li style="text-align: right; margin-top: 1em;">334 Resultate <button name="button" title=
@@ -483,8 +483,8 @@
                   aus.</li>
                   <li>Ein Klick auf die Zahl nach dem Schlagwort führt zur Anzeige im Feld „Ausgewählte Schlagworte“.
                   Dadurch lässt sich auch eine Kombinaltion von Schlagworten abfragen.</li>
-                  <li>Die Schlagworte werden standardmäßig mit <code>AND</code> verküpft (Suchfeld wird kleiner),
-                  können aber durch Anklicken auch mit <code>OR</code> verbunden werden (Suchfeld wird größer).</li>
+                  <li>Die Schlagworte werden standardmäßig mit <code>and</code> verküpft (Suchfeld wird kleiner),
+                  können aber durch Anklicken auch mit <code>or</code> verbunden werden (Suchfeld wird größer).</li>
                 </ul>
               </div>
             </div>
@@ -3499,7 +3499,7 @@
                       </li>
                       <li>
                         <a class="code" href="" title=
-                        "Sowohl Schlagworte als auch Titel durchsuchen">subject=*<b>Buch</b>* OR title=*<b>Buch</b>*</a>
+                        "Sowohl Schlagworte als auch Titel durchsuchen">subject=*<b>Buch</b>* or title=*<b>Buch</b>*</a>
                       </li>
                     </ol>
                     <small>Suche mit Platzhalter...</small>
@@ -3514,9 +3514,9 @@
                       <p>Suche modifizieren:</p>
                       <ol>
                         <li><code title="Platzhalter">*</code> (Platzhalter für beliebige andere Zeichen)</li>
-                        <li><code title="sowohl A als auch B">AND</code> (suche sowohl A als auch B, Suchfeld wird
+                        <li><code title="sowohl A als auch B">and</code> (suche sowohl A als auch B, Suchfeld wird
                         kleiner)</li>
-                        <li><code title="entweder A oder B">OR</code> (suche entweder A oder B, Suchfeld wird
+                        <li><code title="entweder A oder B">or</code> (suche entweder A oder B, Suchfeld wird
                         größer)</li>
                         <li><code title="exakte Suche">"..."</code> (exakte Suche)</li>
                       </ol>

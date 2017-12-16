@@ -573,12 +573,13 @@ fieldset {
   top: .75em;
   font-size: .8em;
   line-height:1.8em;
-  padding: 0; 
+  padding: 0;
   width: 2.4em;
   text-align: center;
   text-indent: 0;
   font-family: "Courier New", Courier, monospace;
   font-weight: bold;
+  text-transform: uppercase;
   background: rgba(233, 220, 175, 0.5);
   color: #a08628;
   cursor: pointer;

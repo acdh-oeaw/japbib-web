@@ -606,9 +606,9 @@ var $wishList= $( '#wishList' ),
 $wishList.empty();
 
 function neueAuswahl(newTerm, newConj, remove) {   
-  var termIsNew = true, 
+  var termIsNew = true, and
       conjIsNew = newConj? true: false,
-      newConj= newConj || 'AND';
+      newConj= newConj || 'and';
   if (ausgewaehlt.length)
     for( i in ausgewaehlt) {
       if( ausgewaehlt[i].term && ausgewaehlt[i].term == newTerm ) {
@@ -671,9 +671,9 @@ $(document).on('click', '#wishList li .fa',  function () {
 $( document).on( 'click', '.andOr', function(e) { 
   e.preventDefault();
   var term = $( this ).parent().clone().find('> a').remove().end().text(),
-      conj = ( this.innerHTML == 'AND')? 'OR' : 
+      conj = ( this.innerHTML == 'and')? 'or' : 
     // ( this.innerHTML == 'OR')? 'NOT': 
-      'AND';       
+      'and';       
    neueAuswahl(term, conj); 
 });
 
