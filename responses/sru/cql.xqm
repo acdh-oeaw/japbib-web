@@ -1,4 +1,4 @@
-xquery version "3.0";
+xquery version "3.1";
 
 (:
 The MIT License (MIT)
@@ -32,10 +32,14 @@ SOFTWARE
 :)
 module namespace cql = "http://exist-db.org/xquery/cql";
 
+(: The following two declarations pull in the required classes from cql-java-1.13.jar :)
+import module namespace cqlparser = "http://z3950.org/zing/cql/c-q-l-parser";
+declare namespace cqlnode = "http://z3950.org/zing/cql/c-q-l-node";
+
 import module namespace index = "japbib:index" at "../../index.xqm";
-declare namespace cqlparser = "http://exist-db.org/xquery/cqlparser";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace rest = "http://exquery.org/ns/restxq";
+import module namespace l = "http://basex.org/modules/admin";
 import module namespace _ = "urn:sur2html" at "../localization.xqm";
 
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
@@ -52,234 +56,14 @@ declare variable $cql:modifierRegex := "(/(\w+\.)?\w+((=)(\w+)?))*";
 declare 
 %rest:path("cql/parse")
 %rest:query-param("q", "{$query}")
-function cql:parse($query as xs:string) as item()* {
-    let $quotes-parsed := cql:parse-quotes($query)
-    let $groups-parsed := cql:parse-groups($quotes-parsed)
-    let $boolOps-parsed := cql:parse-boolean-operators($groups-parsed)
-    let $sortClause-parsed := cql:parse-sort-clause($boolOps-parsed) 
-    let $searchClauses-parsed := cql:parse-searchClauses($sortClause-parsed)
-    return cql:create-triples($searchClauses-parsed)
-};      
-
-(:~ NOT USED ~:)
-declare function cql:parse-modifiers($string as xs:string){
-    let $a := analyze-string($string, $cql:modifierRegex)
-    return $a 
-};
-
-(:~
- : Parses the cql "sort" specification in the request  
-~:)
-declare function cql:parse-sort-clause($parts as item()*){
-    for $p in $parts
-    let $parse-sortBy-clause := function($sbc as xs:string){
-        let $a := analyze-string($sbc, "^\s*sortBy\s+((\w+\.)?\w+)"||$cql:modifierRegex)
-        let $index := $a/fn:match/fn:group[1]
-        let $modifiers := $a/fn:match/fn:group[2]
-        return ( 
-            if ($index != '') then <index>{data($index)}</index> else (),
-            if ($modifiers != '') then <modifiers>{data($modifiers)}</modifiers> else ()
-        )
-    }
-    let $format-analyze-string-results := function($a as element()){
-        for $e in $a/* return 
-        typeswitch($e)
-            case element(fn:match) return <sortKeys>{$parse-sortBy-clause(xs:string($e))}</sortKeys>
-            case element(fn:non-match) return xs:string($e) 
-            default return () 
-    }
-    return
-        if ($p instance of xs:string)
-        then $format-analyze-string-results(analyze-string($p, "\s+sortBy.+"))
-        else $p
-};
-
-(:~
- : Takes a sequence of elements and groups them into triples
- : @input $parts: flat sequence of elements
- : @output: either a simple <searchClause> or a <triple>
-~:)
-declare function cql:create-triples($parts as element()+) {
-    let $formatSearchClause := function($w as element()+){
-        (<searchClause>{(
-            if (exists($w[self::index])) then $w[self::index] else <index>{$cql:defaultIndexName}</index>,
-            if (exists($w[self::relation])) then $w[self::relation] else <relation><value>{$cql:defaultRelationValue}</value></relation>,
-            $w[not(self::boolean or self::relation or self::index)]
-        )}</searchClause>,
-        $w[self::boolean])
-    }
-    return 
-    (: if there is only a term, the formatSearchClause() function will put it into a simple cql.serverChoice query :)
-    if (count($parts) eq 1 and $parts/self::term)
-    then $formatSearchClause($parts)
-    else
-        (: if there are already parsed query items <index>, <relation> and <term>, formatSeachClause() will simply wrap them with a <searchClause> element :) 
-        if (every $p in $parts satisfies local-name($p) = ('index', 'relation', 'term', 'sortKeys'))
-        then $formatSearchClause($parts)
-        else 
-            let $searchClauses-grouped := 
-                for tumbling window $w in $parts
-                start $s when true()
-                end $e when $e instance of element(boolean)
-                return $formatSearchClause($w)
-            (:Currently grouping is commented out since it is not implemented correctly ... :)
-            return cql:group-triples($searchClauses-grouped)
-};
-
-(:~
- : Group searchClauses into triples
-~:)
-declare function cql:group-triples($elts as element()+) as element(){
-    (:let $boolean := 
-        if (exists($elts[descendant::groupStart])) 
-        (\:then $elts[self::boolean][position() lt $elts[descendant::groupStart]/position()][1]:\)
-        then $elts[self::boolean][1]
-        else $elts[self::boolean][1],:)
-    let $boolean := $elts[self::boolean][1],
-        $lo := $elts[self::searchClause][1],
-        $ro := $elts[self::searchClause][2],
-        $rest := $elts except ($boolean, $lo, $ro) 
-    return 
-        try {
-            if (exists($boolean) and exists($lo) and exists($ro))
-            then 
-                if (exists($elts[descendant::groupEnd]) and exists($elts[descendant::groupStart]))
-                then cql:do-group-triples($boolean, $elts/self::*[descendant::groupStart], $elts/self::*[descendant::groupEnd], $rest)
-                else cql:do-group-triples($boolean, $lo, $ro, $rest)
-            else ()
-        } catch * {
-            <error code="{$err:code}" module="{$err:module}" line-number="{$err:line-number}" column-number="{$err:column-number}" value="{$err:value}"><description>{$err:description}</description><bo>{$boolean}</bo><lo>{$lo}</lo><ro>{$ro}</ro><re>{$rest}</re></error>
-        }
-};
-
-declare function cql:do-group-triples($boolean as element(boolean), $lo as element(), $ro as element(), $rest as element()*) as element(triple){
-    let $t := <triple>
-                  {$boolean}
-                  <leftOperand>{$lo}</leftOperand>
-                  <rightOperand>{$ro}</rightOperand>                  
-              </triple>
-    (:return $t:)
-    let $boolean-rest := $rest/self::boolean[1],
-        $first-sc-of-rest := $rest/self::searchClause[1],
-        $rest-rest := $rest except ($boolean-rest, $first-sc-of-rest)
-    return  
-        if (exists($boolean-rest) and exists($first-sc-of-rest)) 
-        then cql:do-group-triples($boolean-rest, $t, $first-sc-of-rest, $rest-rest)
-        else $t
-};
-
-(:~   
- : Parses a searchClause into its constituents.
- : @param $parts: A flat sequence of items (elements or strings) from previous parsing steps
- : @result: The same flat input sequence, with tagged <index>, <relation> and <term> elements 
-~:)
-declare function cql:parse-searchClauses($parts as item()*) as item()* { 
-    let $relationOperators :=  "\s*(\w+\.)?(==|=|<=|>=|<|>|<>|any|contains)"||$cql:modifierRegex||"\s*"
-    let $parse-searchClause := function($s as xs:string) as element()*{
-        let $is := analyze-string($s, $relationOperators)/fn:*
-        return 
-            for tumbling window $w in $is
-            start $s at $s-pos previous $prev when true()
-            end $e at $e-pos next $next when true()
-            return 
-              if ($w instance of element(fn:match)) then <relation><value>{lower-case(normalize-space($w))}</value></relation> else  
-              if ($prev instance of element(fn:match)) then <term>{data($w)}</term>
-              else <index>{normalize-space($w)}</index>
-    }
-    return 
-        for $p in $parts
-        return (:$parse-searchClause($p):)
-            if ($p instance of element())
-            then $p
-            else 
-            if ($p instance of xs:string and matches($p, $relationOperators))
-            then $parse-searchClause($p)
-            else <term>{$p}</term>
-};      
-
-declare function cql:parse-quotes($expr as xs:string) as item()* {
-    let $a := analyze-string($expr,'"(?:\\"|[^"])*"')
-    let $it := function($e as item(), $it){
-        typeswitch($e)
-            case element(fn:match) return <term>{for $i in $e/node() return $it($i, $it)}</term>
-            case element(fn:non-match) return for $i in $e/node() return $it($i, $it)
-            case text() return 
-                if (matches($e, '"(?:\\"|[^"])*"'))    
-                then xs:string(replace($e,'(\\")|"','$1'))
-                else xs:string($e)  
-            default return $e/node()!$it(., $it)
-    }
-    let $parse-quotes := function($a){$it($a, $it)},
-        $ret := $parse-quotes($a)
-    return if (exists($ret)) then $ret else <term/>
-}; 
-
-
-(:~
- : Parses parentheses in the into groups
-~:)
-declare function cql:parse-groups($parts as item()*) as item()* {
-    cql:parse-groups($parts, 1)
-};
-declare function cql:parse-groups($parts as item()*, $depth as xs:integer) as item()* {
-    (: anonymous identity transform function :)
-    let $it := function($e as item(), $it) as item()* {
-                    switch($e)
-                        case $e/self::fn:analyze-string-result return $e/*!$it(., $it)
-                        case $e/self::fn:match[. = '('] return <groupStart/>
-                        case $e/self::fn:match[. = ')'] return <groupEnd/>
-                        case $e/self::fn:non-match return xs:string($e)
-                        (:case $e/self::text() return $e:)
-                        (:default return $e/node()!$it(., $it):)
-                        default return xs:string($e)
-                }
-    (: syntactic wrapper around the $it function :)
-    let $analyze-string-result2groups := function($analyze-string-result as element(fn:analyze-string-result)){$it($analyze-string-result, $it)}
-    let $parsed as item()* := 
-        for $expr in $parts
-        return 
-            typeswitch($expr)
-                (: if it's a text, cast it to a string and call the function again :)
-                case text() return cql:parse-groups(xs:string($expr), $depth+1)
-                case xs:string return
-                    let $a := analyze-string($expr,'[\(\)]')
-                    return $analyze-string-result2groups($a)
-                default return $expr
-     
-    return 
-    if ($depth gt 1) 
-    then $parsed
-    else     
-        if (count($parsed[. instance of node()]/self::groupStart) ne count($parsed[. instance of node()]/self::groupEnd))
-        then fn:error(xs:QName("cql:syntaxError"),"Syntax error. Found "||count($parsed[self::groupStart])||" opening parentheses and "||count($parsed[self::groupEnd])||" closing.") (:else:) 
-        else $parsed
-}; 
-
-declare function cql:parse-boolean-operators($parts as item()*) as item()* {
-     let $format-analyze-string-results := function($r as element(fn:analyze-string-result)) {
-        for $e in $r/* 
-        return 
-            if ($e instance of element(fn:match)) 
-            then <boolean><value>{lower-case(normalize-space($e))}</value></boolean> 
-            else xs:string($e)
-     }
-     return
-     for $p in $parts
-     return 
-        if ($p instance of xs:string)
-        then $format-analyze-string-results(analyze-string($p, "\s+(AND|and|OR|or|PROX|prox)"||$cql:modifierRegex||"\s+"))
-        else $p
-};
-
-declare function cql:make-triples($parts as item()*) as item()* {
- ()        
-};
-
-declare function cql:group-expressions($expr as element()+) as item()* {
-    for tumbling window $w in $expr
-        start at $s when starts-with($expr[$s], '(')
-        end at $e when ends-with($expr[$e], ')')
-    return <group>{$w}</group>
+function cql:parse($query as xs:string?) as element() {
+  let $checked-query := if (not(exists($query)) or normalize-space($query) eq '') then '""' else $query,
+      $register := (cqlparser:registerCustomRelation('contains'),
+                    cqlparser:registerCustomRelation('exact')),
+      $node := cqlparser:parse($checked-query)
+  return parse-xml(cqlnode:toXCQL($node))/* update {
+    delete node .//text()['' eq normalize-space(.)]
+  }
 };
 
 (:~ Translates a query in CQL-syntax to a corresponding XPath
@@ -293,7 +77,7 @@ declare function cql:group-expressions($expr as element()+) as item()* {
 : @param $context identifies the context-project (providing the custom index-mappings, needed in the second step) 
 : @return XPath expression as a string (or if not a string, whatever came from the parsing) 
 :)
-declare function cql:cql-to-xpath($cql-expression, $context)  as item()* {
+declare function cql:cql-to-xpath($cql-expression, $context) as item()* {
     typeswitch ($cql-expression) 
         case element(diagnostics) return $cql-expression
         case xs:string return cql:xcql-to-xpath(cql:parse($cql-expression), $context)
@@ -321,9 +105,9 @@ declare function cql:xcql-to-xpath ($xcql as node(), $context as xs:string) as i
         
 };
 
-declare function cql:xcql-to-orderExpr_ ($xcql as node(), $context as xs:string) as item()? {
+declare function cql:xcql-to-orderExpr ($xcql as node(), $context as xs:string) as item()? {
     let $map := index:map($context)
-    let $sortIndex := $xcql//sortKeys/index
+    let $sortIndex := $xcql//sortKeys/key[1]/index
     return 
         if (not(exists($sortIndex)))
         then ()
@@ -389,34 +173,57 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
     let $index-key := $clause/index/text(),        
         $index := index:index-from-map($index-key ,$map),
         $index-type := ($index/xs:string(@type),'')[1],
-        $index-datatype := $index/xs:string(@datatype),
-        $index-case as xs:boolean := if (($index/xs:string(@case),'')[1] = ('yes', 'true', '1')) then true() else false(),
-        $index-xpath := index:index-as-xpath-from-map($index-key,$map,''),        
-        $match-on := if ($index-case) then index:index-as-xpath-from-map($index-key,$map,'match-only')
-                     else 'lower-case('||index:index-as-xpath-from-map($index-key,$map,'match-only')||')',
-        $relation := if ($clause/relation/value/text() eq 'scr') then 'contains' else $clause/relation/value/text(),
+        $index-xpath := index:index-as-xpath-from-map($index-key,$map,''),
+        $match-on-xpath := index:index-as-xpath-from-map($index-key,$map ,'match-only'),
+        $relation := if ($clause/relation/value/text() eq '=') then index:scr($index-key, $map) else $clause/relation/value/text(),
         (: exact, starts-with, contains, ends-with :)
-        $term := if ($index-case) then $clause/term else lower-case($clause/term),
-        $rtrans-term := _:rdict($term),
-        $sanitized-term := cql:sanitize-term($rtrans-term),
-        $predicate := switch (true())
-                        case ($sanitized-term eq 'false') return 'not('||$match-on||')'
-                        case ($sanitized-term eq 'true') return $match-on
-                        case ($index-type eq $index:INDEX_TYPE_FT) return
-                                if (contains($term,'*')) then 
-                                            'ft:query('||$match-on||',<query><wildcard>'||$term||'</wildcard></query>)'
-                                        else
-                                            'ft:query('||$match-on||',<query><phrase>'||$term||'</phrase></query>)'
-                        default return
-                                let $match-mode := if ($relation = 'contains') 
-                                                   then 'contains'
+        $term := if (index:case($index-key ,$map)) then xs:string($clause/term) else lower-case($clause/term),
+        $match-mode := if ($relation = 'contains') then 'contains'
                                                    else if (ends-with($term,'*')) then     
                                                         if (starts-with($term,'*')) then 'contains'
                                                         else 'starts-with'
                                                     else if (starts-with($term,'*')) then 'ends-with'
                                                     else if (contains($term,'*')) then 'starts-ends-with'
-                                                        else 'exact'
-                               return switch ($match-mode) 
+                else 'exact',
+        $predicate := switch (true())
+            case ($index-type eq $index:INDEX_TYPE_FT) return cql:xqft-predicate($match-mode, $match-on-xpath, $term, index:datatype($index-key ,$map), $relation, index:case($index-key,$map))
+            default return cql:xquery-predicate($match-mode, $match-on-xpath, $term, index:datatype($index-key ,$map), $relation, index:case($index-key,$map))                     
+                        
+    return 
+        if ($index instance of element(sru:diagnostics)) then $index
+        else if ($term eq '') then 'collection($__db__)//'||index:base-elt($map)||'[./descendant-or-self::'||$index-xpath||'[normalize-space('||$match-on-xpath||') eq ""]'||' or not(./descendant-or-self::'||$index-xpath||')]'
+        else 'collection($__db__)//'||$index-xpath||'['||$predicate||']'||"/ancestor-or-self::"||index:base-elt($map)
+};
+
+declare %private function cql:xqft-predicate($match-mode as xs:string, $match-on-xpath as xs:string?, $term as xs:string, $index-datatype as xs:string?, $relation as xs:string, $case as xs:boolean) as xs:string {
+let $match-on-xpath := if ($match-on-xpath) then $match-on-xpath else 'text()',
+    $wildcards := if (contains($term,'*')) then ' using wildcards' else '',
+    $case-sensitive := if ($case) then ' using case sensitive' else '',
+    $rtrans-term := _:rdict($term),
+    $sanitized-term := cql:sanitize-xqft-term($rtrans-term)
+return switch (true())  
+  case ($sanitized-term eq 'false') return 'not('||$match-on-xpath||')'
+  case ($sanitized-term eq 'true') return $match-on-xpath
+  default return if ($index-datatype != '')
+        then $match-on-xpath||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on-xpath||") "||$relation||" "||$index-datatype||"("||$term||")"
+        else $match-on-xpath||' contains text "'||$sanitized-term||'"'||$wildcards||$case-sensitive
+};
+
+declare %private function cql:sanitize-xqft-term($term) {
+ (: replace leading and/or trailing stars with .* :)
+ replace($term,'(\*$|^\*)','.*')
+};
+
+declare %private function cql:xquery-predicate($match-mode as xs:string, $match-on-xpath as xs:string?, $term as xs:string, $index-datatype as xs:string?, $relation as xs:string, $case as xs:boolean) as xs:string {
+let $rtrans-term := _:rdict($term),
+    $sanitized-term := cql:sanitize-term($rtrans-term),
+    $match-on-xpath := if ($match-on-xpath) then $match-on-xpath else '.',
+    $match-on := if ($case) then $match-on-xpath else 'lower-case('||$match-on-xpath||')'
+return switch (true())  
+  case ($sanitized-term eq 'false') return 'not('||$match-on-xpath||')'
+  case ($sanitized-term eq 'true') return $match-on-xpath
+  default return switch ($match-mode)
+    case ('exact') return $match-on||'="'||$sanitized-term||'"'
                                     case ('starts-with') return 'starts-with('||$match-on||",'"||$sanitized-term||"')"
                                     case ('ends-with') return 'ends-with('||$match-on||",'"||$sanitized-term||"')"
                                     case ('contains') return 'contains('||$match-on||",'"||$sanitized-term||"')"
@@ -427,19 +234,14 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
                                     default return 
                                         if ($index-datatype != '')
                                         then $match-on||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on||") "||$relation||" "||$index-datatype||"("||$sanitized-term||")"
-                                        else $match-on||$relation||"'"||$sanitized-term||"'"                        
-                        
-    return 
-        if ($index instance of element(sru:diagnostics))
-        then $index
-        else '//'||$index-xpath||'['||$predicate||']'||"/ancestor-or-self::"||index:base-elt($map)
-
+        else $match-on||$relation||"'"||$sanitized-term||"'"   
 };
-(:
-declare function cql:predicate($index-type as xs:string?, $relation as xs:string, $term as xs:string) {
-    
-};:)
 
+(:~ remove quotes :)
+declare %private function cql:sanitize-term($term) {
+ (: remove leading and/or trailing stars :)
+ replace($term,'(\*$|^\*)','')
+};
 
 declare function cql:predicate($clause,$map) as item() {
     let $clause := cql:searchClause($clause,$map)
@@ -498,11 +300,3 @@ declare function cql:prox($leftOperand as element(leftOperand), $rightOperand as
                 then ($prev,$hit,$foll)
                 else ()" (: " :)
 };
-        
-
-(:~ remove quotes :)
-declare function cql:sanitize-term($term) {
- (: remove leading and/or trailing stars :)
- replace($term,'(\*$|^\*)','')
-};
-
