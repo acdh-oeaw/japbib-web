@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<maps>
-    <map name="jp80" index="http://jb80.acdh.oeaw.ac.at" base-elt="mods:mods" description="MODS-based schema for JB 80 bibliographic records">
-        <namespace prefix="mods">http://www.loc.gov/mods/v3</namespace>        
-        <namespace prefix="_">urn:sur2html</namespace>;
-        <index key="cql.serverChoice" case="no" coll="?lang=de">
-            <path label="." match="data(.)">mods:mods</path>
+<map xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="file:/C:/Users/osiam/Documents/acdh-oeaw/cr-xq-mets/schemas/mappings.xsd">
+    <namespaces>
+       <ns prefix="mods" uri="http://www.loc.gov/mods/v3"/>
+    </namespaces>
+    <map key="http://jb80.acdh.oeaw.ac.at" title="Deutschsprachige Japan-Bibliographie 1980-2000" base_elem="mods:mods">
+        <index label="default index" key="cql.serverChoice" case="false" type="ft" coll="?lang=de">
+            <path label="string-join(mods:titleInfo/*, ' ')" match=".//text()">mods:mods</path>
         </index>
-        <index key="title" case="no" coll="?lang=de">
-            <path label=".">mods:titleInfo[parent::mods:mods]/mods:title</path>
+        <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
+            <path label="string-join(*, ' ')" match="mods:title/text()">mods:titleInfo[parent::mods:mods]</path>
         </index>
-        <index key="author" case="no" coll="?lang=de">
+        <index label="Autor" key="author" case="false" type="ft" coll="?lang=de">
             <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
         </index>
         <index key="date" datatype="xs:integer">
             <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:dateIssued</path>
         </index>
-        <index key="subject" case="no" coll="?lang=de">
+        <index key="subject" case="false" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
-        <index key="series" case="no" coll="?lang=de">
-            <path label="." match="mods:titleInfo/mods:title">mods:relatedItem[@type = 'series']</path>
+        <index label="Reihe" key="series" case="false" type="ft" coll="?lang=de">
+            <path label="." match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
         </index>
         <index key="publisher" case="no" coll="?lang=de">
             <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
         </index>
-        <index key="id">
+        <index label="Bezeichner für einen Eintrag" key="id">
             <path>mods:recordIdentifier</path>
         </index>
+        <index label="Kommentare" key="cmt">
+            <path>comment()</path>
+        </index>
     </map>
-</maps>
+    <ft/>
+</map>

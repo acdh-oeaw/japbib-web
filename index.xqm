@@ -27,19 +27,18 @@ SOFTWARE
 module namespace index = "japbib:index";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "responses/sru/diagnostics.xqm";
 
-declare variable $index:maps := doc("maps.xml");
 declare variable $index:INDEX_TYPE_FT := "ft";
 
-declare function index:namespaces($context as xs:string) as item()* {
-    index:map($context)//namespace
+declare function index:namespaces($context as xs:string) as element(ns)* {
+    index:map($context)/../namespaces/ns
 };
 
 declare function index:base-elt($map as element(map)){
-    $map/xs:string(@base-elt)
+    $map/xs:string(@base_elem)
 };
 
-declare function index:map($context as xs:string) as element()? {
-    let $map := $index:maps//map[@index = $context]
+declare function index:map($context as xs:string) as element() {
+    let $map := doc("maps.xml")//map[@key = $context]
     return 
         if (exists($map))
         then $map
@@ -68,16 +67,29 @@ declare function index:index-as-xpath-from-map($index-key as xs:string, $map as 
             default return $indexDef/path
 };
 
+declare function index:case($index-key as xs:string, $map as element(map)) as xs:boolean{
+  if ((index:index-from-map($index-key, $map)/xs:string(@case),'')[1] = ('yes', 'true', '1')) then true() else false()
+};
+
+declare function index:scr($index-key as xs:string, $map as element(map)) as xs:string{
+  (index:index-from-map($index-key, $map)/xs:string(@scr),'contains')[1]
+};
+
+declare function index:datatype($index-key as xs:string, $map as element(map)) as xs:string? {
+  index:index-from-map($index-key, $map)/xs:string(@datatype)  
+};
+
 declare function index:map-to-indexInfo() {
-    for $m in $index:maps//map
+    for $m in doc("maps.xml")/map//map
     return 
     <zr:indexInfo xmlns:zr="http://explain.z3950.org/dtd/2.1/">
-        <zr:set name="{$m/@name}" identifier="{$m/@index}"/>
+        <zr:set name="{$m/@title}" identifier="{$m/@key}"/>
         {for $i in $m//index
         return 
         <zr:index>
+            <zr:title lang="de">{$i/data(@label)}</zr:title>
             <zr:map>
-                <zr:name set="{$m/data(@name)}/">{$i/data(@key)}</zr:name>
+                <zr:name set="sru">{$i/data(@key)}</zr:name>
             </zr:map>
         </zr:index>}
     </zr:indexInfo>
@@ -85,10 +97,10 @@ declare function index:map-to-indexInfo() {
 
 declare function index:map-to-schemaInfo() { 
     <zr:schemaInfo xmlns:zr="http://explain.z3950.org/dtd/2.1/">{
-        for $m in $index:maps//map
+        for $m in doc("maps.xml")/map//map
         return
         <zr:schema name="{$m/@name}" identifier="{$m/@index}">
-          <zr:title>{data($m/@description)}</zr:title>
+          <zr:title>{data($m/@title)}</zr:title>
         </zr:schema>
     }</zr:schemaInfo>
 };
