@@ -2,7 +2,6 @@ xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
-import module namespace db = "http://basex.org/modules/db";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "sru/diagnostics.xqm";
 import module namespace searchRetrieve = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve" at "sru/searchRetrieve.xqm";
@@ -37,7 +36,6 @@ declare
     %rest:query-param("x-debug", "{$x-debug}", "false")
     %rest:GET
     %output:method("xml")
-    %updating
 function api:sru($operation as xs:string, $query, 
                  $version, $maximumRecords as xs:integer,
                  $startRecord as xs:integer, $scanClause,
@@ -47,18 +45,18 @@ function api:sru($operation as xs:string, $query,
                  $x-debug as xs:boolean) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context),
-        $accept := request:header('ACCEPT')
+        $accept := try{ request:header('ACCEPT') } catch bxerr:BASX0000 {'text/html'}
     return
-        if (not($version)) then db:output(diag:diagnostics('param-missing', 'version')) else
-        if ($version != $api:SRU.SUPPORTEDVERSION) then db:output(diag:diagnostics('unsupported-version', $version)) else
+        if (not($version)) then diag:diagnostics('param-missing', 'version') else
+        if ($version != $api:SRU.SUPPORTEDVERSION) then diag:diagnostics('unsupported-version', $version) else
         try {
             switch($operation)
-                case "searchRetrieve" return db:output(searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $accept))
+                case "searchRetrieve" return searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $accept)
                 case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
-                default return db:output(api:explain())
+                default return api:explain()
         } catch diag:* {
-            db:output(diag:diagnostics('general-error', 
-       $err:code||': '||$err:description||' '||$err:value||' in '||$err:module||' at '||$err:line-number||': '||$err:column-number||': '||$err:additional))
+            diag:diagnostics('general-error', 
+       $err:code||': '||$err:description||' '||$err:value||' in '||$err:module||' at '||$err:line-number||': '||$err:column-number||': '||$err:additional)
         }
 };
 

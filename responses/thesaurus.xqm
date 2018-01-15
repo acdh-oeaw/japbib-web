@@ -4,35 +4,33 @@ module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus";
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace xslt = "http://basex.org/modules/xslt";
-import module namespace db = "http://basex.org/modules/db";
 import module namespace ft = "http://basex.org/modules/ft";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace cache = "japbib:cache" at "sru/cache.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "sru.xqm";
 import module namespace l = "http://basex.org/modules/admin";
+import module namespace u = "http://acdh.oeaw.ac.at/japbib/api/sru/util" at "sru/util.xqm";
 import module namespace _ = "urn:sur2html" at "localization.xqm";
 
 declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
 
-declare variable $api:path-to-thesaurus := "../thesaurus.xml";
-declare variable $api:path-to-stylesheets := replace($sru-api:path-to-stylesheets, '../(.*)', '$1');
-declare variable $api:thesaurus2html := $api:path-to-stylesheets||"thesaurus2html.xsl";
+declare variable $api:thesaurus2html := $sru-api:path-to-stylesheets||"thesaurus2html.xsl";
 
-declare %updating function api:taxonomy-cache-as-xml($x-mode as xs:string?, $data-with-stats as document-node()) {
+declare function api:taxonomy-cache-as-xml($x-mode as xs:string?, $data-with-stats as document-node()) {
     if ($x-mode eq 'refresh') then cache:thesaurus($data-with-stats) else ()
 };
 
 declare function api:create-data-with-stats($x-mode as xs:string?) as document-node()? {
     let $log := l:write-log('api:create-data-with-stats $x-mode := '||$x-mode, 'DEBUG'),
-        $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map($model:db) else ()
+        $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map(collection("japbib_06")) else ()
     return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map, $x-mode)} else api:taxonomy-as-xml-cached()
 };
 
 declare function api:taxonomy-as-xml-cached() {
-    if (cache:thesaurus()) then cache:thesaurus() else doc($api:path-to-thesaurus)
+    if (cache:thesaurus()) then cache:thesaurus() else doc("../thesaurus.xml")
 };
 
 (:declare function api:taxonomy-as-xml-with-stats($stats as element(subjects)) {
@@ -46,7 +44,7 @@ declare function api:addStatsToThesaurus($stats as map(*)) {
 
 declare function api:addStatsToThesaurus($stats as map(*), $x-mode as xs:string?) {
     api:doAddStatsToThesaurus(if ($x-mode eq 'refresh') 
-    then (doc($api:path-to-thesaurus), l:write-log('loading doc '||$api:path-to-thesaurus||' and adding stats', 'DEBUG'))
+    then (doc("../thesaurus.xml"), l:write-log('loading doc ../thesaurus.xml and adding stats', 'DEBUG'))
     else (api:taxonomy-as-xml-cached(), l:write-log('loading doc cached thesaurus and adding stats', 'DEBUG')), $stats, $x-mode = 'refresh')
 };
 
@@ -84,17 +82,19 @@ declare
     %rest:query-param("x-mode", "{$x-mode}")
     %rest:query-param("x-style", "{$x-style}")
     %output:method("xhtml")
-    %updating
 function api:taxonomy-as-html-cached($x-mode, $x-style) {
-    let $data-with-stats := api:create-data-with-stats($x-mode),
+    let $data-with-stats-query := ``[import module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "thesaurus.xqm";
+        api:create-data-with-stats("`{$x-mode}`")]``,
+        $jid := jobs:eval($data-with-stats-query, (), map {'cache': true(), 'base-uri': static-base-uri()}), $_ := jobs:wait($jid),
+        $data-with-stats := jobs:result($jid),
         $style := if (some $a in tokenize(request:header("ACCEPT"), ',') satisfies $a = ('text/xml', 'application/xml')) then 'none' else $x-style,
         $ret := api:taxonomy-as-html($data-with-stats/*, $style)
-    return (db:output($ret) , api:taxonomy-cache-as-xml($x-mode, $data-with-stats))
+    return ($ret, api:taxonomy-cache-as-xml($x-mode, $data-with-stats))
 };
 
 declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:string?) as node() {
-    let $xsl := if ($x-style != '' and doc-available($api:path-to-stylesheets||$x-style)) then doc($api:path-to-stylesheets||$x-style) else doc($api:thesaurus2html),
-        $log := l:write-log('api:taxonomy-as-html $xml := '||substring(serialize($xml), 1, 240)||' $xsl := '||substring(serialize($xsl), 1, 240)||' stylesheet '||$api:path-to-stylesheets||$x-style||', '||$api:thesaurus2html, 'DEBUG')
+    let $xsl := u:get-xml-file-or-default($sru-api:path-to-stylesheets||$x-style, $api:thesaurus2html, $x-style != ''),
+        $log := l:write-log('api:taxonomy-as-html $xml := '||substring(serialize($xml), 1, 240)||' $xsl := '||substring(serialize($xsl), 1, 240)||' stylesheet '||$sru-api:path-to-stylesheets||$x-style||', '||$api:thesaurus2html, 'DEBUG')
     return if ($x-style eq 'none') then $xml else xslt:transform($xml, $xsl, if ($x-style) then map{"x-style": $x-style} else map{})
 };
 
@@ -105,7 +105,7 @@ declare function api:topics-to-map($r) as map(*) {
         return (: prof:time( :)
 (:        ft:search($model:dbname, $matching-texts)[(ancestor::mods:genre|ancestor::mods:subject)],:)
         map:merge(for $s in $matching-texts 
-        let $all-occurences := ft:search($model:dbname, $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
+        let $all-occurences := ft:search("japbib_06", $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
 (:          false(), 'api:topics-to-map all texts '),:)
            (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
             $intersection := (: prof:time( :)

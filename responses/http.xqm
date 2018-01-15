@@ -1,6 +1,7 @@
 xquery version "3.1";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/http";
 import module namespace request = "http://exquery.org/ns/request";
+import module namespace jobs = "http://basex.org/modules/jobs";
 import module namespace l = "http://basex.org/modules/admin";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
@@ -163,12 +164,12 @@ declare
   %rest:path("japbib-web/runTests/{$file=[^/].+\.(xml)}")
 function api:run-tests($file as xs:string) as item()+ {
   let $path := file:base-dir()|| $file
-  return if (file:exists($path) and doc($path)/tests) then
+  return (: if (file:exists($path) and doc($path)/tests) then
   (
     web:response-header(map { 'media-type': 'text/xml'}),
-    serialize(xquery:invoke('tests/runTests.xquery', map{'': doc($path)}))
+    serialize(jobs:eval(unparsed-text('tests/runTests.xquery'), map{'': doc($path)}))
   )
-  else
+  else :)
   (
   <rest:response>
     <http:response status="404" message="Tests in {$file} were not found.">

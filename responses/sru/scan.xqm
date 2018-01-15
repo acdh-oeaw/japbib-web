@@ -2,17 +2,15 @@ xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/scan";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
-import module namespace xquery = "http://basex.org/modules/xquery";
-import module namespace db = "http://basex.org/modules/db";
+import module namespace jobs = "http://basex.org/modules/jobs";
 import module namespace l = "http://basex.org/modules/admin";
-import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
-import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
-import module namespace _ = "urn:sur2html" at "../localization.xqm";
 
-import module namespace cache = "japbib:cache" at "cache.xqm";
-import module namespace index = "japbib:index" at "../../index.xqm";
-import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "../sru.xqm";
+import module namespace diag = "http://www.loc.gov/zing/srw/diagnostic/" at "diagnostics.xqm";
+import module namespace cache = "japbib:cache" at "cache.xqm";
+import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
+import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
+import module namespace index = "japbib:index" at "../../index.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace fcs = "http://clarin.eu/fcs/1.0";
@@ -38,27 +36,30 @@ declare
     %rest:GET
     %rest:produces("text/xml")
     %output:method("xml")
-    %updating
 function api:scan($version, $scanClause, 
                   $maximumTerms as xs:integer?, $responsePosition as xs:integer?,
                   $x-sort as xs:string?, $x-mode,
                   $x-filter, $x-debug as xs:boolean) {
     let $log := l:write-log('scan:scan', 'DEBUG'),
         $sort := if (lower-case($x-sort) eq 'text') then 'text' else 'size'
-    return if (not(exists($scanClause))) then db:output(diag:diagnostics("param-missing", "scanClause")) else 
-           if (not($version)) then db:output(diag:diagnostics("param-missing", "version"))
-           else api:scan-filter-limit-response-and-cache($scanClause, $maximumTerms, $responsePosition, $sort, $x-mode, $x-filter, $x-debug)
+    return if (not(exists($scanClause))) then diag:diagnostics("param-missing", "scanClause") else 
+           if (not($version)) then diag:diagnostics("param-missing", "version")
+           else api:scan-filter-limit-response-and-cache($scanClause, $maximumTerms, $responsePosition, $sort, $x-mode, $x-filter, $x-debug) 
 };
 
-declare %updating %private function api:scan-filter-limit-response-and-cache($scanClause as xs:string,  
+declare %private function api:scan-filter-limit-response-and-cache($scanClause as xs:string,  
                   $maximumTerms as xs:integer?, $responsePosition as xs:integer?,
                   $x-sort as xs:string?, $x-mode as xs:string?,
                   $x-filter as xs:string?, $x-debug as xs:boolean) {
-   let $try-scan := api:scan-filter-limit-response($scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug, false()),
+   let $try-scan-query := ``[import module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
+       api:scan-filter-limit-response("`{$scanClause}`", `{$maximumTerms}`, `{$responsePosition}`, "`{$x-sort}`", "`{$x-mode}`", "`{$x-filter}`", `{$x-debug}`(), false())]``,
+       $jid := jobs:eval($try-scan-query, (), map {'cache': true()}), $_ := jobs:wait($jid),
+       $try-scan := jobs:result($jid),
        $ret := if ($try-scan[1] instance of element(api:empty)) then () else $try-scan[1],
        $terms := $try-scan[2],
-       $cached-scan := $try-scan[3]
-   return (db:output($ret), if ($terms instance of document-node() and empty($cached-scan)) then cache:scan($terms, api:parseScanClause($scanClause), $x-sort) else ())
+       $cached-scan := $try-scan[3],
+       $cacheScanIfNeeded := if ($terms instance of document-node() and empty($cached-scan)) then cache:scan($terms, api:parseScanClause($scanClause), $x-sort) else ()
+   return $ret
 };
 
 declare function api:scan-filter-limit-response($scanClause as xs:string,  
@@ -104,8 +105,8 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
             else "//"||$index-xpath||"/"||$index-match,
         $xquery := if ($xpath_or_diagnostics instance of xs:string) then
                      concat(
-                         string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
-                         "for $t in ", $xpath_or_diagnostics, "
+                         string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n/@uri||"';"),
+                         "for $t in db:open('", $model:dbname, "')", $xpath_or_diagnostics, "
                           let $v := normalize-space(data($t))
                           group by $v
                           let $c := count($t) 
@@ -121,9 +122,10 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
         $terms_or_diagnostics := 
             if (not($xpath_or_diagnostics instance of xs:string)) then $xpath_or_diagnostics
             else try {
-                    let $terms :=
+                    let $jid := jobs:eval($xquery, (), map {'cache': true()}), $_ := jobs:wait($jid),
+                        $terms :=
                     <sru:terms>
-                        {xquery:eval($xquery, map { '': db:open($model:dbname) })}
+                        {jobs:result($jid)}
                     </sru:terms>,
                         $numbered-terms := api:numberTerms($terms)
                     return document {$numbered-terms}

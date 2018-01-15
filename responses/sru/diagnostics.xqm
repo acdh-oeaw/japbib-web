@@ -28,13 +28,11 @@ module namespace diag  = "http://www.loc.gov/zing/srw/diagnostic/";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 
-declare variable $diag:msgs := doc('diagnostics.xml');
-
 declare function diag:diagnostics($key as xs:string, $param as item()*) as element() {
     let $diag := 
-	       if (exists($diag:msgs//diag:diagnostic[@key=$key])) 
-	       then $diag:msgs//diag:diagnostic[@key=$key]
-	       else $diag:msgs//diag:diagnostic[@key='general-error']
+	       if (exists(doc('diagnostics.xml')//diag:diagnostic[@key=$key])) 
+	       then doc('diagnostics.xml')//diag:diagnostic[@key=$key]
+	       else doc('diagnostics.xml')//diag:diagnostic[@key='general-error']
     return
         <sru:diagnostics>{ 
             if (exists($diag)) 

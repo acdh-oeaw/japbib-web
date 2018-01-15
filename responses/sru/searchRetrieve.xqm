@@ -2,12 +2,11 @@ xquery version "3.0";
 module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/searchRetrieve";
 
 import module namespace rest = "http://exquery.org/ns/restxq";
+import module namespace jobs = "http://basex.org/modules/jobs";
 import module namespace http = "http://expath.org/ns/http-client";
 import module namespace request = "http://exquery.org/ns/request";
 import module namespace prof = "http://basex.org/modules/prof";
-import module namespace xquery = "http://basex.org/modules/xquery";
 import module namespace xslt = "http://basex.org/modules/xslt";
-import module namespace db = "http://basex.org/modules/db";
 import module namespace l = "http://basex.org/modules/admin";
 import module namespace map = "http://www.w3.org/2005/xpath-functions/map";
 import module namespace http-util = "http://acdh.oeaw.ac.at/japbib/api/http" at "../http.xqm";
@@ -17,6 +16,7 @@ import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "../../index.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 import module namespace sru-api = "http://acdh.oeaw.ac.at/japbib/api/sru" at "../sru.xqm";
+import module namespace u = "http://acdh.oeaw.ac.at/japbib/api/sru/util" at "util.xqm";
 import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
 import module namespace thesaurus = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "../thesaurus.xqm";
 import module namespace _ = "urn:sur2html" at "../localization.xqm";
@@ -25,14 +25,18 @@ declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 
+declare variable $api:force-xml-style := 'none';
 declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
+(: should provide a BaseX json direct XML representation:)
+declare variable $api:sru2json := $sru-api:path-to-stylesheets||"sru2json.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
   api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, false(), ())
 };
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean, $accept as xs:string?) {
-  if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else 
+  if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else
+  try {
   let $xcql-initial := cql:parse($query),
       $xcql := if (contains($query, "sortBy")) then $xcql-initial else
       (l:write-log('api:searchRetrieve forcing sortBy '||($xcql-initial//index)[1], 'DEBUG'), cql:parse($query||' sortBy '||($xcql-initial//index)[1]))
@@ -40,6 +44,11 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
      if ($x-debug = true())
      then $xcql
      else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $accept)
+  } catch * {
+        diag:diagnostics('general-error', 'cql:'||fn:serialize($query)||'&#10;'||
+          $err:description||'&#10;'||' '||$err:module||': '||$err:line-number||'&#10;'||
+          $err:additional)        
+  }
 };
 
 declare 
@@ -54,93 +63,148 @@ declare
     %output:method("xml")
 function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?) {
     let $accept := request:header("ACCEPT")
-    return api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords,    $startRecord, $x-style, $accept)
+    return api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $accept)
 };
 
 declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?, $accept as xs:string?) {
     let $context := $sru-api:HOSTNAME
-    let $ns := index:namespaces($context)
     
-    let $xpath := cql:xcql-to-xpath($xcql, $context)
-    let $sort-xpath := cql:xcql-to-orderExpr_($xcql, $context)
-    let $sort-index-key := $xcql//sortKeys/index
-    let $sort-index := if ($sort-index-key != '') then index:index-from-map($sort-index-key, index:map($context)) else () 
-    let $max-sort-value := 
-            switch ($sort-index/@datatype)
-                case "xs:integer" return 99999
-                default return "'ZZZZZZZ'"
-            
-    let $xqueryExpr := concat(
-                        string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
-                        if ($sort-xpath != '')
-                        then
-                            concat("for $m in ",$xpath," ", 
-                                   switch ($sort-index/@datatype)
-                                     case"xs:integer" return concat("let $o := ($m/",$sort-xpath,")[1] ")
-                                     default return concat("let $o := normalize-space(($m/",$sort-xpath,")[1]) "),
-                                   "order by ($o, ", $max-sort-value, ")[1] ",
-                                   if ($sort-index/@coll) then "collation '"||$sort-index/@coll||"'" else "",
-                                   "return $m"
-                            )
-                        else $xpath
-                    ),
-        $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xqueryExpr := '||$xqueryExpr , 'DEBUG')
+    let $xpath := cql:xcql-to-xpath($xcql, $context),
+        $xquerySortExpr := api:create-sort-expr($xcql, '$__hits__', $context),
+        $hits := try {
+          l:write-log('start api:get-hits', 'DEBUG'),
+          api:get-hits($xpath, $xquerySortExpr, $context, $startRecord + $maximumRecords),
+          l:write-log('end api:get-hits', 'DEBUG')
+        } catch diag:search-failed {
+          diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||
+          '&#10; XQuery: '||$xpath||'&#10;'||
+          $err:description||'&#10;'||' '||$err:module||': '||$err:line-number||'&#10;'||
+          $err:additional)
+        }
     let $results := 
-        if ($xpath instance of xs:string and (not($sort-xpath) or $sort-xpath instance of xs:string)) then  
-            try {
-                xquery:eval(
-                    $xqueryExpr
-                    , map { '': db:open($model:dbname) }
-                )
-            } catch * {
-                diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||' XQuery: '||$xqueryExpr)
-            }
-        else ()
-    let $results-distinct := $results
-    let $response := 
+        if ($hits instance of element(sru:diagnostics)) then $hits
+        else if (exists($hits) and $xpath instance of xs:string and exists($xquerySortExpr)) then
+        try {
+          l:write-log('start api:sort-hits', 'DEBUG'),
+          api:sort-hits($hits,
+          string-join(api:create-sort-expr($xcql, '($__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*))', $context), ''),
+          $context, $startRecord, $maximumRecords),
+          l:write-log('end api:sort-hits', 'DEBUG')
+        } catch diag:sort-failed {
+          diag:diagnostics('general-error', 'xcql:'||fn:serialize($xcql)||
+          '&#10; XQuery: '||$xpath||'&#10;'||string-join($xquerySortExpr, '')||'&#10;'||
+          $err:description||'&#10;'||' '||$err:module||': '||$err:line-number||'&#10;'||
+          $err:additional)
+        }
+        else (),
+        
+        $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, $results-distinct, $maximumRecords, $startRecord, $xqueryExpr, $xcql),
-        $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response
-    let $log := l:write-log('api:searchRetrieveXCQL $accept := '||$accept , 'DEBUG'),
-        $response-formatted :=
-        if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and 
-            not($x-style eq 'none') and
+        else api:searchRetrieveResponse($version, xs:integer(sum($hits/@count)), $results, $maximumRecords, $startRecord, api:create-search-expr($xpath, $xquerySortExpr)||'&#10;'||string-join($xquerySortExpr, ''), $xcql),
+        $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response,
+        $log := l:write-log('api:searchRetrieveXCQL $accept := '||$accept||' $x-style := '||$x-style||' $response-with-stats instance of element(sru:searchRetrieveResponse) '||$response-with-stats instance of element(sru:searchRetrieveResponse) , 'DEBUG'),
+        $json-style := tokenize($api:sru2json, '/')[last()],
+        $response-formatted := 
+         if ((some $a in tokenize($accept, ',') satisfies $a = ('text/html', 'application/xhtml+xml')) and 
+            not($x-style = ($api:force-xml-style, $json-style)) and
             $response-with-stats instance of element(sru:searchRetrieveResponse))
-        then 
-            let $xsl := if ($x-style != '' and doc-available($sru-api:path-to-stylesheets||$x-style)) then doc($sru-api:path-to-stylesheets||$x-style) else doc($api:sru2html),
-                $formatted := 
-                xslt:transform($response-with-stats, $xsl,
-                map:merge((
-                map{"xcql" : fn:serialize($xcql),
-                    "query": $query,
-                    "version": $version,
-                    "startRecord": $startRecord,
-                    "maximumRecords": $maximumRecords,
-                    "operation": 'searchRetrieve',
-                    "base-uri-public": http-util:get-base-uri-public(),
-                    "base-uri": ""
-                },
-                if ($x-style) then map{"x-style": $x-style} else map{}
-                )))
-            return 
-                (<rest:response>
+        then api:create-html-response($response-with-stats, $xcql,
+             $query, $version, $startRecord, $maximumRecords, $x-style)
+        else if (some $a in tokenize($accept, ',') satisfies $a = ('application/json') or
+                 $x-style eq $json-style) 
+        then api:create-json-response($response-with-stats, $xcql,
+             $query, $version, $startRecord, $maximumRecords, $x-style)
+        else    (<rest:response>
                     <http:response>
-                        <http:header name="Content-Type" value="text/html; charset=utf-8"/>
+                        <http:header name="Content-Type" value="application/xml; charset=utf-8"/>
                     </http:response>
                 </rest:response>,
-                $formatted)
-        else $response-with-stats
+                $response-with-stats)  
     return 
         if ($xpath instance of xs:string)
         then $response-formatted
         else $xpath
 };
 
-declare %private function api:searchRetrieveResponse($version, $results, $maxRecords, $startRecord, $xpath, $xcql) as element(){
-    let $nor := count($results),
-        $subs := subsequence($results, $startRecord, $maxRecords),
-        $nextRecPos := if ($nor ge count($subs) + $startRecord) then count($subs) + $startRecord else ()
+declare %private function api:get-hits($xpath as xs:string, $xquerySortExpr as xs:string+, 
+  $context as xs:string, $max as xs:integer) as element(db)* {
+try {
+let $getEntriesQuery := api:create-search-expr($xpath, $xquerySortExpr),
+    $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $getEntriesQuery := '||$getEntriesQuery
+    ||'&#10;$u:basePath := '||$u:basePath||' $u:selfName := '||$u:selfName , 'DEBUG'),
+    $hits-queries := $model:dbname!($getEntriesQuery => replace('$__db__', '"' || . || '"', 'q')),
+    $entryList := u:evals($hits-queries, map {
+      '__start__': 1,
+      '__max__': $max
+    }, 'Q-searchRetrieve-'||$context, true())[*]
+    (: , $_ := l:write-log('api:searchRetrieveXCQL $entryList := '||serialize(subsequence($entryList, 1, 5)) , 'DEBUG') :)
+return $entryList
+} catch * {
+    error(xs:QName('diag:search-failed'), $err:code||' '||$err:description||' '||$err:module||': '||$err:line-number)
+}
+};
+
+declare function api:create-search-expr($xpath as xs:string, $xquerySortExpr as xs:string+) as xs:string {
+concat($xquerySortExpr[1],
+       '(: declare variable $__db__ external; :)&#10;',                        
+       'let $__hits__ := ', $xpath, '&#10;',
+       $xquerySortExpr[2],
+       'return <db xmlns="" name="{$__db__}" count="{count($__res__)}">{&#10;',
+       'subsequence($__res__, 1, $__max__)!(try { <n>{db:node-pre(.)}</n> } catch * { <v>{.}</v> })}</db>')  
+};
+
+declare function api:create-sort-expr($xcql as item(), $nodesExpr as xs:string, $context as xs:string) as xs:string* {
+    let $sort-xpath := cql:xcql-to-orderExpr($xcql, $context)
+    let $sort-index-key := $xcql//sortKeys/key[1]/index
+    let $sort-index := if ($sort-index-key != '') then index:index-from-map($sort-index-key, index:map($context)) else () 
+    let $max-sort-value := 
+            switch ($sort-index/@datatype)
+                case "xs:integer" return 99999
+                default return "'ZZZZZZZ'"
+return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
+                        string-join(index:namespaces($context)!("declare namespace "||./@prefix||" = '"||./@uri||"';&#10;"), ''),
+                        "declare variable $__hits__ external;&#10;",
+                        "declare variable $__startAt__ external;&#10;",
+                        "declare variable $__max__ external;&#10;"),
+                        if ($sort-xpath != '')
+                        then
+                            concat(
+                                   "let $__res__ := for $m in ", $nodesExpr ,"&#10;", 
+                                   switch ($sort-index/@datatype)
+                                     case"xs:integer" return concat("  let $o := try { xs:integer(normalize-space(($m/",$sort-xpath,")[1]))
+                                     catch err:FORG0001 {()}&#10;")
+                                     default return concat("  let $o := normalize-space(($m/",$sort-xpath,")[1])[. ne '']&#10;"),
+                                   "  order by ($o, ", $max-sort-value, ")[1] ",
+                                   if ($sort-index/@coll) then "collation '"||$sort-index/@coll||"'&#10;" else "&#10;",
+                                   "  return $m&#10;"
+                            )
+                        else "let $__res__ := $__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*)&#10;",
+                        "return subsequence($__res__, $__startAt__, $__max__)"
+                    )
+       else ()
+};
+
+declare %private function api:sort-hits($hits as element(db)+, $xquerySortExpr as xs:string, 
+  $context as xs:string, $startAt as xs:integer, $max as xs:integer) as element()+ {
+try {
+let $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xquerySortExpr := '||$xquerySortExpr , 'DEBUG'),
+    $sort-job := jobs:eval($xquerySortExpr, map {
+          '__hits__': $hits,
+          '__startAt__': $startAt,
+          '__max__': $max}, map {
+          'cache': true(),
+          'id': 'S'||'-'||$context||'-'||jobs:current(),
+          'base-uri': $u:basePath||'/S''-'||$context||'-'||'searchRetrieve.xq'}), $_ := jobs:wait($sort-job)
+    return jobs:result($sort-job)
+} catch * {
+     error(xs:QName('diag:sort-failed'), $err:code||' '||$err:description||' '||$err:module||': '||$err:line-number)
+}
+};
+
+declare %private function api:searchRetrieveResponse($version as xs:string, $nor as xs:integer, $results as item()*, 
+    $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
+    let $nextRecPos := if ($nor ge count($results) + $startRecord) then count($results) + $startRecord else ()
     return
     <sru:searchRetrieveResponse 
         xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -150,7 +214,7 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
         <sru:version>{$sru-api:SRU.SUPPORTEDVERSION}</sru:version>
         <sru:numberOfRecords>{$nor}</sru:numberOfRecords>
         <sru:records>{
-            for $r at $p in $subs 
+            for $r at $p in $results 
             return
                 <sru:record>
                     <sru:recordSchema>mods</sru:recordSchema>
@@ -166,22 +230,74 @@ declare %private function api:searchRetrieveResponse($version, $results, $maxRec
             {if ($xpath instance of xs:string)
             then <XPath>{$xpath}</XPath>
             else ()}
-            {$xcql}
+            <XCQL>{$xcql}</XCQL>
             <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($results), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
 
 declare %private function api:addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
-    let $context := $sru-api:HOSTNAME,
-        $indexes := index:map-to-indexInfo()//zr:name,
-        $ns := index:namespaces($context),
-        $responseDocument := document{$response},
-        $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else
-             let $q := concat(string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n||"';"),
-                    '//', index:index-as-xpath-from-map($i, index:map($context), 'match'))
-(:                 , $log := l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG'):)
-             return distinct-values(xquery:eval($q, map { '': $responseDocument })) ! (xs:string($i)||'=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')
-        , $scans := prof:time($scanClauses ! (scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true())[1]), false(), 'do scans ')
-    return $response update insert node $scans into ./sru:extraResponseData
+    let $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt')) then () else $i,
+        $scanClauses := api:get-scan-clauses($indexes, $response),
+        $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
+        scan:scan-filter-limit-response('`{.}`', 1, 1, 'text', (), (), false(), true())[1]]``
+        , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG')
+        , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
+        , $cleanedScans := $scans update {
+             delete node sru:version,
+             delete node sru:echoedScanRequest,
+             delete node .//sru:extraTermData
+          }
+    return $response update insert node $cleanedScans into ./sru:extraResponseData
+};
+
+declare %private function api:get-scan-clauses($indexes as element(zr:name)+, $response as element(sru:searchRetrieveResponse)) as xs:string+ {
+let $context := $sru-api:HOSTNAME,
+    $ns := index:namespaces($context),
+    $responseDocument := document{$response},
+    $queries := for $i in $indexes return ``[`{string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n/@uri||"';")}`
+      //`{index:index-as-xpath-from-map($i, index:map($context), 'match')}` ! ('`{xs:string($i)}`=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')]``
+    (:, $log := for $q at $i in $queries return l:write-log('api:get-scan-clauses $q['||$i||'] := '||$q, 'DEBUG'):)
+  return distinct-values(u:evals($queries, map { '': $responseDocument }, "searchRetrieve-get-can-clauses", true())) 
+};
+
+declare %private function api:create-html-response($response as element(sru:searchRetrieveResponse),
+$xcql as element(), $query as xs:string, $version as xs:string, $startRecord as xs:integer, $maximumRecords as xs:integer, $x-style as xs:string?) { 
+let $formatted := api:xsl-transform(u:get-xml-file-or-default($sru-api:path-to-stylesheets||$x-style, $api:sru2html, $x-style != ''), $response, $xcql, $query, $version, $startRecord, $maximumRecords, $x-style)
+return 
+  (<rest:response>
+      <http:response>
+          <http:header name="Content-Type" value="text/html; charset=utf-8"/>
+      </http:response>
+  </rest:response>,
+  $formatted)  
+};
+
+declare %private function api:create-json-response($response as element(sru:searchRetrieveResponse),
+$xcql as element(), $query as xs:string, $version as xs:string, $startRecord as xs:integer, $maximumRecords as xs:integer, $x-style as xs:string?) {
+let $formatted := api:xsl-transform(u:get-xml-file-or-default($sru-api:path-to-stylesheets||$x-style, $api:sru2html, $x-style != ''), $response, $xcql, $query, $version, $startRecord, $maximumRecords, $x-style)
+return
+  (<rest:response>
+      <http:response>
+          <http:header name="Content-Type" value="application/json; charset=utf-8"/>
+      </http:response>
+  </rest:response>,
+  json:serialize($formatted, map {'format': 'direct', 'merge': 'yes', 'indent': 'no'}))  
+};
+
+declare %private function api:xsl-transform($xsl as document-node(), $response as element(sru:searchRetrieveResponse),
+$xcql as element(), $query as xs:string, $version as xs:string, $startRecord as xs:integer, $maximumRecords as xs:integer, $x-style as xs:string?) as item() {
+xslt:transform($response, $xsl,
+  map:merge((
+  map{"xcql" : fn:serialize($xcql),
+      "query": $query,
+      "version": $version,
+      "startRecord": $startRecord,
+      "maximumRecords": $maximumRecords,
+      "operation": 'searchRetrieve',
+      "base-uri-public": http-util:get-base-uri-public(),
+      "base-uri": ""
+  },
+  if ($x-style) then map{"x-style": $x-style} else map{}
+  )))  
 };
