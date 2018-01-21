@@ -41,7 +41,7 @@ p {
   margin: 1em 0;
 }
 *::before,
-*::before {
+*::after {
   font-family: FontAwesome, calibri, arial;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -920,10 +920,11 @@ tr.search .fa-search {
   /* background: rgb(196, 179, 130); */
   } 
 
-.results { 
+.results {
   margin: 0;
-  padding: 1em;
+  padding: 1em 2em 1em 3em;
   padding-left: 3em;
+  position: relative;
 }
 
 #show_entry th {
@@ -941,7 +942,7 @@ tr.search .fa-search {
 div.showEntry {
     color: #000;
     border: 1px solid #ccc;
-    margin: 0 -.5em .5em;
+    margin: 0 -1.5em .5em -.5em;
     padding: 0 0 .5em;
     border-radius: 5px;
     position: relative;
@@ -981,10 +982,19 @@ div.showEntry {
 .showEntry.compact li::after {
   content: ' ';
   } 
-.pubForm::before {
+/* .pubForm::before {
   display: inline-block;
-  margin-right: 0.3em;
+  position: absolute;
+  margin-right: 0.3em; 
+  right: 0.35em;
   color:#c1b994;
+} */
+.pubForm > a::after {
+  content: '';
+  display: inline-block;
+  margin-left: 0.3em;
+  right: 0.35em;
+  opacity: .25;
 }
 .pubForm .record-html > ul::before {
   content: '';
@@ -998,21 +1008,21 @@ div.showEntry {
   margin-left: 0.2em;
   margin-bottom: .2em;
   }
-.book::before,
+.book > a::after, 
 .book .record-html > ul::before { 
   content: '\f02d'; /* fa-book  */  
   } 
-.bookSection::before, 
+.bookSection > a::after, 
 .bookSection .record-html > ul::before, 
-.journalArticle::before, 
+.journalArticle > a::after, 
 .journalArticle .record-html > ul::before {
   content: '\f0f6'; /* fa-file-text-o */
   }
-.journal::before,
+.journal > a::after,
 .journal .record-html > ul::before { 
   content: '\f022'; /* fa-list-alt  */ 
   } 
-.series::before,
+.series > a::after,
 .series .record-html > ul::before { 
   content: '\f0c5'; /* fa-files-o   */ 
   } 
