@@ -3633,23 +3633,15 @@
                           </option>
                           <option value="compact">
                             kompakt
-                          </option>
+                          </option><!--
                           <option value="mods">
                             MODS
                           </option>
                           <option value="lidos">
                             LIDOS
-                          </option>
+                          </option>-->
                         </select>
-                        <div class="tipp" title="Tipp">
-                          <ul class="display" style="display: none;">
-                            <li>MODS: XML Dokument in MODS-Standard (<a class="externalLink" href=
-                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>); Codierung der Daten in der
-                            Datenbank.
-                            </li>
-                            <li>Lidos: Ursprüngliche Codierung im Datenbankprogramm LIDOS.</li>
-                          </ul>
-                        </div><span class='closeX' id='x'></span>
+                        <span class='closeX'></span>
                       </div>
                       <div class="record-html">
                         <ul >
@@ -3713,8 +3705,17 @@
                           </ul>
                         </div>
                       </div>
-                      <div class="record-mods" style="display:none;">
-                        <textarea class="codemirror-data" cols="80" rows="20" style=
+                      <div class="toggleRecord"><i class="fa fa-code mods"></i></div> 
+                      <div class="record-mods" style="display: none;">
+                      <div class="showOptions"> Aktueller Code
+                        <div class="tipp" title="Tipp">
+                          <span class="display" style="display: none;">
+                            Derzeitige Form des Datensatzes als XML Dokument nach MODS-Standard (<a class="externalLink" href=
+                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>).
+                            </span>
+                        </div>                        
+                      </div>                      
+                      <textarea class="codemirror-data" cols="80" rows="20" style=
                         "display: none;">&lt;mods xmlns="http://www.loc.gov/mods/v3" xml:id="sid_17512"&gt;
      &lt;typeOfResource&gt;text&lt;/typeOfResource&gt;
      &lt;omit&gt;Verwaltungsvermerk&lt;/omit&gt;
@@ -3787,7 +3788,16 @@
      &lt;/recordInfo&gt;
 &lt;/mods&gt;</textarea>
                       </div>
-                      <div class="record-lidos" style="display:none;">
+                      <div class="clear" style="clear: both;"></div> 
+                      <div class="toggleRecord"><i class="fa fa-code lidos"></i></div> 
+                      <div class="record-lidos" style="display: none;">
+                      <div class="showOptions">Ursprünglicher Code 
+                        <div class="tipp" title="Tipp">
+                          <span class="display" style="display: none;">
+                            Ursprüngliche Form des Datensatzes im Datenbankprogramm LIDOS, als XML-Dokument. 
+                          </span>
+                        </div>
+                      </div>
                         <textarea class="codemirror-data" cols="80" rows="20" style=
                         "display: none;">&lt;LIDOS-Dokument&gt;
      &lt;Dok-Nummer&gt;0018069&lt;/Dok-Nummer&gt;
@@ -3811,7 +3821,8 @@
      &lt;Kollationsvermerk&gt;300 S. : Ill., graph. Darst., Notenbeisp.&lt;/Kollationsvermerk&gt;
      &lt;Verwaltungsvermerk&gt;cdrom dnb. ub&lt;/Verwaltungsvermerk&gt;
 &lt;/LIDOS-Dokument&gt;</textarea>
-                      </div>
+                      </div>                      
+                      <div class="clear">
                     </div>
                   </li>
                   <li class="pubForm book">Antoni, Klaus 1997, <a class="plusMinus" href="#">Rituale und ihre Urheber</a>
