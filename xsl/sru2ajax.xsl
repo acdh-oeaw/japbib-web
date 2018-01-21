@@ -107,20 +107,12 @@
             <div class="showOptions">
                 <label><em>Ansicht:</em> <select size="1" data-format="html">
                         <option value="html" selected="selected">detailliert</option>
-                        <option value="compact">kompakt</option>
+                        <option value="compact">kompakt</option><!--
                         <option value="mods">MODS</option>
-                        <option value="lidos">Lidos</option>
+                        <option value="lidos">Lidos</option>-->
                     </select>
                 </label>
-                        <div class="tipp" title="Tipp">
-                          <ul class="display" style="display: none;">
-                            <li>MODS: XML Dokument in MODS-Standard (<a class="externalLink" href=
-                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>); Codierung der Daten in der
-                            Datenbank.
-                            </li>
-                            <li>Lidos: Ursprüngliche Codierung im Datenbankprogramm LIDOS.</li>
-                          </ul>
-                        </div><span class='closeX' id='x'></span>
+                <span class='closeX' id='x'></span>
             </div>
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
@@ -131,18 +123,41 @@
                 <ul><xsl:call-template name="topics-list-items"/></ul>
                 </div>
             </div>
+            <div class="toggleRecord">
+                <i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
+            </div> 
             <div class="record-mods" style="display:none;">
+                <div class="showOptions"> Aktueller Code
+                    <div class="tipp" title="Tipp">
+                        <span class="display" style="display: none;">
+                            Derzeitige Form des Datensatzes als XML Dokument nach MODS-Standard (<a class="externalLink" href=
+                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>).
+                        </span>
+                    </div>                        
+                </div> 
                 <xsl:variable name="modsDoc">
                     <xsl:copy-of select="." copy-namespaces="no"/>               
                 </xsl:variable>
                 <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
             </div>
-            <div class="record-lidos" style="display:none;">         
+            <div class="clear"></div>
+            <div class="toggleRecord">
+                <i class="fa fa-code lidos" title="Ursprünglichen Code anzeigen"></i>
+            </div> 
+            <div class="record-lidos" style="display: none;">
+                <div class="showOptions">Ursprünglicher Code 
+                    <div class="tipp" title="Tipp">
+                        <span class="display" style="display: none;">
+                            Ursprüngliche Form des Datensatzes im Datenbankprogramm LIDOS, als XML-Dokument. 
+                        </span>
+                    </div>
+                </div>       
                 <xsl:variable name="lidosDoc">
                     <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
                 </xsl:variable>
                 <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
             </div>
+            <div class="clear"></div>
         </div>
     </xsl:template>
     
