@@ -389,7 +389,6 @@ function executeQuery(query) {
 m.executeQuery = executeQuery;
 
 // Handler fuer Resultate pro Seiten 
-
 $("#maximumRecords").change(function(e){
    doSearchOnReturn();
 });
@@ -437,6 +436,12 @@ function refreshCM(div) {
     var editor = div.find('.CodeMirror')[0].CodeMirror;
     editor.refresh();
 }
+
+// Handler fuer toggleRecord (MODS und Lidos) 
+
+$(document).on('click', '.toggleRecord', function(e){
+  $( this ).next("[class^=record]").toggle('slow');
+});
 
 //////// Schlagworte //////
 

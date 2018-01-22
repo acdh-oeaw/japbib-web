@@ -41,7 +41,7 @@ p {
   margin: 1em 0;
 }
 *::before,
-*::before {
+*::after {
   font-family: FontAwesome, calibri, arial;
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
@@ -920,10 +920,11 @@ tr.search .fa-search {
   /* background: rgb(196, 179, 130); */
   } 
 
-.results { 
+.results {
   margin: 0;
-  padding: 1em;
+  padding: 1em 2em 1em 3em;
   padding-left: 3em;
+  position: relative;
 }
 
 #show_entry th {
@@ -938,13 +939,14 @@ tr.search .fa-search {
   margin: 0;
   padding: 0;  
   }
-.showEntry {
+div.showEntry {
     color: #000;
     border: 1px solid #ccc;
-    margin: 0 -.5em .5em;
-    padding: 0;
+    margin: 0 -1.5em .5em -.5em;
+    padding: 0 0 .5em;
     border-radius: 5px;
     position: relative;
+    background: #fff7d4;
 }
 .showEntry a { 
   color: #009;
@@ -954,9 +956,10 @@ tr.search .fa-search {
   min-height: 1.5em; 
   }
 .showEntry .showOptions {
-    margin: 0; 
+    margin: 0;
     text-align: left;
     padding-left: 1em;
+    /* background: #ccc; */
 }
 .showEntry .eSegment {
   float:left;
@@ -967,7 +970,8 @@ tr.search .fa-search {
   }  
 .showEntry.compact .eSegment, 
 .showEntry.compact .zahl, 
-.showEntry.compact .addInfo {
+.showEntry.compact .addInfo, 
+.showEntry.compact .toggleRecord {
   display: none; 
   }
 .showEntry.compact li {
@@ -978,10 +982,19 @@ tr.search .fa-search {
 .showEntry.compact li::after {
   content: ' ';
   } 
-.pubForm::before {
+/* .pubForm::before {
   display: inline-block;
-  margin-right: 0.3em;
+  position: absolute;
+  margin-right: 0.3em; 
+  right: 0.35em;
   color:#c1b994;
+} */
+.pubForm > a::after {
+  content: '';
+  display: inline-block;
+  margin-left: 0.3em;
+  right: 0.35em;
+  opacity: .25;
 }
 .pubForm .record-html > ul::before {
   content: '';
@@ -995,21 +1008,21 @@ tr.search .fa-search {
   margin-left: 0.2em;
   margin-bottom: .2em;
   }
-.book::before,
+.book > a::after, 
 .book .record-html > ul::before { 
   content: '\f02d'; /* fa-book  */  
   } 
-.bookSection::before, 
+.bookSection > a::after, 
 .bookSection .record-html > ul::before, 
-.journalArticle::before, 
+.journalArticle > a::after, 
 .journalArticle .record-html > ul::before {
   content: '\f0f6'; /* fa-file-text-o */
   }
-.journal::before,
+.journal > a::after,
 .journal .record-html > ul::before { 
   content: '\f022'; /* fa-list-alt  */ 
   } 
-.series::before,
+.series > a::after,
 .series .record-html > ul::before { 
   content: '\f0c5'; /* fa-files-o   */ 
   } 
@@ -1018,6 +1031,11 @@ tr.search .fa-search {
 .showEntry,
 #find #showList {
   background: rgb(228, 211, 165);
+  <
+  div class="clear" style="clear: both;">;
+  <
+  div class="clear" style="clear: both;">;
+  /* background: #fff7d4; */
   }
 
 .navResults { 
@@ -1030,10 +1048,44 @@ tr.search .fa-search {
 } 
 .showEntry .showOptions {
   background: rgba(255, 255, 216, 0.1);
+  background: #e6d1a6;
   }
 .record-html {
   background: rgba(255, 255, 225, 0.98);
   background: rgb(255, 247, 212);
+} 
+.toggleRecord {
+  height: 21px;
+  cursor: pointer;
+  position:relative;
+}
+.toggleRecord + div {
+  margin-top: -21px;
+} 
+.toggleRecord i {
+  float: right;
+  padding-top: -8px;
+  font-weight: bold;
+  line-height: 14px;
+  padding: 7px 1em 1px;
+  /* background: rgba(255, 247, 212, 0.5); */
+  opacity: .5;
+}
+.toggleRecord:hover i {  
+  /* background: rgba(255, 247, 212, 0.7); */
+  opacity: 1;
+}
+.mods {
+  color: green;
+  /* margin-right: 28px; */
+}
+.lidos {
+    color: #707070;
+    /* padding-bottom: 10px; */
+}
+.showEntry .clear {
+  clear: both;
+  /* height:7px; */
 } 
 
 /******* Fehlermeldungen ***********/
