@@ -26,15 +26,14 @@ declare
     %output:json("format=direct")
     %rest:GET
     %rest:produces("text/json")
-    %updating
 function api:refresh-cache() {
     let $context := $sru-api:HOSTNAME,
         $indexes := index:map-to-indexInfo()//zr:name,
         $ns := index:namespaces($context),
-        $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else xs:string($i)
+        $scanClauses := for $i in $indexes return if ($i = ('cql.serverChoice', 'id')) then () else xs:string($i),
+        $scans := for $s in $scanClauses return for $sort in ('size', 'text') return <_>{scan:scan('1.2', $s, 20, 1, $sort, 'refresh', '', false())/sru:*}</_>
     return
-    (for $s in $scanClauses return for $sort in ('size', 'text') return scan:scan('1.2', $s, 1, 1, $sort, 'refresh', '', false()),
-     db:output(api:prepared-scans-for-json-direct(for $s in $scanClauses return for $sort in ('size', 'text') return <_>{scan:scan-filter-limit-response($s, 2, 1, $sort, (), '', false(), false())[1]/sru:*}</_>))) 
+        api:prepared-scans-for-json-direct($scans)
 };
 
 (: Does a little transform so a bunch of scanResponses (renamed to _ for this purpose)
