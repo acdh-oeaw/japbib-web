@@ -240,15 +240,16 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
     let $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt')) then () else $i,
         $scanClauses := api:get-scan-clauses($indexes, $response),
         $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
-        scan:scan-filter-limit-response('`{.}`', 1, 1, 'text', (), (), false(), true())[1]]``
-        , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG')
-        , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
-        , $cleanedScans := $scans update {
+        declare namespace sru = "http://www.loc.gov/zing/srw/";
+        let $scanResponse := prof:time(scan:scan-filter-limit-response('`{replace(., "'", "''")(: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1], false(), 'scan-filter-limit-response ')
+        return $scanResponse update {
              delete node sru:version,
              delete node sru:echoedScanRequest,
              delete node .//sru:extraTermData
-          }
-    return $response update insert node $cleanedScans into ./sru:extraResponseData
+          }]``
+        , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG')
+        , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
+    return $response update insert node $scans into ./sru:extraResponseData
 };
 
 declare %private function api:get-scan-clauses($indexes as element(zr:name)+, $response as element(sru:searchRetrieveResponse)) as xs:string+ {
@@ -258,7 +259,7 @@ let $context := $sru-api:HOSTNAME,
     $queries := for $i in $indexes return ``[`{string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n/@uri||"';")}`
       //`{index:index-as-xpath-from-map($i, index:map($context), 'match')}` ! ('`{xs:string($i)}`=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')]``
     (:, $log := for $q at $i in $queries return l:write-log('api:get-scan-clauses $q['||$i||'] := '||$q, 'DEBUG'):)
-  return distinct-values(u:evals($queries, map { '': $responseDocument }, "searchRetrieve-get-can-clauses", true())) 
+  return distinct-values(u:evals($queries, map { '': $responseDocument }, "searchRetrieve-get-scan-clauses", true())) 
 };
 
 declare %private function api:create-html-response($response as element(sru:searchRetrieveResponse),
