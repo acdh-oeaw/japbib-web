@@ -12,6 +12,7 @@ import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../
 import module namespace cql = "http://exist-db.org/xquery/cql" at "cql.xqm";
 import module namespace index = "japbib:index" at "../../index.xqm";
 
+declare namespace output = "http://www.w3.org/2010/xslt-xquery-serialization";
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 declare namespace fcs = "http://clarin.eu/fcs/1.0";
 
@@ -80,7 +81,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
        $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
        $logRuntime := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
-   return (if (empty($ret)) then <api:empty/> else $ret, $terms, $cached-scan)
+   return (if (empty($ret)) then (<api:empty/>, <api:empty/>, <api:empty/>) else ($ret, $terms, $cached-scan))
 };
 
 (:~
