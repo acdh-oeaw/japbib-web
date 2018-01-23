@@ -79,8 +79,8 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
                then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-sort, $x-filter)
                else $terms,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
-       $logScanClause := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
-       $logRuntime := if ($runtime > 9.9) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
+       $logScanClause := if ($runtime > 100) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
+       $logRuntime := if ($runtime > 100) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
    return (if (empty($ret)) then (<api:empty/>, <api:empty/>, <api:empty/>) else ($ret, $terms, $cached-scan))
 };
 

@@ -241,13 +241,13 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         $scanClauses := api:get-scan-clauses($indexes, $response),
         $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
         declare namespace sru = "http://www.loc.gov/zing/srw/";
-        let $scanResponse := prof:time(scan:scan-filter-limit-response('`{replace(., "'", "''")(: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1], false(), 'scan-filter-limit-response ')
+        let $scanResponse := scan:scan-filter-limit-response('`{replace(., "'", "''")(: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1]
         return $scanResponse update {
              delete node sru:version,
              delete node sru:echoedScanRequest,
              delete node .//sru:extraTermData
           }]``
-        , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG')
+    (:  , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG') :)
         , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
     return $response update insert node $scans into ./sru:extraResponseData
 };

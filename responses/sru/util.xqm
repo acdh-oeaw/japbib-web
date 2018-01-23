@@ -2,6 +2,7 @@ xquery version "3.0";
 module namespace _ = "http://acdh.oeaw.ac.at/japbib/api/sru/util";
 
 import module namespace jobs = "http://basex.org/modules/jobs";
+import module namespace l = "http://basex.org/modules/admin";
 
 declare variable $_:basePath := string-join(tokenize(static-base-uri(), '/')[last() > position()], '/');
 declare variable $_:selfName := tokenize(static-base-uri(), '/')[last()];
@@ -23,7 +24,7 @@ declare %private function _:start-eval-job($query as xs:string, $bindings as map
         return jobs:eval($query, $bindings, map {
           'cache': true(),
           'id': 'sru:'||$jobName||'-'||$subJobNumber||'-'||jobs:current(),
-          'base-uri': $_:basePath||'/sru_'||$jobName||'.xq'})
+          'base-uri': $_:basePath||'/sru_'||$jobName||'-'||$subJobNumber||'.xq'})
 };
 
 (: throws wde:dubious-query :)
@@ -45,14 +46,21 @@ declare %private function _:query-is-sane($query as xs:string) as xs:boolean {
 declare function _:evals($queries as xs:string+, $bindings as map(*)?, $jobName as xs:string, $dontCheckQuery as xs:boolean) as item()* {
     (: WARNING: Clean up code is missing. If queries come in too fast (below 100 ms between each) or too many (more than 10 is not testet)
        batch-size may go down to 0 and/or the wde:too-many-parallel-requests error may show :)
-    let $randMs := random:integer(100),
+    let $start := prof:current-ns(),
+        $randMs := random:integer(100),
         $randSleep := prof:sleep($randMs),
         $batch-size := floor((xs:integer(db:system()//parallel) - count(jobs:list())) * 1 div 3),
-        $batches := (0 to xs:integer(ceiling(count($queries) div $batch-size)))
+        $batches := (0 to xs:integer(ceiling(count($queries) div $batch-size))),
         (: , $log := l:write-log('$randMs := '||$randMs||' $batch-size := '||$batch-size, 'DEBUG') :)
-    return for $batch-number in $batches
-      let $js := subsequence($queries, $batch-number * $batch-size + 1, $batch-size)!_:start-eval-job(., $bindings, $jobName, $dontCheckQuery, xs:integer($batch-size * $batch-number + position())), $_ := $js!jobs:wait(.)
-      return $js!jobs:result(.)
+        $ret := for $batch-number in $batches
+                let $js := subsequence($queries, $batch-number * $batch-size + 1, $batch-size)!_:start-eval-job(., $bindings, $jobName, $dontCheckQuery, xs:integer($batch-size * $batch-number + position()))
+                  , $_ := $js!jobs:wait(.)
+                  , $status := jobs:list-details()[@id = $js]
+                (:, $log := $status!l:write-log('Job '||./@id||' duration '||seconds-from-duration(./@duration)*1000||' ms') :)
+                return $js!jobs:result(.)
+      , $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
+        $log := if ($runtime > 100) then l:write-log('Batch execution of '||$jobName||' took '||$runtime||' ms') else ()
+    return $ret
 };
 
 declare function _:get-xml-file-or-default($fn as xs:string, $default as xs:string) as document-node() {
