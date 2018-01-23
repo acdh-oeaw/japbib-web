@@ -1,5 +1,13 @@
 xquery version "3.0";
 
+(: The cache database __sru_cache_de_data__ is shared between all dictionary instances
+   that can use German specialised full text search.
+   The reason is locking. If the database name in 8.6.x is not a string literal a global read or write
+   lock will be the consequence. This is not an option when running multiple jobs.
+   If opening the cache database runs in its own job the result, which is the contents
+   of a rather big XML file, is passed around in memory which slows down execution
+   noticeably. :)
+
 module namespace c = "japbib:cache";
 
 import module namespace db = "http://basex.org/modules/db";
@@ -9,9 +17,9 @@ import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 
-declare variable $c:dbname := $model:dbname||"__cache";
 declare variable $c:thesaurus-fn := 'thesaurus.xml';
-declare variable $c:index-options := map{'textindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false()};
+(: Note that the cache full text index is specialised for german! May work with English but other languages may vary. :)
+declare variable $c:index-options := map{'textindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false(), 'language': 'de'};
 
 declare function c:scan($terms as document-node(), $scanClauseParsed as element(scanClause), $sort as xs:string) {
     let $fn := c:scan-filename($scanClauseParsed, $sort)
@@ -28,19 +36,17 @@ declare function c:save-fn($xml as document-node(), $fn as xs:string) {
       import module namespace l = "http://basex.org/modules/admin";
       declare variable $xml external;
       try {
-      let $index-options := map:merge(($c:index-options, map{'language': 'de'})),
-          $fn-exists := exists(`{c:get-fn-query($fn)}`)
-      return if ($fn-exists)
+      if (exists(c:get-fn("`{$fn}`")))
       then 
-        let $log := l:write-log('cache:scan replacing cached scan in `{$c:dbname}`: `{$fn}`')
-        return (db:replace("`{$c:dbname}`", "`{$fn}`" ,$xml), db:optimize("`{$c:dbname}`", true(), $index-options))
-      else if (db:exists("`{$c:dbname}`")) then
-        let $log := l:write-log('cache:scan creating cached scan in `{$c:dbname}`: `{$fn}`')
-        return (db:add("`{$c:dbname}`", $xml, "`{$fn}`"), db:optimize("`{$c:dbname}`", true(), $index-options))
+        let $log := l:write-log('cache:scan replacing cached scan in __sru_cache_de_data__: `{$fn}`')
+        return (db:replace("__sru_cache_de_data__", "`{$fn}`" ,$xml), db:optimize("__sru_cache_de_data__", true(), $c:index-options))
+      else if (db:exists("__sru_cache_de_data__")) then
+        let $log := l:write-log('cache:scan creating cached scan in __sru_cache_de_data__: `{$fn}`')
+        return (db:add("__sru_cache_de_data__", $xml, "`{$fn}`"), db:optimize("__sru_cache_de_data__", true(), $c:index-options))
       else
-        let $log := l:write-log('cache:scan creating cached scan and db `{$c:dbname}`: `{$fn}`')
-        return db:create("`{$c:dbname}`", $xml, "`{$fn}`", $index-options)
-    } catch err:FODC0007 {
+        let $log := l:write-log('cache:scan creating cached scan and db __sru_cache_de_data__: `{$fn}`')
+        return db:create("__sru_cache_de_data__", $xml, "`{$fn}`", $c:index-options)
+    } catch err:FODC0007 | bxerr:BXDB0002 {
          ()
     }
    ]``,
@@ -54,23 +60,20 @@ declare function c:save-fn($xml as document-node(), $fn as xs:string) {
 declare function c:scan($scanClauseParsed as element(scanClause), $sort as xs:string) as document-node()? {
     (: Beware: logging here is expensive (in searchRetrieve requests) :)
     let (:$log := l:write-log('cache:scan $scanClause := '||$scanClauseParsed/index||' $sort := '||$sort, 'DEBUG'),:)
-        $fn := c:scan-filename($scanClauseParsed, $sort),
-        $jid := jobs:eval(c:get-fn-query($fn), (), map {'cache': true()}), $_ := jobs:wait($jid)
-(:       , $logRest := l:write-log('cache:scan return '||substring(if (exists($ret)) then serialize($ret) else '()', 1, 240), 'DEBUG'):)
-    return jobs:result($jid)
+        $fn := c:scan-filename($scanClauseParsed, $sort)
+    return c:get-fn($fn)
 };
 
 declare function c:thesaurus() as document-node()? {
-  let $jid := jobs:eval(c:get-fn-query($c:thesaurus-fn), (), map {'cache': true()}), $_ := jobs:wait($jid)
-  return jobs:result($jid)
+  c:get-fn($c:thesaurus-fn)
 };
 
-declare function c:get-fn-query($fn as xs:string) as xs:string {
-``[   try {
-        db:open("`{$c:dbname}`", "`{$fn}`")
-      } catch err:FODC0007 {
-        ()
-      }]``
+declare function c:get-fn($fn as xs:string) as document-node()? {
+try {
+  db:open("__sru_cache_de_data__", $fn)
+} catch err:FODC0007 | bxerr:BXDB0002 {
+  ()
+}
 };
 
 declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort as xs:string) as xs:string {
@@ -80,5 +83,5 @@ declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort
 
 (: hand optimization, don not use without thorough consideration :)
 declare function c:text-nodes-in-cached-file-equal($string as xs:string, $dn as document-node()) as text()* {
-  db:text($c:dbname, $string)[base-uri(.) = base-uri($dn)]
+  db:text("__sru_cache_de_data__", $string)[base-uri(.) = base-uri($dn)]
 };
