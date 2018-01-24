@@ -37,7 +37,7 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean, $accept as xs:string?) {
   if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else
   try {
-  let $xcql-initial := cql:parse($query),
+  let $xcql-initial := cql:parse($query => replace('&amp;', '&amp;amp;')),
       $xcql := if (contains($query, "sortBy")) then $xcql-initial else
       (l:write-log('api:searchRetrieve forcing sortBy '||($xcql-initial//index)[1], 'DEBUG'), cql:parse($query||' sortBy '||($xcql-initial//index)[1]))
   return 
@@ -101,7 +101,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
         $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, xs:integer(sum($hits/@count)), $results, $maximumRecords, $startRecord, api:create-search-expr($xpath, $xquerySortExpr)||'&#10;'||string-join($xquerySortExpr, ''), $xcql),
+        else api:searchRetrieveResponse($version, xs:integer(sum($hits/@count)), $results, $hits, $maximumRecords, $startRecord, api:create-search-expr($xpath, $xquerySortExpr)||'&#10;'||string-join($xquerySortExpr, ''), $xcql),
         $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response,
         $log := l:write-log('api:searchRetrieveXCQL $accept := '||$accept||' $x-style := '||$x-style||' $response-with-stats instance of element(sru:searchRetrieveResponse) '||$response-with-stats instance of element(sru:searchRetrieveResponse) , 'DEBUG'),
         $json-style := tokenize($api:sru2json, '/')[last()],
@@ -134,10 +134,7 @@ let $getEntriesQuery := api:create-search-expr($xpath, $xquerySortExpr),
     $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $getEntriesQuery := '||$getEntriesQuery
     ||'&#10;$u:basePath := '||$u:basePath||' $u:selfName := '||$u:selfName , 'DEBUG'),
     $hits-queries := $model:dbname!($getEntriesQuery => replace('$__db__', '"' || . || '"', 'q')),
-    $entryList := u:evals($hits-queries, map {
-      '__start__': 1,
-      '__max__': $max
-    }, 'Q-searchRetrieve-'||$context, true())[*]
+    $entryList := u:evals($hits-queries, (), 'Q-searchRetrieve-'||$context, true())[*]
     (: , $_ := l:write-log('api:searchRetrieveXCQL $entryList := '||serialize(subsequence($entryList, 1, 5)) , 'DEBUG') :)
 return $entryList
 } catch * {
@@ -151,7 +148,7 @@ concat($xquerySortExpr[1],
        'let $__hits__ := ', $xpath, '&#10;',
        $xquerySortExpr[2],
        'return <db xmlns="" name="{$__db__}" count="{count($__res__)}">{&#10;',
-       'subsequence($__res__, 1, $__max__)!(try { <n>{db:node-pre(.)}</n> } catch * { <v>{.}</v> })}</db>')  
+       '$__res__!(try { <n>{db:node-pre(.)}</n> } catch * { <v>{.}</v> })}</db>')  
 };
 
 declare function api:create-sort-expr($xcql as item(), $nodesExpr as xs:string, $context as xs:string) as xs:string* {
@@ -203,7 +200,7 @@ let $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xquerySortExpr := '||
 };
 
 declare %private function api:searchRetrieveResponse($version as xs:string, $nor as xs:integer, $results as item()*, 
-    $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
+    $hits as element(db), $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
     let $nextRecPos := if ($nor ge count($results) + $startRecord) then count($results) + $startRecord else ()
     return
     <sru:searchRetrieveResponse 
@@ -231,7 +228,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
             then <XPath>{$xpath}</XPath>
             else ()}
             <XCQL>{$xcql}</XCQL>
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($results), false(), 'thesaurus:topics-to-map '))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($hits), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
@@ -241,13 +238,13 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         $scanClauses := api:get-scan-clauses($indexes, $response),
         $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
         declare namespace sru = "http://www.loc.gov/zing/srw/";
-        let $scanResponse := scan:scan-filter-limit-response('`{replace(., "'", "''")(: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1]
+        let $scanResponse := scan:scan-filter-limit-response('`{. => replace("'", "''") => replace('&amp;', '&amp;amp;') (: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1]
         return $scanResponse update {
              delete node sru:version,
              delete node sru:echoedScanRequest,
              delete node .//sru:extraTermData
           }]``
-    (:  , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG') :)
+     (: , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG') :)
         , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
     return $response update insert node $scans into ./sru:extraResponseData
 };
