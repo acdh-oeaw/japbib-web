@@ -211,7 +211,8 @@ return switch (true())
 
 declare %private function cql:sanitize-xqft-term($term) {
  (: replace leading and/or trailing stars with .* :)
- replace($term,'(\*$|^\*)','.*')
+ $term => replace('(\*$|^\*)','.*')
+       => replace('&amp;', '&amp;amp;')
 };
 
 declare %private function cql:xquery-predicate($match-mode as xs:string, $match-on-xpath as xs:string?, $term as xs:string, $index-datatype as xs:string?, $relation as xs:string, $case as xs:boolean) as xs:string {
@@ -240,7 +241,8 @@ return switch (true())
 (:~ remove quotes :)
 declare %private function cql:sanitize-term($term) {
  (: remove leading and/or trailing stars :)
- replace($term,'(\*$|^\*)','')
+ $term => replace('(\*$|^\*)','.*')
+       => replace('&amp;', '&amp;amp;')
 };
 
 declare function cql:predicate($clause,$map) as item() {
