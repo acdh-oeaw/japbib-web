@@ -59,7 +59,7 @@ declare function _:evals($queries as xs:string+, $bindings as map(*)?, $jobName 
                 (:, $log := $status!l:write-log('Job '||./@id||' duration '||seconds-from-duration(./@duration)*1000||' ms') :)
                 return $js!jobs:result(.)
       , $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
-        $log := if ($runtime > 100) then l:write-log('Batch execution of '||$jobName||' took '||$runtime||' ms') else ()
+        $log := if ($runtime > 100) then l:write-log('Batch execution of '||count($queries)||' jobs for '||$jobName||' took '||$runtime||' ms') else ()
     return $ret
 };
 
