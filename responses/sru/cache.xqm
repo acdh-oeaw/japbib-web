@@ -83,5 +83,5 @@ declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort
 
 (: hand optimization, don not use without thorough consideration :)
 declare function c:text-nodes-in-cached-file-equal($string as xs:string, $dn as document-node()) as text()* {
-  db:text("__sru_cache_de_data__", $string)[base-uri(.) = base-uri($dn)]
+  db:text("__sru_cache_de_data__", $string)[base-uri(.) eq base-uri($dn)]
 };
