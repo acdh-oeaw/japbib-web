@@ -17,7 +17,7 @@ import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
 
-declare variable $c:thesaurus-fn := 'thesaurus.xml';
+declare variable $c:thesaurus-fn := $model:dbname||'-thesaurus.xml';
 (: Note that the cache full text index is specialised for german! May work with English but other languages may vary. :)
 declare variable $c:index-options := map{'textindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false(), 'language': 'de'};
 
@@ -78,7 +78,7 @@ try {
 
 declare function c:scan-filename($scanClauseParsed as element(scanClause), $sort as xs:string) as xs:string {
     (: could also be import module namespace w = "http://basex.org/modules/web"; w:encode-url() but oXygen does not like url encoded filenames :) 
-    $scanClauseParsed/index||"-"||$sort||".xml"
+    $model:dbname||'-'||$scanClauseParsed/index||"-"||$sort||".xml"
 };
 
 (: hand optimization, don not use without thorough consideration :)
