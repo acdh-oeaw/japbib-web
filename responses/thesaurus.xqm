@@ -16,6 +16,8 @@ import module namespace _ = "urn:sur2html" at "localization.xqm";
 declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
 
 declare namespace mods = "http://www.loc.gov/mods/v3";
+declare namespace sru = "http://www.loc.gov/zing/srw/";
+declare namespace scan-api = "http://acdh.oeaw.ac.at/japbib/api/sru/scan";
 
 declare variable $api:thesaurus2html := $sru-api:path-to-stylesheets||"thesaurus2html.xsl";
 
@@ -25,7 +27,8 @@ declare function api:taxonomy-cache-as-xml($x-mode as xs:string?, $data-with-sta
 
 declare function api:create-data-with-stats($x-mode as xs:string?) as document-node()? {
     let $log := l:write-log('api:create-data-with-stats $x-mode := '||$x-mode, 'DEBUG'),
-        $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map(collection("japbib_06")) else ()
+        $db := <db xmlns="">{db:node-pre(collection("japbib_06")//mods:mods)!<n>{.}</n>}</db>,
+        $stats-map := if ($x-mode eq 'refresh') then api:topics-to-map($db) else ()
     return if (exists($stats-map)) then document{api:addStatsToThesaurus($stats-map, $x-mode)} else api:taxonomy-as-xml-cached()
 };
 
@@ -98,19 +101,53 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
     return if ($x-style eq 'none') then $xml else xslt:transform($xml, $xsl, if ($x-style) then map{"x-style": $x-style} else map{})
 };
 
-declare function api:topics-to-map($r) as map(*) {
-    let $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
-        $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
-(:       , $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:)
-        return (: prof:time( :)
-(:        ft:search($model:dbname, $matching-texts)[(ancestor::mods:genre|ancestor::mods:subject)],:)
-        map:merge(for $s in $matching-texts 
-        let $all-occurences := ft:search("japbib_06", $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods,
-(:          false(), 'api:topics-to-map all texts '),:)
-           (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
-            $intersection := (: prof:time( :)
-                 $r/descendant-or-self::mods:mods intersect $all-occurences
-(:          , false(), 'api:topics-to-map intersection '):)
-        return map:entry($s, count($intersection))
-    )
+declare function api:topics-to-map($db as element(db)) as map(*) {
+    let $r := $db/n!db:open-pre("japbib_06", .),
+        $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
+        $matching-texts := prof:time(distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic)), false(), "matching-texts ")
+(:       , $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:),
+        $start := prof:current-ns(),
+        $ret := map:merge(api:get-count-for-matching-texts($db, $matching-texts)),
+        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
+        $logRuntime := l:write-log('api:get-count-for-matching-texts ms: '||$runtime)
+        return $ret       
+};
+
+declare %private function api:mj-get-count-for-matching-texts($db as element(db), $matching-texts as xs:string*) as map(*)* {
+    let $queries := $matching-texts!``[import module namespace api = "http://acdh.oeaw.ac.at/japbib/api/thesaurus" at "../thesaurus.xqm";
+    declare variable $db external;
+    <_>{api:get-count-for-matching-text($db/n, '`{. => replace("'", "''") => replace('&amp;', '&amp;amp;')(: highlighter fix " ' :)}`', ())}</_>
+    ]``,
+       $result-pairs := u:evals($queries, map{'db': $db}, 'get-count-for-matching-texts', true())
+    return $result-pairs!map:entry(./_[1], ./_[2])
+};
+
+declare %private function api:mt-get-count-for-matching-texts($db as element(db), $matching-texts as xs:string*) as map(*)* {
+    let $ret := for $t in $matching-texts
+        let $funcs := function() {
+            let $count-for-matching-text := api:get-count-for-matching-text($db/n, $t, ())
+            return map:entry($count-for-matching-text[1], $count-for-matching-text[2])
+        }
+    return xquery:fork-join($funcs)
+    return $ret
+};
+
+declare %private function api:get-count-for-matching-texts($db as element(db), $matching-texts as xs:string*) as map(*)* {
+    let $subject-terms := cache:scan(<scanClause><index>subject</index></scanClause>, 'text')
+    return for $t in $matching-texts 
+        let $count-for-matching-text := api:get-count-for-matching-text($db/n, $t, $subject-terms) 
+    return map:entry($count-for-matching-text[1], $count-for-matching-text[2])
+};
+
+declare function api:get-count-for-matching-text($mods-mods-node-pres as xs:integer*, $s as xs:string, $subject-terms-cache as document-node()) as element(_)+ {
+let (: $all-occurences-mods-mods-node-pres := db:node-pre(ft:search("japbib_06", $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods), :)
+    $matching-subjects := cache:text-nodes-in-cached-file-equal($s, $subject-terms-cache)/ancestor::sru:term,
+    (: $log := if (count($matching-subjects > 1)) then l:write-log('more than one matching subject ?! '||$s||': '||string-join($matching-subjects/(sru:displayTerm|sru:numberOfRecords), ', '), 'DEBUG') else (), :)
+    $all-occurences-mods-mods-node-pres := tokenize($matching-subjects[1]//scan-api:node-pre, ',')!xs:integer(.),
+    (: $log := l:write-log('$all-occurences := '||count($all-occurences-mods-mods-node-pres)||' $all-results := '||count($mods-mods-node-pres), 'DEBUG'), :)
+    (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
+    $intersection := $all-occurences-mods-mods-node-pres[. = $mods-mods-node-pres],
+    $ret := (<_>{$s}</_>, <_>{count($intersection)}</_>)
+  (: , $log := l:write-log(serialize($ret), 'DEBUG') :)
+return $ret
 };
