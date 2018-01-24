@@ -53,7 +53,7 @@ declare %private function api:scan-filter-limit-response-and-cache($scanClause a
                   $x-sort as xs:string?, $x-mode as xs:string?,
                   $x-filter as xs:string?, $x-debug as xs:boolean) {
    let $try-scan-query := ``[import module namespace api = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
-       api:scan-filter-limit-response("`{$scanClause}`", `{$maximumTerms}`, `{$responsePosition}`, "`{$x-sort}`", "`{$x-mode}`", "`{$x-filter}`", `{$x-debug}`(), false())]``,
+       api:scan-filter-limit-response('`{$scanClause => replace("'", "''") => replace('&amp;', '&amp;amp;') (: highlighter fix " ' :)}`', `{$maximumTerms}`, `{$responsePosition}`, "`{$x-sort}`", "`{$x-mode}`", "`{$x-filter}`", `{$x-debug}`(), false())]``,
        $jid := jobs:eval($try-scan-query, (), map {'cache': true()}), $_ := jobs:wait($jid),
        $try-scan := jobs:result($jid),
        $ret := if ($try-scan[1] instance of element(api:empty)) then () else $try-scan[1],
@@ -79,8 +79,8 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
                then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-sort, $x-filter)
                else $terms,
        $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
-       $logScanClause := if ($runtime > 100) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
-       $logRuntime := if ($runtime > 100) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
+       $logScanClause := if ($runtime > 300) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
+       $logRuntime := if ($runtime > 300) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
    return (if (empty($ret)) then (<api:empty/>, <api:empty/>, <api:empty/>) else ($ret, $terms, $cached-scan))
 };
 
@@ -112,23 +112,25 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                           group by $v
                           let $c := count($t) 
                           order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
-                          return 
-                             <sru:term xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
+                          return <_>
+                              <sru:term xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
                                  <sru:numberOfRecords>{$c}</sru:numberOfRecords>
                                  <sru:value>{$v}</sru:value>
                                  <sru:displayTerm>{$v}</sru:displayTerm>
-                             </sru:term>"
+                              </sru:term>,
+                              <node-pre>{string-join(db:node-pre($t/ancestor::mods:mods), ',')}</node-pre></_>"
                      ) else '()',
         $logXQuery := l:write-log('api:do-scan $xpath_or_diagnostics := '||$xpath_or_diagnostics||' $xquery := '||$xquery, 'DEBUG'),
         $terms_or_diagnostics := 
             if (not($xpath_or_diagnostics instance of xs:string)) then $xpath_or_diagnostics
             else try {
                     let $jid := jobs:eval($xquery, (), map {'cache': true()}), $_ := jobs:wait($jid),
+                        $jres := jobs:result($jid), 
                         $terms :=
                     <sru:terms>
-                        {jobs:result($jid)}
+                        {$jres/sru:term}
                     </sru:terms>,
-                        $numbered-terms := api:numberTerms($terms)
+                        $numbered-terms := api:numberTerms($terms, $jres/node-pre)
                     return document {$numbered-terms}
                 } catch * {
                     diag:diagnostics('general-error', 'Error evaluating expression '||$xquery||' '||$err:description)
@@ -215,13 +217,14 @@ declare %private function api:t-unmask-quotes($t as element(term)) as xs:string 
   replace($t, '\\&quot;', '&quot;')
 };
 
-declare %private function api:numberTerms($terms as element(sru:terms)) as element(sru:terms) {
+declare %private function api:numberTerms($terms as element(sru:terms), $pres as element(node-pre)*) as element(sru:terms) {
 let $numbered-terms :=
     <sru:terms xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>{
     for $t at $pos in $terms/sru:term
     return $t update insert node   
         <sru:extraTermData>
            <fcs:position>{$pos}</fcs:position>
+           <api:node-pre>{$pres[$pos]/text()}</api:node-pre>
         </sru:extraTermData>
     after ./sru:displayTerm}
     </sru:terms>
