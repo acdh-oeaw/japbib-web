@@ -52,12 +52,21 @@ function api:sru($operation as xs:string, $query,
         try {
             switch($operation)
                 case "searchRetrieve" return searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $accept)
-                case "scan" return scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
+                case "scan" return api:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
                 default return api:explain()
         } catch diag:* {
             diag:diagnostics('general-error', 
        $err:code||': '||$err:description||' '||$err:value||' in '||$err:module||' at '||$err:line-number||': '||$err:column-number||': '||$err:additional)
         }
+};
+
+declare %private function api:scan($version, $scanClause, 
+                  $maximumTerms as xs:integer?, $responsePosition as xs:integer?,
+                  $x-sort as xs:string?, $x-mode,
+                  $x-filter, $x-debug as xs:boolean) {
+(: refresh dead locks. Needs to be executed in it's own job.
+   searchRetrieve needs to be written in a way that forces a read lock on the cache db which scan wants to write to on refresh. :)
+if ($x-mode = "refresh") then error(xs:QName('diag:not-implemented'), 'use sru/scan') else scan:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
 };
 
 declare 
