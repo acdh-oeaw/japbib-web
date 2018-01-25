@@ -198,7 +198,7 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
 declare %private function cql:xqft-predicate($match-mode as xs:string, $match-on-xpath as xs:string?, $term as xs:string, $index-datatype as xs:string?, $relation as xs:string, $case as xs:boolean) as xs:string {
 let $match-on-xpath := if ($match-on-xpath) then $match-on-xpath else 'text()',
     $wildcards := if (contains($term,'*')) then ' using wildcards' else '',
-    $case-sensitive := if ($case) then ' using case sensitive' else '',
+    $case-sensitive := if ($case) then ' using case sensitive' else ' using case insensitive',
     $rtrans-term := _:rdict($term),
     $sanitized-term := cql:sanitize-xqft-term($rtrans-term)
 return switch (true())  
@@ -206,7 +206,7 @@ return switch (true())
   case ($sanitized-term eq 'true') return $match-on-xpath
   default return if ($index-datatype != '')
         then $match-on-xpath||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on-xpath||") "||$relation||" "||$index-datatype||"("||$term||")"
-        else $match-on-xpath||' contains text "'||$sanitized-term||'"'||$wildcards||$case-sensitive
+        else $match-on-xpath||'/text() contains text "'||$sanitized-term||'"'||$wildcards||$case-sensitive
 };
 
 declare %private function cql:sanitize-xqft-term($term) {
