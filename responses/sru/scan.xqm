@@ -68,7 +68,7 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
                   $x-sort as xs:string?, $x-mode as xs:string?,
                   $x-filter as xs:string?, $x-debug as xs:boolean,
                   $fail-on-not-cached as xs:boolean) as item()+ {
-   let $start := prof:current-ns(),
+   let (: $start := prof:current-ns(), :)
        $sort := if (lower-case($x-sort) eq 'text') then 'text' else 'size',
        $scanClauseParsed := api:parseScanClause($scanClause),
        $scanClauseIndex :=  $scanClauseParsed/index,
@@ -77,10 +77,10 @@ declare function api:scan-filter-limit-response($scanClause as xs:string,
        $terms := if (empty($cached-scan) or $x-mode eq 'refresh') then api:do-scan($scanClauseParsed, $sort, $x-debug) else $cached-scan,
        $ret := if ($terms instance of document-node())
                then api:scanResponse($scanClause, $scanClauseParsed, $terms, $maximumTerms, $responsePosition, $x-sort, $x-filter)
-               else $terms,
-       $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
-       $logScanClause := if ($runtime > 300) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
-       $logRuntime := if ($runtime > 300) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else ()
+               else $terms
+       (:, $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
+       $logScanClause := if ($runtime > 10) then l:write-log('api:scan-filter-limit-response slow $scanClauseParsed := '||serialize($scanClauseParsed), 'DEBUG') else (),
+       $logRuntime := if ($runtime > 10) then l:write-log('api:scan-filter-limit-response runtime ms: '||$runtime) else () :)
    return (if (empty($ret)) then (<api:empty/>, <api:empty/>, <api:empty/>) else ($ret, $terms, $cached-scan))
 };
 

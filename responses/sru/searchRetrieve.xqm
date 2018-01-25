@@ -233,7 +233,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
     </sru:searchRetrieveResponse>
 };
 
-declare %private function api:addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
+declare %private function api:_addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
     let $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt', 'subject')) then () else $i,
         $scanClauses := api:get-scan-clauses($indexes, $response),
         $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
@@ -245,18 +245,37 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
              delete node .//sru:extraTermData
           }]``
      (: , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG') :)
-        , $scans := u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true())
+        , $scans := if (exists($scanQueries)) then u:evals($scanQueries, (), 'searchRetrieve-addStatScans', true()) else ()
     return $response update insert node $scans into ./sru:extraResponseData
 };
 
-declare %private function api:get-scan-clauses($indexes as element(zr:name)+, $response as element(sru:searchRetrieveResponse)) as xs:string+ {
+(: declare %private function api:__addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
+    let $start := prof:current-ns(),
+        $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt', 'subject')) then () else $i,
+        $scanClauses := api:get-scan-clauses($indexes, $response),
+        $scanResponses := $scanClauses!scan:scan-filter-limit-response(., 1, 1, 'text', (), (), false(), true()),
+        $scans := $scanResponses update {
+             delete node sru:version,
+             delete node sru:echoedScanRequest/* except sru:echoedScanRequest/sru:scanClause,
+             delete node .//sru:extraTermData
+          }
+      , $runtime := ((prof:current-ns() - $start) idiv 10000) div 100,
+        $log := l:write-log('Execution of '||count($scanClauses)||' scans for api:addStatScans took '||$runtime||' ms')
+    return $response update insert node $scans into ./sru:extraResponseData
+}; :)
+
+declare %private function api:addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
+    $response
+};
+
+declare %private function api:get-scan-clauses($indexes as element(zr:name)+, $response as element(sru:searchRetrieveResponse)) as xs:string* {
 let $context := $sru-api:HOSTNAME,
     $ns := index:namespaces($context),
-    $responseDocument := document{$response},
     $queries := for $i in $indexes return ``[`{string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n/@uri||"';")}`
-      //`{index:index-as-xpath-from-map($i, index:map($context), 'match')}` ! ('`{xs:string($i)}`=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')]``
+      declare variable $response external;
+      $response//`{index:index-as-xpath-from-map($i, index:map($context), 'match')}` ! ('`{xs:string($i)}`=="'||normalize-space(replace(., '&quot;','\\&quot;'))||'"')]``
     (:, $log := for $q at $i in $queries return l:write-log('api:get-scan-clauses $q['||$i||'] := '||$q, 'DEBUG'):)
-  return distinct-values(u:evals($queries, map { '': $responseDocument }, "searchRetrieve-get-scan-clauses", true())) 
+  return distinct-values(u:evals($queries, map { 'response': $response }, "searchRetrieve-get-scan-clauses", true())) 
 };
 
 declare %private function api:create-html-response($response as element(sru:searchRetrieveResponse),
