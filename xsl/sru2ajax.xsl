@@ -89,8 +89,8 @@
     </xsl:template>
     
     <xsl:template match="mods:mods">
-        <xsl:if test="not(mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)])"><span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
-        <xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]"> <!--Ausschluss von Autoren in relatedItems, BS.; 
+        <xsl:if test="not(mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)])"><span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
+        <xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]"> <!--Ausschluss von Autoren in relatedItems, BS.; 
             todo: ask for 'ctb' if no other author available
             todo: parse <name><etal/></name> as "et al."
         -->
@@ -163,7 +163,7 @@
     
     <xsl:template name="detail-list-items">        
         <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
-        <li><xsl:for-each select="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
+        <li><xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
             <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
         </xsl:for-each></li>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
