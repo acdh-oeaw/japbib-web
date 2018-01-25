@@ -70,7 +70,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
     let $context := $sru-api:HOSTNAME
     
     let $xpath := cql:xcql-to-xpath($xcql, $context),
-        $xquerySortExpr := api:create-sort-expr($xcql, '$__hits__', $context),
+        $xquerySortExpr := api:create-sort-expr($xcql, '$__hits__', $context, $xpath),
         $hits := try {
           l:write-log('start api:get-hits', 'DEBUG'),
           api:get-hits($xpath, $xquerySortExpr, $context, $startRecord + $maximumRecords),
@@ -87,7 +87,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
         try {
           l:write-log('start api:sort-hits', 'DEBUG'),
           api:sort-hits($hits,
-          string-join(api:create-sort-expr($xcql, '($__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*))', $context), ''),
+          string-join(api:create-sort-expr($xcql, '($__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*))', $context, $xpath), ''),
           $context, $startRecord, $maximumRecords),
           l:write-log('end api:sort-hits', 'DEBUG')
         } catch diag:sort-failed {
@@ -151,7 +151,7 @@ concat($xquerySortExpr[1],
        '$__res__!(try { <n>{db:node-pre(.)}</n> } catch * { <v>{.}</v> })}</db>')  
 };
 
-declare function api:create-sort-expr($xcql as item(), $nodesExpr as xs:string, $context as xs:string) as xs:string* {
+declare function api:create-sort-expr($xcql as item(), $nodesExpr as xs:string, $context as xs:string, $xpath as xs:string) as xs:string* {
     let $sort-xpath := cql:xcql-to-orderExpr($xcql, $context)
     let $sort-index-key := $xcql//sortKeys/key[1]/index
     let $sort-index := if ($sort-index-key != '') then index:index-from-map($sort-index-key, index:map($context)) else () 
@@ -177,7 +177,8 @@ return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
                                    "  return $m&#10;"
                             )
                         else "let $__res__ := $__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*)&#10;",
-                        "return subsequence($__res__, $__startAt__, $__max__)"
+                        "return subsequence($__res__, $__startAt__, $__max__)!(copy $__hilighting_copy__ := . modify ()&#10;",
+                        "return ft:mark(", $xpath => replace('collection($__db__)', '$__hilighting_copy__', 'q'),", '__hi__'))"
                     )
        else ()
 };
