@@ -196,12 +196,12 @@
     </xsl:template>
     
     
-    <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
+    <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
         <xsl:variable name="etal" select="if (mods:etal) then _:dict(' et al.') else ''"/>
         <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')||$etal"/></span>
     </xsl:template>
     
-    <xsl:template match="mods:name[mods:role/normalize-space(mods:roleTerm) = ('aut', 'edt', 'trl', 'ctb')]" mode="detail">
+    <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')]" mode="detail">
         <xsl:call-template name="link-with-number-of-records">
                 <xsl:with-param name="index">author</xsl:with-param>
                 <xsl:with-param name="term" select="mods:namePart"/>
