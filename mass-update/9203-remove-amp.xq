@@ -7,7 +7,7 @@ xquery version "3.1";
    else for large changes the list of updates will exhaust the memory. 
 :)
 
-import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "vle-history.xqm";
+import module namespace hist = "https://acdh.oeaw.ac.at/vle/history" at "dd/tmp/dba/vle-history.xqm";
 
 declare namespace _ = "urn:_";
 declare namespace mods = "http://www.loc.gov/mods/v3";
@@ -32,12 +32,15 @@ declare %updating function _:transform($e as element(mods:mods)) {
   let $comment := '9203 remove &amp;amp;',
       $texts := $e//text()[matches(., '&amp;\w+;')]/..
   return for $e in $texts
-     return
+     return try {
      (insert node comment {$comment} before $e,
      replace value of node $e with
      $e/text() => replace('&amp;gt;', '>')
                => replace('&amp;lt;', '<')
                => replace('&amp;amp;', '&amp;'))
+     } catch * {
+        error($err:code, $err:additional||'&#xa;'||serialize($e))
+     }
 };
 
 declare function _:main() {
@@ -50,4 +53,4 @@ declare function _:main() {
 
 if ($_:onlyGetNumberOfEntries) then count(_:select-entries())
 else if ($_:getParams) then serialize(_:get-params())
-else _:main()
+else try { _:main() } catch * { $err:additional }
