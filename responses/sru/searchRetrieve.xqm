@@ -241,7 +241,7 @@ declare %private function api:addStatScans($response as element(sru:searchRetrie
         let $scanResponse := scan:scan-filter-limit-response('`{. => replace("'", "''") => replace('&amp;', '&amp;amp;') (: highlighter fix " ' :)}`', 1, 1, 'text', (), (), false(), true())[1]
         return $scanResponse update {
              delete node sru:version,
-             delete node sru:echoedScanRequest,
+             delete node sru:echoedScanRequest/* except sru:echoedScanRequest/sru:scanClause,
              delete node .//sru:extraTermData
           }]``
      (: , $log := for $q at $i in $scanQueries return l:write-log('api:addStatScan $q['||$i||'] := '||$q, 'DEBUG') :)

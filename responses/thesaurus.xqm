@@ -119,14 +119,14 @@ declare %private function api:mj-get-count-for-matching-texts($db as element(db)
     <_>{api:get-count-for-matching-text($db/n, '`{. => replace("'", "''") => replace('&amp;', '&amp;amp;')(: highlighter fix " ' :)}`', ())}</_>
     ]``,
        $result-pairs := u:evals($queries, map{'db': $db}, 'get-count-for-matching-texts', true())
-    return $result-pairs!map:entry(./_[1], ./_[2])
+    return $result-pairs!map:entry(./_[1]/text(), ./_[2]/text())
 };
 
 declare %private function api:mt-get-count-for-matching-texts($db as element(db), $matching-texts as xs:string*) as map(*)* {
     let $ret := for $t in $matching-texts
         let $funcs := function() {
             let $count-for-matching-text := api:get-count-for-matching-text($db/n, $t, ())
-            return map:entry($count-for-matching-text[1], $count-for-matching-text[2])
+            return map:entry($count-for-matching-text[1]/text(), $count-for-matching-text[2]/text())
         }
     return xquery:fork-join($funcs)
     return $ret
@@ -136,7 +136,7 @@ declare %private function api:get-count-for-matching-texts($db as element(db), $
     let $subject-terms := cache:scan(<scanClause><index>subject</index></scanClause>, 'text')
     return for $t in $matching-texts 
         let $count-for-matching-text := api:get-count-for-matching-text($db/n, $t, $subject-terms) 
-    return map:entry($count-for-matching-text[1], $count-for-matching-text[2])
+    return map:entry($count-for-matching-text[1]/text(), $count-for-matching-text[2]/text())
 };
 
 declare function api:get-count-for-matching-text($mods-mods-node-pres as xs:integer*, $s as xs:string, $subject-terms-cache as document-node()) as element(_)+ {

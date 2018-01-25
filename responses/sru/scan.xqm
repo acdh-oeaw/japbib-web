@@ -194,11 +194,9 @@ declare %private function api:scanResponse($scanClause as xs:string,
         $scan-clause := xs:string($scanClauseParsed),
         $ret :=
     if (normalize-space($scanClauseParsed/term) ne '' or $maximumTerms ne 1) then
-    <sru:scanResponse xmlns:srw="//www.loc.gov/zing/srw/"
-              xmlns:diag="//www.loc.gov/zing/srw/diagnostic/"
-              xmlns:myServer="http://myServer.com/">
+    <sru:scanResponse xmlns:diag="//www.loc.gov/zing/srw/diagnostic/" xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
         <sru:version>{$sru-api:SRU.SUPPORTEDVERSION}</sru:version>
-        <sru:terms xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
+        <sru:terms>
         {subsequence($terms/sru:terms/sru:term, $start-term-position, $maximumTerms)}
         </sru:terms>
         <sru:echoedScanRequest>
@@ -219,7 +217,7 @@ declare %private function api:t-unmask-quotes($t as element(term)) as xs:string 
 
 declare %private function api:numberTerms($terms as element(sru:terms), $pres as element(node-pre)*) as element(sru:terms) {
 let $numbered-terms :=
-    <sru:terms xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>{
+    <sru:terms>{
     for $t at $pos in $terms/sru:term
     return $t update insert node   
         <sru:extraTermData>
