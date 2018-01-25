@@ -101,6 +101,10 @@ declare function api:taxonomy-as-html($xml as element(taxonomy), $x-style as xs:
     return if ($x-style eq 'none') then $xml else xslt:transform($xml, $xsl, if ($x-style) then map{"x-style": $x-style} else map{})
 };
 
+declare function api:_topics-to-map($db as element(db)) as map(*) {
+    map {}
+};
+
 declare function api:topics-to-map($db as element(db)) as map(*) {
     let $r := $db/n!db:open-pre("japbib_06", .),
         $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
