@@ -187,7 +187,7 @@
         <xsl:for-each select="//subjects/taxonomy/category[catDesc ne 'Form']/catDesc">
         <xsl:call-template name="topic-filterd-subject-links">
             <xsl:with-param name="topic" select="."/>
-            <xsl:with-param name="subjects" select="$this/mods:subject[not(@displayLabel)]"/>
+            <xsl:with-param name="subjects" select="$this/mods:subject[@usage = 'primary' and not(@displayLabel)]"/>
         </xsl:call-template>
         </xsl:for-each>
         <xsl:call-template name="keywords">
@@ -355,7 +355,7 @@
             <li class="eSegment"><xsl:value-of select="$topic"/></li>
             <xsl:for-each select="$filteredSubjects">
                 <li><xsl:call-template name="link-with-number-of-records">
-                    <xsl:with-param name="index">subject</xsl:with-param>
+                    <xsl:with-param name="index">primarysubject</xsl:with-param>
                     <xsl:with-param name="term" select="."/>
                 </xsl:call-template></li>
             </xsl:for-each>            

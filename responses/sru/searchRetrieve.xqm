@@ -234,7 +234,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
 };
 
 declare %private function api:addStatScans($response as element(sru:searchRetrieveResponse)) as element(sru:searchRetrieveResponse) {
-    let $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt')) then () else $i,
+    let $indexes := for $i in index:map-to-indexInfo()//zr:name return if ($i = ('cql.serverChoice', 'id', 'cmt', 'subject')) then () else $i,
         $scanClauses := api:get-scan-clauses($indexes, $response),
         $scanQueries := $scanClauses ! ``[import module namespace scan = "http://acdh.oeaw.ac.at/japbib/api/sru/scan" at "scan.xqm";
         declare namespace sru = "http://www.loc.gov/zing/srw/";

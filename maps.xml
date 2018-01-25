@@ -20,6 +20,9 @@
         <index key="subject" case="false" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
+        <index key="primarysubject" case="false" coll="?lang=de">
+            <path label="_:dict(.)">(mods:subject[@usage eq 'primary' and not(@displayLabel)]/mods:topic|mods:genre)</path>
+        </index>
         <index label="Reihe" key="series" case="false" type="ft" coll="?lang=de">
             <path label="." match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
         </index>
