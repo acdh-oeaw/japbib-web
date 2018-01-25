@@ -17,16 +17,16 @@
         <index key="date" datatype="xs:integer">
             <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:dateIssued</path>
         </index>
-        <index key="subject" case="false" coll="?lang=de">
+        <index key="subject" case="false" type="ft" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
-        <index key="primarysubject" case="false" coll="?lang=de">
+        <index key="primarysubject" case="false" type="ft" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[@usage eq 'primary' and not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
         <index label="Reihe" key="series" case="false" type="ft" coll="?lang=de">
             <path label="." match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
         </index>
-        <index key="publisher" case="no" coll="?lang=de">
+        <index key="publisher" case="no" type="ft" coll="?lang=de">
             <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
         </index>
         <index label="Bezeichner für einen Eintrag" key="id">
