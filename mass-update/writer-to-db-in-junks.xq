@@ -15,7 +15,7 @@ declare variable $_:maxNumberOfChangesPerJob := 1000;
 declare variable $_:basePath := file:temp-dir() || 'dba/';
 (: string-join(tokenize(static-base-uri(), '/')[last() > position()], '/'); :)
 (: declare variable $script_to_run external := 'write-remove-non-letter.xq'; :)
-declare variable $script_to_run external := '9174-write-MagDiplArb-subject.xq';
+declare variable $script_to_run external := '9203-write-remove-amp.xq';
 declare variable $get-db-list-query := '"japbib_06"';
 (: Note: assumes 9174-MagDiplArb-subject.xq does the very same for test purpose! :)
 declare variable $keep_changed_xml_until_finished := true();
@@ -83,7 +83,7 @@ for $db in map:keys($jobDescr)
           })), map {
           'cache': $keep_changed_xml_until_finished,
           'id': $db||'_'||$batch||'_updWrite',
-          'base-uri': $_:basePath||'/'
+          'base-uri': $_:basePath||'/'||$jobDescr($db)('batchStart')||'-'||$script_to_run
         })
     else ()
 };
@@ -98,7 +98,7 @@ declare function _:number_of_changed_entries($db_names as xs:string+) as element
           }, map {
           'cache': true(),
           'id': $db_name||'_numberOfEntries',
-          'base-uri': $_:basePath||'/'
+          'base-uri': $_:basePath||'/'||$slaveScript
           }),
     $_ := $job-ids!jobs:wait(.) 
    return $job-ids!<db name="{replace(., '_numberOfEntries', '', 'q')}">{jobs:result(.)}</db>
