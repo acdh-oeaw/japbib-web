@@ -265,7 +265,7 @@
     
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
-    <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+    <xsl:template match="mods:title"><xsl:apply-templates/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
     <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="normalize-space(.)" /><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
