@@ -440,7 +440,9 @@ function refreshCM(div) {
 // Handler fuer toggleRecord (MODS und Lidos) 
 
 $(document).on('click', '.toggleRecord', function(e){
-  $( this ).next("[class^=record]").toggle('slow');
+   var div = $( this ).next("[class^=record]");
+   div.toggle('slow'); 
+   refreshCM(div);
 });
 
 //////// Schlagworte //////
