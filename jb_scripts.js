@@ -409,6 +409,7 @@ $(document).on('change', '#sortBy', function(e){
 
 // MODS/ LIDOS/  HTML umschalten (OS) 
 $(document).on('change', '.showResults .showOptions select', function(e){
+  /*
    var target = $(e.target),
        dataFormat = target.data("format")
        curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html",
@@ -430,20 +431,28 @@ $(document).on('change', '.showResults .showOptions select', function(e){
    if (format == 'lidos' || format == 'mods') {
         refreshCM(div);
    }
+   */
+   var target = $(e.target), 
+       format = target.val(),
+       entry = target.closest(".showEntry");
+   if (format === 'compact') {
+     entry.addClass('compact');
+   } else {
+     entry.removeClass('compact');
+   }
 });
-
-function refreshCM(div) {  
-    var editor = div.find('.CodeMirror')[0].CodeMirror;
-    editor.refresh();
-}
-
-// Handler fuer toggleRecord (MODS und Lidos) 
+// Handler fuer toggleRecord (MODS und Lidos, BS) 
 
 $(document).on('click', '.toggleRecord', function(e){
    var div = $( this ).next("[class^=record]");
    div.toggle('slow'); 
    refreshCM(div);
 });
+
+function refreshCM(div) {  
+    var editor = div.find('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
+}
 
 //////// Schlagworte //////
 
