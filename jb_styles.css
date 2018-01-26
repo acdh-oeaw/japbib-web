@@ -1063,12 +1063,12 @@ div.showEntry {
   margin-top: -21px;
 } 
 .toggleRecord i {
-  float: right;
+  position: absolute;
+  right:0;
   padding-top: -8px;
   font-weight: bold;
   line-height: 14px;
-  padding: 7px 1em 1px;
-  /* background: rgba(255, 247, 212, 0.5); */
+  padding: 7px 1em 1px; 
   opacity: .5;
 }
 .toggleRecord:hover i {  
