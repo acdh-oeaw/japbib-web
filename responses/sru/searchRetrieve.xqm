@@ -85,7 +85,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
         if ($hits instance of element(sru:diagnostics)) then $hits
         else if (exists($hits) and $xpath instance of xs:string and exists($xquerySortExpr)) then
         try {
-          l:write-log('start api:sort-hits', 'DEBUG'),
+          l:write-log('start api:sort-hits '||count($hits/*), 'DEBUG'),
           api:sort-hits($hits,
           string-join(api:create-sort-expr($xcql, '($__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*))', $context, $xpath), ''),
           $context, $startRecord, $maximumRecords),
@@ -178,7 +178,7 @@ return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
                             )
                         else "let $__res__ := $__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*)&#10;",
                         "return subsequence($__res__, $__startAt__, $__max__)!(copy $__hilighting_copy__ := . modify ()&#10;",
-                        "return ft:mark(", $xpath => replace('collection($__db__)', '$__hilighting_copy__', 'q'),", '_match_'))"
+                        "return ft:mark(", $xpath => replace('collection($__db__)//', '$__hilighting_copy__//descendant-or-self::', 'q'),", '_match_'))"
                     )
        else ()
 };

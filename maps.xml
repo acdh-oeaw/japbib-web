@@ -6,7 +6,7 @@
     </namespaces>
     <map key="http://jb80.acdh.oeaw.ac.at" title="Deutschsprachige Japan-Bibliographie 1980-2000" base_elem="mods:mods">
         <index label="default index" key="cql.serverChoice" case="false" type="ft" coll="?lang=de">
-            <path label="string-join(mods:titleInfo/*, ' ')" match=".//text()">mods:mods</path>
+            <path label="string-join(mods:titleInfo/*, ' ')" match="./">mods:mods</path>
         </index>
         <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
             <path label="string-join(*, ' ')" match="mods:title">mods:titleInfo[parent::mods:mods]</path>
