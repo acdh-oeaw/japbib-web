@@ -139,8 +139,7 @@
                     <xsl:copy-of select="." copy-namespaces="no"/>               
                 </xsl:variable>
                 <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="_:serialize($modsDoc, $modsDoc//LIDOS-Dokument, $serialization-parameters/*)"/></textarea>
-            </div>
-            <div class="clear"></div>
+            </div> 
             <div class="toggleRecord">
                 <i class="fa fa-code lidos" title="Ursprünglichen Code anzeigen"></i>
             </div> 
@@ -156,8 +155,7 @@
                     <xsl:copy-of select=".//LIDOS-Dokument" copy-namespaces="no"/>               
                 </xsl:variable>
                 <textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve"><xsl:sequence select="serialize($lidosDoc, $serialization-parameters/*)"/></textarea>
-            </div>
-            <div class="clear"></div>
+            </div> 
         </div>
     </xsl:template>
     
