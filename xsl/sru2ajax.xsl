@@ -197,8 +197,11 @@
     
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
-        <xsl:variable name="etal" select="if (mods:etal) then _:dict(' et al.') else ''"/>
-        <span class="authors"><xsl:value-of select="string-join(mods:namePart, '/ ')||$etal"/></span>
+        <span class="authors"><xsl:apply-templates select="(mods:namePart|mods:etal)"/></span>
+    </xsl:template>
+    
+    <xsl:template match="mods:etal">
+        <xsl:value-of select="_:dict(' et al.')"/>
     </xsl:template>
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')]" mode="detail">
@@ -212,7 +215,7 @@
     
     <xsl:template name="link-with-number-of-records">
         <xsl:param name="index" as="xs:string"/>
-        <xsl:param name="term" as="xs:string*"/>
+        <xsl:param name="term" as="node()*"/>
         <xsl:param name="separator" as="xs:string" select="' /'"/>
         <xsl:param name="isLast" as="xs:boolean" select="true()"/>
         <xsl:variable name="this" select="."/>
@@ -222,10 +225,24 @@
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
             <xsl:variable name="roles" select="$this//mods:roleTerm!normalize-space(.)"/>
-            <xsl:value-of select="_:dict(.)||' '"/><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
+            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
                 test="$roles = $knownSpecialRoles"><xsl:value-of select="', '||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')"/></xsl:if>
             <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
+    </xsl:template>
+    
+    <xsl:template name="format-term">
+        <xsl:choose>
+            <xsl:when test="_:dict(.) eq .">
+                <xsl:apply-templates/>    
+            </xsl:when>
+            <xsl:when test="exists(./mods:_match_)">
+                <strong><xsl:value-of select="_:dict(.)||' '"/></strong>
+            </xsl:when>
+            <xsl:otherwise>               
+                <xsl:value-of select="_:dict(.)||' '"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <xsl:template match="mods:dateIssued[@point eq 'start']">
@@ -249,8 +266,6 @@
     <xsl:variable name="sentenceNoPunctation">[\w"']$</xsl:variable>
     
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
-    
-    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), '[\w]$')) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
     <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
@@ -419,6 +434,10 @@
         <xsl:param name="href" as="xs:string">#</xsl:param>
         <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
+    </xsl:template>
+    
+    <xsl:template match="mods:_match_">
+        <strong><xsl:value-of select="."/></strong>
     </xsl:template>
     
 </xsl:stylesheet>

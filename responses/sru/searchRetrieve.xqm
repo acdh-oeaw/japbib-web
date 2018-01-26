@@ -178,7 +178,7 @@ return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
                             )
                         else "let $__res__ := $__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*)&#10;",
                         "return subsequence($__res__, $__startAt__, $__max__)!(copy $__hilighting_copy__ := . modify ()&#10;",
-                        "return ft:mark(", $xpath => replace('collection($__db__)', '$__hilighting_copy__', 'q'),", '__hi__'))"
+                        "return ft:mark(", $xpath => replace('collection($__db__)', '$__hilighting_copy__', 'q'),", '_match_'))"
                     )
        else ()
 };
