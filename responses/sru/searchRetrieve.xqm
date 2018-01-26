@@ -201,7 +201,7 @@ let $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xquerySortExpr := '||
 };
 
 declare %private function api:searchRetrieveResponse($version as xs:string, $nor as xs:integer, $results as item()*, 
-    $hits as element(db), $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
+    $hits as element(db)*, $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
     let $nextRecPos := if ($nor ge count($results) + $startRecord) then count($results) + $startRecord else ()
     return
     <sru:searchRetrieveResponse 
@@ -229,7 +229,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
             then <XPath>{$xpath}</XPath>
             else ()}
             <XCQL>{$xcql}</XCQL>
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($hits), false(), 'thesaurus:topics-to-map '))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map(if ($hits) then $hits else <db/>), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
