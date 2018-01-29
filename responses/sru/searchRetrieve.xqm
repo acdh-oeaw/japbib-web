@@ -85,7 +85,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
         if ($hits instance of element(sru:diagnostics)) then $hits
         else if (exists($hits) and $xpath instance of xs:string and exists($xquerySortExpr)) then
         try {
-          l:write-log('start api:sort-hits', 'DEBUG'),
+          l:write-log('start api:sort-hits '||count($hits/*), 'DEBUG'),
           api:sort-hits($hits,
           string-join(api:create-sort-expr($xcql, '($__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*))', $context, $xpath), ''),
           $context, $startRecord, $maximumRecords),
@@ -177,7 +177,7 @@ return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
                                    "  return $m&#10;"
                             )
                         else "let $__res__ := $__hits__!(if (./*:n) then ./*:n!db:open-pre(../@name, .) else ./*:v/*)&#10;",
-                        "return subsequence($__res__, $__startAt__, $__max__)!(copy $__hilighting_copy__ := . modify ()&#10;",
+                        "return subsequence($__res__, $__startAt__, $__max__)!(copy $__hilighting_copy__ := document {.} modify ()&#10;",
                         "return ft:mark(", $xpath => replace('collection($__db__)', '$__hilighting_copy__', 'q'),", '_match_'))"
                     )
        else ()
@@ -201,7 +201,7 @@ let $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xquerySortExpr := '||
 };
 
 declare %private function api:searchRetrieveResponse($version as xs:string, $nor as xs:integer, $results as item()*, 
-    $hits as element(db), $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
+    $hits as element(db)*, $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
     let $nextRecPos := if ($nor ge count($results) + $startRecord) then count($results) + $startRecord else ()
     return
     <sru:searchRetrieveResponse 
@@ -229,7 +229,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
             then <XPath>{$xpath}</XPath>
             else ()}
             <XCQL>{$xcql}</XCQL>
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map($hits), false(), 'thesaurus:topics-to-map '))}</subjects>
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map(if ($hits) then $hits else <db/>), false(), 'thesaurus:topics-to-map '))}</subjects>
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };

@@ -103,17 +103,8 @@
     </xsl:template>
     
     <xsl:template match="mods:mods" mode="detail">
-        <div class="showEntry" style="display:none;">
-            <div class="showOptions">
-                <label><em>Ansicht:</em> <select size="1" data-format="html">
-                        <option value="html" selected="selected">detailliert</option>
-                        <option value="compact">kompakt</option><!--
-                        <option value="mods">MODS</option>
-                        <option value="lidos">Lidos</option>-->
-                    </select>
-                </label>
-                <span class='closeX' id='x'></span>
-            </div>
+        <div class="showEntry" style="display:none;"> 
+            <div class='closeX'></div>
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
                 <div class="addInfo">
@@ -265,7 +256,7 @@
     
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
-    <xsl:template match="mods:title"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+    <xsl:template match="mods:title"><xsl:apply-templates/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
     <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="normalize-space(.)" /><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     

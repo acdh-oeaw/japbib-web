@@ -946,7 +946,7 @@ div.showEntry {
     padding: 0 0 .5em;
     border-radius: 5px;
     position: relative;
-    background: #fff7d4;
+    background: #f5e8c1;
 }
 .showEntry a { 
   color: #009;
@@ -996,20 +996,25 @@ div.showEntry {
   right: 0.35em;
   opacity: .25;
 }
-.pubForm .record-html > ul::before {
+.pubForm .closeX::before {
   content: '';
   display: block;
-  float: right;
+  /* float: right; */
+  position: absolute;
+  left: 0;
+  top: 0;
   font-size: 1.5em;
-  color: rgb(255, 247, 212);
-  background: #c1b994;
-  padding: .2em;
-  border-radius: .2em;
-  margin-left: 0.2em;
-  margin-bottom: .2em;
+  color: rgb(162, 144, 109);
+  background: #fefefe;
+  padding: .4em;
+  border-radius: 1em;
+  width: 1em;
+  line-height: 1em;
+  margin: .3em;
+  /* margin-left: 0.2em; */
+  /* margin-bottom: .2em; */
   }
-.book > a::after, 
-.book .record-html > ul::before { 
+.book > a::after, .book .closeX::before { 
   content: '\f02d'; /* fa-book  */  
   } 
 .bookSection > a::after, 
@@ -1048,7 +1053,7 @@ div.showEntry {
 } 
 .showEntry .showOptions {
   background: rgba(255, 255, 216, 0.1);
-  background: #e6d1a6;
+  background: #f5e8c1;
   }
 .record-html {
   background: rgba(255, 255, 225, 0.98);
@@ -1262,9 +1267,7 @@ code,
 PLUS-MINUS, ZAHL
 ******************/
 
-.zahl::before,
-.closeX::before,
-.plusMinus::before {
+.zahl::before, .closeX::after, .plusMinus::before {
  content: '+';
  content: '\f196';  /* 'fa-plus-square-o */
  content: '\f138' /* fa-chevron-circle-right */;
@@ -1304,16 +1307,21 @@ PLUS-MINUS, ZAHL
   content: '\f13a' /* fa-chevron-circle-down */;
   content: '\f056' /* fa-minus-circle */; 
 } 
-.closeX::before {  
+.closeX::after {  
   content: 'X'; 
   content: '\f00d' /* fa-times */
 }
-.closeX:hover::before, 
+.closeX:hover::after, 
 .plusMinus:hover::before {  
   opacity: 0.8;
 }
 .showEntry .closeX {
-  float:right;
+  /* float:right; */
+  display: block;
+  text-align: right;
+  line-height: 1em;
+  cursor: pointer;
+  padding: .3em .6em;
 }
 
 .schlagworte .plusMinus::before {
