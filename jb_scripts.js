@@ -268,7 +268,7 @@ $('#searchInput1').on('keyup', function() {
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
   if ( $( '#hitRow' ) !== 'undefined') {
-    var maxL = 0, 
+    var maxLeft = 0, 
         posLeft = 0,
         hits = $( '#hitRow .hits' ), //Treffer innerhalb der beweglichen hitRow
         hitsW = $( '#hitRow').width(), 
@@ -284,51 +284,53 @@ function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
       $( '#fenster1' ).width(hitsW);
       $( '.pull').css( "visibility", "hidden");
     } 
-  
-    /////////  .here  positionieren /////////
-    maxL = FW - hitsW;
+    
+    /////////  hitRow  positionieren /////////
+    if (FW < hitsW) {
+      maxLeft = FW - hitsW;
       // wenn hitRow > Fenster und .here innerhalb von hitRow
-    if ( maxL < 0 && $('#hitRow .here').length > 0 ) {
+      if ( maxLeft < 0 && $('#hitRow .here').length > 0 ) {
         // wenn here nicht mehr sichtbar
-      if ( $('#hitRow .here').position().left > FW - $('#hitRow .here').width() ) {
+        if ( $('#hitRow .here').position().left > FW - $('#hitRow .here').width() ) {
           // wenn rechts genug Platz
-        var spaceR = (FW - $('#hitRow .here').width())/2 ;
-        if ( $('#hitRow').width()-($('#hitRow .here').position().left) > spaceR ) {        
-          posLeft = -$('#hitRow .here').position().left + spaceR;
-        }
-        else { // maximale left-Verschiebung 
-          posLeft = maxL;
+          var spaceR = (FW - $('#hitRow .here').width())/2 ;
+          if ( $('#hitRow').width()-($('#hitRow .here').position().left) > spaceR ) {        
+            posLeft = -$('#hitRow .here').position().left + spaceR;
+          }
+          else { // maximale left-Verschiebung 
+            posLeft = maxLeft;
+          } 
         } 
-      } 
-    } 
+      }
       // wenn .here an letzter Stelle
-    else if ($('.last.here').length > 0 ) {       
-      posLeft = maxL;
-    }
+      else if ($('.last.here').length > 0 ) {       
+        posLeft = maxLeft;
+      }
       // hitRow in Hinblick auf .here verschieben 
-    $( '#hitRow' ).css( 'left', posLeft);
+      $( '#hitRow' ).css( 'left', posLeft);
+    } 
     stylePull();
   }
   function stylePull() { 
     $('#pullLeft, #pullRight').addClass('active');
     if ($( '#hitRow' ).position().left >= 0 ) 
       $( '#pullLeft' ).removeClass('active');
-    if ($( '#hitRow' ).position().left-1 <= maxL ) 
+    if ($( '#hitRow' ).position().left-1 <= maxLeft ) 
       $( '#pullRight' ).removeClass('active');
   }
 
      ///////// hitRow scollen /////////
-  $( document ).on( 'mousedown', '#pullLeft', 
+  $( document ).on( 'mousedown', '#pullLeft.active', 
     function () {  
       if( $( '#hitRow' ).position().left < 0) {
         $( '#hitRow' ).animate(  { left: 0 }, runTime, stylePull ); 
       } 
     }
   ); 
-  $( document ).on( 'mousedown', ' #pullRight', 
+  $( document ).on( 'mousedown', ' #pullRight.active', 
     function () {     
-      if( $( '#hitRow' ).position().left > maxL ) {
-        $( '#hitRow' ).animate(  { left:  maxL }, runTime, stylePull );
+      if( $( '#hitRow' ).position().left > maxLeft ) {
+        $( '#hitRow' ).animate(  { left:  maxLeft }, runTime, stylePull );
       } 
     }
   ); 
@@ -390,7 +392,7 @@ m.executeQuery = executeQuery;
 
 // Handler fuer Resultate pro Seiten 
 $("#maximumRecords").change(function(e){
-   doSearchOnReturn();
+   //doSearchOnReturn();
 });
   
 // Handler fuer .showList select
@@ -404,7 +406,7 @@ $(document).on('change', '#sortBy', function(e){
    if (sortBy === '-') {return;}
    target.data("sortBy", sortBy);
    $('#searchInput1').val(newQuery);
-   doSearchOnReturn();
+   //doSearchOnReturn();
 });
 
 // MODS/ LIDOS/  HTML umschalten (OS) 
@@ -548,20 +550,23 @@ $(document).on('click', '.closeX', function() {
 // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
 $('.suchOptionen .abc a').click(function(e){
     e.preventDefault();
-    var index = $(e.target).closest("td").attr("data-index");
-    var term = $(e.target).text() + "*";
-    executeQuery(index+"="+term);
+    var index = $(e.target).closest("td").attr("data-index"),
+        term = $(e.target).text() + "*",
+        query = index+"="+term;
+    //executeQuery(index+"="+term); 
+    $('#searchInput1').val(query);
 });
 
 $('#find a.code').click(function(e){
     e.preventDefault();
     var query = $(this).text();
-    executeQuery(query);
+    //executeQuery(query);
+    $('#searchInput1').val(query);
 });
  
 // Handler für Suchfeld:  Clear Search und search (BS)
 
-$(document).on('keyup mouseup', 'body', toggleXQ );
+//$(document).on('keyup mouseup', 'body', toggleXQ );
 
 function toggleXQ() {   
   if ( $('#searchInput1').val().length < 1) {
@@ -578,14 +583,14 @@ $(document).on( 'click', '#clearSearch', function() {
   $('#searchInput1').val('');
   hasher.prependHash = '';
   hasher.setHash('find');
-  toggleXQ();
+  //toggleXQ();
 });
 $(document).on( 'click', '#doSearch', function(e) {   
   e.preventDefault();
   var query = $('#searchInput1').val();
   if (query.length)
     executeQuery(query); 
-  toggleXQ();
+  //toggleXQ();
 });
 
 // Schlagwortbaum oeffnen und schliessen (BS)
