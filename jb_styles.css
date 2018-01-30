@@ -1059,6 +1059,11 @@ div.showEntry {
   background: rgba(255, 255, 225, 0.98);
   background: rgb(255, 247, 212);
 } 
+.externerLink::after {
+  content: ' \f0a9';
+  color: #008;
+  opacity: 0.4;
+}
 .toggleRecord {
   height: 21px;
   cursor: pointer;
@@ -1092,6 +1097,7 @@ div.showEntry {
   clear: both;
   /* height:7px; */
 } 
+
 
 /******* Fehlermeldungen ***********/
 
