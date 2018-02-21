@@ -1000,7 +1000,7 @@ div.showEntry {
 .pubForm > a::after {
   content: '';
   display: inline-block;
-  margin-left: 0.3em;
+  margin-left: 0.5em;
   right: 0.35em;
   opacity: .25;
 }
@@ -1376,19 +1376,12 @@ PLUS-MINUS, ZAHL
 .thesaurus a.zahl::before, 
 .thesaurus .aZahl::before { 
   content: "  ausw\00e4hlen";  
-  content:'' ;
-  position: absolute;  
-  display:block; 
-  padding-left: .3em;
-  opacity: 0;
-  border-bottom: 1px solid #ddd;
-  width: 25em;
-  right:0;
-  top: 1.5em;
+  content: "\f0b0"; /* fa-filter */ 
+  opacity: 0;  
 } 
 .thesaurus .aHover::before {
   opacity: 1;
-  padding-left: 1.3em;
+  margin-right: 1.3em;
 } 
 .thesaurus a.zahl:hover::before {
   opacity: .5;
