@@ -1140,60 +1140,57 @@
       </category>
    </category>
    <category n="2">
-      <catDesc>Zeit</catDesc>
+      <catDesc>Zeit</catDesc>      
+      <category n="2.1.1">
+         <catDesc>Altertum (bis 1192)</catDesc>
+         <category n="2.1.1.1">
+            <catDesc>Nara-Zeit (710–784)</catDesc>
+         </category>
+         <category n="2.1.1.2">
+            <catDesc>Heian-Zeit (784–1192)</catDesc>
+         </category>
+      </category>
+      <category n="2.1.2">
+         <catDesc>Mittelalter (1192–1600)</catDesc>
+         <category n="2.1.2.1">
+            <catDesc>Kamakura-Zeit (1192–1333)</catDesc>
+         </category>
+         <category n="2.1.2.2">
+            <catDesc>Muromachi-Zeit (1334–1573)</catDesc>
+         </category>
+         <category n="2.1.2.3">
+            <catDesc>Azuchi-Momoyama-Zeit (1573–1600)</catDesc>
+         </category>
+      </category>
+      <category n="2.1.3">
+         <catDesc>Frühe Neuzeit (Edo-Zeit, 1600–1868)</catDesc>
+      </category> 
+      <category n="2.2.1">
+         <catDesc>Moderne (1868–1945)</catDesc>
+         <category n="2.2.1.1">
+            <catDesc>Meiji-Zeit (1868–1912)</catDesc>
+         </category>
+         <category n="2.2.1.2">
+            <catDesc>Taishō-Zeit (1912–1926)</catDesc>
+         </category>
+         <category n="2.2.1.3">
+            <catDesc>Frühe Shōwa-Zeit (1926–1945)</catDesc>
+         </category>
+      </category>
+      <category n="2.2.2">
+         <catDesc>Gegenwart (ab 1945)</catDesc>
+         <category n="2.2.2.1">
+            <catDesc>Spätere Shōwa-Zeit (1945–1989)</catDesc>
+         </category>
+         <category n="2.2.2.2">
+            <catDesc>Heisei-Zeit (1989–)</catDesc>
+         </category>
+      </category>
       <category n="2.1">
          <catDesc>Vormoderne (vor 1868)</catDesc>
-         <category n="2.1.1">
-            <catDesc>Altertum (bis 1192)</catDesc>
-            <category n="2.1.1.1">
-               <catDesc>Nara-Zeit (710–784)</catDesc>
-            </category>
-            <category n="2.1.1.2">
-               <catDesc>Heian-Zeit (784–1192)</catDesc>
-            </category>
-         </category>
-         <category n="2.1.2">
-            <catDesc>Mittelalter (1192–1600)</catDesc>
-            <category n="2.1.2.1">
-               <catDesc>Kamakura-Zeit (1192–1333)</catDesc>
-            </category>
-            <category n="2.1.2.2">
-               <catDesc>Muromachi-Zeit (1334–1573)</catDesc>
-            </category>
-            <category n="2.1.2.3">
-               <catDesc>Azuchi-Momoyama-Zeit (1573–1600)</catDesc>
-            </category>
-         </category>
-         <category n="2.1.3">
-            <catDesc>Frühe Neuzeit (Edo-Zeit, 1600–1868)</catDesc>
-         </category>
-         <category n="2.1.4">
-            <catDesc>vor 1600</catDesc>
-         </category>
       </category>
       <category n="2.2">
          <catDesc>nach 1868</catDesc>
-         <category n="2.2.1">
-            <catDesc>Moderne (1868–1945)</catDesc>
-            <category n="2.2.1.1">
-               <catDesc>Meiji-Zeit (1868–1912)</catDesc>
-            </category>
-            <category n="2.2.1.2">
-               <catDesc>Taishō-Zeit (1912–1926)</catDesc>
-            </category>
-            <category n="2.2.1.3">
-               <catDesc>Frühe Shōwa-Zeit (1926–1945)</catDesc>
-            </category>
-         </category>
-         <category n="2.2.2">
-            <catDesc>Gegenwart (ab 1945)</catDesc>
-            <category n="2.2.2.1">
-               <catDesc>Spätere Shōwa-Zeit (1945–1989)</catDesc>
-            </category>
-            <category n="2.2.2.2">
-               <catDesc>Heisei-Zeit (1989–)</catDesc>
-            </category>
-         </category>
       </category>
    </category>
    <category n="3">
@@ -1384,14 +1381,65 @@
    </category>
    <category n="4">
       <catDesc>Form</catDesc>
-      <category n="4.1">
-         <catDesc>audiovisuelles Material</catDesc>
+      <category n="4.5.1.1">
+         <catDesc>Einzelwerk</catDesc>
       </category>
-      <category n="4.2">
-         <catDesc>elektronische Publikation</catDesc>
+      <category n="4.5.1.2">
+         <catDesc>Sammelwerk</catDesc>
+      </category>
+      <category n="4.6.1">
+         <catDesc>Beitrag zu Sammelwerk</catDesc>
+      </category>
+      <category n="4.6.3">
+         <catDesc>Zeitschriftenartikel</catDesc>
+      </category>
+      <category n="4.6.4">
+         <catDesc>Zeitungsartikel</catDesc>
+      </category>
+      <category n="4.5.2">
+         <catDesc>fortlaufendes Werk</catDesc>
+         <category n="4.5.2.1">
+            <catDesc>Schriftenreihe</catDesc>
+         </category>
+         <category n="4.5.2.2">
+            <catDesc>Zeitung</catDesc>
+         </category>
+         <category n="4.5.2.3">
+            <catDesc>Zeitschrift</catDesc>
+         </category>
+         <category n="4.5.2.4">
+            <catDesc>Zeitschriftenartige Reihe</catDesc>
+         </category>
+         <category n="4.5.2.5">
+            <catDesc>Loseblattausgabe</catDesc>
+         </category>
+      </category>
+      <category n="4.3.6">
+         <catDesc>Hochschulschrift</catDesc>
+         <category n="4.3.6.1">
+            <catDesc>Dissertation</catDesc>
+         </category>
+         <category n="4.3.6.2">
+            <catDesc>Habilitationsschrift</catDesc>
+         </category>
+         <category n="4.3.6.3">
+            <catDesc>Magister-, Diplomarbeit</catDesc>
+         </category>
+      </category>
+      <category n="4.3.14">
+         <catDesc>Rezension</catDesc>
+      </category>
+      <category n="4.3.16">
+         <catDesc>Übersetzung</catDesc>
+         <category n="4.3.16.1">
+            <catDesc>Literaturübersetzung</catDesc>
+         </category>
       </category>
       <category n="4.3">
-         <catDesc>Literaturgattung</catDesc>
+         <catDesc>Sonstige Literaturgattungen</catDesc>
+         <category n="4.1">
+            <catDesc>audiovisuelles Material</catDesc>
+         </category>
          <category n="4.3.1">
             <catDesc>Anthologie</catDesc>
          </category>
@@ -1401,23 +1449,14 @@
          <category n="4.3.3">
             <catDesc>Bibliographie, Katalog</catDesc>
          </category>
+         <category n="4.2">
+            <catDesc>elektronische Publikation</catDesc>
+         </category>
          <category n="4.3.4">
             <catDesc>Festschrift</catDesc>
          </category>
          <category n="4.3.5">
             <catDesc>Graue Literatur</catDesc>
-         </category>
-         <category n="4.3.6">
-            <catDesc>Hochschulschrift</catDesc>
-            <category n="4.3.6.1">
-               <catDesc>Dissertation</catDesc>
-            </category>
-            <category n="4.3.6.2">
-               <catDesc>Habilitationsschrift</catDesc>
-            </category>
-            <category n="4.3.6.3">
-               <catDesc>Magister-, Diplomarbeit</catDesc>
-            </category>
          </category>
          <category n="4.3.7">
             <catDesc>Informationsschrift</catDesc>
@@ -1431,6 +1470,9 @@
          <category n="4.3.10">
             <catDesc>Nachschlagewerk</catDesc>
          </category>
+         <category n="4.4">
+            <catDesc>Neuauflage</catDesc>
+         </category>
          <category n="4.3.11">
             <catDesc>nicht-deutschsprachige Veröffentlichung</catDesc>
          </category>
@@ -1440,71 +1482,17 @@
          <category n="4.3.13">
             <catDesc>praktische Anleitung</catDesc>
          </category>
-         <category n="4.3.14">
-            <catDesc>Rezension</catDesc>
+         <category n="4.5.1.3">
+            <catDesc>Sammlung</catDesc>
          </category>
          <category n="4.3.15">
             <catDesc>Tagungsbericht</catDesc>
          </category>
-         <category n="4.3.16">
-            <catDesc>Übersetzung</catDesc>
-            <category n="4.3.16.1">
-               <catDesc>Literaturübersetzung</catDesc>
-            </category>
-         </category>
          <category n="4.3.17">
             <catDesc>Vortrag, unveröffentlichtes Manuskript</catDesc>
          </category>
-      </category>
-      <category n="4.4">
-         <catDesc>Neuauflage</catDesc>
-      </category>
-      <category n="4.5">
-         <catDesc>selbständige Publikation</catDesc>
-         <category n="4.5.1">
-            <catDesc>begrenztes Werk</catDesc>
-            <category n="4.5.1.1">
-               <catDesc>Einzelwerk</catDesc>
-            </category>
-            <category n="4.5.1.2">
-               <catDesc>Sammelwerk</catDesc>
-            </category>
-            <category n="4.5.1.3">
-               <catDesc>Sammlung</catDesc>
-            </category>
-         </category>
-         <category n="4.5.2">
-            <catDesc>fortlaufendes Werk</catDesc>
-            <category n="4.5.2.1">
-               <catDesc>Schriftenreihe</catDesc>
-            </category>
-            <category n="4.5.2.2">
-               <catDesc>Zeitung</catDesc>
-            </category>
-            <category n="4.5.2.3">
-               <catDesc>Zeitschrift</catDesc>
-            </category>
-            <category n="4.5.2.4">
-               <catDesc>Zeitschriftenartige Reihe</catDesc>
-            </category>
-            <category n="4.5.2.5">
-               <catDesc>Loseblattausgabe</catDesc>
-            </category>
-         </category>
-      </category>
-      <category n="4.6">
-         <catDesc>unselbständige Publikation</catDesc>
-         <category n="4.6.1">
-            <catDesc>Beitrag zu Sammelwerk</catDesc>
-         </category>
          <category n="4.6.2">
             <catDesc>Vorwort, Nachwort</catDesc>
-         </category>
-         <category n="4.6.3">
-            <catDesc>Zeitschriftenartikel</catDesc>
-         </category>
-         <category n="4.6.4">
-            <catDesc>Zeitungsartikel</catDesc>
          </category>
       </category>
    </category>
