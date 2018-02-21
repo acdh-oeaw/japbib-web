@@ -70,9 +70,12 @@ hasher.initialized.add(parseHash); //parse initial hash
 hasher.changed.add(parseHash); //parse hash changes
 hasher.init(); //start listening for history change
 
- /**/
- 
-//////// Find-Page //////
+
+/*********************************************
+
+  "Suchen und Finden"
+
+**********************************************/ 
 
   
 var hideResults= $('.showResults').hide();
@@ -527,7 +530,7 @@ function plusMinusDependentIsShown(aPlusMinus) {
 $(document).on('click', '.results .plusMinus', openOrCloseDetails);
 function openOrCloseDetails(e) {
     e.preventDefault();
-    if ( plusMinusDependentIsShown(this) ) {
+    if ( plusMinusDependentIsShown(this) ) {  qwe
         $ ( this ).nextAll( 'div' ).hide('slow');
     } else {
         $ ( this ).next('.showEntry').show('slow');
@@ -592,6 +595,13 @@ $(document).on( 'click', '#doSearch', function(e) {
     executeQuery(query); 
   //toggleXQ();
 });
+ 
+
+/*********************************************
+
+  "Thesaurus"
+
+**********************************************/
 
 // Schlagwortbaum oeffnen und schliessen (BS)
 

@@ -542,8 +542,8 @@ fieldset {
   text-transform: uppercase;  
   font-family: "Trebuchet MS", Arial, sans-serif;
   } 
-.li1::after {
-    content: 'auswählen:';
+#thesaurus .li1::after {
+  content: "ausw\00e4hlen:";  
     position: absolute;
     top: 0;
     right: 1em;
@@ -1302,18 +1302,16 @@ PLUS-MINUS, ZAHL
 .plusMinus::before {
   opacity: .3;
 }
+#thesaurus .zahl {
+  position: relative;
+  float: right;
+  right: 0;
+  margin-right: 1em; 
+}
 .zahl {
   font-family: calibri, arial;
   opacity: .7;
   font-size: .9em;
-  position: relative;
-  float: right;
-  /* clear: right; */
-  /* position: absolute; */
-  right: 0;
-  margin-right: 1em;
-  display: block;
-  /* background: #ffe; */
 }
 .zahl:hover,
 *:hover > .zahl { 
