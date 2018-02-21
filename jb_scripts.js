@@ -164,6 +164,9 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   anErrorTracker.raisedErrors = [];
 }
   
+/*********************************************
+  "Suche"
+**********************************************/
 // Handler fuer .tipp (BS)
 
 $( '.tipp' )
@@ -266,7 +269,28 @@ $('#searchInput1').on('keyup', function() {
        $('#searchHelp th').trigger('click');
   }      
 }); 
+// Handler fuer Resultate pro Seiten 
+$("#maximumRecords").change(function(e){
+   doSearchOnReturn(false);
+});
+  
+// Handler fuer .showList select
+//$(document).on('change', '#showList > .showOptions select', function(e){
+$(document).on('change', '#sortBy', function(e){
+   var target = $(this),
+       sortBy = target.val(),
+       currentQuery = $('#searchInput1').val(),
+       sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
+       newQuery = sortLessQuery + ' sortBy ' + sortBy;
+   if (sortBy === '-') {return;}
+   target.data("sortBy", sortBy);
+   $('#searchInput1').val(newQuery);
+   //doSearchOnReturn();
+});
 
+/*********************************************
+  "Treffer"
+**********************************************/
 // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)        
 
 function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
@@ -352,7 +376,7 @@ $( document )
 function onFetchMoreHits(e) {
   e.preventDefault();
   var query = findQueryPartInHref($(this).attr('href'));
-  doSearchOnReturn(query.startRecord);
+  doSearchOnReturn(false, query.startRecord);
 }
 ////////////////////////////////////////
 
@@ -370,14 +394,16 @@ function fillInSearchFrom(query) {
   });
 }
 
-function doSearchOnReturn(optStartRecord) {    
-    var startRecord = optStartRecord || 1,
+function doSearchOnReturn(optNewFilter, optStartRecord) {    
+    var newFilter = optNewFilter === undefined ? true : optNewFilter,
+        startRecord = optStartRecord || 1,
         baseUrl = $('#searchform1').attr('action'),
         query = $('#searchform1 input[name="query"]').val(),
         sortBy = query.indexOf('sortBy') === -1 ?
                  query.replace(/^([^=]+).*/, '$1') :
                  query.replace(/^.*sortBy\s+(.*)$/, '$1')
     $('#searchform1 input[name="startRecord"]').val(startRecord);
+    $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
     //$('#showList > .showOptions select').val(sortBy);
     $('#sortBy').val(sortBy);
     getResultsHidden(baseUrl+'?'+$('#searchform1').serialize());
@@ -393,50 +419,12 @@ function executeQuery(query) {
 
 m.executeQuery = executeQuery;
 
-// Handler fuer Resultate pro Seiten 
-$("#maximumRecords").change(function(e){
-   //doSearchOnReturn();
-});
-  
-// Handler fuer .showList select
-//$(document).on('change', '#showList > .showOptions select', function(e){
-$(document).on('change', '#sortBy', function(e){
-   var target = $(this),
-       sortBy = target.val(),
-       currentQuery = $('#searchInput1').val(),
-       sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
-       newQuery = sortLessQuery + ' sortBy ' + sortBy;
-   if (sortBy === '-') {return;}
-   target.data("sortBy", sortBy);
-   $('#searchInput1').val(newQuery);
-   //doSearchOnReturn();
-});
+/*********************************************
+  Einzeleintrag
+**********************************************/
 
-// MODS/ LIDOS/  HTML umschalten (OS) 
+// MODS/ LIDOS/  HTML umschalten (OS) (obsolet)
 $(document).on('change', '.showResults .showOptions select', function(e){
-  /*
-   var target = $(e.target),
-       dataFormat = target.data("format")
-       curFormat = ( typeof dataFormat != 'undefined') ? dataFormat : "html",
-       format = target.val(),
-       target.data("format", format),
-       c = ".record-" + format;
-   if (format === 'compact') {
-     c = ".record-html";
-   }
-   var entry = target.closest(".showEntry"),
-       div = entry.find(c);
-   target.closest(".showEntry").find("[class^=record]").hide();
-   div.show();
-   if (format === 'compact') {
-     entry.addClass('compact');
-   } else {
-     entry.removeClass('compact');
-   }
-   if (format == 'lidos' || format == 'mods') {
-        refreshCM(div);
-   }
-   */
    var target = $(e.target), 
        format = target.val(),
        entry = target.closest(".showEntry");
