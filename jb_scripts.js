@@ -518,7 +518,7 @@ function plusMinusDependentIsShown(aPlusMinus) {
 $(document).on('click', '.results .plusMinus', openOrCloseDetails);
 function openOrCloseDetails(e) {
     e.preventDefault();
-    if ( plusMinusDependentIsShown(this) ) {  qwe
+    if ( plusMinusDependentIsShown(this) ) { 
         $ ( this ).nextAll( 'div' ).hide('slow');
     } else {
         $ ( this ).next('.showEntry').show('slow');
