@@ -34,6 +34,7 @@ declare
     %rest:query-param("x-mode", "{$x-mode}")
     %rest:query-param("x-filter", "{$x-filter}")
     %rest:query-param("x-debug", "{$x-debug}", "false")
+    %rest:query-param("x-no-search-filter", "{$x-no-search-filter}", "false")
     %rest:GET
     %output:method("xml")
 function api:sru($operation as xs:string, $query, 
@@ -42,7 +43,8 @@ function api:sru($operation as xs:string, $query,
                  $maximumTerms as xs:integer, $responsePosition as xs:integer,
                  $x-sort as xs:string, $x-style,
                  $x-mode, $x-filter,
-                 $x-debug as xs:boolean) {
+                 $x-debug as xs:boolean,
+                 $x-no-search-filter as xs:boolean) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context),
         $accept := try{ request:header('ACCEPT') } catch bxerr:BASX0000 {'text/html'}
@@ -51,7 +53,7 @@ function api:sru($operation as xs:string, $query,
         if ($version != $api:SRU.SUPPORTEDVERSION) then diag:diagnostics('unsupported-version', $version) else
         try {
             switch($operation)
-                case "searchRetrieve" return searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $accept)
+                case "searchRetrieve" return searchRetrieve:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, $x-debug, $x-no-search-filter, $accept)
                 case "scan" return api:scan($version, $scanClause, $maximumTerms, $responsePosition, $x-sort, $x-mode, $x-filter, $x-debug)
                 default return api:explain()
         } catch diag:* {

@@ -31,10 +31,10 @@ declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
 declare variable $api:sru2json := $sru-api:path-to-stylesheets||"sru2json.xsl";
 
 declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style) {
-  api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, false(), ())
+  api:searchRetrieve($query, $version, $maximumRecords, $startRecord, $x-style, false(), false(), ())
 };
 
-declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean, $accept as xs:string?) {
+declare function api:searchRetrieve($query as xs:string, $version as xs:string, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style, $x-debug as xs:boolean, $x-no-search-filter as xs:boolean, $accept as xs:string?) {
   if (not(exists($query))) then diag:diagnostics('param-missing', 'query') else
   try {
   let $xcql-initial := cql:parse($query => replace('&amp;', '&amp;amp;')),
@@ -43,7 +43,7 @@ declare function api:searchRetrieve($query as xs:string, $version as xs:string, 
   return 
      if ($x-debug = true())
      then $xcql
-     else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $accept)
+     else api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $x-no-search-filter, $accept)
   } catch * {
         diag:diagnostics('general-error', 'cql:'||fn:serialize($query)||'&#10;'||
           $err:description||'&#10;'||' '||$err:module||': '||$err:line-number||'&#10;'||
@@ -58,15 +58,16 @@ declare
     %rest:query-param("startRecord", "{$startRecord}", 1)
     %rest:query-param("maximumRecords", "{$maximumRecords}", 50)
     %rest:query-param("x-style", "{$x-style}", '')
+    %rest:query-param("x-no-search-filter", "{$x-no-search-filter}", "false")
     %rest:POST("{$xcql}")
     %rest:consumes("application/xml", "text/xml")
     %output:method("xml")
-function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?) {
+function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?, $x-no-search-filter as xs:boolean) {
     let $accept := request:header("ACCEPT")
     return api:searchRetrieveXCQL($xcql, $query, $version, $maximumRecords, $startRecord, $x-style, $accept)
 };
 
-declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?, $accept as xs:string?) {
+declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:string, $version, $maximumRecords as xs:integer, $startRecord as xs:integer, $x-style as xs:string?, $x-no-search-filter as xs:boolean, $accept as xs:string?) {
     let $context := $sru-api:HOSTNAME
     
     let $xpath := cql:xcql-to-xpath($xcql, $context),
@@ -101,7 +102,7 @@ declare %private function api:searchRetrieveXCQL($xcql as item(), $query as xs:s
         $response := 
         if ($results instance of element(sru:diagnostics))
         then $results
-        else api:searchRetrieveResponse($version, xs:integer(sum($hits/@count)), $results, $hits, $maximumRecords, $startRecord, api:create-search-expr($xpath, $xquerySortExpr)||'&#10;'||string-join($xquerySortExpr, ''), $xcql),
+        else api:searchRetrieveResponse($version, xs:integer(sum($hits/@count)), $results, $hits, $maximumRecords, $startRecord, api:create-search-expr($xpath, $xquerySortExpr)||'&#10;'||string-join($xquerySortExpr, ''), $xcql, $x-no-search-filter),
         $response-with-stats := if ($response instance of element(sru:searchRetrieveResponse)) then api:addStatScans($response) else $response,
         $log := l:write-log('api:searchRetrieveXCQL $accept := '||$accept||' $x-style := '||$x-style||' $response-with-stats instance of element(sru:searchRetrieveResponse) '||$response-with-stats instance of element(sru:searchRetrieveResponse) , 'DEBUG'),
         $json-style := tokenize($api:sru2json, '/')[last()],
@@ -201,7 +202,7 @@ let $logXqueryExpr := l:write-log('api:searchRetrieveXCQL $xquerySortExpr := '||
 };
 
 declare %private function api:searchRetrieveResponse($version as xs:string, $nor as xs:integer, $results as item()*, 
-    $hits as element(db)*, $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item()) as element(){
+    $hits as element(db)*, $maxRecords as xs:integer, $startRecord as xs:integer, $xpath as xs:string, $xcql as item(), $x-no-search-filter as xs:boolean) as element(){
     let $nextRecPos := if ($nor ge count($results) + $startRecord) then count($results) + $startRecord else ()
     return
     <sru:searchRetrieveResponse 
@@ -229,7 +230,8 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
             then <XPath>{$xpath}</XPath>
             else ()}
             <XCQL>{$xcql}</XCQL>
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map(if ($hits) then $hits else <db/>), false(), 'thesaurus:topics-to-map '))}</subjects>
+            { if (not($x-no-search-filter)) then 
+            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map(if ($hits) then $hits else <db/>), false(), 'thesaurus:topics-to-map '))}</subjects> else () }
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };
