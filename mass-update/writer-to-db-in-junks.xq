@@ -13,9 +13,9 @@ declare namespace _ = "urn:_";
 
 declare variable $_:maxNumberOfChangesPerJob := 1000;
 declare variable $_:basePath := file:temp-dir() || 'dba/';
-(: string-join(tokenize(static-base-uri(), '/')[last() > position()], '/'); :)
+(: declare variable $_:basePath := string-join(tokenize(static-base-uri(), '/')[last() > position()], '/'); :)
 (: declare variable $script_to_run external := 'write-remove-non-letter.xq'; :)
-declare variable $script_to_run external := '9203-write-remove-amp.xq';
+declare variable $script_to_run external := '10377-write-delete-gesellschaft_a_bs.xq';
 declare variable $get-db-list-query := '"japbib_06"';
 (: Note: assumes 9174-MagDiplArb-subject.xq does the very same for test purpose! :)
 declare variable $keep_changed_xml_until_finished := true();
@@ -31,8 +31,12 @@ declare function _:start-jobs-or-get-results() {
       if ($countUnfinished > 0) then <message>{$countUnfinished||' queued for execution.'}</message>
       else ('Done.', $update-jobs[@state="cached"]!jobs:result(@id))
   else if ($stage_2) then
-  let $get-params := jobs:eval(_:bind-external-variables($_:basePath||'/'||$script_to_run, map {'__db__': '', '__helper_tables__': 'helper_tables' }), map {'{urn:_}getParams': true()}, map {'cache': true() }),  $_ := jobs:wait($get-params),
-      $params := map:merge(parse-xml(jobs:result($get-params))/*/*!map {@key: *}),
+  let $get-params := jobs:eval(_:bind-external-variables(replace($_:basePath||'/'||$script_to_run, 'write-', ''), map {'__db__': '', '__helper_tables__': 'helper_tables' }),
+                     map {'{urn:_}getParams': true()},
+                     map {'cache': true(),
+                          'id': 'getParams',
+                          'base-uri': $_:basePath||'/'||$script_to_run }),  $_ := jobs:wait($get-params), 
+      $params := map:merge(parse-xml(jobs:result($get-params))/*/*!map {@key: *}), 
       $get-db-list := jobs:eval($get-db-list-query, map {}, map {'cache': true() }),  $_ := jobs:wait($get-db-list),
       $db-list := jobs:result($get-db-list),
       $changed-entries-per-db := _:number_of_changed_entries($db-list),
@@ -98,7 +102,7 @@ declare function _:number_of_changed_entries($db_names as xs:string+) as element
           }, map {
           'cache': true(),
           'id': $db_name||'_numberOfEntries',
-          'base-uri': $_:basePath||'/'||$slaveScript
+          'base-uri': $_:basePath||'/'||$script_to_run
           }),
     $_ := $job-ids!jobs:wait(.) 
    return $job-ids!<db name="{replace(., '_numberOfEntries', '', 'q')}">{jobs:result(.)}</db>
