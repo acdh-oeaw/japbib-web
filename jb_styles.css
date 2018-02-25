@@ -619,6 +619,18 @@ fieldset {
 
 ********************/
 
+.ladeResultate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(221, 234, 251, 0.5);
+    z-index: 10;
+    padding: 19em 0 0 19em;
+    color: #1260a9;
+}
+
 /**** Suchfelder ******/
 
 #searchform1 {
@@ -1227,7 +1239,9 @@ div.showEntry {
   display: block;
   width: 100%;
   top: -5.6em;
+  /* top: 0; */
   right: 3px;
+  z-index: 11;
   }  
 .beispiele div {
   display: inline-block;
