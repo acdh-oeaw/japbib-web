@@ -97,11 +97,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
   // Anfangszustand
   var hideResults = $('.showResults').hide();
 
-/*********************************************
+/**********************************************
 
-  "Suchen und Finden" 
-
-**********************************************/
 // Suche auslösen
 // Ausrichten der Suchparameter; Übergeben der Parameter (doSearchOnReturn)
 // Daten abfragen (getResultsHidden)
@@ -114,7 +111,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
 
 // Suche auslösen:
-//// s.a. a-href=#find; #maximumRecords.change; onFetchMoreHits()
+//// s.a. a-href=#find;  onFetchMoreHits()
 
 $('#searchInput1').keypress(searchOnReturn);
 
@@ -124,6 +121,26 @@ function searchOnReturn(e) {
     doSearchOnReturn();
   }
 }
+
+  // Handler fuer Resultate pro Seiten (paging) 
+  $("#maximumRecords").change(function(e) {
+    doSearchOnReturn(false); //Filter nicht erneuern
+  });
+
+  // Handler fuer sortby 
+  $(document).on('change', '#sortBy', function(e) {
+    var target = $(this),
+      sortBy = target.val(),
+      currentQuery = $('#searchInput1').val(),
+      sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
+      newQuery = sortLessQuery + ' sortBy ' + sortBy;
+    if (sortBy === '-') {
+      return;
+    }
+    target.data("sortBy", sortBy);
+    $('#searchInput1').val(newQuery);
+    doSearchOnReturn(false); 
+  });
 
 function executeQuery(query) {
   $('#searchInput1').val(query);
@@ -353,25 +370,6 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     }
   });
 
-  // Handler fuer Resultate pro Seiten 
-  $("#maximumRecords").change(function(e) {
-    doSearchOnReturn(false);
-  });
-  // Handler fuer .showList select
-  //$(document).on('change', '#showList > .showOptions select', function(e){
-  $(document).on('change', '#sortBy', function(e) {
-    var target = $(this),
-      sortBy = target.val(),
-      currentQuery = $('#searchInput1').val(),
-      sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
-      newQuery = sortLessQuery + ' sortBy ' + sortBy;
-    if (sortBy === '-') {
-      return;
-    }
-    target.data("sortBy", sortBy);
-    $('#searchInput1').val(newQuery);
-    //doSearchOnReturn(); //??
-  });
 
   /*********************************************
     "Treffer"
@@ -382,12 +380,12 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
     if ($('#hitRow') !== 'undefined') {
       var maxLeft = 0,
-        posLeft = 0,
-        hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
-        hitsW = $('#hitRow').width(),
-        FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster    
-        spaceR = FW / 2,
-        runTime = hits.length * 50; // scroll-Dauer  
+          posLeft = 0,
+          hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
+          hitsW = $('#hitRow').width(),
+          FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster    
+          spaceR = FW / 2,
+          runTime = hits.length * 50; // scroll-Dauer  
       // Nav-Pfeile anzeigen oder verstecken
       if (FW < hitsW) {
         $('#fenster1').width(FW);
@@ -483,13 +481,26 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     var div = $(this).next("[class^=record]");
     div.toggle('slow');
     refreshCM(div);
+// todo:
+/*
+    $.each($( this ).next('.record-html a.zahl'), function(e) {
+      $( this ).append('...');
+      // Abfrage der Trefferraten für interne Suchlinks
+    });
+*/
   });
+
 
   function refreshCM(div) {
     var editor = div.find('.CodeMirror')[0].CodeMirror;
     editor.refresh();
-  }
-  //////// Schlagworte //////
+  } 
+
+  /*********************************************
+
+    "Thesaurus"
+
+  **********************************************/
   var categoryFramework;
   var getCategoriesLock = false;
   var getCategoriesErrorTracker = {
@@ -503,7 +514,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     $('#thesaurus #showList').hide('slow');
     getCategoriesLock = true;
     $('#thesaurus #showList').load('thesaurus', function(unused1, statusText, jqXHR) {
-      callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
+      callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]); //s.0.
     });
   }
 
@@ -622,12 +633,6 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       executeQuery(query);
     //toggleXQ();
   });
-
-  /*********************************************
-
-    "Thesaurus"
-
-  **********************************************/
 
   // Schlagwortbaum oeffnen und schliessen (BS)
   var plusMinus = '.schlagworte .plusMinus',
