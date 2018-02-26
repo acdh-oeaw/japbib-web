@@ -479,8 +479,11 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   // Handler fuer toggleRecord (MODS und Lidos, BS) 
   $(document).on('click', '.toggleRecord', function(e) {
     var div = $(this).next("[class^=record]");
-    div.toggle('slow');
-    refreshCM(div);
+    div.toggle('slow', function(){
+      // refresh needs to be called when CM is visible
+      // so after the animation completetd
+      refreshCM(div);
+    });
 // todo:
 /*
     $.each($( this ).next('.record-html a.zahl'), function(e) {
