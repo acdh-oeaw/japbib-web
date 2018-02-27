@@ -257,8 +257,12 @@
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
     <xsl:template match="mods:title"><xsl:apply-templates/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
-    
-    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:value-of select="normalize-space(.)" /><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+ 
+    <xsl:template match="mods:subTitle"><xsl:text xml:space="preserve"> </xsl:text><xsl:variable name="subTitle" select="normalize-space(.)" /><xsl:sequence select=
+  "concat(upper-case(substring($subTitle,1,1)),
+          substring($subTitle, 2)
+         )
+  "/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
     
     <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
