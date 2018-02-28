@@ -21,7 +21,8 @@ declare variable $__db__ external := 'japbib_06';
 declare variable $__helper_tables__ external := "helper_tables";
  
 declare function _:select-entries() as element(mods:mods)* {
-  collection($__db__)//LIDOS-Dokument/Jahr[matches(., '(^19|20)\d\d$')]/ancestor::mods:mods[mods:relatedItem[@type='host']/mods:originInfo[not(mods:dateIssued)]]
+(: Wähle originInfo ohne dateIssued, aber mit (nicht geparstem) Text, außer Ortsnamen (--> Verlagsangabe) :)
+  collection($__db__)//LIDOS-Dokument/Jahr[matches(., '(^19|20)\d\d$')]/ancestor::mods:mods[mods:relatedItem[@type='host']/mods:originInfo[not(mods:dateIssued)][text()[matches(., '[\d\w]')][not(matches(., 'Tübingen|Zürich|Düsseldorf|Hamburg|Wien|Berlin|Dresden|München|Herne|Bonn|Wiesbaden|Bochum|T[oô]ky[oô]|Kassel|Köln|Schaffhausen|Weinheim|Gütersloh|Frankfurt|Lausanne|Konstanz|Heidelberg|Münster|Stuttgart|Duisburg'))]]]
 };
 declare function _:get-params() as element(params) {
 <params>
@@ -29,27 +30,18 @@ declare function _:get-params() as element(params) {
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {
+  (: Nimm Jahresangabe aus Lidos und packe unklare Zeitangabe in <edition></edition> :)
   let $Jahr := $e//LIDOS-Dokument/Jahr/text(),
       $comment := 'Task #9277 2: dateIssed von Lidos/Jahr übernehmen',
       $dateIssued := <dateIssued>{$Jahr}</dateIssued>,
       $originInfo := $e/mods:relatedItem[@type='host']/mods:originInfo,
       $oldText := $originInfo/text()[1],
-      $oldComment := $originInfo[comment()[matches(., 'Erscheinungsverm')]]/comment()
-     
-      (:,
-      $replace := false,
-      $orte := ('Wien', 'Berlin', 'Tübingen', 'Zürich') 
-         for $i in $orte
-            where  $oldText[not(matches(., '$orte[$i]'))]  
-            $replace := true 
-       :)     
-       (:     Tübingen, Zürich, Düsseldorf, Hamburg, Wien, Berlin, Dresden, München, Herne, Bonn, Wiesbaden, Bochum, Tôkyô, Kassel, Köln, Schaffhausen, Weinheim, Gütersloh, Frankfurt, Lausanne, Konstanz, Heidelberg, Münster, Stuttgart, Duisburg
-       :)
-               
+      $oldComment := $originInfo[comment()[matches(., 'Erscheinungsverm')]]/comment() 
+      
   return ( 
       insert node comment{$comment} as first into $e/mods:relatedItem[@type='host']/mods:originInfo, 
       insert node $dateIssued  as first into $originInfo, 
-      if ($oldComment ) 
+      if ($oldComment and $oldText) 
       then (
          replace node $oldComment with comment {'Task #9277 2: placed "...Erscheinungsverm." in <edition>'}, 
          replace node $oldText with <edition>{$oldText}</edition> 
