@@ -1,6 +1,9 @@
 /**********************
    Schrift & basic tags
 **********************/ 
+.subtitle:first-letter {
+    text-transform: uppercase;
+}
 body {   
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
@@ -376,11 +379,16 @@ td.control {
   }
 .i_container {
   overflow: hidden;
+  position: relative;
+  z-index: 11;
   }
 .i_container img {
     width: 100%; 
  margin-bottom:-5px;
  }
+.clearFloat {
+    clear: both;
+}
 
 /******* #about  ***********/
 
