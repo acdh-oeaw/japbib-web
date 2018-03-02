@@ -12,6 +12,24 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         raisedErrors: []
       }
 
+// Passwort für Testphasen
+
+$('#psw').keypress(testOnReturn);
+$('#testPw').click(allowTest);
+
+function testOnReturn(e) {
+  if (e.which === 13) {
+    e.preventDefault();
+    allowTest();
+  }
+}
+function allowTest(e) {
+  if ($('#psw').val().toLowerCase() == 'test') { 
+    $( '#testScreen' ).hide();
+  }
+  else alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');    
+} 
+
   /*********************************************
 
     "About", etc. 
