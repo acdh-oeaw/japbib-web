@@ -15,7 +15,7 @@ declare variable $_:maxNumberOfChangesPerJob := 1000;
 declare variable $_:basePath := file:temp-dir() || 'dba/';
 (: declare variable $_:basePath := string-join(tokenize(static-base-uri(), '/')[last() > position()], '/'); :)
 (: declare variable $script_to_run external := 'write-remove-non-letter.xq'; :)
-declare variable $script_to_run external := '10377-write-delete-gesellschaft_a_bs.xq';
+declare variable $script_to_run external := '9277-2-write-get-Jahr-from-Lidos_bs.xq';
 declare variable $get-db-list-query := '"japbib_06"';
 (: Note: assumes 9174-MagDiplArb-subject.xq does the very same for test purpose! :)
 declare variable $keep_changed_xml_until_finished := true();
@@ -56,7 +56,7 @@ declare function _:start-jobs-or-get-results() {
         }, map {
         'cache': $keep_changed_xml_until_finished,
         'id': 'writeInJunks',
-        'base-uri': $_:basePath||'/'
+        'base-uri': $_:basePath||'/writer-to-db-in-junks.xq'
         })
   return 'Run again to get results.'
   else 'Should not happen'
@@ -87,7 +87,7 @@ for $db in map:keys($jobDescr)
           })), map {
           'cache': $keep_changed_xml_until_finished,
           'id': $db||'_'||$batch||'_updWrite',
-          'base-uri': $_:basePath||'/'||$jobDescr($db)('batchStart')||'-'||$script_to_run
+          'base-uri': $_:basePath||'/'||$jobDescr($db)('batchStart')[$batch]||'-'||$script_to_run
         })
     else ()
 };
