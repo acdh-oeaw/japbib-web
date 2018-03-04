@@ -17,21 +17,24 @@
 .subtitle:first-letter {
     text-transform: uppercase;
 }
-body {   
+body {
   color:#555;
   font-family: Georgia, "Times New Roman", Times, serif;
   overflow-y: scroll;
+  /* font-family: open sans-serif; */
   } 
 h2, h3  {
   font-family: "Trebuchet MS", Arial, sans-serif;
-  margin-top: 1.5em;
+  font-family: Raleway;
   margin-bottom: 1rem;
+  margin: 2rem 0 1rem;
   color: #8e843b;
   } 
- h4 { 
+ h4 {
   margin-top: 1.5em;
-  margin-bottom: 1rem;
+  margin: 1.5rem 0;
   color: #8e843b;
+  font-family: Raleway;
   } 
 a {
   color:#005; 
@@ -124,7 +127,7 @@ h1 {
   text-align: center;
   margin: 0 245px;
   padding: 46px 0 0;
-  font-family: "trebuchet ms";
+  font-family: Raleway, "trebuchet ms"; 
   font-size: 32px;
   z-index: 1;
 }
@@ -213,6 +216,7 @@ td.control {
   border-right: 3px solid #fff7d4;
   cursor: pointer;
   font-family: calibri, arial;
+  font-family: Raleway;
   font-weight:bold;
 }
 .control.hilite {
@@ -354,7 +358,7 @@ td.control {
   background: #eed;
   background: rgb(208, 219, 216);
   color: #005;
-  font-family: calibri, arial;
+  /* font-family: calibri, arial; */
   }
 .pageindex ul { 
   max-width: 13em;
@@ -394,7 +398,7 @@ td.control {
 .i_container {
   overflow: hidden;
   position: relative;
-  z-index: 11;
+  /* z-index: 11; */
   }
 .i_container img {
     width: 100%; 
@@ -562,7 +566,7 @@ fieldset {
   font-weight: bold;  
   color: #8e843b;  
   text-transform: uppercase;  
-  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-family: Raleway,"Trebuchet MS", Arial, sans-serif;
   } 
 #thesaurus .li1::after {
   content: "ausw\00e4hlen:";  
@@ -1006,9 +1010,11 @@ div.showEntry {
 .showEntry .eSegment {
   float:left;
   clear: left;
-  width: 9em; 
-  margin-left: 0em; 
+  width: 9em;
+  margin-left: 0em;
   font-style: italic;
+  font-family: raleway;
+  font-size: .85em;
   }  
 .showEntry.compact .eSegment, 
 .showEntry.compact .zahl, 
@@ -1023,14 +1029,7 @@ div.showEntry {
   }
 .showEntry.compact li::after {
   content: ' ';
-  } 
-/* .pubForm::before {
-  display: inline-block;
-  position: absolute;
-  margin-right: 0.3em; 
-  right: 0.35em;
-  color:#c1b994;
-} */
+  }  
 .pubForm > a::after {
   content: '';
   display: inline-block;
@@ -1059,10 +1058,10 @@ div.showEntry {
 .book > a::after, .book .closeX::before { 
   content: '\f02d'; /* fa-book  */  
   } 
-.bookSection > a::after, 
-.bookSection .record-html > ul::before, 
-.journalArticle > a::after, 
-.journalArticle .record-html > ul::before {
+.booksection > a::after, 
+.booksection .record-html > ul::before, 
+.journalarticle > a::after, 
+.journalarticle .record-html > ul::before {
   content: '\f0f6'; /* fa-file-text-o */
   }
 .journal > a::after,
@@ -1469,6 +1468,7 @@ PLUS-MINUS, ZAHL
  font-size: 1.5rem;
  color: #8e843b;
  font-family: 'trebuchet ms';
+ font-family: Raleway;
  font-weight: bold;
 }
 .hitList {

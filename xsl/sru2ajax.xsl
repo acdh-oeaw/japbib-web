@@ -85,7 +85,7 @@
     </xsl:template>
     
     <xsl:template match="sru:record">
-        <li value="{sru:recordNumber}"><xsl:apply-templates select="sru:recordData/mods:mods"/></li>
+        <li value="{sru:recordNumber}" class="pubForm {mods:genre/lower-case(.)}"><xsl:apply-templates select="sru:recordData/mods:mods"/></li>
     </xsl:template>
     
     <xsl:template match="mods:mods">
@@ -108,11 +108,22 @@
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
                 <div class="addInfo">
-                <p><b>Weitere bibliographische Angaben</b></p>
+                <h4>Weitere bibliographische Angaben</h4>
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>
-                <p><b>Inhaltliche Angaben</b></p>
+                <h4>Inhaltliche Angaben</h4>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
                 </div>
+                <h4>Externe Suche</h4>
+                <ul>
+                    <xsl:variable name="title4externalQuery">
+                        <xsl:copy-of select="//mods:title[not(ancestor::mods/relatedItem/titleInfo)]/encode-for-uri(.)" copy-namespaces="no"/>               
+                    </xsl:variable> 
+                    <xsl:variable name="author4externalQuery">
+                        <xsl:copy-of select="//mods:namePart[not(ancestor::mods/relatedItem/name)][1]/encode-for-uri(.)" copy-namespaces="no"/>               
+                    </xsl:variable>
+                    <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
+                    <li><a class="externerLink" href="https://scholar.google.com/scholar?q={$title4externalQuery}+{$author4externalQuery}" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
+                </ul>
             </div>
             <div class="toggleRecord">
                 <i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
@@ -121,7 +132,7 @@
                 <div class="showOptions"> Aktueller Code
                     <div class="tipp" title="Tipp">
                         <span class="display" style="display: none;">
-                            Derzeitige Form des Datensatzes als XML Dokument nach MODS-Standard (<a class="externalLink" href=
+                            Derzeitige Form des Datensatzes als XML Dokument, nach MODS-Standard (<a class="externalLink" href=
                             'http://www.loc.gov/standards/mods/'>Library of Congress</a>).
                         </span>
                     </div>                        
@@ -150,11 +161,13 @@
         </div>
     </xsl:template>
     
-    <xsl:template name="detail-list-items">        
-        <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
-        <li><xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
-            <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+    <xsl:template name="detail-list-items">   
+        <xsl:if test="//mods:namePart[not(./ancestor::mods:relatedItem/name)]"><!-- nur wenn ein Autor gefunden wird-->
+            <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
+            <li><xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
+                <xsl:apply-templates select="." mode="detail"/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
         </xsl:for-each></li>
+        </xsl:if>
         <xsl:apply-templates select="mods:titleInfo[not(./ancestor::mods:relatedItem)]" mode="detail"/>
         <xsl:apply-templates select="(./mods:relatedItem[@type eq 'host']/mods:originInfo, ./mods:originInfo)[1]" mode="detail"/> 
     </xsl:template>

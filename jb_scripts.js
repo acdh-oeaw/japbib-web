@@ -23,8 +23,8 @@ function testOnReturn(e) {
     allowTest();
   }
 }
-function allowTest(e) {
-  if ($('#psw').val().toLowerCase() == 'test') { 
+function allowTest() {
+  if ($('#psw').val().toLowerCase() === 'test') { 
     $( '#testScreen' ).hide();
   }
   else alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');    
@@ -38,7 +38,7 @@ function allowTest(e) {
 
   // Handler fuer Seitenwechsel (BS)
   var mainPages = ['about', 'find', 'thesaurus'];
-  var aboutSubpages = ['ziele', 'help', 'geschichte', 'bildnachweise', 'impressum'];
+  var aboutSubpages = ['ziele', 'help', 'geschichte', 'bildnachweise', 'dokumentation', 'impressum'];
 
   function go2page(link) {
     $('.slide').hide();
