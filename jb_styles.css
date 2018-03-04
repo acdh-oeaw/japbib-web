@@ -33,7 +33,7 @@ h2, h3  {
  h4 {
   margin-top: 1.5em;
   margin: 1.5rem 0;
-  color: #8e843b;
+  color: #5f5930;
   font-family: Raleway;
   } 
 a {
@@ -61,10 +61,15 @@ p {
 }
 *::before,
 *::after {
-  font-family: FontAwesome, calibri, arial;
-  text-rendering: auto;
+  font-family: 'Font Awesome 5 Free', calibri, arial;
+  moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  /* font-weight: 900; */
 }
 .flUp::first-letter {
   text-transform: uppercase;
@@ -127,8 +132,10 @@ h1 {
   text-align: center;
   margin: 0 245px;
   padding: 46px 0 0;
-  font-family: Raleway, "trebuchet ms"; 
+  font-family: "trebuchet ms";
+  font-family: raleway;
   font-size: 32px;
+  font-weight: bold;
   z-index: 1;
 }
 .H1_big span {
@@ -196,6 +203,7 @@ table.main {
   width: 100%;
   border: 1px solid #fff7d4;
   border-width: 0 0 0 3px;
+  border-collapse: collapse;
   }
 #about,
 #thesaurus,  
@@ -386,9 +394,10 @@ td.control {
 .pageindex .here:before {
  content: '\f04b ';
  font-style: normal;
- font-family: fontawesome;
+ /* font-family: 'Font Awesome 5 Free'; */
  font-size: .7em;
- padding-right: .4em; 
+ padding-right: .4em;
+ font-weight: 900;
  opacity: .6;
  }
 
@@ -587,7 +596,8 @@ fieldset {
   min-height: 1.5em;
   position: relative;
 }
-#wishList li .fa {
+#wishList li .fas,
+#wishList li .far  {
   display: inline-block;
   margin-left: -1.6em;
   margin-right: .2em;
@@ -597,7 +607,8 @@ fieldset {
   border-radius: 4px;
 } 
 #wishList a.andOr:hover,
-#wishList li .fa:hover {
+#wishList li .fas:hover,
+#wishList li .far:hover {
     color: #fff7d4;
     background:rgba(150, 133, 94, 0.82);
 }
@@ -622,12 +633,13 @@ fieldset {
   visibility: hidden;
 }
 #abfrage {
-  display: block; 
-  text-align: right; 
-  padding: 0 1em; 
+  display: block;
+  text-align: right;
+  padding: 0 1em;
   line-height: 2em;
   border-top: 1px solid rgb(228, 211, 165);
   background: rgba(233, 220, 175, 0.5);
+  font-family: calibri, arial;
 }
 #abfrage:hover {
   background: rgba(233, 220, 175, 0.8);
@@ -1055,18 +1067,21 @@ div.showEntry {
   /* margin-left: 0.2em; */
   /* margin-bottom: .2em; */
   }
-.book > a::after, .book .closeX::before { 
-  content: '\f02d'; /* fa-book  */  
+.book > a::after, .book .closeX::before {
+  content: '\f02d'; /* fa-book  */
+  font-weight: 900;
   } 
 .booksection > a::after, 
 .booksection .record-html > ul::before, 
 .journalarticle > a::after, 
 .journalarticle .record-html > ul::before {
-  content: '\f0f6'; /* fa-file-text-o */
+  content: '\f15c'; /* fa-file-alt */
+  font-weight: 400;
   }
 .journal > a::after,
-.journal .record-html > ul::before { 
-  content: '\f022'; /* fa-list-alt  */ 
+.journal .record-html > ul::before {
+  content: '\f022'; /* fa-list-alt  */
+  font-weight: 400;
   } 
 .series > a::after,
 .series .record-html > ul::before { 
@@ -1101,9 +1116,12 @@ div.showEntry {
   background: rgb(255, 247, 212);
 } 
 .externerLink::after {
-  content: ' \f0a9';
+  content: ' \f35d'; /* external-link-alt */
   color: #008;
-  opacity: 0.4;
+  opacity: 0.6;
+  padding-left: .3em;
+  font-size: .8em;
+  font-weight: 900;
 }
 .toggleRecord {
   height: 21px;
@@ -1173,15 +1191,20 @@ div.showEntry {
   position: relative;
   display: inline;
   color: rgba(0, 44, 88, 1);
-  font-family: fontawesome, calibri, arial, sans-serif;
- text-rendering: auto;
- -webkit-font-smoothing: antialiased;
- -moz-osx-font-smoothing: grayscale;
+  font-family: 'Font Awesome 5 Free', calibri, arial, sans-serif;
+  moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
   }
-.tipp::before { 
+.tipp::before {
   content: '\f128'; /* 'fa-question */
   content: '\f129'; /* 'fa-info */
-  display: inline-block; 
+  font-weight: 900;
+  display: inline-block;
   margin-left: .3em;
   color: rgb(21, 104, 165);
   background: rgb(225, 247, 255);
@@ -1318,14 +1341,13 @@ PLUS-MINUS, ZAHL
 
 .zahl::before, .closeX::after, .plusMinus::before {
  content: '+';
- content: '\f196';  /* 'fa-plus-square-o */
- content: '\f138' /* fa-chevron-circle-right */;
  content: '\f055' /* fa-plus-circle */;
  font-size: 1em;
  display: inline;
  border: 0px solid;
  border-radius: 1em;
  text-align: center;
+ font-weight: 900;
  opacity: 0.4;
  } 
 .plusMinus {
@@ -1409,10 +1431,12 @@ PLUS-MINUS, ZAHL
   content: "\f00c";  /* fa-check */  
 }
 .thesaurus a.zahl::before, 
-.thesaurus .aZahl::before { 
-  content: "  ausw\00e4hlen";  
-  content: "\f0b0"; /* fa-filter */ 
-  opacity: 0;  
+.thesaurus .aZahl::before {
+  content: "  ausw\00e4hlen";
+  content: "\f0b0"; /* fa-filter */
+  opacity: 0.5;
+  font-weight: 900;
+  padding-left: .3e;
 } 
 .thesaurus .aHover::before {
   opacity: 1;

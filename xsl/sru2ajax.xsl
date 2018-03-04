@@ -121,7 +121,9 @@
                     <xsl:variable name="author4externalQuery">
                         <xsl:copy-of select="//mods:namePart[not(ancestor::mods/relatedItem/name)][1]/encode-for-uri(.)" copy-namespaces="no"/>               
                     </xsl:variable>
+                    <!-- folgender Link führt zu Fehlermeldungen: "kataloge= muss mit ';' enden" ???, bs
                     <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
+                    -->
                     <li><a class="externerLink" href="https://scholar.google.com/scholar?q={$title4externalQuery}+{$author4externalQuery}" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
                 </ul>
             </div>

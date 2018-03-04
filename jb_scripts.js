@@ -25,10 +25,14 @@ function testOnReturn(e) {
 }
 function allowTest() {
   if ($('#psw').val().toLowerCase() === 'test') { 
+    Cookies.set('test', 'passed', { expires: 14 });
     $( '#testScreen' ).hide();
   }
   else alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');    
-} 
+}  
+if (Cookies.get('test') === 'passed')
+    $( '#testScreen' ).hide();
+
 
   /*********************************************
 
@@ -724,11 +728,11 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     var newWishes = '';
     var newQ = '';
     $.each(ausgewaehlt, function(i, qObj) {
-      newWishes += '<li><i class="fa fa-check-square-o" title="Auswahl löschen"></i>' +
+      newWishes += '<li><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
         qObj.term +
         '<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
         qObj.conj +
-        '</a></label></li>';
+        '</a></li>';
       newQ += 'subject="' + qObj.term + '" ' + qObj.conj + ' ';
     });
     newQ = encodeURIComponent(newQ);
@@ -737,13 +741,14 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       $ue.text(' Ausgewählte Schlagworte ');
       $wishList
         .append('<ul>' + newWishes + '</ul>')
-        .append('<a class="fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
+        .append('<a class="fas fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
     } else {
       $ue.text('Schlagworte auswählen');
     }
   }
   // Auswahl entfernen
-  $(document).on('click', '#wishList li .fa', function() {
+  $(document).on('click', '#wishList li i', function() {
+    alert('click');
     var term = $(this).parent().clone().find('> a').remove().end().text();
     neueAuswahl($.trim(term), '', 1);
   });
