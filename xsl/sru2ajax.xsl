@@ -85,7 +85,16 @@
     </xsl:template>
     
     <xsl:template match="sru:record">
-        <li value="{sru:recordNumber}" class="pubForm {mods:genre/lower-case(.)}"><xsl:apply-templates select="sru:recordData/mods:mods"/></li>
+        <li value="{sru:recordNumber}" >
+            <xsl:if test="sru:recordData//mods:genre">
+               <!-- gernre als class einsetzen, bs -->
+               <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"></xsl:variable>
+               <xsl:attribute name="class"> 
+                  <xsl:value-of select="concat('pubForm ', $genre)"/>
+               </xsl:attribute>   
+            </xsl:if>
+           <xsl:apply-templates select="sru:recordData/mods:mods"/>
+        </li> 
     </xsl:template>
     
     <xsl:template match="mods:mods">
@@ -112,20 +121,8 @@
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>
                 <h4>Inhaltliche Angaben</h4>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
+                <xsl:call-template name="externeSuche"/>
                 </div>
-                <h4>Externe Suche</h4>
-                <ul>
-                    <xsl:variable name="title4externalQuery">
-                        <xsl:copy-of select="//mods:title[not(ancestor::mods/relatedItem/titleInfo)]/encode-for-uri(.)" copy-namespaces="no"/>               
-                    </xsl:variable> 
-                    <xsl:variable name="author4externalQuery">
-                        <xsl:copy-of select="//mods:namePart[not(ancestor::mods/relatedItem/name)][1]/encode-for-uri(.)" copy-namespaces="no"/>               
-                    </xsl:variable>
-                    <!-- folgender Link führt zu Fehlermeldungen: "kataloge= muss mit ';' enden" ???, bs
-                    <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
-                    -->
-                    <li><a class="externerLink" href="https://scholar.google.com/scholar?q={$title4externalQuery}+{$author4externalQuery}" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
-                </ul>
             </div>
             <div class="toggleRecord">
                 <i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
@@ -199,6 +196,25 @@
         </xsl:call-template>        
     </xsl:template>
     
+    <xsl:template name="externeSuche" >        
+        <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]">
+            <!-- todo: passenden Selektor finden, bs -->
+        <xsl:variable name="title4externalQuery" select="mods:title[ancestor::mods:mods/mods:titleInfo]" ></xsl:variable>
+        <h4>Externe Suche</h4>
+            <ul>        
+            <!--  
+            <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
+            -->
+            <li>
+                <a class="externerLink" 
+                    href="https://scholar.google.com/scholar?q={$title4externalQuery}" 
+                    title="Suchen mit Google Scholar" 
+                    target="_blank">Google Scholar
+                </a>
+            </li>  
+        </ul>
+        </xsl:if>
+    </xsl:template> 
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
         <span class="authors"><xsl:apply-templates select="(mods:namePart|mods:etal)"/></span>
@@ -267,7 +283,7 @@
         <li class="eSegment"><xsl:value-of select="_:dict('title')"/></li>
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
-    <xsl:variable name="sentenceNoPunctation">[\w"']$</xsl:variable>
+    <xsl:variable name="sentenceNoPunctation">[\w"'\)]$</xsl:variable>
     
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
@@ -326,9 +342,12 @@
     <xsl:template match="mods:originInfo[parent::mods:relatedItem[ancestor::mods:mods/mods:genre[@authority='local'] eq 'bookSection' and @type eq 'host']]" mode="detail">
         <li class="eSegment">In: </li>
         <li>
-            <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <xsl:if test="../mods:name">
+                <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/>
+            </xsl:if>
+            <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
             <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
-            <xsl:value-of select="if (not(mods:publisher)) then ', '||_:dict('no-pub-abbr') else ', '"/><xsl:call-template name="link-with-number-of-records">                
+            <xsl:value-of select="if (not(mods:publisher)) then '' else ', '"/><xsl:call-template name="link-with-number-of-records">                
                 <xsl:with-param name="index">publisher</xsl:with-param>
                 <xsl:with-param name="term" select="mods:publisher"/>    
             </xsl:call-template>

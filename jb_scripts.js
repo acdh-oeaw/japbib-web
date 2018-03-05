@@ -748,7 +748,6 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   }
   // Auswahl entfernen
   $(document).on('click', '#wishList li i', function() {
-    alert('click');
     var term = $(this).parent().clone().find('> a').remove().end().text();
     neueAuswahl($.trim(term), '', 1);
   });
