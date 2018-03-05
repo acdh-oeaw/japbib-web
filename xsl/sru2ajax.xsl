@@ -283,7 +283,7 @@
         <li class="eSegment"><xsl:value-of select="_:dict('title')"/></li>
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
-    <xsl:variable name="sentenceNoPunctation">[\w"'\)]$</xsl:variable>
+    <xsl:variable name="sentenceNoPunctation">[\w"'\)]$</xsl:variable><!-- Punkt nur nach Buchstaben, " oder ' -->
     
     <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
@@ -293,7 +293,7 @@
   "concat(upper-case(substring($subTitle,1,1)),
           substring($subTitle, 2)
          )
-  "/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+  "/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template>
     
     <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
