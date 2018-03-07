@@ -20,8 +20,8 @@ declare variable $_:listPlaces external := _:get-params()/*[@key eq '{urn:_}list
 declare variable $__db__ external := 'japbib_06';
 declare variable $__helper_tables__ external := "helper_tables"; 
  
-declare variable $subjecttoMatch := "^Zeitschrift$";
-declare variable $genre := "journal";
+declare variable $subjecttoMatch := "^Zeitschriftenartige Reihe$";
+declare variable $genre := "series";
 
 declare function _:select-entries() as element(mods:mods)* {
   collection($__db__)//mods:mods[mods:subject[@usage eq 'primary' and mods:topic[matches(., $subjecttoMatch)]] and not(mods:genre)]
