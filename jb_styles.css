@@ -24,30 +24,28 @@ body {
   /* font-family: open sans-serif; */
   } 
 h2, h3, h4  {
-  font-family: "Trebuchet MS", Arial, sans-serif; 
-  margin-bottom: 1rem;
-  margin: 2rem 0 1rem;
-  padding:0;
-  color: #8e843b;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-family: "work sans"; 
   } 
+h2 {
+  color: #8e843b;
+  margin: 0 0 1.5em;
+  } 
+h2:first-child { 
+    position: relative;
+    z-index: 2; 
+} 
+h3 {
+  color: #8e843b; 
+  }
  h4 {
   margin-top: 1.5em;
   margin: 1.2rem 0 .5em;
   color: #5f5930; 
   } 
-h2 {
-  color: #8e843b;
-  margin: 0 0 1.5em;
-  }
-h2:first-child {
-    /* margin-top: 30px; */
-    position: relative;
-    z-index: 2;
-    /* margin-bottom: -34px; */
-} 
 a {
-  color:#005; 
-  text-decoration: none;  
+  color:#005;
+  text-decoration: none;
   border-radius: 3px;
   } 
 a:hover,
@@ -131,9 +129,10 @@ h1 {
   text-align: center;
   margin: 0 245px;
   padding: 46px 0 0;
-  font-family: "trebuchet ms"; 
+  font-family: "trebuchet ms";
+  font-family: work sans;
   font-size: 32px;
-  font-weight: bold;
+  font-weight: 600;
   z-index: 1;
 }
 .H1_big span {
@@ -162,6 +161,7 @@ h1 {
   font-size: 14px;
   line-height:15px;
   font-family: calibri, arial, sans-serif;
+  /* font-family: work sans, arial; */
   position:relative;
 }
 #navbar_items {
@@ -221,11 +221,13 @@ td.control {
   overflow: hidden;
   border-right: 3px solid #fff7d4;
   cursor: pointer;
-  font-family: calibri, arial; 
-  font-weight:bold;
+  font-family: calibri, arial;
+  font-family: work sans;
+  font-weight: 600;
+  /* color: #ccc; */
 }
 .control.hilite {
-  background:rgb(208, 219, 216); 
+  background:rgb(208, 219, 216);  
 } 
 .control a {
   position: absolute;
@@ -250,11 +252,13 @@ td.control {
   text-align: center;
   text-transform: uppercase;
   border: 0px solid #ddd;
-  color: #000;
+  color: rgba(0, 0, 0, 0.5);
   position: fixed;
   /* top: 50vh; */
 }
-.control.hilite a span {  
+.control.hilite a span,
+.control a:hover span {  
+  color: rgba(0, 0, 85, 0.8);
 } 
   
 /* foot */
@@ -362,8 +366,9 @@ td.control {
   text-align: center;
   background: #eed;
   background: rgb(208, 219, 216);
-  color: #005;
+  color: rgba(0, 0, 85, .8);
   /* font-family: calibri, arial; */
+  /* opacity: .8; */
   }
 .pageindex ul { 
   max-width: 13em;
@@ -570,12 +575,13 @@ fieldset {
 #hint_result .schlagworte li   {  
   margin-right: 0; 
 }
-.schlagworte .li1 > span { 
-  margin-bottom: .5em; 
-  font-weight: bold;  
-  color: #8e843b;  
-  text-transform: uppercase;  
+.schlagworte .li1 > span {
+  margin-bottom: .5em;
+  font-weight: 600;
+  color: #8e843b;
+  text-transform: uppercase;
   font-family:  "Trebuchet MS", Arial, sans-serif;
+  font-family: work sans, arial;
   } 
 #thesaurus .li1::after {
   content: "ausw\00e4hlen:";  
@@ -1269,12 +1275,13 @@ div.showEntry {
   top: -0.2em;
   right: 0;
   } 
-.tipp > *::after  { 
-  content: '\f00d' ;  
+.tipp > *::after  {
+  content: '\f00d';
+  font-weight: 900;
   position: absolute;
   top: 0;
   right: 0.4em;
-  z-index: 9; 
+  z-index: 9;
   opacity:.3;
   } 
 .tipp > *:hover::after  { 
@@ -1490,10 +1497,11 @@ PLUS-MINUS, ZAHL
  
 .navResults {
   font-family: calibri, arial, sans-serif;
+  font-family: work sans, arial;
   padding: 1px 1em;
   line-height: 2rem;
   height: 3.5em;
-  text-align: right;  
+  text-align: right;
   }  
 .countResults {
  float: left;
@@ -1501,7 +1509,8 @@ PLUS-MINUS, ZAHL
  padding-top: .5em;
  font-size: 1.5rem;
  color: #8e843b;
- font-family: 'trebuchet ms'; 
+ font-family: 'trebuchet ms';
+ font-family: work sans, arial;
  font-weight: bold;
 }
 .hitList {
