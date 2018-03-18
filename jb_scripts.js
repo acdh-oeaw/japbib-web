@@ -315,12 +315,20 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   // Handler fuer suchOptionen (BS)
   // Navigation
   $('.examples td[data-index]').hide();
-  $('.examples td[data-index]:first').show();
+  //$('.examples td[data-index]:first').show();
   $('.examples th').click(function() {
-    $('.examples th').removeClass('here');
-    $('.examples td[data-index]').fadeOut('slow');
-    $(this).addClass('here');
-    $(this).siblings('td[data-index]').fadeIn('slow');
+    if ($(this).parent().hasClass('here')) {
+      $('.examples').removeClass('here');
+      $('.examples').animate({height: "1.6em"}, 'slow') ;
+      $('.examples td[data-index]').fadeOut('slow');
+    }
+    else {
+      $('.examples').removeClass('here');
+      $('.examples td[data-index]').fadeOut('slow');  
+      $(this).parent().addClass('here');
+      $('.examples').animate({height: "6em"}, 'slow') ;
+      $(this).siblings('td[data-index]').fadeIn('slow');   
+    }
   });
   // Suche nach Datum  
   var years = $('.year a'),

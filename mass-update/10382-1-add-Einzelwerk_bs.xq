@@ -48,8 +48,7 @@ Nach dem gleichen Schema:
  [Bb]ookSection --> Beitrag zu Sammelwerk (ca. 8.700)
  [Jj]ournalArticle --> Zeitschriftenartikel (ca. 12.000)
  [Nn]ewspaperArticle --> Zeitungsartikel (ca. 600)
-
-Kann man sicher elegant hier einbinden, ich kanns nicht (BS)
+ 
 :)  
 
 declare function _:main() {
