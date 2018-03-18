@@ -532,7 +532,7 @@ fieldset {
   }
 .schlagworte li {
   position: relative;
-  margin: 1px 24px;
+  margin: 1px 1.5em;
   margin-right: 0;
   padding: 0;
   list-style: none;
