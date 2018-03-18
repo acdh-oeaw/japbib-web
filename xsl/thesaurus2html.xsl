@@ -31,6 +31,8 @@
                 <xsl:if test="not(matches(@n, '^[123456789]$')) and category">
                     <xsl:attribute name="class">plusMinus</xsl:attribute>
                 </xsl:if>
+            </span>
+            <span class="wrapTerm">
                 <xsl:apply-templates select="catDesc"/>
                 <xsl:apply-templates select="numberOfRecords | numberOfRecordsInGroup">
                     <xsl:with-param name="href"

@@ -579,12 +579,14 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
     return query;
   }
-  $('#facet-subjects').on('click', '.showResults a.zahl', function(e) {
+  $('#facet-subjects').on('click', '.showResults a.aFilter', function(e) {
     e.preventDefault();
+    //alert('ok');
     var query = findQueryPartInHref($(this).attr('href')),
       subject = query.query,
       currentQuery = $('#searchInput1').val(),
-      newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject,
+      newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject; 
+      /*,
       plusMinus = $(this).prevAll('.plusMinus');
     if (plusMinus.length === 1 && !plusMinusDependentIsShown(plusMinus)) {
       toggleNextSubtree.apply(plusMinus, [e]);
@@ -594,6 +596,8 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     } else {
       executeQuery(newQuery);
     }
+    */
+    executeQuery(newQuery);
   });
 
   function plusMinusDependentIsShown(aPlusMinus) {

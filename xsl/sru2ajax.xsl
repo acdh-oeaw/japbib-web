@@ -426,12 +426,14 @@
     
     <xsl:template match="category[matches(@n, '^[123456789]$')]">
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
-        <!--<li class="li1"><span><xsl:apply-templates select="catDesc"/></span>-->
-        <li class="li1"><span><xsl:value-of select="catDesc"/></span><!-- auf der obersten Ebene kein query-link! BS-->
+        <li class="li1">
+            <span><xsl:value-of select="catDesc"/></span><!-- auf der obersten Ebene kein query-link! BS-->
+            <!--
             <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
                 <xsl:with-param name="href" select="$base-path||'query=subject%3D&quot;'||catDesc||'&quot;'"/>
                 <xsl:with-param name="showGroup" select="true()"/>
             </xsl:apply-templates>
+            -->
             <ol><xsl:apply-templates select="category"/></ol>           
         </li>
     </xsl:template>
@@ -439,30 +441,32 @@
     <xsl:template match="category">
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
         <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
-        <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>-->
-            <span>
-                <xsl:if test="$has-children">
-                    <xsl:attribute name="class">
-                        <xsl:if test="$has-children">plusMinus</xsl:if>
-                    </xsl:attribute>
-                </xsl:if>
-                <xsl:apply-templates select="catDesc"/>
-            </span>
+        <li>
+            <xsl:if test="$has-children">
+               <span>
+                    <xsl:attribute name="class">plusMinus</xsl:attribute>
+               </span>                
+           </xsl:if> 
+            <a href="#" title="Suchergebnisse" class="aFilter">
+                <xsl:attribute name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/> 
+                <xsl:value-of select="catDesc"/>
+                <span class="zahl"><xsl:value-of select="numberOfRecords"/></span>                
+            </a>
+            <!--      
             <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
                 <xsl:with-param name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/>
             </xsl:apply-templates>
+            -->
             <xsl:if test="category">
                 <ol style="display:none;"><xsl:apply-templates select="category"/></ol>
             </xsl:if>
         </li>
-    </xsl:template>
-    
+    </xsl:template> 
     <xsl:template match="numberOfRecords">
         <xsl:param name="href" as="xs:string">#</xsl:param>
         <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
-    </xsl:template>
-    
+    </xsl:template> 
     <xsl:template match="mods:_match_">
         <strong><xsl:value-of select="."/></strong>
     </xsl:template>
