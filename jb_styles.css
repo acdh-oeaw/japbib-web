@@ -973,6 +973,7 @@ div.showEntry {
     border-radius: 5px;
     position: relative;
     background: #f5e8c1;
+    background-image: url('images/bg.png');
 }
 .showEntry a { 
   color: #009;
@@ -1403,14 +1404,15 @@ PLUS-MINUS, ZAHL
   padding-right: .2em;
   padding-left: .5em;
   } 
-.thesaurus a.zahl::before, 
-.thesaurus .aZahl::before { 
-  content: ""; /* fa-filter */ 
+.thesaurus a.zahl::before  {
+  content: ""; /* fa-filter */
   opacity: .8;
+  margin-right: .5em;
 } 
 .thesaurus a.zahl:hover::before, 
-.thesaurus .aZahl:hover::before { 
-  content: "\f0b0"; /* fa-filter */ 
+.thesaurus .zahl.checked::before { 
+  content: "\f0b0"; /* fa-filter */     
+  content: "\f14a"; /* fa-check */ 
 } 
 .showEntry a.zahl { 
   margin-left: .1em;

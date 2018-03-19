@@ -732,6 +732,33 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       ausgewaehlt[ausgewaehlt.length - 1].conj = '';
     /**/
     //console.log(ausgewaehlt.length); 
+    // class=checked hinzufügen/entfernen
+    $('#thesaurus .checked').removeClass('checked'); 
+    var $checked= [];
+    $('#thesaurus .zahl').each(function() {
+      for (i in ausgewaehlt) {
+        if ($( this ).prevAll('.term').text() === ausgewaehlt[i].term)
+        $checked.push($( this ));
+      }    
+    });
+    for ( i in $checked) {      
+     //console.log( i + ": " +  $checked[i].text());
+     $checked[i].addClass("checked"); 
+    }
+       
+    /*
+    if($('#thesaurus .zahl').prevAll('.term') === 'Geschichte') {
+      $('#thesaurus .zahl').addClass('checked');
+    } 
+    var $terms = $( '#thesaurus .schlagworte .term:first' );
+    for (j in $terms) {
+      if ($terms[j].length) {
+         $terms[j].parent().addClass('checked'); 
+       }            
+     }
+      for (i in ausgewaehlt) {
+      }
+    */
     baueListe();
   }
 
@@ -776,6 +803,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     e.preventDefault();
     var term = $(this).prevAll('.term:first').html();
     neueAuswahl(term);
+    //$(this).addClass("checked"); 
     //console.log( term );
   });
   //wishlist fixieren (BS)
