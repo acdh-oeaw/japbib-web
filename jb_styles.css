@@ -210,7 +210,10 @@ table.main {
   min-height: 25em;
   min-height: 50vh;
 }
- 
+#about {
+  position: relative;
+  z-index: 11;
+}
 td.control {
   position: relative;
   vertical-align: top;
@@ -225,6 +228,7 @@ td.control {
   font-family: work sans;
   font-weight: 600;
   /* color: #ccc; */
+  z-index: 11;
 }
 .control.hilite {
   background:rgb(208, 219, 216);  
@@ -520,9 +524,10 @@ fieldset {
   width: 6em;
   }
 .schlagworte {
-    max-width: 35em;
+    max-width: 38em;
     margin: 2em auto;
     padding-bottom: 2em;
+    padding-left: 0;
 }
 .schlagworte ul,
 .schlagworte ol {
@@ -614,6 +619,12 @@ span.wrapTerm:hover {
   min-height: 1.5em;
   position: relative;
 }
+#wishList li span   {  
+  cursor: pointer; 
+} 
+#wishList li span:hover   {  
+  color: #000; 
+} 
 #wishList li .fas,
 #wishList li .far  {
   display: inline-block;
@@ -625,8 +636,8 @@ span.wrapTerm:hover {
   border-radius: 4px;
 } 
 #wishList a.andOr:hover,
-#wishList li .fas:hover,
-#wishList li .far:hover {
+#wishList li span:hover .fas,
+#wishList li span:hover .far {
     color: #fff7d4;
     background:rgba(150, 133, 94, 0.82);
 }
@@ -682,9 +693,20 @@ span.wrapTerm:hover {
     bottom: 0;
     right: 0;
     background: rgba(221, 234, 251, 0.5);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-image: url(http://www.univie.ac.at/rel_jap/w/images/d/d5/Luohan8_guanxiu.jpg);
     z-index: 10;
-    padding: 19em 0 0 19em;
-    color: #044e93;
+    padding: 3.5em;
+    color: #615a2c;
+    text-shadow: 1px 2px #e0ebf587;
+    text-align: center;
+}
+.ladeResultate p {
+    background: rgba(255, 247, 212, 0.5);
+    display: inline-block;
+    padding: .3em .8em;
+    border-radius: 5px;
 }
 
 /**** Suchfelder ******/

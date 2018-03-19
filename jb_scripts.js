@@ -730,35 +730,20 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     // AND entfernen
     if (ausgewaehlt.length)
       ausgewaehlt[ausgewaehlt.length - 1].conj = '';
-    /**/
-    //console.log(ausgewaehlt.length); 
+
     // class=checked hinzufügen/entfernen
+    var checked = [];
     $('#thesaurus .checked').removeClass('checked'); 
-    var $checked= [];
     $('#thesaurus .zahl').each(function() {
       for (i in ausgewaehlt) {
         if ($( this ).prevAll('.term').text() === ausgewaehlt[i].term)
-        $checked.push($( this ));
+        checked.push($( this ));
       }    
     });
-    for ( i in $checked) {      
-     //console.log( i + ": " +  $checked[i].text());
-     $checked[i].addClass("checked"); 
+    for ( i in checked) {      
+     checked[i].addClass("checked"); 
     }
-       
-    /*
-    if($('#thesaurus .zahl').prevAll('.term') === 'Geschichte') {
-      $('#thesaurus .zahl').addClass('checked');
-    } 
-    var $terms = $( '#thesaurus .schlagworte .term:first' );
-    for (j in $terms) {
-      if ($terms[j].length) {
-         $terms[j].parent().addClass('checked'); 
-       }            
-     }
-      for (i in ausgewaehlt) {
-      }
-    */
+
     baueListe();
   }
 
@@ -767,9 +752,9 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     var newWishes = '';
     var newQ = '';
     $.each(ausgewaehlt, function(i, qObj) {
-      newWishes += '<li><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
+      newWishes += '<li><span><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
         qObj.term +
-        '<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
+        '</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
         qObj.conj +
         '</a></li>';
       newQ += 'subject="' + qObj.term + '" ' + qObj.conj + ' ';
@@ -786,7 +771,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     }
   }
   // Auswahl entfernen
-  $(document).on('click', '#wishList li i', function() {
+  $(document).on('click', '#wishList li > *', function() {
     var term = $(this).parent().clone().find('> a').remove().end().text();
     neueAuswahl($.trim(term), '', 1);
   });
@@ -802,9 +787,12 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   $(document).on('click', '#thesaurus .schlagworte a.zahl', function(e) {
     e.preventDefault();
     var term = $(this).prevAll('.term:first').html();
-    neueAuswahl(term);
-    //$(this).addClass("checked"); 
-    //console.log( term );
+    if ($(this).hasClass('checked')) { 
+      neueAuswahl(term, '', 1);
+    }
+    else {
+      neueAuswahl(term);
+    }
   });
   //wishlist fixieren (BS)
   function fixWishlist() {
