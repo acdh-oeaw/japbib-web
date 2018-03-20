@@ -544,6 +544,7 @@ fieldset {
   margin-right: 0;
   padding: 0;
   list-style: none;
+  /* padding-left: 1.5em; */
   }
 .schlagworte li::first-letter { 
   text-transform: uppercase;
@@ -551,14 +552,16 @@ fieldset {
 .schlagworte span {
   position: relative;
   z-index: 2;
+  /* display: inline; */
   }  
 .schlagworte li.li1  {
   margin-top: 1em;
   }   
-#showList .schlagworte .plusMinus { 
-    position: absolute;
-    left: -.5em;
-    top: .1em;
+#showList .schlagworte .plusMinus {
+    /* position: absolute; */
+    /* left: -.5em; */
+    /* top: .1em; */
+    float: left;
 }
 span.wrapTerm {
     display: block; 
@@ -987,6 +990,7 @@ tr.search .fa-search {
     color: #5e5723;
     padding-left: .5em;
     margin-top: .5em;
+    /* margin-left: 1em; */
 }
 #show_entry th {
   text-align: right;
@@ -1003,7 +1007,7 @@ tr.search .fa-search {
 div.showEntry {
     color: #000;
     border: 1px solid #ccc;
-    margin: 0 -1.5em .5em -2.5em;
+    margin: 0 -1.5em .5em -3.5em;
     padding: 0 0 .5em;
     border-radius: 5px;
     position: relative;
@@ -1124,6 +1128,7 @@ div.showEntry {
 } 
 .results > li {
   color: #ccc;
+  margin-left: 1em;
 }
 .showEntry .showOptions {
   background: rgba(255, 255, 216, 0.1);
@@ -1387,8 +1392,6 @@ PLUS-MINUS, ZAHL
   text-align: center;
 }
 .results .plusMinus::before {
-  /* margin-right: .5rem; */
-  /* position: absolute; */
 }
 #thesaurus .zahl {
   position: relative;
@@ -1433,9 +1436,7 @@ PLUS-MINUS, ZAHL
 }
 
 .schlagworte .plusMinus::before {
-  position: absolute;
-  left: -1.6em;
-  width: 1.5em;
+  margin-left: -2em;
 } 
 .pageindex .schlagworte .plusMinus::before {
  top: 0;
@@ -1447,9 +1448,8 @@ PLUS-MINUS, ZAHL
 .shortInfo a.plusMinus {
  padding: 0 .3em;
  padding-left: 2rem;
- text-indent: -2rem; */
+ text-indent: -2rem; 
  border-radius: 1em;
- /* margin-left: 0.5rem; */
  display: block;
  background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.05));
  background: rgb(243, 247, 240);
@@ -1501,7 +1501,7 @@ PLUS-MINUS, ZAHL
   margin-right: .5em;
   margin-left: -.3em;
   border-radius: .5em;
-  padding: 0 .3em;
+  padding: .3em;
 }
 
 /******************************
