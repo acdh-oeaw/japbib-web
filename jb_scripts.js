@@ -201,7 +201,7 @@ function getResultsHidden(href) {
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   if (newFilter) $('.showResults').hide('slow');
   else $('content > .showResults').hide('slow');
-  $('.ladeResultate').show();
+  $('.ladeResultate').fadeIn('slow');
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
     callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
@@ -269,7 +269,7 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
       });
     });
-    $('.ladeResultate').hide();
+    $('.ladeResultate').fadeOut('slow');
     $('#find .schlagworte li li ol').hide(); //Anfangszustand bei neuer Abfrage
     if (newFilter) $('.showResults').show('slow', arrangeHitlist);
     else $('.content > .showResults').show('slow', arrangeHitlist); // arrangeHitlist = Treffernavigation (BS) s.u.     
@@ -609,9 +609,9 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   function openOrCloseDetails(e) {
     e.preventDefault();
     if (plusMinusDependentIsShown(this)) {
-      $(this).nextAll('div').hide('slow');
+      $(this).parent().nextAll('div').hide('slow');
     } else {
-      $(this).next('.showEntry').show('slow');
+      $(this).parent().next('.showEntry').show('slow');
     }
     $(this).toggleClass('close');
   }

@@ -49,9 +49,9 @@ a {
   border-radius: 3px;
   } 
 a:hover,
-.aHover { 
+.aHover {
   color:#008;
-  background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
+  background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.08));
   }
 p { 
   margin: 1em 0;
@@ -243,6 +243,9 @@ td.control {
   padding-top: 15vh;
   padding-top: 5.95em;
 }
+.control a:hover {
+    background: linear-gradient( rgba(0, 0, 255, 0.04), rgba(0, 0, 255, 0.08));
+}
 .control.hilite a { 
   cursor: default;
   background: transparent;
@@ -393,7 +396,7 @@ td.control {
 
 .pageindex .here {
   color:#008;
-  background: linear-gradient( rgba(0, 0, 255, 0.03), rgba(0, 0, 255, 0.07));
+  background: linear-gradient( rgba(0, 146, 255, 0.03), rgba(0, 146, 255, 0.07));
   cursor: text;
   font-style: italic;
 }
@@ -692,10 +695,15 @@ span.wrapTerm:hover {
     left: 0;
     bottom: 0;
     right: 0;
+    /* width: 100%; */
+    /* max-width: 72em; */
+    /* margin: 0 auto; */
     background: rgba(221, 234, 251, 0.5);
     background-repeat: no-repeat;
-    background-position: top center;
-    background-image: url(http://www.univie.ac.at/rel_jap/w/images/d/d5/Luohan8_guanxiu.jpg);
+    background-position: center;
+    background-position-x: center;
+    background-position-y: 3em;
+    background-image: url(images/arhat.jpg);
     z-index: 10;
     padding: 3.5em;
     color: #615a2c;
@@ -973,8 +981,13 @@ tr.search .fa-search {
   padding: 1em 2em 1em 3em;
   padding-left: 3em;
   position: relative;
+} 
+.shortInfo {
+    color: #333;
+    color: #5e5723;
+    padding-left: .5em;
+    margin-top: .5em;
 }
-
 #show_entry th {
   text-align: right;
 } 
@@ -990,7 +1003,7 @@ tr.search .fa-search {
 div.showEntry {
     color: #000;
     border: 1px solid #ccc;
-    margin: 0 -1.5em .5em -.5em;
+    margin: 0 -1.5em .5em -2.5em;
     padding: 0 0 .5em;
     border-radius: 5px;
     position: relative;
@@ -1033,10 +1046,11 @@ div.showEntry {
   content: ' ';
   }  
 
-.pubForm > a::after {
+.pubForm  .shortInfo .year::after {
   content: '';
-  margin-left: 0.15em;
-  opacity: .85;
+  margin-left: 0.35em;
+  opacity: .65;
+  text-indent: 0;
 }  /**/
 .pubForm .closeX::before {
   content: '';
@@ -1057,33 +1071,33 @@ div.showEntry {
   /* margin-bottom: .2em; */
   }
 [class='pubForm'] .closeX::before,
-[class='pubForm'] > a::after { 
+[class='pubForm'] > .year::after { 
   /* wenn keine Zusatzklasse*/
   display: none;
 }
-.book > a::after, 
+.book .shortInfo .year::after, 
 .book .closeX::before {
   content: '\f02d'; /* fa-book  */
   font-weight: 900;
   } 
-.booksection > a::after, 
+.booksection .shortInfo .year::after, 
 .booksection .closeX::before, 
-.journalarticle > a::after, 
+.journalarticle .shortInfo .year::after, 
 .journalarticle .closeX::before {
   content: '\f15c'; /* fa-file-alt */
   font-weight: 400;
   }
-.journal > a::after,
+.journal  .shortInfo .year::after,
 .journal .closeX::before {
   content: '\f022'; /* fa-list-alt  */
   font-weight: 400;
   } 
-.thesis > a::after,
+.thesis .shortInfo .year::after,
 .thesis .closeX::before {
   content: '\f19d'; /* fa-graduation-cap  */
   font-weight: 900;
   } 
-.series > a::after,
+.series  .shortInfo .year::after,
 .series .closeX::before { 
   content: '\f0c5'; /* fa-copy   */ 
   font-weight: 400;
@@ -1108,12 +1122,15 @@ div.showEntry {
   background: rgba(255, 255, 255, 1);
   color: #463a2e;
 } 
+.results > li {
+  color: #ccc;
+}
 .showEntry .showOptions {
   background: rgba(255, 255, 216, 0.1);
   background: #f5e8c1;
   }
 .record-html {
-  background: rgba(255, 255, 225, 0.98);
+  background: rgb(243, 247, 240);
   background: rgb(255, 247, 212);
 } 
 .externerLink::after {
@@ -1194,12 +1211,13 @@ div.showEntry {
   color: rgba(0, 44, 88, 1);
   font-family: 'Font Awesome 5 Free', calibri, arial, sans-serif;
   moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  z-index: 11;
   }
 .tipp::before {
   content: '\f128'; /* 'fa-question */
@@ -1344,12 +1362,14 @@ PLUS-MINUS, ZAHL
 .zahl::before, .closeX::after, .plusMinus::before {
  content: '+';
  content: '\f055' /* fa-plus-circle */;
+ content: '\f054' /* chevron-right */;
  font-size: 1em;
  display: inline;
  border: 0px solid;
  border-radius: 1em;
  text-align: center;
  font-weight: 900;
+ /* font-weight: 400; */
  opacity: 0.4;
  } 
 .plusMinus {
@@ -1359,7 +1379,16 @@ PLUS-MINUS, ZAHL
   /* top: -.1em; */
 }
 .plusMinus::before {
-  opacity: .3;
+  opacity: .5;
+  display: inline-block;
+  width: 1.5rem !important;
+  line-height: 1.5rem;
+  text-indent: 0; 
+  text-align: center;
+}
+.results .plusMinus::before {
+  /* margin-right: .5rem; */
+  /* position: absolute; */
 }
 #thesaurus .zahl {
   position: relative;
@@ -1383,6 +1412,7 @@ PLUS-MINUS, ZAHL
   content: '\f138' /* fa-chevron-circle-right */;
   content: '\f13a' /* fa-chevron-circle-down */;
   content: '\f056' /* fa-minus-circle */; 
+  content: '\f078' /* chevron-down */; 
 } 
 .closeX::after {  
   content: 'X'; 
@@ -1391,6 +1421,7 @@ PLUS-MINUS, ZAHL
 .closeX:hover::after, 
 .plusMinus:hover::before {  
   opacity: 0.8;
+    background: rgba(96, 148, 188, 0.24);
 }
 .showEntry .closeX {
   /* float:right; */
@@ -1410,29 +1441,37 @@ PLUS-MINUS, ZAHL
  top: 0;
  }
 
-.showResults .sup::before, 
-.showResults .plusMinus::before {
+.shortInfo .plusMinus::before {
  margin-right: .3em;
  }
-.showResults a.plusMinus {
+.shortInfo a.plusMinus {
  padding: 0 .3em;
+ padding-left: 2rem;
+ text-indent: -2rem; */
  border-radius: 1em;
+ /* margin-left: 0.5rem; */
+ display: block;
+ background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.05));
+ background: rgb(243, 247, 240);
  }
 /*  Zahl */  
 
 .zahl::before, 
 .aZahl::before {
-  content: "\f0b0"; /* fa-filter */
+  content: "\f0b0"; /* fa-filter */ 
   padding-right: .2em;
   padding-left: .5em;
+  font-weight: 900;
   } 
-.thesaurus a.zahl::before  {
+.thesaurus a.zahl::before, 
+.aZahl::before  {
   content: ""; /* fa-filter */
   opacity: .8;
   margin-right: .5em;
 } 
 .thesaurus a.zahl:hover::before, 
-.thesaurus .zahl.checked::before { 
+.thesaurus .zahl.checked::before, 
+.aZahl::before { 
   content: "\f0b0"; /* fa-filter */     
   content: "\f14a"; /* fa-check */ 
 } 
