@@ -387,11 +387,12 @@ td.control {
   list-style: none;
   padding: 0;
   }  
-.pageindex a  {
-  /* display: inline-block; */
+#about .pageindex a  {
+  display: inline-block;
   padding: .3em;
   padding-left: 1.2em;
   text-indent: -1em;
+  margin-left: .2em;
   }
 
 .pageindex .here {
