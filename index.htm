@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 <head> 
   <meta http-equiv="X-UA-Compatible" content="IE=11"/>
@@ -248,7 +248,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <li>Felder</li>
                 <li><i class="far fa-user"></i> ... alphabetische Suche nach Autoren</li>
                 <li><i class="fas fa-book"></i> ... alphabetische Suche nach Werktiteln</li>
-                <li><i class="far fa-hourglass"></i> ...  Suche nach Publikationszeitraum (sinnvoll in Kombination mit anderen Suchbegriffen)</li>
+                <li><i class="far fa-clock"></i> ...  Suche nach Publikationszeitraum (sinnvoll in Kombination mit anderen Suchbegriffen)</li>
                 <li><i class="far fa-lightbulb"></i> ...  Suche mit Platzhaltern (*): Beim Eintippen eines beliebigen Schlagworts öffnet sich das Feld
               „Suchhilfe“ und schlägt Modifikationen, etwa „Sternchensuche“ oder Suche nach Titeln vor.</li>
               </ul> 
@@ -3530,7 +3530,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   </td>
                 </tr>
                 <tr class="examples">
-                  <th class="top"><!--Jahr--><i class="far fa-hourglass" title="nach Publikationszeitraum suchen"></i></th>
+                  <th class="top"><!--Jahr--><i class="far fa-clock" title="nach Publikationszeitraum suchen"></i></th>
                   <td class="year" data-index="date">
                     <!--
 	                --><a href="" title="Publikationen ab 1980">1980</a><!--
@@ -3580,8 +3580,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 </tr>
                 <tr class="tipp" id="Beispiele" title="Tipp">
                   <td class="beispiele" colspan="2">
-                      <p>Über das Suchfeld lässt sich eine einfache freie Suche durchführen. Komlexere Abfragen lassen sich 
-                      mithilfe der Suchhilfen realisieren. Grundsätzlich stehen folgende Tools zur Verfügung: </p>
+                      <p>Über das Suchfeld lässt sich eine einfache freie Suche durchführen. Um die Suche genauer abzustimmen, stehen außerdem folgende Methoden zur Verfügung: </p>
                     <div>
 
                       <p>Suche modifizieren:</p>
@@ -3604,23 +3603,23 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                         beschränkt)</li>
                       </ol>
                     </div>
-                    <p>Siehe auch <a href="#help">Benützung dieser Seiten</a>.</p>
+                    <p> Komlexere Abfragen lassen sich auch mit den Suchhilfen oberhalb des Suchfeldes realisieren. Siehe dazu auch <a href="#help">Benützung dieser Seiten</a>.</p>
                   </td>
                 </tr>
                 <tr class="search">
                   <td colspan="2">
-                    <input id="searchInput1" name="query" placeholder="Suchbegriff oben aussuchen oder selbst eingeben..." size="40" title="JB80 durchsuchen " value="" />
+                    <input id="searchInput1" name="query" placeholder="Suchbegriff eingeben..." size="40" title="JB80 durchsuchen " value="" />
                     <input name="version" type="hidden" value="1.2" /> 
                     <input name="operation" type="hidden" value= "searchRetrieve" /> 
                     <input name="startRecord" type="hidden" value="1" /> 
                     <input name="x-style" type= "hidden" value="sru2ajax.xsl" /> 
                     <input name="x-no-search-filter" type="hidden" value="false" /> 
-                    <i class="fa fa-times" id="clearSearch"></i> <a class="fa fa-search" href="" id="doSearch"></a> 
-                    <!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author" id="search1">Testen</a> -->
+                    <i class="fa fa-times" id="clearSearch" title="Suchfeld leeren"></i> 
+                    <a class="fa fa-search" href="" id="doSearch" title="Suche starten [return]"></a>  
                   </td>
                 </tr>
                 <tr>
-                  <td class="showOptions" rowspan="2"><em>Sortierung:</em> <label class="fa" id=
+                  <td class="showOptions" rowspan="2"><em>Sortierung:</em> <label class="fas fa-sort-amount-down" id=
                   "chooseMaxHits"><select id="maximumRecords" name="maximumRecords" size="1" title=
                   "Maximale Treffer pro Seite">
                     <option selected="selected" value="10">
@@ -3638,7 +3637,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                     <option value="200">
                       200
                     </option>
-                  </select></label> <label class="fa" id="countResults" title="Sortierung der Resultate"></label>
+                  </select></label> <label class="fas fa-sort-alpha-down" id="countResults" title="Sortierung der Resultate"></label>
                   <select id="sortBy" size="1" title="Sortierung der Treffer">
                     <option selected="selected" value="author">
                       Autor

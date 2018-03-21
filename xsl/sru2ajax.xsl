@@ -108,7 +108,7 @@
         </xsl:for-each><xsl:text xml:space="preserve">, </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year no-year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
         <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/>
-        <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
+        <span class="plusMinus titel" title="Details anzeigen/verbergen"><xsl:apply-templates select="mods:titleInfo"/></span>
         </div>
         <xsl:apply-templates select="." mode="detail"/>
     </xsl:template>
@@ -219,7 +219,7 @@
     </xsl:template> 
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
-        <span class="authors"><xsl:apply-templates select="(mods:namePart|mods:etal)"/></span>
+        <xsl:apply-templates select="(mods:namePart|mods:etal)"/>
     </xsl:template>
     
     <xsl:template match="mods:etal">
@@ -247,7 +247,7 @@
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
             <xsl:variable name="roles" select="$this//mods:roleTerm!normalize-space(.)"/>
-            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
+            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="neue Suche starten"><xsl:value-of select="$by-this-term"/></a><xsl:if
                 test="$roles = $knownSpecialRoles"><xsl:value-of select="', '||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')"/></xsl:if>
             <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
@@ -259,10 +259,10 @@
                 <xsl:apply-templates/>    
             </xsl:when>
             <xsl:when test="exists(./mods:_match_)">
-                <strong><xsl:value-of select="_:dict(.)||' '"/></strong>
+                <strong><xsl:value-of select="_:dict(.)||''"/></strong>
             </xsl:when>
             <xsl:otherwise>               
-                <xsl:value-of select="_:dict(.)||' '"/>
+                <xsl:value-of select="_:dict(.)||''"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -286,8 +286,9 @@
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
     <xsl:variable name="sentenceNoPunctation">[\w"'\)]$</xsl:variable><!-- Punkt nur nach Buchstaben, " oder ' -->
+    <xsl:variable name="canHaveSpace">[\w\.]$</xsl:variable> 
     
-    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
+    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $canHaveSpace)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
     <xsl:template match="mods:title"><xsl:apply-templates/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
  
@@ -322,9 +323,10 @@
          </li>
     </xsl:template>
     
-    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'] eq 'journalArticle' and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
+    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'][matches(., 'journalArticle|newspaperArticle')] and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
         <li class="eSegment">In: </li>
         <li><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <!-- todo: nonSort berücksichtigen, bs -->
             <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')||' '||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/><xsl:choose>
                 <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
                     /<span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
@@ -416,7 +418,7 @@
         <xsl:if test="$keywords">
         <li class="eSegment">Stichworte</li>
         <li><xsl:for-each select="$keywords">
-            <a href="#?query=&quot;{.}&quot;" class="stichwort"><xsl:value-of select="."/></a><xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
+            <a href="#?query=&quot;{.}&quot;" class="stichwort" title="neue Suche starten"><xsl:value-of select="."/></a><xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
         </xsl:for-each>
         </li></xsl:if>
     </xsl:template>
@@ -445,11 +447,9 @@
         <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
         <li>
             <xsl:if test="$has-children">
-               <span>
-                    <xsl:attribute name="class">plusMinus</xsl:attribute>
-               </span>                
+                <span  title="Details anzeigen/verbergen" class="plusMinus"></span>                
            </xsl:if> 
-            <a href="#" title="Suchergebnisse" class="aFilter">
+            <a href="#" title="Suchergebnisse filtern" class="aFilter">
                 <xsl:attribute name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/> 
                 <xsl:value-of select="catDesc"/>
                 <span class="zahl"><xsl:value-of select="numberOfRecords"/></span>                
@@ -465,8 +465,8 @@
         </li>
     </xsl:template> 
     <xsl:template match="numberOfRecords">
-        <xsl:param name="href" as="xs:string">#</xsl:param>
-        <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
+        <xsl:param name="href" as="xs:string">#</xsl:param>        
+        <xsl:param name="title" as="xs:string">neue Suche starten</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
     </xsl:template> 
     <xsl:template match="mods:_match_">

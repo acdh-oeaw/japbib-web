@@ -26,15 +26,16 @@
     </xsl:template>
     
     <xsl:template match="category">
+        <xsl:param name="newTitle" as="xs:string">Treffer für Schlagwortkombination auswählen</xsl:param> 
         <li class="li{count(ancestor::category)+1}">
-            <span>
-                <xsl:if test="not(matches(@n, '^[123456789]$')) and category">
-                    <xsl:attribute name="class">plusMinus</xsl:attribute>
-                </xsl:if>
-            </span>
+            <xsl:if test="not(matches(@n, '^[123456789]$')) and category">
+                <span  title="Details anzeigen/verbergen" class="plusMinus"></span> 
+            </xsl:if>            
             <span class="wrapTerm">
-                <xsl:apply-templates select="catDesc"/>
-                <xsl:apply-templates select="numberOfRecords | numberOfRecordsInGroup">
+                <xsl:apply-templates select="catDesc"/> 
+                <xsl:apply-templates select="numberOfRecords | numberOfRecordsInGroup"> 
+                    <xsl:with-param name="title"
+                        select="$newTitle"/>
                     <xsl:with-param name="href"
                         select="'#thesaurus?query=subject%3D&quot;' || catDesc || '&quot;'"/>
                 </xsl:apply-templates>
@@ -49,6 +50,6 @@
     
     <xsl:template match="catDesc">
         <a href="#find?query=subject%3D&quot;{.}&quot;" class='term' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
-    </xsl:template>
+    </xsl:template> 
 
 </xsl:stylesheet>

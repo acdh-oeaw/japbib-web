@@ -231,7 +231,7 @@ td.control {
   z-index: 11;
 }
 .control.hilite {
-  background:rgb(208, 219, 216);  
+  background:rgb(208, 219, 216);
 } 
 .control a {
   position: absolute;
@@ -388,7 +388,7 @@ td.control {
   padding: 0;
   }  
 .pageindex a  {
-  display: inline-block;
+  /* display: inline-block; */
   padding: .3em;
   padding-left: 1.2em;
   text-indent: -1em;
@@ -540,12 +540,18 @@ fieldset {
   }
 .schlagworte li {
   position: relative;
-  margin: 1px 1.5em;
-  margin-right: 0;
+  margin: 1px;
+  margin-left: 1em;
   padding: 0;
   list-style: none;
   /* padding-left: 1.5em; */
   }
+#thesaurus .schlagworte li {
+  margin-left: 1.5em;
+}
+#thesaurus .schlagworte li.li1 {
+  margin-left: .5em;
+}
 .schlagworte li::first-letter { 
   text-transform: uppercase;
   }
@@ -571,7 +577,7 @@ span.wrapTerm:hover {
     border-bottom: 1px solid #ccc;
 }
 .pageindex ol.schlagworte {
-    margin: 1em;
+    margin: 1em 1.5em;
     padding: 0;
     font-size: .85rem;
 }
@@ -603,8 +609,7 @@ span.wrapTerm:hover {
   font-weight: 600;
   color: #8e843b;
   text-transform: uppercase;
-  font-family:  "Trebuchet MS", Arial, sans-serif;
-  font-family: work sans, arial;
+  font-family:  "work sans", "Trebuchet MS", Arial, sans-serif; 
   } 
 #thesaurus .li1::after {
   content: "ausw\00e4hlen:";
@@ -703,21 +708,21 @@ span.wrapTerm:hover {
     /* margin: 0 auto; */
     background: rgba(221, 234, 251, 0.5);
     background-repeat: no-repeat;
-    background-position: center;
-    background-position-x: center;
-    background-position-y: 3em;
+    background-position: center 4em; 
     background-image: url(images/arhat.jpg);
     z-index: 10;
-    padding: 3.5em;
-    color: #615a2c;
+    padding: 4.5em 0;
+    color: #383838;
     text-shadow: 1px 2px #e0ebf587;
     text-align: center;
 }
 .ladeResultate p {
     background: rgba(255, 247, 212, 0.5);
     display: inline-block;
+    margin: 0 auto;
     padding: .3em .8em;
     border-radius: 5px;
+    max-width: 310px;
 }
 
 /**** Suchfelder ******/
@@ -860,14 +865,6 @@ tr.examples {
   opacity: 1; 
 }
 
-#chooseMaxHits::before,
-.chooseMaxHits::before   { 
-  content: '\f0cb'; /* fa-list-ol   */
-}
-#countResults::before {
-  content: '\f0dc'; /* fa-sort */
-  content: '\f161'; /* fa-sort-amount-desc   */
-} 
 
 /* Suchrahmen blau */
  
@@ -885,7 +882,7 @@ tr.examples {
   border-bottom-color: rgb(243, 247, 240);
 }
 .examples th {
-  background: rgba(255, 255, 245, 0.3);
+  background: rgb(227, 238, 235);
   color: #555;
 } 
 
@@ -969,7 +966,7 @@ tr.search .fa-search {
 *************************/
 
 .showResults {
-  padding-top: 3em;
+  padding-top: 2em;
 } 
 #showList { 
   border: 1px solid #ccc;
@@ -986,7 +983,7 @@ tr.search .fa-search {
   position: relative;
 } 
 .shortInfo {
-    color: #333;
+    color: #615a2c;
     color: #5e5723;
     padding-left: .5em;
     margin-top: .5em;
@@ -1030,10 +1027,9 @@ div.showEntry {
 .showEntry .eSegment {
   float:left;
   clear: left;
-  width: 9em;
+  width: 9rem;
   margin-left: 0em;
   font-style: italic;
-  font-family: calibri; 
   }  
 .showEntry.compact .eSegment, 
 .showEntry.compact .zahl, 
@@ -1095,6 +1091,11 @@ div.showEntry {
 .journal .closeX::before {
   content: '\f022'; /* fa-list-alt  */
   font-weight: 400;
+  } 
+.newspaperarticle .shortInfo .year::after,
+.newspaperarticle .closeX::before {
+  content: '\f15c'; /* fa-file-alt */
+  font-weight: 900;
   } 
 .thesis .shortInfo .year::after,
 .thesis .closeX::before {
@@ -1287,7 +1288,7 @@ div.showEntry {
   content: '\f00d';
   font-weight: 900;
   position: absolute;
-  top: 0;
+  top: 0.2em;
   right: 0.4em;
   z-index: 9;
   opacity:.3;
@@ -1369,12 +1370,15 @@ PLUS-MINUS, ZAHL
  content: '\f055' /* fa-plus-circle */;
  content: '\f054' /* chevron-right */;
  font-size: 1em;
- display: inline;
+ display: inline-block;
  border: 0px solid;
  border-radius: 1em;
  text-align: center;
  font-weight: 900;
  /* font-weight: 400; */
+ line-height: 1.2em;
+ width: 1.2em;
+ text-align: center;
  opacity: 0.4;
  } 
 .plusMinus {
@@ -1386,12 +1390,15 @@ PLUS-MINUS, ZAHL
 .plusMinus::before {
   opacity: .5;
   display: inline-block;
-  width: 1.5rem !important;
+  width: 1.5rem;
   line-height: 1.5rem;
-  text-indent: 0; 
+  text-indent: 0;
   text-align: center;
 }
-.results .plusMinus::before {
+#facet-subjects .plusMinus::before {
+  line-height: 1.2rem;
+  width: 1.2rem;
+  margin-right: .15rem;
 }
 #thesaurus .zahl {
   position: relative;
@@ -1436,7 +1443,8 @@ PLUS-MINUS, ZAHL
 }
 
 .schlagworte .plusMinus::before {
-  margin-left: -2em;
+  margin-left: -1.8em;
+  margin-right: -.2em;
 } 
 .pageindex .schlagworte .plusMinus::before {
  top: 0;
@@ -1445,7 +1453,7 @@ PLUS-MINUS, ZAHL
 .shortInfo .plusMinus::before {
  margin-right: .3em;
  }
-.shortInfo a.plusMinus {
+.shortInfo .plusMinus.titel {
  padding: 0 .3em;
  padding-left: 2rem;
  text-indent: -2rem; 
