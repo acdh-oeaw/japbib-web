@@ -23,7 +23,7 @@ declare variable $stage_2 external := false();
 declare variable $run_as_user external := '';
 
 declare function _:start-jobs-or-get-results() {
-  let $update-jobs := jobs:list-details()[ends-with(@id, '_updWrite')]
+  let $update-jobs := jobs:list-details()[ends-with(@id, '_updWrite') or @id eq 'writeInJunks']
   return if (exists($update-jobs)) then
     let $wait := $update-jobs[@state="running"]!jobs:wait(@id),
         $countUnfinished := count($update-jobs[@state=("queued", "running")])
