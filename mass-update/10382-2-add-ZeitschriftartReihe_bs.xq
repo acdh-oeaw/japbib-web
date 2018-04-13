@@ -18,11 +18,14 @@ declare variable $_:getParams external := false();
 
 declare variable $_:listPlaces external := _:get-params()/*[@key eq '{urn:_}listPlaces'];
 declare variable $__db__ external := 'japbib_06';
-declare variable $__helper_tables__ external := "helper_tables";
+declare variable $__helper_tables__ external := "helper_tables"; 
+ 
+declare variable $subjecttoMatch := "^Zeitschriftenartige Reihe$";
+declare variable $genre := "series";
 
-declare function _:select-entries() as element(mods:mods)* { 
-  collection($__db__)//mods:mods[mods:genre[matches(., '^[Bb]ook$')]][not(mods:subject[contains(., 'Einzelwerk')])]
-}; 
+declare function _:select-entries() as element(mods:mods)* {
+  collection($__db__)//mods:mods[mods:subject[@usage eq 'primary' and mods:topic[matches(., $subjecttoMatch)]] and not(mods:genre)]
+};
 
 declare function _:get-params() as element(params) {
 <params>
@@ -30,25 +33,22 @@ declare function _:get-params() as element(params) {
 };
 
 declare %updating function _:transform($e as element(mods:mods)) {
-      let $firstSubject := $e/mods:subject[1],
-        $newSubject := (        
-        <subject usage="primary" xmlns="http://www.loc.gov/mods/v3">
-        {comment {'#Task #10382,1 add Einzelwerk '}}
-        <topic xmlns="http://www.loc.gov/mods/v3">Einzelwerk</topic>
-        </subject>,    
-        <subject usage="secondary" xmlns="http://www.loc.gov/mods/v3"> 
-        <topic xmlns="http://www.loc.gov/mods/v3">Form</topic>
-        </subject>
-        ) 
-  return insert node $newSubject before $firstSubject
+      let $type := $e/mods:typeOfResource, 
+         $newGenre :=  (
+           <genre authority="local" xmlns="http://www.loc.gov/mods/v3">
+           {$genre} {comment {'#Task #10382.2.1 add '||$genre}}        
+           </genre>
+         ) 
+  return insert node $newGenre after $type
 };
-(:  ca. 5.000 Ersetzungen
+(:  ca. 76 Ersetzungen
 
 Nach dem gleichen Schema:
- [Bb]ookSection --> Beitrag zu Sammelwerk (ca. 8.700)
- [Jj]ournalArticle --> Zeitschriftenartikel (ca. 12.000)
- [Nn]ewspaperArticle --> Zeitungsartikel (ca. 600)
- 
+ Zeitschriftenartige Reihe --> Series (ca. 58)
+ Ausstellungskatalog  --> Book (ca. 341)
+ Bibliographie, Katalog --> Book (ca. 74)
+ Dissertation --> Thesis (ca. 377)
+
 :)  
 
 declare function _:main() {

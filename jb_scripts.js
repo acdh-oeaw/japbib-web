@@ -201,7 +201,7 @@ function getResultsHidden(href) {
   resultsFramework = resultsFramework || $('.content > .showResults').clone();
   if (newFilter) $('.showResults').hide('slow');
   else $('content > .showResults').hide('slow');
-  $('.ladeResultate').show();
+  $('.ladeResultate').fadeIn('slow');
   getResultsLock = true;
   $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
     callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
@@ -269,7 +269,7 @@ function onResultLoaded(statusText, jqXHR, currentSorting) {
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
       });
     });
-    $('.ladeResultate').hide();
+    $('.ladeResultate').fadeOut('slow');
     $('#find .schlagworte li li ol').hide(); //Anfangszustand bei neuer Abfrage
     if (newFilter) $('.showResults').show('slow', arrangeHitlist);
     else $('.content > .showResults').show('slow', arrangeHitlist); // arrangeHitlist = Treffernavigation (BS) s.u.     
@@ -315,12 +315,20 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   // Handler fuer suchOptionen (BS)
   // Navigation
   $('.examples td[data-index]').hide();
-  $('.examples td[data-index]:first').show();
+  //$('.examples td[data-index]:first').show();
   $('.examples th').click(function() {
-    $('.examples th').removeClass('here');
-    $('.examples td[data-index]').fadeOut('slow');
-    $(this).addClass('here');
-    $(this).siblings('td[data-index]').fadeIn('slow');
+    if ($(this).parent().hasClass('here')) {
+      $('.examples').removeClass('here');
+      $('.examples').animate({height: "1.6em"}, 'slow') ;
+      $('.examples td[data-index]').fadeOut('slow');
+    }
+    else {
+      $('.examples').removeClass('here');
+      $('.examples td[data-index]').fadeOut('slow');  
+      $(this).parent().addClass('here');
+      $('.examples').animate({height: "6em"}, 'slow') ;
+      $(this).siblings('td[data-index]').fadeIn('slow');   
+    }
   });
   // Suche nach Datum  
   var years = $('.year a'),
@@ -571,12 +579,14 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
     return query;
   }
-  $('#facet-subjects').on('click', '.showResults a.zahl', function(e) {
+  $('#facet-subjects').on('click', '.showResults a.aFilter', function(e) {
     e.preventDefault();
+    //alert('ok');
     var query = findQueryPartInHref($(this).attr('href')),
       subject = query.query,
       currentQuery = $('#searchInput1').val(),
-      newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject,
+      newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject; 
+      /*,
       plusMinus = $(this).prevAll('.plusMinus');
     if (plusMinus.length === 1 && !plusMinusDependentIsShown(plusMinus)) {
       toggleNextSubtree.apply(plusMinus, [e]);
@@ -586,6 +596,8 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     } else {
       executeQuery(newQuery);
     }
+    */
+    executeQuery(newQuery);
   });
 
   function plusMinusDependentIsShown(aPlusMinus) {
@@ -597,9 +609,9 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   function openOrCloseDetails(e) {
     e.preventDefault();
     if (plusMinusDependentIsShown(this)) {
-      $(this).nextAll('div').hide('slow');
+      $(this).parent().nextAll('div').hide('slow');
     } else {
-      $(this).next('.showEntry').show('slow');
+      $(this).parent().next('.showEntry').show('slow');
     }
     $(this).toggleClass('close');
   }
@@ -718,8 +730,20 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     // AND entfernen
     if (ausgewaehlt.length)
       ausgewaehlt[ausgewaehlt.length - 1].conj = '';
-    /**/
-    //console.log(ausgewaehlt.length); 
+
+    // class=checked hinzufügen/entfernen
+    var checked = [];
+    $('#thesaurus .checked').removeClass('checked'); 
+    $('#thesaurus .zahl').each(function() {
+      for (i in ausgewaehlt) {
+        if ($( this ).prevAll('.term').text() === ausgewaehlt[i].term)
+        checked.push($( this ));
+      }    
+    });
+    for ( i in checked) {      
+     checked[i].addClass("checked"); 
+    }
+
     baueListe();
   }
 
@@ -728,9 +752,9 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     var newWishes = '';
     var newQ = '';
     $.each(ausgewaehlt, function(i, qObj) {
-      newWishes += '<li><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
+      newWishes += '<li><span><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
         qObj.term +
-        '<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
+        '</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
         qObj.conj +
         '</a></li>';
       newQ += 'subject="' + qObj.term + '" ' + qObj.conj + ' ';
@@ -747,8 +771,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     }
   }
   // Auswahl entfernen
-  $(document).on('click', '#wishList li i', function() {
-    alert('click');
+  $(document).on('click', '#wishList li > *', function() {
     var term = $(this).parent().clone().find('> a').remove().end().text();
     neueAuswahl($.trim(term), '', 1);
   });
@@ -764,8 +787,12 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   $(document).on('click', '#thesaurus .schlagworte a.zahl', function(e) {
     e.preventDefault();
     var term = $(this).prevAll('.term:first').html();
-    neueAuswahl(term);
-    //console.log( term );
+    if ($(this).hasClass('checked')) { 
+      neueAuswahl(term, '', 1);
+    }
+    else {
+      neueAuswahl(term);
+    }
   });
   //wishlist fixieren (BS)
   function fixWishlist() {

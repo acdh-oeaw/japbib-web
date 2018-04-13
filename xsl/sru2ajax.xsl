@@ -85,20 +85,31 @@
     </xsl:template>
     
     <xsl:template match="sru:record">
-        <li value="{sru:recordNumber}" class="pubForm {mods:genre/lower-case(.)}"><xsl:apply-templates select="sru:recordData/mods:mods"/></li>
+        <li value="{sru:recordNumber}" >
+            <xsl:if test="sru:recordData//mods:genre">
+               <!-- gernre als class einsetzen, bs -->
+               <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"></xsl:variable>
+               <xsl:attribute name="class"> 
+                  <xsl:value-of select="concat('pubForm ', $genre)"/>
+               </xsl:attribute>   
+            </xsl:if>
+           <xsl:apply-templates select="sru:recordData/mods:mods"/>
+        </li> 
     </xsl:template>
     
     <xsl:template match="mods:mods">
+        <div class="shortInfo">
         <xsl:if test="not(mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)])"><span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
         <xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]"> <!--Ausschluss von Autoren in relatedItems, BS.; 
             todo: ask for 'ctb' if no other author available
             todo: parse <name><etal/></name> as "et al."
         -->
            <xsl:apply-templates select="."/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
-        </xsl:for-each><xsl:text xml:space="preserve"> </xsl:text>
+        </xsl:for-each><xsl:text xml:space="preserve">, </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year no-year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
-        <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/><xsl:text>,</xsl:text>
-        <a class="plusMinus" href="#"><xsl:apply-templates select="mods:titleInfo"/></a>
+        <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/>
+        <span class="plusMinus titel" title="Details anzeigen/verbergen"><xsl:apply-templates select="mods:titleInfo"/></span>
+        </div>
         <xsl:apply-templates select="." mode="detail"/>
     </xsl:template>
     
@@ -112,20 +123,8 @@
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>
                 <h4>Inhaltliche Angaben</h4>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
+                <xsl:call-template name="externeSuche"/>
                 </div>
-                <h4>Externe Suche</h4>
-                <ul>
-                    <xsl:variable name="title4externalQuery">
-                        <xsl:copy-of select="//mods:title[not(ancestor::mods/relatedItem/titleInfo)]/encode-for-uri(.)" copy-namespaces="no"/>               
-                    </xsl:variable> 
-                    <xsl:variable name="author4externalQuery">
-                        <xsl:copy-of select="//mods:namePart[not(ancestor::mods/relatedItem/name)][1]/encode-for-uri(.)" copy-namespaces="no"/>               
-                    </xsl:variable>
-                    <!-- folgender Link führt zu Fehlermeldungen: "kataloge= muss mit ';' enden" ???, bs
-                    <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
-                    -->
-                    <li><a class="externerLink" href="https://scholar.google.com/scholar?q={$title4externalQuery}+{$author4externalQuery}" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
-                </ul>
             </div>
             <div class="toggleRecord">
                 <i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
@@ -199,9 +198,28 @@
         </xsl:call-template>        
     </xsl:template>
     
+    <xsl:template name="externeSuche" >        
+        <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]">
+            <!-- todo: passenden Selektor finden, bs -->
+        <xsl:variable name="title4externalQuery" select="mods:title[ancestor::mods:mods/mods:titleInfo]" ></xsl:variable>
+        <h4>Externe Suche</h4>
+            <ul>        
+            <!--  
+            <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
+            -->
+            <li>
+                <a class="externerLink" 
+                    href="https://scholar.google.com/scholar?q={$title4externalQuery}" 
+                    title="Suchen mit Google Scholar" 
+                    target="_blank">Google Scholar
+                </a>
+            </li>  
+        </ul>
+        </xsl:if>
+    </xsl:template> 
     
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
-        <span class="authors"><xsl:apply-templates select="(mods:namePart|mods:etal)"/></span>
+        <xsl:apply-templates select="(mods:namePart|mods:etal)"/>
     </xsl:template>
     
     <xsl:template match="mods:etal">
@@ -229,7 +247,7 @@
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
             <xsl:variable name="roles" select="$this//mods:roleTerm!normalize-space(.)"/>
-            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="Suchergebnisse"><xsl:value-of select="$by-this-term"/></a><xsl:if
+            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="neue Suche starten"><xsl:value-of select="$by-this-term"/></a><xsl:if
                 test="$roles = $knownSpecialRoles"><xsl:value-of select="', '||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')"/></xsl:if>
             <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
@@ -241,10 +259,10 @@
                 <xsl:apply-templates/>    
             </xsl:when>
             <xsl:when test="exists(./mods:_match_)">
-                <strong><xsl:value-of select="_:dict(.)||' '"/></strong>
+                <strong><xsl:value-of select="_:dict(.)||''"/></strong>
             </xsl:when>
             <xsl:otherwise>               
-                <xsl:value-of select="_:dict(.)||' '"/>
+                <xsl:value-of select="_:dict(.)||''"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -267,9 +285,10 @@
         <li class="eSegment"><xsl:value-of select="_:dict('title')"/></li>
         <li><xsl:apply-templates mode='#default'/></li>
     </xsl:template>
-    <xsl:variable name="sentenceNoPunctation">[\w"']$</xsl:variable>
+    <xsl:variable name="sentenceNoPunctation">[\w"'\)]$</xsl:variable><!-- Punkt nur nach Buchstaben, " oder ' -->
+    <xsl:variable name="canHaveSpace">[\w\.]$</xsl:variable> 
     
-    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
+    <xsl:template match="mods:nonSort"><xsl:value-of select="normalize-space(.)"/><xsl:value-of select="if (matches(normalize-space(.), $canHaveSpace)) then ' ' else ''"/></xsl:template><!-- Space nur nach Artikeln -->
     
     <xsl:template match="mods:title"><xsl:apply-templates/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
  
@@ -277,7 +296,7 @@
   "concat(upper-case(substring($subTitle,1,1)),
           substring($subTitle, 2)
          )
-  "/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template><!-- Punkt nur nach Buchstaben, " oder ' -->
+  "/><xsl:value-of select="if (matches(normalize-space(.), $sentenceNoPunctation)) then '.' else ''"/></xsl:template>
     
     <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">
         <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
@@ -304,9 +323,10 @@
          </li>
     </xsl:template>
     
-    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'] eq 'journalArticle' and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
+    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'][matches(., 'journalArticle|newspaperArticle')] and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
         <li class="eSegment">In: </li>
         <li><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <!-- todo: nonSort berücksichtigen, bs -->
             <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')||' '||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/><xsl:choose>
                 <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
                     /<span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
@@ -326,9 +346,12 @@
     <xsl:template match="mods:originInfo[parent::mods:relatedItem[ancestor::mods:mods/mods:genre[@authority='local'] eq 'bookSection' and @type eq 'host']]" mode="detail">
         <li class="eSegment">In: </li>
         <li>
-            <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <xsl:if test="../mods:name">
+                <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/>
+            </xsl:if>
+            <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
             <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
-            <xsl:value-of select="if (not(mods:publisher)) then ', '||_:dict('no-pub-abbr') else ', '"/><xsl:call-template name="link-with-number-of-records">                
+            <xsl:value-of select="if (not(mods:publisher)) then '' else ', '"/><xsl:call-template name="link-with-number-of-records">                
                 <xsl:with-param name="index">publisher</xsl:with-param>
                 <xsl:with-param name="term" select="mods:publisher"/>    
             </xsl:call-template>
@@ -395,7 +418,7 @@
         <xsl:if test="$keywords">
         <li class="eSegment">Stichworte</li>
         <li><xsl:for-each select="$keywords">
-            <a href="#?query=&quot;{.}&quot;" class="stichwort"><xsl:value-of select="."/></a><xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
+            <a href="#?query=&quot;{.}&quot;" class="stichwort" title="neue Suche starten"><xsl:value-of select="."/></a><xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
         </xsl:for-each>
         </li></xsl:if>
     </xsl:template>
@@ -407,12 +430,14 @@
     
     <xsl:template match="category[matches(@n, '^[123456789]$')]">
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
-        <!--<li class="li1"><span><xsl:apply-templates select="catDesc"/></span>-->
-        <li class="li1"><span><xsl:value-of select="catDesc"/></span><!-- auf der obersten Ebene kein query-link! BS-->
+        <li class="li1">
+            <span><xsl:value-of select="catDesc"/></span><!-- auf der obersten Ebene kein query-link! BS-->
+            <!--
             <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
                 <xsl:with-param name="href" select="$base-path||'query=subject%3D&quot;'||catDesc||'&quot;'"/>
                 <xsl:with-param name="showGroup" select="true()"/>
             </xsl:apply-templates>
+            -->
             <ol><xsl:apply-templates select="category"/></ol>           
         </li>
     </xsl:template>
@@ -420,30 +445,30 @@
     <xsl:template match="category">
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
         <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
-        <li><!--<span class="catNum"><xsl:value-of select="@n"/></span>-->
-            <span>
-                <xsl:if test="$has-children">
-                    <xsl:attribute name="class">
-                        <xsl:if test="$has-children">plusMinus</xsl:if>
-                    </xsl:attribute>
-                </xsl:if>
-                <xsl:apply-templates select="catDesc"/>
-            </span>
+        <li>
+            <xsl:if test="$has-children">
+                <span  title="Details anzeigen/verbergen" class="plusMinus"></span>                
+           </xsl:if> 
+            <a href="#" title="Suchergebnisse filtern" class="aFilter">
+                <xsl:attribute name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/> 
+                <xsl:value-of select="catDesc"/>
+                <span class="zahl"><xsl:value-of select="numberOfRecords"/></span>                
+            </a>
+            <!--      
             <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
                 <xsl:with-param name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/>
             </xsl:apply-templates>
+            -->
             <xsl:if test="category">
                 <ol style="display:none;"><xsl:apply-templates select="category"/></ol>
             </xsl:if>
         </li>
-    </xsl:template>
-    
+    </xsl:template> 
     <xsl:template match="numberOfRecords">
-        <xsl:param name="href" as="xs:string">#</xsl:param>
-        <xsl:param name="title" as="xs:string">Suchergebnisse</xsl:param>
+        <xsl:param name="href" as="xs:string">#</xsl:param>        
+        <xsl:param name="title" as="xs:string">neue Suche starten</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
-    </xsl:template>
-    
+    </xsl:template> 
     <xsl:template match="mods:_match_">
         <strong><xsl:value-of select="."/></strong>
     </xsl:template>
