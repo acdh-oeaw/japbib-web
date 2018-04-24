@@ -227,8 +227,6 @@ td.control {
   font-family: calibri, arial;
   font-family: work sans;
   font-weight: 600;
-  /* color: #ccc; */
-  z-index: 11;
 }
 .control.hilite {
   background:rgb(208, 219, 216);
@@ -262,6 +260,7 @@ td.control {
   color: rgba(0, 0, 0, 0.5);
   position: fixed;
   /* top: 50vh; */
+  z-index: 11;
 }
 .control.hilite a span,
 .control a:hover span {  
@@ -1129,7 +1128,7 @@ div.showEntry {
   color: #463a2e;
 } 
 .results > li {
-  color: #ccc;
+  color: #c5b582;
   margin-left: 1em;
 }
 .showEntry .showOptions {
