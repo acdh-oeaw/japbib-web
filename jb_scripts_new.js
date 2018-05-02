@@ -414,20 +414,32 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
           hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
           hitsW = $('#hitRow').width(),
           FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster    
-          spaceR,
-          runTime = hits.length * 50; // scroll-Dauer  
-      if (FW < hitsW) { //Fenster kleiner als Hit-list 
-        // Nav-Pfeile anzeigen
+          widthHere,    
+          posHere,    
+          centerHere,   
+          spaceRightToHere,
+          runTimeRight = 
+          runTimeLeft = 1000; // scroll-Dauer   
+          alert (hits.length);
+      if (FW < hitsW) { //Fenster kleiner als Hit-list         
         $('#fenster1').width(FW);
-        $('.pull').css("visibility", "visible");
-        //  hitRow  positionieren
+        $('.pull').css("visibility", "visible"); // Nav-Pfeile anzeigen
+        //  hitRow  positionieren:
         maxLeft = FW - hitsW;
         if ($('#hitRow .here').length > 0) { 
-          spaceR = (FW - $('#hitRow .here').width()) / 2;
           // wenn .here in hitRow
-          if ($('#hitRow .here').position().left > FW - $('#hitRow .here').width()) {
-            // wenn rechts genug Platz
-          
+          widthHere = $('#hitRow .here').width();
+          posHere = $('#hitRow .here').position().left + widthHere;
+          spaceRightToHere = hitsW - posHere;
+          centerHere = (FW - widthHere) / 2;
+          if (posHere > FW) {
+            // wenn .here außerhalb des Fensters
+            posLeft =  centerHere < spaceRightToHere ? 
+             centerHere - $('#hitRow .here').position().left :
+             maxLeft;
+          }
+          else { 
+            posLeft = 0;
           }
         }
       } 
@@ -436,41 +448,24 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         $('#fenster1').width(hitsW);
         $('.pull').css("visibility", "hidden");
         //  hitRow  positionieren
-        maxLeft = 0;
-        posLeft = 0;
+        maxLeft = 
+        posLeft =  0;
       }
-      /////////  hitRow  positionieren /////////
-      if (FW < hitsW) {
-        maxLeft = FW - hitsW;
-        // wenn hitRow > Fenster und .here innerhalb von hitRow
-        if (maxLeft < 0 && $('#hitRow .here').length > 0) {
-          // wenn here nicht mehr sichtbar
-          if ($('#hitRow .here').position().left > FW - $('#hitRow .here').width()) {
-            // wenn rechts genug Platz
-            spaceR = (FW - $('#hitRow .here').width()) / 2;
-            if ($('#hitRow').width() - ($('#hitRow .here').position().left) > spaceR) {
-              posLeft = -$('#hitRow .here').position().left + spaceR;
-            } else { // maximale left-Verschiebung 
-              posLeft = maxLeft;
-            }
-          }
-        }
-        // wenn .here an letzter Stelle
-        else if ($('.last.here').length > 0) {
-          posLeft = maxLeft;
-        }
-        // hitRow in Hinblick auf .here verschieben 
-        $('#hitRow').css('left', posLeft);
-      }
+      // hitRow in Hinblick auf .here verschieben 
+      $('#hitRow').css('left', posLeft);
       stylePull();
     }
 
     function stylePull() {
       $('#pullLeft, #pullRight').addClass('active');
-      if ($('#hitRow').position().left >= 0)
-        $('#pullLeft').removeClass('active');
-      if ($('#hitRow').position().left - 1 <= maxLeft)
+      if ($('#hitRow').position().left >= 0) {
+        $('#pullLeft').removeClass('active');         
+        runTimeRight = ( hitsW - FW - $('#hitRow').position().left ) / 16 * 50;
+      }
+      if ($('#hitRow').position().left - 1 <= maxLeft) {
         $('#pullRight').removeClass('active');
+        runTimeLeft = $('#hitRow').position().left / 16 * 50;       
+      }
     }
     ///////// hitRow scollen /////////
     $(document).on('mousedown', '#pullLeft.active',
@@ -478,7 +473,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         if ($('#hitRow').position().left < 0) {
           $('#hitRow').animate({
             left: 0
-          }, runTime, stylePull);
+          }, runTimeLeft, arrangeHitlist);
         }
       }
     );
@@ -487,14 +482,14 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         if ($('#hitRow').position().left > maxLeft) {
           $('#hitRow').animate({
             left: maxLeft
-          }, runTime, stylePull);
+          }, runTimeRight, arrangeHitlist);
         }
       }
     );
     $(document).on('mouseup', '#pullLeft, #pullRight',
       function() {
         $('#hitRow').stop();
-        stylePull();
+        arrangeHitlist();
       }
     );
   }
