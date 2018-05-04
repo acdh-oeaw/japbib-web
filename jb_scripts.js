@@ -476,7 +476,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         runTime = $('#hitRow').position().left * -1.8;
         $('#hitRow').animate({
           left: 0
-        }, runTime, stylePull);
+        }, runTime,  "linear", stylePull);
       } 
     }
     function pushHitRowForth() {
@@ -484,7 +484,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         runTime = ( $('#hitRow').position().left - maxLeft) * 1.8;
         $('#hitRow').animate({
           left: maxLeft
-        }, runTime, stylePull);
+        }, runTime,  "linear", stylePull);
       } 
     } 
     $(document).on('mousedown', '#pullLeft.active', pullHitRowBack );
