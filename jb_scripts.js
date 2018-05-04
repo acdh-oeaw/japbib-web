@@ -405,52 +405,65 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     "Treffer"
   **********************************************/
   
-  // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)     
+  // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)   
+
+  var maxLeft,  
+      posLeft,
+      runTime; // scroll-Dauer     
 
   function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
     if ($('#hitRow') !== 'undefined') {
-      var maxLeft = 0,
-          posLeft = 0,
-          hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
+      var hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
           hitsW = $('#hitRow').width(),
           FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster    
-          spaceR = FW / 2,
-          runTime = hits.length * 50; // scroll-Dauer  
-      // Nav-Pfeile anzeigen oder verstecken
-      if (FW < hitsW) {
+          widthHere,    
+          posHere,    
+          centerHere,   
+          spaceRightToHere;  
+      if (FW < hitsW) { //Fenster kleiner als Hit-list         
         $('#fenster1').width(FW);
-        $('.pull').css("visibility", "visible");
-      } else {
+        $('.pull').css("visibility", "visible"); // Nav-Pfeile anzeigen
+        //  hitRow  positionieren:
+        maxLeft = FW - hitsW;
+        if ($('#hitRow .here').length > 0) { 
+          // wenn .here in hitRow
+          widthHere = $('#hitRow .here').width();
+          posHere = $('#hitRow .here').position().left + widthHere;
+          spaceRightToHere = hitsW - posHere;
+          centerHere = (FW - widthHere) / 2;
+          if (posHere > FW) {
+            // wenn .here außerhalb des Fensters
+            posLeft =  centerHere < spaceRightToHere ? 
+              centerHere - $('#hitRow .here').position().left :
+              maxLeft;
+          }
+          else { 
+            posLeft = 0;
+          }
+        } 
+        if ($('.last.here').length > 0) {
+          posLeft = maxLeft;
+        } 
+        if ($('.first.here').length > 0) {
+          posLeft = 0;
+        } 
+      } 
+      else { //Fenster größer als Hit-list
+        // Nav-Pfeile verstecken
         $('#fenster1').width(hitsW);
         $('.pull').css("visibility", "hidden");
+        //  hitRow  positionieren
+        maxLeft = 
+        posLeft =  0;
       }
-      /////////  hitRow  positionieren /////////
-      if (FW < hitsW) {
-        maxLeft = FW - hitsW;
-        // wenn hitRow > Fenster und .here innerhalb von hitRow
-        if (maxLeft < 0 && $('#hitRow .here').length > 0) {
-          // wenn here nicht mehr sichtbar
-          if ($('#hitRow .here').position().left > FW - $('#hitRow .here').width()) {
-            // wenn rechts genug Platz
-            var spaceR = (FW - $('#hitRow .here').width()) / 2;
-            if ($('#hitRow').width() - ($('#hitRow .here').position().left) > spaceR) {
-              posLeft = -$('#hitRow .here').position().left + spaceR;
-            } else { // maximale left-Verschiebung 
-              posLeft = maxLeft;
-            }
-          }
-        }
-        // wenn .here an letzter Stelle
-        else if ($('.last.here').length > 0) {
-          posLeft = maxLeft;
-        }
-        // hitRow in Hinblick auf .here verschieben 
-        $('#hitRow').css('left', posLeft);
-      }
-      stylePull();
-    }
+      // hitRow in Hinblick auf .here verschieben 
+      $('#hitRow').css('left', posLeft);
+      //
+      stylePull();       
+    } 
 
     function stylePull() {
+    // Navigationspfeile anpassen
       $('#pullLeft, #pullRight').addClass('active');
       if ($('#hitRow').position().left >= 0)
         $('#pullLeft').removeClass('active');
@@ -458,24 +471,24 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         $('#pullRight').removeClass('active');
     }
     ///////// hitRow scollen /////////
-    $(document).on('mousedown', '#pullLeft.active',
-      function() {
-        if ($('#hitRow').position().left < 0) {
-          $('#hitRow').animate({
-            left: 0
-          }, runTime, stylePull);
-        }
-      }
-    );
-    $(document).on('mousedown', ' #pullRight.active',
-      function() {
-        if ($('#hitRow').position().left > maxLeft) {
-          $('#hitRow').animate({
-            left: maxLeft
-          }, runTime, stylePull);
-        }
-      }
-    );
+    function pullHitRowBack() {
+      if ($('#hitRow').position().left < 0) {
+        runTime = $('#hitRow').position().left * -1.8;
+        $('#hitRow').animate({
+          left: 0
+        }, runTime, stylePull);
+      } 
+    }
+    function pushHitRowForth() {
+      if ($('#hitRow').position().left > maxLeft) {
+        runTime = ( $('#hitRow').position().left - maxLeft) * 1.8;
+        $('#hitRow').animate({
+          left: maxLeft
+        }, runTime, stylePull);
+      } 
+    } 
+    $(document).on('mousedown', '#pullLeft.active', pullHitRowBack );
+    $(document).on('mousedown', ' #pullRight.active', pushHitRowForth );
     $(document).on('mouseup', '#pullLeft, #pullRight',
       function() {
         $('#hitRow').stop();

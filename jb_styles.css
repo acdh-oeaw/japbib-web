@@ -528,9 +528,8 @@ fieldset {
   }
 .schlagworte {
     max-width: 38em;
-    margin: 2em auto;
-    padding-bottom: 2em;
-    padding-left: 0;
+    margin: 2em auto; 
+    padding: 0 1em 2em;
 }
 .schlagworte ul,
 .schlagworte ol {
