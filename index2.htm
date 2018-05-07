@@ -552,51 +552,22 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                     THESAURUS
                         
 ==========================================-->
-        <td class="slide thesaurus hide" id="thesaurus" style="display: none;">
-          <div id="wrapAbsolute">
-            <div id="wrapFixed">
-              <div class="pageindex">
-                <h4>Schlagworte auswählen</h4>
-                <div id="wishList">
-                  <ul>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Shintō" /> Shintō
-                    <a class="andOr">and</a></label></li>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Buddhismus " />
-                    Buddhismus <a class="andOr">and</a></label></li>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Altertum (bis 1192)" />
-                    Altertum (bis 1192)</label></li>
-                    <li style="text-align: right; margin-top: 1em;">334 Resultate <button name="button" title=
-                    "Suche nach Schlagworten">anzeigen</button></li>
-                  </ul>
-                </div>
-                <form action="sru" id="searchform2" name="searchform2">
-                  <input name="query" type="hidden" value="" /> 
-                  <input name="version" type="hidden" value="1.2" />
-                  <input name="operation" type="hidden" value="searchRetrieve" /> 
-                  <input name="maximumRecords" type= "hidden" value="1" /> 
-                  <input name="startRecord" type="hidden" value="1" /> 
-                  <input name="x-style" type= "hidden" value="thesaurus2html.xsl" />
-                </form>
-                <div class="i_container">
-                  <img alt="" src="images/kason%20book.jpg" width="250" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content">
-            <div style="position:relative">
-              <div class="tipp">
+        <td class="slide thesaurus hide" id="thesaurus" style="display: none;"> 
+          <div class="pageindex">
+                <h4>Hinweise</h4> 
+                  
                 <ul>
                   <li>Über diese Seite ist eine Suche nach hierarchisch geordneten Schlagworten möglich.</li>
                   <li>Ein Klick auf ein Schlagwort löst eine entsprechende Suche auf der Seite „Suchen und Finden“
                   aus.</li>
-                  <li>Ein Klick auf die Zahl nach dem Schlagwort führt zur Anzeige im Feld „Ausgewählte Schlagworte“.
-                  Dadurch lässt sich auch eine Kombinaltion von Schlagworten abfragen.</li>
-                  <li>Die Schlagworte werden standardmäßig mit <code>and</code> verküpft (Suchfeld wird kleiner),
-                  können aber durch Anklicken auch mit <code>or</code> verbunden werden (Suchfeld wird größer).</li>
-                </ul>
-              </div>
-            </div>
+                  <li>Für  Suchabfragen mit mehreren Schlagworten s. <a href="#statistics">Komplexe Abfragen</a></li>
+                  <li>S.a. <a href="#help">Benützung dieser Seiten</a>.</li>
+                </ul>  
+                <div class="i_container">
+                  <img alt="" src="images/kason%20book.jpg" width="250" />
+                </div> 
+          </div>
+          <div class="content">
             <div id="showList">
               <div class="showOptions">
                 <h2>Thesaurus</h2>
@@ -3917,9 +3888,22 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
         <td class="control" id="find_control">
           <a href="#find"><span>Suchen und Finden</span></a>
         </td>
-        <td class="slide" id="statistics">        	
+        <td class="slide" id="statistics">   
+        	<div class="pageindex">
+        		<h4>Such- und Anzeigemodus</h3>
+            <ul>            	
+            	<li><b><a href='#'>Autoren-Liste <i class="fa fa-search"></i></a></b>
+            		<small>Autoren nach Zahl der gefundenen Publikationen auflisten</small></li>
+            	<li><b><a href='#'>Detaillierte Liste <i class="fa fa-search"></i></a></b> 
+            		<small>Liste mit allen Details auf der Seite <i>Suchen und Finden</i> </small></li>
+            	<li><b><a href='#'>Balkendiagramm <i class="fa fa-search"></i></a></b> 
+            		<small>Schlagworte nach Treffer/Publikationsjahr</small> </li>
+            	<li><b><a href='#'>Netzwerkgraphik <i class="fa fa-search"></i></a></b>
+            		<small> Autor-Schlagwort Relationen als Netzwerkgraphik</small> </li>
+            </ul>
+          </div>     	
           <div class="content"> 
-            <h2>Statistische Abfragen</h2>  
+            <h2>Komplexe Abfragen</h2>  
             <table class="">
 	            <tr class="">
 	              <th class="">Schlagworte auswählen</th>
@@ -3960,7 +3944,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	              </td>
 	            </tr>
 	            <tr class="">
-	              <th class="">Publikationsform wählen </th>
+	              <th class="">Publikationsform </th>
 	              <td class="">
 	              	<label id="chooseForm">
 	              <select id=" " name=" " size="1" title= "Publikationsform wählen">
@@ -4028,16 +4012,11 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	              </td>
 	            </tr>
             </table> 
-            <h3>Darstellung</h3>
-            <ul>
-            	<li><a href=''><b>Liste</b>: Autoren nach Zahl der gefundenen Publikationen</a></li>
-            	<li><a href=''><b>Balkendiagramm</b>: Schlagworte nach Treffer/Publikationsjahr</a></li>
-            	<li><a href=''><b>Netzwerkgraphik</b>: Autor-Schlagwort Relation </a></li>
-            </ul>
+            
           </div>
         </td>
         <td class="control" id="find_control">
-          <a href="#statistics"><span>Statistik</span></a>
+          <a href="#statistics"><span>Komplexe Abfragen</span></a>
         </td>
       </tr>
       <tr colspan="8">

@@ -49,7 +49,7 @@ if (Cookies.get('test') === 'passed')
     $('#' + link).show();
     $('.control').add($('#navbar_items a')).removeClass('hilite');
     $('#' + link + '_control').add($('#navbar_items a[href~="#' + link + '"]')).addClass('hilite');
-    fixWishlist(); // toggle position thesaurus wishlist, s.u.
+    //fixWishlist(); // toggle position thesaurus wishlist, s.u.
   }
 
   function go2subPage(link) {
@@ -807,6 +807,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       neueAuswahl(term);
     }
   });
+  /*
   //wishlist fixieren (BS)
   function fixWishlist() {
     var top = $('#wrapAbsolute').offset().top - 40;
@@ -823,7 +824,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     }
   }
   $(document).on('scroll', fixWishlist);
-
+  */
   //in m gespeicherte Funktionen aufrufen:
   window.jb80 = m;
 }
