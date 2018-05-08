@@ -1616,3 +1616,14 @@ PLUS-MINUS, ZAHL
    
 .CodeMirror-sizer {
   position: absolute;
+}
+  
+.complexSearch th, .complexSearch td {
+    vertical-align: top;
+    height: 3em;
+    padding: .3em .5em 0;
+    text-align: right;
+}
+.complexSearch td { 
+    text-align: left;
+}

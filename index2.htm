@@ -78,7 +78,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
           <a href="#thesaurus" style="z-index: 2">Thesaurus</a>
         </li>
         <li>
-          <a href="#find" style="z-index: 1">Suchen und Finden</a>
+          <a href="#suchen" style="z-index: 1">Suchen</a>
+        </li>
+        <li>
+          <a href="#find" style="z-index: 1">Finden</a>
         </li>
       </ul>
     </div>
@@ -3345,7 +3348,252 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
         <td class="control" id="thesaurus_control">
           <a href="#thesaurus"><span>Thesaurus</span></a>
         </td>
+<!--========================================= 
+                        
+                    SUCHEN
+                     
+==========================================-->
 
+        <td class="slide" id="suchen">   
+          <div class="pageindex">
+        	<h4>Anzeigemodi</h4>
+            <ul>            	
+              <li><b>Detaillierte Liste</b>: 
+            	<small>Liste mit allen bibliographischen Details, verschiedentlich sortierbar</small></li>
+              <li><b>Autoren-Liste</b>: 
+              	<small>Liste der gefundenen Autoren, gereiht nach der Zahl der gefundenen Publikationen</small></li>
+              <li><b>Balkendiagramm</b>: 
+            	<small>Schlagworte nach Treffer/Publikationsjahr</small> </li>            
+              <li><b>Netzwerkgraphik</b>:
+            	<small> Autor-Schlagwort Relationen als Netzwerkgraphik</small> </li>
+            </ul>  
+        	<p> Alle Suchresultate werden auf der Seite „Finden“ angezeigt. </p>
+          </div>     	
+          <div class="content"> 
+            <h2>Suchen</h2> 
+
+        	<h3> Kombinierte Suche </h3>
+            <form action="sru" id="searchform2" name="searchform2"> 
+            <table class="complexSearch" id='complexSearch_ask'>
+                <tr class="">
+	              <th class="">Freitext</th>
+	              <td class="">
+	              	<input id="searchInput2" name="query" placeholder="Suchbegriff eingeben..." size="40" title="JB80 durchsuchen " value="" />
+                    <input name="version" type="hidden" value="1.2" /> 
+                    <input name="operation" type="hidden" value= "searchRetrieve" /> 
+                    <input name="startRecord" type="hidden" value="1" /> 
+                    <input name="x-style" type= "hidden" value="sru2ajax.xsl" /> 
+                    <input name="x-no-search-filter" type="hidden" value="false" /> 
+                    <i class="fa fa-times clearSearch" title="Suchfeld leeren"></i> 
+	              </td>
+	            </tr>
+	            <tr>
+	              <th>Schlagworte auswählen</th>
+	              <td>
+	              	<label id="chooseForm">
+	              <select name=" " size="" title= "Schlagworte auswählen">
+	                <option selected="selected" value="all">
+	                  alle
+	                </option>
+	                <option value="term 1">
+	                  Schlagwort 1 (Thesaurus anzeigen)
+	                </option>
+	                <option value="term 2">
+	                  Schlagwort 2 (Thesaurus anzeigen)
+	                </option>
+	                <option value="term 3">
+	                  Schlagwort 3 (Thesaurus anzeigen)
+	                </option> 
+	              </select>              
+	              </label>
+	              <div>Ausgewählt: <span>Alle</span></div>
+	              </td>
+	            </tr>
+	            <tr class="">
+	              <th class="">Schlagworte ausschließen</th>
+	              <td class="">
+	              	<label id="chooseForm">
+	              <select  name=" " size="" title= "Schlagworte ausschließen">
+	                <option selected="selected" value="no">
+	                  keine
+	                </option>
+	                <option value="term 1">
+	                  Schlagwort 1 (Thesaurus anzeigen)
+	                </option> 
+	              </select>              
+	              </label>
+	              <div>Ausgewählt: <span>Keine</span></div>
+	              </td>
+	            </tr>
+	            <tr class="">
+	              <th class="">Publikationsform </th>
+	              <td class="">
+	              	<label id="chooseForm">
+	              <select  name=" " size="1" title= "Publikationsform wählen">
+	                <option selected="selected" value="all">
+	                  alle
+	                </option>
+	                <option value="book">
+	                  Bücher
+	                </option>
+	                <option value="bookSection">
+	                  Kapitel in Sammelband
+	                </option>
+	                <option value="journalArticle">
+	                  Zeitschriftenartikel
+	                </option>
+	                <option value="newspaperArticle">
+	                  Zeitungsartikel
+	                </option>
+	              </select>
+	              </label>
+	              </td>
+	            </tr>
+	            <tr class="">
+	              <th class="">Publikationszeitraum </th>
+	              <td class="">
+	              	<label id="timeStart">
+	              <select  name=" " size="1" title= "Publikationszeitraum ">
+	                <option selected="selected" value="1980">
+	                  1980
+	                </option>
+	                <option   value="1985">
+	                  1985
+	                </option>
+	                <option  value="1990">
+	                  1990
+	                </option>
+	                <option   value="1995">
+	                  1995
+	                </option>
+	                <option   value="2000">
+	                  2000
+	                </option> 
+	              </select>
+	              </label>
+	              bis
+	              <label id="timeEnd">
+	              <select name=" " size="1" title= "Publikationszeitraum ">
+	                <option selected="selected" value="2000">
+	                  2000
+	                </option> 
+	                <option  value="1995">
+	                  1995
+	                </option>
+	                <option  value="1990">
+	                  1990
+	                </option>
+	                <option  value="1985">
+	                  1985
+	                </option>
+	                <option  value="1980">
+	                  1980
+	                </option>
+	              </select>
+	              </label>
+	              </td>
+	            </tr>
+	            <tr>
+	            	<th>
+	            	 Anzeigeoption
+	            	</th>
+	            	<td>
+	            		<fieldset>
+    <input type="radio" id="show_dl" name="Anzeigemodus" value="detail" checked />
+    <label for="dl"> Detaillierte Liste  </label> <br/>
+    <input type="radio" id="show_al" name="Anzeigemodus" value="authors" />
+    <label for="dl"> Autoren-Liste  </label>  <br/>
+    <input type="radio" id="show_bd" name="Anzeigemodus" value="balken" />
+    <label for="dl"> Balkendiagramm  </label>  <br/>
+    <input type="radio" id="show_nw name="Anzeigemodus" value="network" />
+    <label for="dl"> Netzwerkgraphik  </label>  
+  </fieldset>
+	            	</td>
+	            </tr>
+	            <tr>
+	            	<th></th>
+	            	<td><b><a href='#'>Suche starten <i class="fa fa-search"></i></a></b> </td>
+	            </tr>
+            </table> 
+            </form>
+        	<h3> Schnellsuche </h3>
+
+        	<table  class="complexSearch">
+                <tr >
+                  <th class="top here"><!--Autoren--><i class="far fa-user" title="nach Autoren suchen"></i>
+                      Autoren </th>
+                  <td class="abc" data-index="author">
+                    <!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=A*+sortBy+author"> 
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe A">A</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe B">B</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe C">C</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe D">D</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe E">E</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe F">F</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe G">G</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe H">H</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe I">I</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe J">J</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe K">K</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe L">L</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe M">M</a><br /><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe N">N</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe O">O</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe P">P</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Q">Q</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe R">R</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe S">S</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe T">T</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe U">U</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">V</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe W">W</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe X">X</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">Y</a><!--
+                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Z">Z</a><!--
+                     <a href="" title="Suche Autoren mit nicht-alphbetischen Anfangszeichen">Sonstige</a>                                        
+                     <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author">alle</a> -->
+                  </td>
+                </tr>
+                <tr >
+                  <th class="top"><!--Werktitel--><i class="fas fa-book" title="nach Titeln suchen"></i>
+                     Werktitel</th>
+                  <td class="abc" data-index="title">
+                    <a href="" title="Suche Titel mit Anfangsbuchstabe A">A</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe B">B</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe C">C</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe D">D</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe E">E</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe F">F</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe G">G</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe H">H</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe I">I</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe J">J</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe K">K</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe L">L</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe M">M</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe N">N</a><br /><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe O">O</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe P">P</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Q">Q</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe R">R</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe S">S</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe T">T</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe U">U</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe V">V</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe W">W</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe X">X</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Y">Y</a><!--
+                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Z">Z</a><!--
+                    <a href="" title="Suche Titel mit nicht-alphbetischen Anfangszeichen">Sonstige</a> 
+                        <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=title=*+sortBy+title">alle</a>-->
+                  </td>
+                </tr>
+        	</table>
+          </div>
+        </td>
+        <td class="control" id="suchen_control">
+          <a href="#suchen"><span>Suchen</span></a>
+        </td>
 <!--========================================= 
                         
                     FIND
@@ -3432,75 +3680,6 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
             <form action="sru" id="searchform1" name="searchform1">
             <h2>Suche</h2>
               <table class="suchOptionen">
-                <tr class="examples">
-                  <th class="top here"><!--Autoren--><i class="far fa-user" title="nach Autoren suchen"></i></th>
-                  <td class="abc" data-index="author">
-                    <!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=A*+sortBy+author"> 
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe A">A</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe B">B</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe C">C</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe D">D</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe E">E</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe F">F</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe G">G</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe H">H</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe I">I</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe J">J</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe K">K</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe L">L</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe M">M</a><br /><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe N">N</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe O">O</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe P">P</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Q">Q</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe R">R</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe S">S</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe T">T</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe U">U</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">V</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe W">W</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe X">X</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">Y</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Z">Z</a><!--
-                     <a href="" title="Suche Autoren mit nicht-alphbetischen Anfangszeichen">Sonstige</a>                                        
-                     <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author">alle</a> -->
-                     <small>nach Autoren suchen...</small>
-                  </td>
-                </tr>
-                <tr class="examples">
-                  <th class="top"><!--Werktitel--><i class="fas fa-book" title="nach Titeln suchen"></i></th>
-                  <td class="abc" data-index="title">
-                    <a href="" title="Suche Titel mit Anfangsbuchstabe A">A</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe B">B</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe C">C</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe D">D</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe E">E</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe F">F</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe G">G</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe H">H</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe I">I</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe J">J</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe K">K</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe L">L</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe M">M</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe N">N</a><br /><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe O">O</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe P">P</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Q">Q</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe R">R</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe S">S</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe T">T</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe U">U</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe V">V</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe W">W</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe X">X</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Y">Y</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Z">Z</a><!--
-                    <a href="" title="Suche Titel mit nicht-alphbetischen Anfangszeichen">Sonstige</a> 
-                        <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=title=*+sortBy+title">alle</a>-->
-                     <small>nach Titeln suchen...</small>
-                  </td>
-                </tr>
                 <tr class="examples">
                   <th class="top"><!--Jahr--><i class="far fa-clock" title="nach Publikationszeitraum suchen"></i></th>
                   <td class="year" data-index="date">
@@ -3886,137 +4065,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
           <div class="clearFloat"></div>
         </td>
         <td class="control" id="find_control">
-          <a href="#find"><span>Suchen und Finden</span></a>
-        </td>
-        <td class="slide" id="statistics">   
-        	<div class="pageindex">
-        		<h4>Such- und Anzeigemodus</h3>
-            <ul>            	
-            	<li><b><a href='#'>Autoren-Liste <i class="fa fa-search"></i></a></b>
-            		<small>Autoren nach Zahl der gefundenen Publikationen auflisten</small></li>
-            	<li><b><a href='#'>Detaillierte Liste <i class="fa fa-search"></i></a></b> 
-            		<small>Liste mit allen Details auf der Seite <i>Suchen und Finden</i> </small></li>
-            	<li><b><a href='#'>Balkendiagramm <i class="fa fa-search"></i></a></b> 
-            		<small>Schlagworte nach Treffer/Publikationsjahr</small> </li>
-            	<li><b><a href='#'>Netzwerkgraphik <i class="fa fa-search"></i></a></b>
-            		<small> Autor-Schlagwort Relationen als Netzwerkgraphik</small> </li>
-            </ul>
-          </div>     	
-          <div class="content"> 
-            <h2>Komplexe Abfragen</h2>  
-            <table class="">
-	            <tr class="">
-	              <th class="">Schlagworte auswählen</th>
-	              <td class="">
-	              	<label id="chooseForm">
-	              <select id=" " name=" " size="" title= "Schlagworte auswählen">
-	                <option selected="selected" value="all">
-	                  alle
-	                </option>
-	                <option value="term 1">
-	                  Schlagwort 1 (Thesaurus anzeigen)
-	                </option>
-	                <option value="term 2">
-	                  Schlagwort 2 (Thesaurus anzeigen)
-	                </option>
-	                <option value="term 3">
-	                  Schlagwort 3 (Thesaurus anzeigen)
-	                </option> 
-	              </select>              
-	              </label>
-	              <div>Ausgewählt: <span>Alle</span></div>
-	              </td>
-	            </tr>
-	            <tr class="">
-	              <th class="">Schlagworte ausschließen</th>
-	              <td class="">
-	              	<label id="chooseForm">
-	              <select id=" " name=" " size="" title= "Schlagworte ausschließen">
-	                <option selected="selected" value="no">
-	                  keine
-	                </option>
-	                <option value="term 1">
-	                  Schlagwort 1 (Thesaurus anzeigen)
-	                </option> 
-	              </select>              
-	              </label>
-	              <div>Ausgewählt: <span>Keine</span></div>
-	              </td>
-	            </tr>
-	            <tr class="">
-	              <th class="">Publikationsform </th>
-	              <td class="">
-	              	<label id="chooseForm">
-	              <select id=" " name=" " size="1" title= "Publikationsform wählen">
-	                <option selected="selected" value="all">
-	                  alle
-	                </option>
-	                <option value="book">
-	                  Bücher
-	                </option>
-	                <option value="bookSection">
-	                  Kapitel in Sammelband
-	                </option>
-	                <option value="journalArticle">
-	                  Zeitschriftenartikel
-	                </option>
-	                <option value="newspaperArticle">
-	                  Zeitungsartikel
-	                </option>
-	              </select>
-	              </label>
-	              </td>
-	            </tr>
-	            <tr class="">
-	              <th class="">Publikationszeitraum </th>
-	              <td class="">
-	              	<label id="timeStart">
-	              <select id=" " name=" " size="1" title= "Publikationszeitraum ">
-	                <option selected="selected" value="1980">
-	                  1980
-	                </option>
-	                <option   value="1985">
-	                  1985
-	                </option>
-	                <option  value="1990">
-	                  1990
-	                </option>
-	                <option   value="1995">
-	                  1995
-	                </option>
-	                <option   value="2000">
-	                  2000
-	                </option> 
-	              </select>
-	              </label>
-	              bis
-	              <label id="timeEnd">
-	              <select id=" " name=" " size="1" title= "Publikationszeitraum ">
-	                <option selected="selected" value="2000">
-	                  2000
-	                </option> 
-	                <option  value="1995">
-	                  1995
-	                </option>
-	                <option  value="1990">
-	                  1990
-	                </option>
-	                <option  value="1985">
-	                  1985
-	                </option>
-	                <option  value="1980">
-	                  1980
-	                </option>
-	              </select>
-	              </label>
-	              </td>
-	            </tr>
-            </table> 
-            
-          </div>
-        </td>
-        <td class="control" id="find_control">
-          <a href="#statistics"><span>Komplexe Abfragen</span></a>
+          <a href="#find"><span>Finden</span></a>
         </td>
       </tr>
       <tr colspan="8">

@@ -41,7 +41,7 @@ if (Cookies.get('test') === 'passed')
   **********************************************/
 
   // Handler fuer Seitenwechsel (BS)
-  var mainPages = ['about', 'find', 'thesaurus', 'statistics'];
+  var mainPages = ['about', 'find', 'thesaurus', 'suchen'];
   var aboutSubpages = ['ziele', 'help', 'geschichte', 'bildnachweise', 'dokumentation', 'impressum'];
 
   function go2page(link) {
