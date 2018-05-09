@@ -708,6 +708,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     $(this).toggleClass('close');
   }
 
+  /*
   // Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
   var $wishList = $('#wishList'),
     ausgewaehlt = [],
@@ -797,34 +798,11 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       'and';
     neueAuswahl(term, conj);
   });
+    */
+    
   $(document).on('click', '#thesaurus .schlagworte a.zahl', function(e) {
-    e.preventDefault();
-    var term = $(this).prevAll('.term:first').html();
-    if ($(this).hasClass('checked')) { 
-      neueAuswahl(term, '', 1);
-    }
-    else {
-      neueAuswahl(term);
-    }
+    e.preventDefault();  
   });
-  /*
-  //wishlist fixieren (BS)
-  function fixWishlist() {
-    var top = $('#wrapAbsolute').offset().top - 40;
-    if ($(document).scrollTop() >= top) {
-      $('#wrapFixed').css({
-        'position': 'fixed',
-        'top': 40 + 'px'
-      });
-    } else {
-      $('#wrapFixed').css({
-        'position': 'static',
-        'top': 'auto'
-      });
-    }
-  }
-  $(document).on('scroll', fixWishlist);
-  */
   //in m gespeicherte Funktionen aufrufen:
   window.jb80 = m;
 }
