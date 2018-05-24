@@ -166,6 +166,7 @@ function searchOnReturn(e) {
 
 function executeQuery(query) {
   $('#searchInput1').val(query);
+  $('#suchtipps > div').hide();
   doSearchOnReturn();
   unselectDate();
 }
@@ -302,9 +303,10 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   $('.tipp')
     .attr('title', 'Tipp')
     .children().hide();
+  $('#suchtipps > div').show();
   $(document).on('click', '.tipp', function() {
     $(this)
-      .toggleClass('q2x') 
+      //.toggleClass('q2x') 
       .children().slideToggle('slow');
     var title = 'Tipp';
     if ($(this).hasClass('q2x')) {

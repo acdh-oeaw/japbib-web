@@ -72,13 +72,13 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
     <div id="navbar">
       <ul id="navbar_items">
         <li>
-          <a class="hilite" href="#about" style="z-index: 3">Über JB 80</a>
+          <a class="hilite" href="#about" style="z-index: 4">Über JB 80</a>
         </li>
         <li>
-          <a href="#thesaurus" style="z-index: 2">Thesaurus</a>
+          <a href="#thesaurus" style="z-index: 3">Thesaurus</a>
         </li>
         <li>
-          <a href="#suchen" style="z-index: 1">Suchen</a>
+          <a href="#suchen" style="z-index: 2">Suchen</a>
         </li>
         <li>
           <a href="#find" style="z-index: 1">Finden</a>
@@ -101,6 +101,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 ========================================================-->
         <td class="slide" id="about">
           <div class="pageindex">
+          	<div>
             <h4>Über JB 80</h4>
             <ul>
               <li>
@@ -123,6 +124,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               </li>
             </ul>
             <div class="i_container"><img alt="" src="images/utamaro_letter.jpg" width="250" /></div>
+          </div>
           </div>
           <div class="content">
             <div id="ziele">
@@ -556,9 +558,8 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                         
 ==========================================-->
         <td class="slide thesaurus hide" id="thesaurus" style="display: none;"> 
-          <div class="pageindex">
-                <h4>Hinweise</h4> 
-                  
+          <div class="hinweis pageindex">
+          	<div>                   
                 <ul>
                   <li>Über diese Seite ist eine Suche nach hierarchisch geordneten Schlagworten möglich.</li>
                   <li>Ein Klick auf ein Schlagwort löst eine entsprechende Suche auf der Seite „Suchen und Finden“
@@ -569,6 +570,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <div class="i_container">
                   <img alt="" src="images/kason%20book.jpg" width="250" />
                 </div> 
+            </div>
           </div>
           <div class="content">
             <div id="showList">
@@ -3354,9 +3356,9 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                      
 ==========================================-->
 
-        <td class="slide" id="suchen">   
-          <div class="pageindex">
-        	<h4>Erläuterungen</h4>
+        <td class="slide" id="suchen"> 
+          <div class="hinweis pageindex">  
+          	<div>
             <ul>            	
               <li><b>Schnellsuche</b>: Suche Autoren oder Werktitel per Anfangsbuchstabe.</li>
               <li><b>Kombinierte Suche</b>: Freitext und Schlagworte erweitern die Suche (Verbindung der Suchbegriffe mit „or“), 
@@ -3364,10 +3366,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               <li><b>Detaillierte Liste</b>: alle Treffer werden inklusive biblio&shy;graphi&shy;scher Details gelistet (Standard&shy;format). </li>
               <li><b>Autoren-Liste</b>: gefundene Autoren werden nach Anzahl der gefun&shy;denen Publi&shy;kationen aufgelistet.<!-- Ermöglicht einen Überblick über die Produktivität innerhalb des abgefragten Themengebiets.--></li>
               <li><b>Balkendiagramm</b>: Schlagworte nach Treffer pro Publi&shy;kations&shy;jahr (chrono&shy;logische Ent&shy;wicklung des abge&shy;fragten Themen&shy;gebiets). </li>            
-              <li><b>Netzwerkgraphik</b>: Autor-Schlagwort Relationen als Netzwerkgraphik. </li>
-              <li> 
+              <li><b>Netzwerkgraphik</b>: Autor-Schlagwort Relationen als Netzwerkgraphik. </li> 
             </ul>  
         	<p> Alle Suchresultate werden auf der Seite „Finden“ angezeigt. </p>
+          </div>
           </div>     	
           <div class="content"> 
             <h2>Suchen</h2>
@@ -3413,7 +3415,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
         		<tr >
 	              <th >Freitext</th>
 	              <td >
-	            	  <input id="searchInput2" name="query" placeholder="Suchbegriff eingeben..." size="25" title="JB80 durchsuchen " value="" />
+	            	  <input id="searchInput2" name="query" placeholder="Suchbegriff eingeben..." size="26" title="JB80 durchsuchen " value="" />
                     <input name="version" type="hidden" value="1.2" /> 
                     <input name="operation" type="hidden" value= "searchRetrieve" /> 
                     <input name="startRecord" type="hidden" value="1" /> 
@@ -3423,7 +3425,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	              </td>
 	            </tr>
 	            <tr>
-	              <th>Schlagworte auswählen</th>
+	              <th>Schlagworte</th>
 	              <td>
 	              <label id="chooseTerm">
 	              <select name=" " size="" title= "Schlagworte auswählen">
@@ -3440,12 +3442,11 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	                  Schlagwort 3 (Thesaurus anzeigen)
 	                </option> 
 	              </select>              
-	              </label>
-	              <div>Ausgewählt: <span>keine</span></div>
+	              </label> 
 	              </td>
 	            </tr>
 	            <tr class="">
-	              <th class="">Schlagworte ausschließen</th>
+	              <th class="">Ausschließen</th>
 	              <td class="">
 	              	<label id="skipTerm">
 	              <select  name=" " size="" title= "Schlagworte ausschließen">
@@ -3456,8 +3457,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	                  Schlagwort 1 (Thesaurus anzeigen)
 	                </option> 
 	              </select>              
-	              </label>
-	              <div>Ausgewählt: <span>keine</span></div>
+	              </label> 
 	              </td>
 	            </tr>
 	            <tr>
@@ -3530,7 +3530,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	            </tr>
 	            <tr>
 	            	<th>
-	            	 Anzeigeoption
+	            	 Anzeige
 	            	</th>
 	            	<td> 
 	            	  <fieldset>
@@ -3547,7 +3547,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 	            </tr>
 	            <tr> 
 	            	<th></th>
-	            	<td><b><a href='#' id="startSearch">Suche starten <i class="fa fa-search"></i></a></b></td> 
+	            	<td><input type="submit" name="startSearch" value="Kombinierte Suche starten" />&nbsp;<i class="fa fa-search"></i></td> 
 	            </tr>
           	  </table>
           	</form> 
@@ -3564,11 +3564,13 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 
         <td class="slide hide" id="find" style="display: none;">
           <div class="pageindex" id="facet-subjects">
+          	<div>
             <h4><span class="showResults">Such-Filter</span></h4>
             <ol class="schlagworte showResults">
               <!-- Import-->
             </ol>
             <div class="i_container"><img alt="" src="images/book%20hokusai2.jpg" width="250"></div>
+          </div>
           </div>
           <div class="content">
             <form action="sru" id="searchform1" name="searchform1">
