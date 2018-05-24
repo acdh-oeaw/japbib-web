@@ -408,7 +408,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               	</li> 
               	<li> ab 2017/6:
               		Einrichten eines GIT-Repositorys.
-              		Grundbausteine der Serverarchitektur: Basex; XSLT, XQuery, XPath; Javascript.
+              		Grundbausteine der Serverarchitektur: BaseX; XSLT, XQuery, XPath; Javascript.
               		Programmierung des Thesaurus.
               		Programmierung der Suchroutinen.
               		Programmierung der Fehlerkontrolle (Karma).
@@ -418,6 +418,23 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               		Testen und Korrigieren der Suchroutinen.
               	</li> 
               </ul> 
+				  <h3>Suchroutine (Stand Mai 2018)</h3>
+				<ul>
+					<li>Die Suche erfolgt über eine <i>Context Query Language</i> Suchabfrage im Browser. Diese wird durch manuelle Eingabe im Suchfeld 
+						oder durch Nutzerinteraktion mit diversen Websitelementen generiert. </li>
+					<li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die Adresse <code>[Basis-URL]/sru</code>. </li> 
+					<li>Abgesehen von den interaktiv generierten <i>query</i>-Parametern, wird standardmäßig auch ein XSL-Stylesheet angefordert (<code>x-style=sru2ajax.xsl</code>). Es kann aber statt des Stylesheets auch „none“ angegeben werden, um die XSLT Transformation des ursprünglichen HTML-Codes zu verhindern.
+					<li>Außerdem kann mit dem Parameter <code>x-no-search-filter=</code> die automatische Erneuerung des Suchfilterbaums unterdrückt werden. 
+					<li> Die Sucheabfrage wird von den Routinen im Verzeichnis <code>responses/sru</code> bearbeitet.
+					<li> Die Abfrage wird mit einem fertigen Java CQL Parser in eine XML Form gebracht. </li>
+					<li> Die Abfrage als XML wird in eine XQuery Abfrage umgewandelt. Die dafür notwendige Konfiguration ist in der Datei <code>maps.xml</code> enthalten. </li>
+					<li> Für die Umwandlung der Abfrage wird der Full Text Index von BaseX verwendet.</li>
+					<li> Die XQuery-Abfrage wird ausgeführt und das Ergebnis in einen SRU-Rahmen eingepackt. </li>
+					<li> Mithilfe von gecachten Daten (<code>__sru_cache_de_data__</code>) werden Trefferzahlen ermittelt und ebenfalls in den SRU-Rahmen eingefügt.</li>
+					<li> Das so entstandene XML-File wird mit dem angegebenen XSLT-Stylesheet umgewandelt und das XHTML-Ergebnis an den Browser geliefert.</li>
+					<li> Der Browser ersetzt mithilfe von Javascript die relevanten HTML-Elemente der Seite um die gewünschten Ergebnisse anzuzeigen.  
+				</ul>
+				
               <p class="next">Weiter zu: <a href="#bildnachweise">Bildnachweise</a></p>
             </div>
             <div id="bildnachweise">
