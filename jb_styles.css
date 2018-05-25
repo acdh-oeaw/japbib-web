@@ -1384,6 +1384,7 @@ PLUS-MINUS, ZAHL
  content: '+';
  content: '\f055' /* fa-plus-circle */;
  content: '\f054' /* chevron-right */;
+  content: '\f078' /* chevron-down */; 
  font-size: 1em;
  display: inline-block;
  border: 0px solid;
@@ -1439,7 +1440,7 @@ PLUS-MINUS, ZAHL
   content: '\f138' /* fa-chevron-circle-right */;
   content: '\f13a' /* fa-chevron-circle-down */;
   content: '\f056' /* fa-minus-circle */; 
-  content: '\f078' /* chevron-down */; 
+ content: '\f054' /* chevron-right */;
 } 
 .closeX::after {  
   content: 'X'; 
