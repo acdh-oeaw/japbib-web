@@ -4,10 +4,12 @@ module namespace _ = "https://acdh.oeaw.ac.at/vle/history";
 
 import module namespace session = "http://basex.org/modules/session";
 
+declare namespace bxerr = "http://basex.org/errors";
+
 declare variable $_:user external := '';
 
 declare %updating function _:add-change-record($e as element()) {
-  let $user := try {session:get('dba')} catch bxerr:BXSE0003 {if ($_:user ne '') then $_:user else user:current()},
+  let $user := try {session:get('dba')} catch bxerr:BXSE0003 | session:get {if ($_:user ne '') then $_:user else user:current()},
       $newEntry :=
       element {QName($e/namespace-uri(),'fs')} {
         namespace {''} {$e/namespace-uri()},
