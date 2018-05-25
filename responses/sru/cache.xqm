@@ -16,6 +16,7 @@ import module namespace l = "http://basex.org/modules/admin";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../../model.xqm";
 
 declare namespace sru = "http://www.loc.gov/zing/srw/";
+declare namespace bxerr = "http://basex.org/errors";
 
 declare variable $c:thesaurus-fn := $model:dbname||'-thesaurus.xml';
 (: Note that the cache full text index is specialised for german! May work with English but other languages may vary. :)
@@ -31,9 +32,9 @@ declare function c:thesaurus($xml as document-node()) {
 };
 
 declare function c:save-fn($xml as document-node(), $fn as xs:string) {
- let $query := ``[
-      import module namespace c = "japbib:cache" at "cache.xqm";
-      import module namespace l = "http://basex.org/modules/admin";
+ let $query := ``[import module namespace c = "japbib:cache" at "cache.xqm";
+      import module namespace l = "http://basex.org/modules/admin";      
+      declare namespace bxerr = "http://basex.org/errors";
       declare variable $xml external;
       try {
       if (exists(c:get-fn("`{$fn}`")))
@@ -46,7 +47,7 @@ declare function c:save-fn($xml as document-node(), $fn as xs:string) {
       else
         let $log := l:write-log('cache:scan creating cached scan and db __sru_cache_de_data__: `{$fn}`')
         return db:create("__sru_cache_de_data__", $xml, "`{$fn}`", $c:index-options)
-    } catch err:FODC0007 | bxerr:BXDB0002 {
+    } catch err:FODC0007 | bxerr:BXDB0002 | db:open {
          ()
     }
    ]``,
@@ -71,7 +72,7 @@ declare function c:thesaurus() as document-node()? {
 declare function c:get-fn($fn as xs:string) as document-node()? {
 try {
   db:open("__sru_cache_de_data__", $fn)
-} catch err:FODC0007 | bxerr:BXDB0002 {
+} catch err:FODC0007 | bxerr:BXDB0002 | db:open {
   ()
 }
 };

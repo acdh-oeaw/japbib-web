@@ -11,6 +11,7 @@ import module namespace index = "japbib:index" at "../index.xqm";
 import module namespace model = "http://acdh.oeaw.ac.at/webapp/model" at "../model.xqm";
 
 declare namespace output = "https://www.w3.org/2010/xslt-xquery-serialization";
+declare namespace bxerr = "http://basex.org/errors";
 
 declare variable $api:SRU.SUPPORTEDVERSION := "1.2";
 declare variable $api:HOSTNAME := "http://jb80.acdh.oeaw.ac.at";
@@ -47,7 +48,7 @@ function api:sru($operation as xs:string, $query,
                  $x-no-search-filter as xs:boolean) {
     let $context := "http://jp80.acdh.oeaw.ac.at"
     let $ns := index:namespaces($context),
-        $accept := try{ request:header('ACCEPT') } catch bxerr:BASX0000 {'text/html'}
+        $accept := try{ request:header('ACCEPT') } catch bxerr:BASX0000 | basex:http {'text/html'}
     return
         if (not($version)) then diag:diagnostics('param-missing', 'version') else
         if ($version != $api:SRU.SUPPORTEDVERSION) then diag:diagnostics('unsupported-version', $version) else

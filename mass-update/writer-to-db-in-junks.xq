@@ -10,6 +10,7 @@ import module namespace session = "http://basex.org/modules/session";
 import module namespace l = "http://basex.org/modules/admin";
 
 declare namespace _ = "urn:_";
+declare namespace bxerr = "http://basex.org/errors";
 
 declare variable $_:maxNumberOfChangesPerJob := 1000;
 declare variable $_:basePath := file:temp-dir() || 'dba/';
@@ -52,7 +53,7 @@ declare function _:start-jobs-or-get-results() {
   else if (jobs:finished('writeInJunks')) then
   let $mainId := jobs:eval(unparsed-text($_:basePath||'/writer-to-db-in-junks.xq'), map {
         'stage_2': true(),
-        'run_as_user': try {session:get('dba')} catch bxerr:BXSE0003 {user:current()}
+        'run_as_user': try {session:get('dba')} catch bxerr:BXSE0003 | session:get {user:current()}
         }, map {
         'cache': $keep_changed_xml_until_finished,
         'id': 'writeInJunks',
