@@ -408,11 +408,7 @@ td.control {
  padding-right: .4em;
  font-weight: 900;
  opacity: .6;
- }
-
-#schlagworte .pageindex a {
-  padding: 0;
-  }
+ } 
 .i_container {
   overflow: hidden;
   position: relative;
@@ -486,209 +482,6 @@ td.control {
  line-height: 1.25em;
  margin-bottom: 1em;
  }
-
-  
-/*******************
-
-   Thesaurus, Schlagworte
-
-********************/
-fieldset {
-  border: 0;
-  }
-#schlagworte { 
-  padding: 1.5em 16.5em 1em 3em;
-  padding:0;
-  }
-.showOptions h2 {
-  text-align: left;
-  float: left;
-  padding-left: 1rem;
-  line-height: 3.5rem;
-  margin: 0;
-}
-#expandAll {
-    padding: .5em;
-    position: relative;
-    /* float: right; */
-}
-#expandAll > div {
-    line-height: 1.2em;
-}
-#expandAll a {
-  text-transform: lowercase;
-  color: #333300;
-  display: inline-block;
-  margin-left: -1.5em;
-  padding: 0 .5em 0 2.5em;
-  border-radius: .5em;
-  position: relative;
-  z-index: 2;
-  width: 6em;
-  }
-.schlagworte {
-    max-width: 38em;
-    margin: 2em auto; 
-    padding: 0 1em 2em;
-}
-.schlagworte ul,
-.schlagworte ol {
-  margin: 0; 
-  padding: 0;
-  list-style: none;
-  }
-.schlagworte li {
-  position: relative;
-  margin: 1px;
-  margin-left: 1em;
-  padding: 0;
-  list-style: none;
-  /* padding-left: 1.5em; */
-  }
-#thesaurus .schlagworte li {
-  margin-left: 1.5em;
-}
-#thesaurus .schlagworte li.li1 {
-  margin-left: .5em;
-}
-.schlagworte li::first-letter { 
-  text-transform: uppercase;
-  }
-.schlagworte span {
-  position: relative;
-  z-index: 2;
-  /* display: inline; */
-  }  
-.schlagworte li.li1  {
-  margin-top: 1em;
-  }   
-#showList .schlagworte .plusMinus {
-    /* position: absolute; */
-    /* left: -.5em; */
-    /* top: .1em; */
-    float: left;
-}
-span.wrapTerm {
-    display: block; 
-    border-bottom: 1px solid transparent;
-}
-span.wrapTerm:hover {  
-    border-bottom: 1px solid #ccc;
-}
-.pageindex ol.schlagworte {
-    margin: 1em 1.5em;
-    padding: 0;
-    font-size: .85rem;
-}
-.pageindex .schlagworte li.li1 {
-    margin: .5em 0;
-    padding: 0;
-}
-.pageindex .schlagworte li {
-  margin-right:0;
-  }
-.pageindex .schlagworte a {  
-  padding: 0;
-  text-indent: 0;
-}
-  
-  
-#hint_result .schlagworte {
-  padding-left: 1em;
-  }
-#hint_result .schlagworte li.li1  {  
-  margin-left: -1.5em; 
-  }
-#hint_result .schlagworte li   {  
-  margin-right: 0; 
-}
-.schlagworte .li1 > span {
-  margin-left: -.5em;
-  margin-bottom: .5em;
-  font-weight: 600;
-  color: #8e843b;
-  text-transform: uppercase;
-  font-family:  "work sans", "Trebuchet MS", Arial, sans-serif; 
-  } 
-#thesaurus .li1::after {
-  content: "ausw\00e4hlen:";
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-style: italic;
-}
-
-/********  Thesaurus, #wishList ***********/
- 
-#wishList ul {
-    margin: 1em 1em .5em;
-}
-#wishList li {
-  display: block;
-  padding: 0  1em 0 1em;
-  min-height: 1.5em;
-  position: relative;
-}
-#wishList li span   {  
-  cursor: pointer; 
-} 
-#wishList li span:hover   {  
-  color: #000; 
-} 
-#wishList li .fas,
-#wishList li .far  {
-  display: inline-block;
-  margin-left: -1.6em;
-  margin-right: .2em;
-  padding: .2em;
-  color: #96855e;
-  cursor: pointer;
-  border-radius: 4px;
-} 
-#wishList a.andOr:hover,
-#wishList li span:hover .fas,
-#wishList li span:hover .far {
-    color: #fff7d4;
-    background:rgba(150, 133, 94, 0.82);
-}
-#wishList a.andOr  {
-  position: absolute;
-  right: -.5rem;
-  top: .75em;
-  font-size: .8em;
-  line-height:1.8em;
-  padding: 0;
-  width: 2.4em;
-  text-align: center;
-  text-indent: 0;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
-  text-transform: uppercase;
-  background: rgba(233, 220, 175, 0.5);
-  color: #a08628;
-  cursor: pointer;
-  }   
-.andOr:empty {
-  visibility: hidden;
-}
-#abfrage {
-  display: block;
-  text-align: right;
-  padding: 0 1em;
-  line-height: 2em;
-  border-top: 1px solid rgb(228, 211, 165);
-  background: rgba(233, 220, 175, 0.5);
-  font-family: calibri, arial;
-}
-#abfrage:hover {
-  background: rgba(233, 220, 175, 0.8);
-}
-#abfrage::before {
-  font-size: 1.2em;
-  opacity: .5; 
-  padding-right:.5em;
-}
- 
 
 /*******************
 
@@ -1384,15 +1177,14 @@ PLUS-MINUS, ZAHL
  content: '+';
  content: '\f055' /* fa-plus-circle */;
  content: '\f054' /* chevron-right */;
-  content: '\f078' /* chevron-down */; 
+  content: '\f078' /* chevron-down */;
+  content: '\f064' /* fa-share */; 
  font-size: 1em;
  display: inline-block;
  border: 0px solid;
  border-radius: 1em;
- /* border: 1px solid #a6b8da; */
  text-align: center;
  font-weight: 900;
- /* font-weight: 400; */
  line-height: 1.2em;
  width: 1.2em;
  text-align: center;
@@ -1402,21 +1194,16 @@ PLUS-MINUS, ZAHL
   cursor: pointer;
   position:relative;
   color: #008;
-  /* top: -.1em; */
 }
 .plusMinus::before {
   opacity: .5;
   display: inline-block;
-  width: 1.4rem;
-  line-height: 1.4rem;
+  width: 1.4em;
+  line-height: 1.4em; 
   text-indent: 0;
   text-align: center;
   border: 1px solid #a6b8da;
-}
-#facet-subjects .plusMinus::before {
-  line-height: 1.2rem;
-  width: 1.2rem;
-  margin-right: .15rem;
+  transform: rotate(60deg) ; 
 }
 #thesaurus .zahl {
   position: relative;
@@ -1436,11 +1223,9 @@ PLUS-MINUS, ZAHL
   margin-left: .3em;
 }
 .close::before {
-  content: '\f147' /* fa-minus-square-o */;
-  content: '\f138' /* fa-chevron-circle-right */;
-  content: '\f13a' /* fa-chevron-circle-down */;
-  content: '\f056' /* fa-minus-circle */; 
- content: '\f054' /* chevron-right */;
+  transform: scaleY(-1) rotate(45deg);
+  /* opacity: .42; */
+  color: #615a2c;
 } 
 .closeX::after {  
   content: 'X'; 
@@ -1460,13 +1245,6 @@ PLUS-MINUS, ZAHL
   padding: .3em .6em;
 }
 
-.schlagworte .plusMinus::before {
-  margin-left: -1.8em;
-  margin-right: -.2em;
-} 
-.pageindex .schlagworte .plusMinus::before {
- top: 0;
- }
 
 .shortInfo .plusMinus::before {
  margin-right: .3em;
@@ -1521,14 +1299,6 @@ PLUS-MINUS, ZAHL
   display: none;
 }
 
-/*******************/
-
-.term {
-  margin-right: .5em;
-  margin-left: -.3em;
-  border-radius: .5em;
-  padding: .3em;
-}
 
 /******************************
   NavResults
@@ -1654,3 +1424,6 @@ form#searchform3 {
 .CodeMirror-sizer {
   position: absolute;
 }
+fieldset {
+  border: 0;
+  }
