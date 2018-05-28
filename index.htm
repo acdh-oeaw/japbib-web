@@ -9,6 +9,8 @@
   <link href="bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet" type="text/css" /> 
   <link href="https://fonts.googleapis.com/css?family=Work+Sans:600" rel="stylesheet">
   <link href="jb_styles.css" rel="stylesheet" type="text/css" />
+  <link href="jb_thesaurus.css" rel="stylesheet" type="text/css" /> 
+  <link href="jb_search.css" rel="stylesheet" type="text/css" /> 
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/codemirror/lib/codemirror.js"></script>
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
@@ -3400,77 +3402,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
         <td class="slide hide" id="find" style="display: none;">
           <div class="pageindex" id="facet-subjects">
             <h4><span class="showResults">Such-Filter</span></h4>
-            <ol class="schlagworte showResults">
-              <li class="li1">
-                <span>Thema</span>
-                <ol>
-                  <li>
-                    <span class="plusMinus"></span><a href="#" title=
-                    "Ergebnisse einschränken">Gesellschaft<span class="zahl">20</span></a>
-                    <ol>
-                      <li>
-                        <span class="plusMinus"></span><a href="#" title=
-                        "Ergebnisse einschränken">Unterhaltung und Freizeit<span class="zahl">15</span></a>
-                        <ol>
-                          <li>
-                            <a href="#" title="Ergebnisse einschränken">Spiel<span class="zahl">5</span></a>
-                          </li>
-                        </ol>
-                      </li>
-                      <li>
-                        <a href="#" title="Ergebnisse einschränken">Sport<span class="zahl">15</span></a>
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li class="li1">
-                <span>Zeit</span>
-                <ol>
-                  <li>
-                    <span class="plusMinus"></span><a href="#" title=
-                    "Ergebnisse einschränken">Nach 1868<span class="zahl">5</span></a>
-                    <ol>
-                      <li>
-                        <span class="plusMinus"></span><a href="#" title=
-                        "Ergebnisse einschränken">Gegenwart<span class="zahl">5</span></a>
-                        <ol>
-                          <li>
-                            <a href="#" title="Ergebnisse einschränken">Heisei-Zeit<span class="zahl">1</span></a>
-                          </li>
-                        </ol>
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li class="li1">
-                <span>Region</span>
-                <ol>
-                  <li>
-                    <span class="plusMinus"></span><a href="#" title="Ergebnisse einschränken">Japan<span class="zahl">5</span></a>
-                    <ol>
-                      <li>
-                        <span class="plusMinus"></span><a href="#" title=
-                        "Ergebnisse einschränken">Kansai<span class="zahl">5</span></a>
-                        <ol>
-                          <li>
-                            <a href="#" title="Ergebnisse einschränken">Tokyo<span class="zahl">1</span></a>
-                          </li>
-                        </ol>
-                      </li>
-                    </ol>
-                  </li>
-                </ol>
-              </li>
-              <li class="li1">
-                <span>Form</span>
-                <ol>
-                  <li><a href="#" title="Ergebnisse einschränken">Selbständige<span class="zahl">15</span></a>
-                  </li>
-                </ol>
-              </li>
-            </ol>
+            <ol class="schlagworte showResults">  </ol>
             <div class="i_container"><img alt="" src="images/book%20hokusai2.jpg" width="250"></div>
           </div>
           <div class="content">
@@ -3596,7 +3528,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   </td>
                 </tr>
                 <tr class="tipp" id="Beispiele" title="Tipp">
-                  <td class="beispiele" colspan="2">
+                  <td class="suchmethoden" colspan="2">
                       <p>Über das Suchfeld lässt sich eine einfache freie Suche durchführen. Um die Suche genauer abzustimmen, stehen außerdem folgende Methoden zur Verfügung: </p>
                     <div>
 
@@ -3639,10 +3571,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   <td class="showOptions" rowspan="2"><em>Sortierung:</em> <label class="fas fa-sort-amount-down" id=
                   "chooseMaxHits"><select id="maximumRecords" name="maximumRecords" size="1" title=
                   "Maximale Treffer pro Seite">
-                    <option selected="selected" value="10">
+                    <option value="10">
                       10
                     </option>
-                    <option value="20">
+                    <option selected="selected" value="20">
                       20
                     </option>
                     <option value="50">
@@ -3673,27 +3605,17 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               <div id="showList">
                 <div class="navResults"> 
                   <div class="countResults">
-                    <span class="numberofRecords">310</span> Treffer
+                    <span class="numberofRecords">0</span> Treffer
                   </div>
                   <div class="hitList">
-                    <span class="pull fa fa-chevron-circle-left" id="pullLeft" title="zum Anfang scrollen"></span> <a class="hits first"
-                    href="" title="Treffer 1–10">1</a> <span class="fenster" id="fenster1"><span id="hitRow"><a class=
-                    "hits" href="" title="Treffer 11—20">2</a> <a class="hits" href="" title="Treffer 21—30">3</a>
-                    <a class="hits" href="" title="Treffer 31—40">4</a> <a class="hits" href="" title=
-                    "Treffer 41—50">5</a> <a class="hits" href="" title="Treffer 51—60">6</a> <a class="hits" href=""
-                    title="Treffer 61–70">7</a> <a class="hits" href="" title="Treffer 71—80">8</a> <a class="hits"
-                    href="" title="Treffer 81—90">9</a> <a class="hits" href="" title="Treffer 91—100">10</a> <a class=
-                    "hits here" href="" title="Treffer 101—110">11</a> <a class="hits" href="" title=
-                    "Treffer 111—120">12</a> <a class="hits" href="" title="Treffer ">13</a> <a class="hits" href=""
-                    title="Treffer ">14</a> <a class="hits" href="" title="Treffer ">15</a> <a class="hits" href=""
-                    title="Treffer ">16</a> <a class="hits" href="" title="Treffer ">17</a> <a class="hits" href=""
-                    title="Treffer ">18</a> <a class="hits" href="" title="Treffer ">19</a> <a class="hits" href=""
-                    title="Treffer ">20</a> <a class="hits" href="" title="Treffer ">21</a> <a class="hits" href=""
-                    title="Treffer ">22</a> <a class="hits" href="" title="Treffer ">23</a> <a class="hits" href=""
-                    title="Treffer ">24</a> <a class="hits" href="" title="Treffer ">25</a> <a class="hits" href=""
-                    title="Treffer ">26</a> <a class="hits" href="" title="Treffer ">27</a> <a class="hits" href=""
-                    title="Treffer ">28</a> <a class="hits" href="" title="Treffer ">29</a> <a class="hits" href=""
-                    title="Treffer ">30</a></span></span> <a class="hits last" title="Treffer 301–310">31</a>
+                    <span class="pull fa fa-chevron-circle-left" id="pullLeft" title="zum Anfang scrollen"></span> 
+                    <a class="hits first" href="" title="Treffer 1–10">1</a> 
+                    <span class="fenster" id="fenster1">
+                    	<span id="hitRow">
+                    		<a class="hits" href="" title="Treffer 11—20">2</a>
+                    	</span>
+                    </span>
+                    <a class="hits last" title="Treffer 21–30">3</a>
                     <span class="pull fa fa-chevron-circle-right" id="pullRight" title="zum Ende scrollen"></span>
                   </div>
                 </div>
@@ -3702,228 +3624,65 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                                     Resultatliste
 
                 ========================================== -->
-                <ol class="results" data-nextrecordposition="" data-numberofrecords="310">
-                  <li value="41" class="pubForm journalArticle">
-                    <span class="authors">Berndt, Jürgen</span> <span class="year">1995</span>, <a class=
-                    "plusMinus fullRecordLink" href=""><span class="title">Nachwort</span></a>
-                  </li>
-                  <li class="pubForm book">Prohl, Inken/ Zinser, Hartmut 1998, <a class="plusMinus" href="#">Zen, Reiki, Karate</a>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999, <a class="plusMinus"
-                  href="#">Religion and Identity in the Japanese Context</a>
-                  </li>
-                  <li class="pubForm journal">Staemmler, Birgit 2000, <a class="plusMinus" href="#">Werden und Vergehen</a>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus 1997, <a class="plusMinus" href="#">Rituale und ihre Urheber</a>.
-                    <div class="showEntry"> 
-                      <div class='closeX'></div>
-                      <div class="record-html">
-                        <ul >
-                          <li class="eSegment">Autor</li>
-                          <li>Antoni, Klaus<a class="zahl" href="#" title="Neue Abfrage">30</a>, Hg.
-                          </li>
-                          <li class="eSegment">Titel</li>
-                          <li title="buch">Rituale und ihre Urheber: Invented Traditions in der japanischen
-                          Religionsgeschichte</li>
-                          <li class="eSegment">Ort/Verlag/Jahr</li>
-                          <li>Hamburg: LIT-Verl.<a class="zahl" href="#" title="Neue Abfrage">300</a>, 1997
-                          </li>
-                        </ul>
-                        <div class="addInfo">
-                          <h4>Weitere bibliographische Angaben</h4>
-                          <ul>
-                            <li class="eSegment">Reihe</li>
-                            <li>Ostasien-Pazifik<a class="zahl" href="#" title="Neue Abfrage">6</a>, Bd.5
-                            </li>
-                            <li class="eSegment">Kollationsvermerk</li>
-                            <li>300 S. : Ill., graph. Darst., Notenbeisp.</li>
-                            <li class="eSegment">Form</li>
-                            <li>Sammelwerk<a class="zahl" href="#" title="Neue Abfrage">6.000</a>
-                            </li>
-                            <li class="eSegment">Co-Autoren</li>
-                            <li>Paul, G.<a class="zahl" href="#" title="Neue Abfrage">6</a>, Naumann, N.<a class="zahl"
-                              href="#" title="Neue Abfrage">6</a>, Ōbayashi, T<a class="zahl" href="#" title=
-                              "Neue Abfrage">6</a>, Blümmel, V.<a class="zahl" href="#" title="Neue Abfrage">6</a>,
-                              Vollmer, K.<a class="zahl" href="#" title="Neue Abfrage">6</a>, Zöllner, R.<a class=
-                              "zahl" href="#" title="Neue Abfrage">6</a>, Lokowandt, H.<a class="zahl" href="#" title=
-                              "Neue Abfrage">6</a>, Fischer, P.<a class="zahl" href="#" title="Neue Abfrage">6</a>,
-                              Knecht, P.<a class="zahl" href="#" title="Neue Abfrage">6</a>, Pörtner, P.<a class="zahl"
-                              href="#" title="Neue Abfrage">6</a>, Toelken, R.<a class="zahl" href="#" title=
-                              "Neue Abfrage">6</a>, Woirgardt, M.<a class="zahl" href="#" title="Neue Abfrage">6</a>,
-                              Ikeda, H.<a class="zahl" href="#" title="Neue Abfrage">6</a>
-                            </li>
-                            <li class="eSegment">Bemerkungen</li>
-                            <li>Anhang mit Japankarte.</li>
-                          </ul>
-                          <h4>Inhaltliche Angaben</h4>
-                          <ul>
-                            <li class="eSegment">Thema</li>
-                            <li>Religionswissenschaft<a class="zahl" href="#" title="Neue Abfrage">40</a>
-                            </li>
-                            <li>Brauchtum und Feste<a class="zahl" href="#" title="Neue Abfrage">20</a>
-                            </li>
-                            <li class="eSegment">Zeit</li>
-                            <li>Moderne (1868–1945)<a class="zahl" href="#" title="Neue Abfrage">4.088</a>
-                            </li>
-                            <li class="eSegment">Region</li>
-                            <li>Japan<a class="zahl" href="#" title="Neue Abfrage">20.000</a>
-                            </li>
-                            <li>Korea<a class="zahl" href="#" title="Neue Abfrage">4.000</a>
-                            </li>
-                            <li class="eSegment">Stichworte</li>
-                            <li>
-                              <a href="#">Nishida Kitarō</a>; <a href="#">Karl Florenz</a>; <a href="#">Eihei-ji</a>;
-                              <a href="#">Ritual</a>; <a href="#">Invented traditions</a>; <a href=
-                              "#autor">Tagungsbericht</a>
-                            </li>
-                          </ul>
-                          <h4>Externe Suche</h4>
-                          <ul>
-                            <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI=Shintō&AU=Antoni&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
-                            <li><a class="externerLink" href="https://scholar.google.com/scholar?q=Rituale%2Bund%2Bihre%2BUrheber+Antoni" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="toggleRecord">
-                        <i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
-                      </div> 
-                      <div class="record-mods" style="display: none;">
-                      <div class="showOptions"> Aktueller Code
-                        <div class="tipp" title="Tipp">
-                          <span class="display" style="display: none;">
-                            Derzeitige Form des Datensatzes als XML Dokument nach MODS-Standard (<a class="externerLink" href=
-                            'http://www.loc.gov/standards/mods/'>Library of Congress</a>).
-                            </span>
-                        </div>                        
-                      </div>                      
-                      <textarea class="codemirror-data" cols="80" rows="20" style=
-                        "display: none;">&lt;mods xmlns="http://www.loc.gov/mods/v3" xml:id="sid_17512"&gt;
-     &lt;typeOfResource&gt;text&lt;/typeOfResource&gt;
-     &lt;omit&gt;Verwaltungsvermerk&lt;/omit&gt;
-     &lt;name type="personal"&gt;
-            &lt;namePart&gt;Antoni, Klaus&lt;/namePart&gt;
-            &lt;role&gt;
-                 &lt;roleTerm type="code" authority="marcrelator"&gt;edt &lt;/roleTerm&gt;
-            &lt;/role&gt;
-     &lt;/name&gt;
-     &lt;name type="personal"&gt;
-            &lt;namePart&gt;Symposium &amp;lt;Trier, 1996&amp;gt;&lt;/namePart&gt;
-            &lt;role&gt;
-                 &lt;roleTerm type="text"/&gt;
-            &lt;/role&gt;
-     &lt;/name&gt;
-     &lt;titleInfo&gt;
-            &lt;title&gt;Rituale und ihre Urheber&lt;/title&gt;
-            &lt;subTitle&gt;Invented Traditions in der japanischen Religionsgeschichte&lt;/subTitle&gt;
-     &lt;/titleInfo&gt;
-     &lt;relatedItem type="host"&gt;
-            &lt;originInfo&gt;
-                 &lt;dateIssued&gt;1997&lt;/dateIssued&gt;
-                 &lt;publisher&gt;LIT-Verl.&lt;/publisher&gt;
-                 &lt;place&gt;
-                        &lt;placeTerm type="text"&gt;Hamburg&lt;/placeTerm&gt;
-                 &lt;/place&gt;
-            &lt;/originInfo&gt;
-            &lt;relatedItem type="series"&gt;
-                 &lt;titleInfo&gt;
-                        &lt;title&gt;Ostasien - Pazifik&lt;/title&gt;
-                 &lt;/titleInfo&gt;
-                 &lt;part&gt;
-                        &lt;detail type="volume"&gt;
-                             &lt;number&gt;5&lt;/number&gt;
-                        &lt;/detail&gt;
-                 &lt;/part&gt;
-            &lt;/relatedItem&gt;
-     &lt;/relatedItem&gt;
-     &lt;note type="footnotes"&gt;Literaturangaben&lt;/note&gt;
-     &lt;physicalDescription&gt;
-            &lt;note&gt;300 S. : Ill., graph. Darst., Notenbeisp.&lt;/note&gt;
-     &lt;/physicalDescription&gt;
-     &lt;subject displayLabel="Stichworte"&gt;
-            &lt;topic&gt;Ritual&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject displayLabel="Stichworte"&gt;
-            &lt;topic&gt;Invented traditions&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject&gt;
-            &lt;topic&gt;Religionswissenschaft&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject&gt;
-            &lt;topic&gt;Tagungsbericht&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject&gt;
-            &lt;topic&gt;Sammelwerk&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject displayLabel="internal"&gt;
-            &lt;topic&gt;9697&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject displayLabel="internal"&gt;
-            &lt;topic&gt;Autopsie&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;subject&gt;
-            &lt;topic&gt;Brauchtum und Feste&lt;/topic&gt;
-     &lt;/subject&gt;
-     &lt;recordInfo&gt;
-            &lt;recordIdentifier&gt;0018069&lt;/recordIdentifier&gt;
-            &lt;recordCreationDate&gt;06.02.1999; 23.03.1999&lt;/recordCreationDate&gt;
-     &lt;/recordInfo&gt;
-&lt;/mods&gt;</textarea>
-                      </div>
-                      <div class="toggleRecord">
-                        <i class="fa fa-code lidos" title="Ursprünglichen Code anzeigen"></i>
-                      </div> 
-                      <div class="record-lidos" style="display: none;">
-                      <div class="showOptions">Ursprünglicher Code 
-                        <div class="tipp" title="Tipp">
-                          <span class="display" style="display: none;">
-                            Ursprüngliche Form des Datensatzes im Datenbankprogramm LIDOS, als XML-Dokument. 
-                          </span>
-                        </div>
-                      </div>
-                        <textarea class="codemirror-data" cols="80" rows="20" style=
-                        "display: none;">&lt;LIDOS-Dokument&gt;
-     &lt;Dok-Nummer&gt;0018069&lt;/Dok-Nummer&gt;
-     &lt;Verfasser&gt;Rituale und ihre Urheber&lt;/Verfasser&gt;
-     &lt;beteiligte_Personen&gt;Antoni, Klaus/ [Hrsg.]; Symposium &amp;lt;Trier, 1996&amp;gt;&lt;/beteiligte_Personen&gt;
-     &lt;Titel&gt;Rituale und ihre Urheber&lt;/Titel&gt;
-     &lt;Zusatz_zum_Titel&gt;Invented Traditions in der japanischen Religionsgeschichte&lt;/Zusatz_zum_Titel&gt;
-     &lt;Reihe_-_Serie_-_Band&gt;Ostasien - Pazifik; 5&lt;/Reihe_-_Serie_-_Band&gt;
-     &lt;Jahr&gt;1997&lt;/Jahr&gt;
-     &lt;Fußnoten&gt;Literaturangaben&lt;/Fußnoten&gt;
-     &lt;Stichworte&gt;Ritual; Invented traditions;&lt;/Stichworte&gt;
-     &lt;Deskriptoren&gt;Religionswissenschaft&lt;/Deskriptoren&gt;
-     &lt;Deskriptoren&gt;Tagungsbericht&lt;/Deskriptoren&gt;
-     &lt;Deskriptoren&gt;Sammelwerk&lt;/Deskriptoren&gt;
-     &lt;Deskriptoren&gt;9697&lt;/Deskriptoren&gt;
-     &lt;Deskriptoren&gt;Autopsie&lt;/Deskriptoren&gt;
-     &lt;Deskriptoren&gt;Brauchtum und Feste&lt;/Deskriptoren&gt;
-     &lt;Erfassungsdatum&gt;06.02.1999; 23.03.1999&lt;/Erfassungsdatum&gt;
-     &lt;Erscheinungsverm.__Zählung_d._Zs-Quelle&gt;Hamburg: LIT-Verl., 1997&lt;/Erscheinungsverm.__Zählung_d._Zs-Quelle&gt;
-     &lt;Verfasserangabe&gt;Klaus Antoni (Hrsg.)&lt;/Verfasserangabe&gt;
-     &lt;Kollationsvermerk&gt;300 S. : Ill., graph. Darst., Notenbeisp.&lt;/Kollationsvermerk&gt;
-     &lt;Verwaltungsvermerk&gt;cdrom dnb. ub&lt;/Verwaltungsvermerk&gt;
-&lt;/LIDOS-Dokument&gt;</textarea>
-                      </div>               
+                <ol class="results" data-nextrecordposition="" data-numberofrecords="3">
+                  <li value="1" class="pubForm book">
+                    <div class="shortInfo">
+                    	<span class="year"></span>
+                        <span class="plusMinus titel close" title="Details anzeigen/verbergen">
+                        	<span class="title"></span>
+                        </span>
                     </div>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus 1997, <a class="plusMinus" href="#">Rituale und ihre Urheber</a>
-                  </li>
-                  <li class="pubForm book">Prohl, Inken/ Zinser, Hartmut 1998, <a class="plusMinus" href="#">Zen, Reiki, Karate</a>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999, <a class="plusMinus"
-                  href="#">Religion and Identity in the Japanese Context</a>
-                  </li>
-                  <li class="pubForm book">Staemmler, Birgit 2000, <a class="plusMinus" href="#">Werden und Vergehen</a>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus 1997, <a class="plusMinus" href="#">Rituale und ihre Urheber</a>
-                  </li>
-                  <li class="pubForm book">Prohl, Inken/ Zinser, Hartmut 1998, <a class="plusMinus" href="#">Zen, Reiki, Karate</a>
-                  </li>
-                  <li class="pubForm book">Antoni, Klaus/ Kubota, Hiroshi/ Nawrocki, Johann/ Wachutka, Michael 1999, <a class="plusMinus"
-                  href="#">Religion and Identity in the Japanese Context</a>
-                  </li>
-                  <li class="pubForm book">Staemmler, Birgit 2000, <a class="plusMinus" href="#">Werden und Vergehen</a>
-                  </li>
+                    <div class="showEntry" style="display: none;">
+                    	<div class="closeX"></div>
+                    	<div class="record-html">
+                    		<ul>
+                    			<li class="eSegment">Autor</li>
+                    			<li><a href="#?query=author=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
+                    			<li class="eSegment">Titel</li>
+                    			<li></li>
+                    			<li class="eSegment">Ort/Verlag/Jahr</li>
+                    			<li><a href="#?query=publisher=" class="neueSuche fas fa-search" title="neue Suche starten"></a>, <span class=""></span></li>
+                    		</ul>
+                    		<div class="addInfo">
+                    			<h4>Weitere bibliographische Angaben</h4>
+                    			<ul>
+                    				<li class="eSegment">Reihe</li>
+                    				<li><a href="#?query=series=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
+                    				<li class="eSegment">Kollationsvermerk</li>
+                    				<li></li>
+                    				<li class="eSegment">Form</li>
+                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
+                    				<li class="eSegment">Bemerkungen</li>
+                    				<li></li>
+                    			</ul>
+                    			<h4>Inhaltliche Angaben</h4>
+                    			<ul>
+                    				<li class="eSegment">Thema</li>
+                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
+                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
+                    				<li class="eSegment">Stichworte</li>
+                    				<li><a href="#?query=" class="stichwort" title="neue Suche starten"></a>; <a href="#?query=" class="stichwort" title="neue Suche starten"></a></li>
+                    			</ul>
+                    			<h4>Externe Suche</h4>
+                    			<ul>
+                    				<li><a class="externerLink" href="https://scholar.google.com/scholar?q=" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
+                    			</ul>
+                    		</div>
+                    	</div>
+                    	<div class="toggleRecord">
+                    		<i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
+                    	</div>
+                    	<div class="record-mods" style="display:none;">
+                    		<div class="showOptions">
+                    			Aktueller Code
+                    			<div class="tipp" title="Tipp"><span class="display" style="display: none;">Derzeitige Form des Datensatzes als XML Dokument, nach MODS-Standard (<a class="externalLink" href="http://www.loc.gov/standards/mods/">Library of Congress</a>).</span>
+                    			</div>
+                    		</div>
+                    		<textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve" style="display: none;">
+                    		</textarea>
+                    	</div>              
+                    </div>
+                  </li> 
                 </ol>
               </div>
             </div>

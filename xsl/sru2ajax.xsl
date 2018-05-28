@@ -247,8 +247,8 @@
             <xsl:variable name="scanClause" select="$index||'=='||normalize-space(.)"/>
             <xsl:variable name="by-this-term" select="$this/root()//sru:scanResponse[.//sru:scanClause eq $scanClause]//sru:numberOfRecords"/>
             <xsl:variable name="roles" select="$this//mods:roleTerm!normalize-space(.)"/>
-            <xsl:call-template name="format-term"></xsl:call-template><a href="#?query={$index}=&quot;{.}&quot;" class="zahl" title="neue Suche starten"><xsl:value-of select="$by-this-term"/></a><xsl:if
-                test="$roles = $knownSpecialRoles"><xsl:value-of select="', '||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')"/></xsl:if>
+            <xsl:call-template name="format-term"></xsl:call-template><xsl:if
+                test="$roles = $knownSpecialRoles"><xsl:value-of select="' ('||string-join($roles[. = $knownSpecialRoles]!_:dict(.), '; ')||')'"/></xsl:if><a href="#?query={$index}=&quot;{.}&quot;" class="neueSuche fas fa-search" title="Suche nach {.}"><xsl:value-of select="$by-this-term"/></a>
             <xsl:if test="not($isLast)"><xsl:value-of select="$separator"/></xsl:if>
         </xsl:for-each>
     </xsl:template>
@@ -349,7 +349,7 @@
             <xsl:if test="../mods:name">
                 <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/>
             </xsl:if>
-            <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            <a href="#?query=title=&quot;{../mods:titleInfo/mods:sortBy}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
             <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
             <xsl:value-of select="if (not(mods:publisher)) then '' else ', '"/><xsl:call-template name="link-with-number-of-records">                
                 <xsl:with-param name="index">publisher</xsl:with-param>
