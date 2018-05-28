@@ -135,10 +135,10 @@ form#searchform3 {
     top: 0;
     left: 0;
     bottom: 0;
-    right: 0; 
+    right: 0;
     background: rgba(221, 234, 251, 0.5);
     background-repeat: no-repeat;
-    background-position: center 4em; 
+    background-position: center 4em;
     background-image: url(images/arhat.jpg);
     z-index: 10;
     padding: 4.5em 0;

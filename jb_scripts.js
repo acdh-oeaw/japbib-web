@@ -58,8 +58,8 @@ if (Cookies.get('test') === 'passed')
       document.documentElement.scrollTop = 0; // Firefox and IE 
     $.each($('#about .content div'), function() {
       if ($(this).is(':visible') && this.id !== link)
-        $(this).fadeOut('slow', function() {
-          $('#' + link).fadeIn('slow');
+        $(this).fadeOut('', function() {
+          $('#' + link).fadeIn('');
         });
     });
     $('#about .pageindex a').removeClass('here');
