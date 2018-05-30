@@ -178,7 +178,7 @@
         <xsl:apply-templates select="mods:physicalDescription" mode="more-detail"/>
         <xsl:call-template name="topic-filterd-subject-links">
             <xsl:with-param name="topic">Form</xsl:with-param>
-            <xsl:with-param name="subjects" select="mods:subject[not(@displayLabel)]|mods:genre"/>
+            <xsl:with-param name="subjects" select="mods:subject[not(@displayLabel)][not(@usage eq 'secondary')]"/>
         </xsl:call-template>        
         <!-- TODO <li class="eSegment"> Co-Autoren </li>
  Co-Autoren -->
