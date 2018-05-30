@@ -199,21 +199,18 @@
     </xsl:template>
     
     <xsl:template name="externeSuche" >        
-        <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]">
-            <!-- todo: passenden Selektor finden, bs -->
-        <xsl:variable name="title4externalQuery" select="mods:title[ancestor::mods:mods/mods:titleInfo]" ></xsl:variable>
+        <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]"> 
+            <xsl:variable name="title4externalQuery" select="mods:titleInfo/mods:title" />
+            <xsl:variable name="author4externalQuery" select="mods:name/mods:namePart" />
         <h4>Externe Suche</h4>
-            <ul>        
-            <!--  
-            <li><a class="externerLink" href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&kataloge=BVB&kataloge=NRW&kataloge=HEBIS&kataloge=HEBIS_RETRO&kataloge=KOBV_SOLR&kataloge=GBV&kataloge=DDB&kataloge=STABI_BERLIN&OESTERREICH=&kataloge=BIBOPAC&kataloge=LBOE&kataloge=OENB&SCHWEIZ=&kataloge=SWISSBIB&kataloge=HELVETICAT&kataloge=BASEL&kataloge=ETH&kataloge=VKCH_RERO&digitalOnly=0&embedFulltitle=0&newTab=1&TI={$title4externalQuery}&AU={$author4externalQuery}&autosubmit=true" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank">Karlsruher Virtueller Katalog</a></li>
-            -->
+            <ul>   
             <li>
-                <a class="externerLink" 
-                    href="https://scholar.google.com/scholar?q={$title4externalQuery}" 
-                    title="Suchen mit Google Scholar" 
-                    target="_blank">Google Scholar
-                </a>
+               <a class="externerLink" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank"
+                   href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&amp;kataloge=BVB&amp;kataloge=NRW&amp;kataloge=HEBIS&amp;kataloge=HEBIS_RETRO&amp;kataloge=KOBV_SOLR&amp;kataloge=GBV&amp;kataloge=DDB&amp;kataloge=STABI_BERLIN&amp;OESTERREICH=&amp;kataloge=BIBOPAC&amp;kataloge=LBOE&amp;kataloge=OENB&amp;SCHWEIZ=&amp;kataloge=SWISSBIB&amp;kataloge=HELVETICAT&amp;kataloge=BASEL&amp;kataloge=ETH&amp;kataloge=VKCH_RERO&amp;digitalOnly=0&amp;embedFulltitle=0&amp;newTab=1&amp;TI={$title4externalQuery}&amp;AU={$author4externalQuery}&amp;autosubmit=true" > 
+                  Karlsruher Virtueller Katalog
+               </a>
             </li>  
+                <!-- https://scholar.google.com/scholar?q={$title4externalQuery} -->
         </ul>
         </xsl:if>
     </xsl:template> 
@@ -348,8 +345,8 @@
         <li>
             <xsl:if test="../mods:name">
                 <xsl:apply-templates select="../mods:name" mode="detail"/><xsl:value-of select="', '"/>
-            </xsl:if>
-            <a href="#?query=title=&quot;{../mods:titleInfo/mods:sortBy}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
+            </xsl:if> 
+            <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
             <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
             <xsl:value-of select="if (not(mods:publisher)) then '' else ', '"/><xsl:call-template name="link-with-number-of-records">                
                 <xsl:with-param name="index">publisher</xsl:with-param>
