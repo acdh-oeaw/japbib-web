@@ -205,7 +205,7 @@
         <h4>Externe Suche</h4>
             <ul>   
             <li>
-               <a class="externerLink" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="_blank"
+               <a class="externerLink" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="kvk"
                    href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&amp;kataloge=BVB&amp;kataloge=NRW&amp;kataloge=HEBIS&amp;kataloge=HEBIS_RETRO&amp;kataloge=KOBV_SOLR&amp;kataloge=GBV&amp;kataloge=DDB&amp;kataloge=STABI_BERLIN&amp;OESTERREICH=&amp;kataloge=BIBOPAC&amp;kataloge=LBOE&amp;kataloge=OENB&amp;SCHWEIZ=&amp;kataloge=SWISSBIB&amp;kataloge=HELVETICAT&amp;kataloge=BASEL&amp;kataloge=ETH&amp;kataloge=VKCH_RERO&amp;digitalOnly=0&amp;embedFulltitle=0&amp;newTab=1&amp;TI={$title4externalQuery}&amp;AU={$author4externalQuery}&amp;autosubmit=true" > 
                   Karlsruher Virtueller Katalog
                </a>
@@ -320,10 +320,10 @@
          </li>
     </xsl:template>
     
-    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'][matches(., 'journalArticle|newspaperArticle')] and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
+    <xsl:template match="mods:originInfo[ancestor::mods:mods/mods:genre[@authority='local'][matches(., 'journalArticle|newspaperArticle')] 
+        and parent::mods:relatedItem[@type eq 'host']]" mode="detail" priority="1">
         <li class="eSegment">In: </li>
-        <li><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
-            <!-- todo: nonSort berücksichtigen, bs -->
+        <li><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a> 
             <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')||' '||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/><xsl:choose>
                 <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
                     /<span class="{../@type}"><xsl:value-of select="string-join(mods:dateIssued, ', ')"/></span>
@@ -398,7 +398,7 @@
             <li class="eSegment"><xsl:value-of select="$topic"/></li>
             <xsl:for-each select="$filteredSubjects">
                 <li><xsl:call-template name="link-with-number-of-records">
-                    <xsl:with-param name="index">primarysubject</xsl:with-param>
+                    <xsl:with-param name="index">subject</xsl:with-param>
                     <xsl:with-param name="term" select="."/>
                 </xsl:call-template></li>
             </xsl:for-each>            
