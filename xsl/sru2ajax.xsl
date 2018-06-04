@@ -388,7 +388,7 @@
     <xsl:template match="mods:note" mode="more-detail">
         <li><xsl:value-of select="."/></li>
     </xsl:template>
-    
+   
     <xsl:template name="topic-filterd-subject-links">
         <xsl:param name="topic" as="xs:string"/>
         <xsl:param name="subjects" as="element()*"/>
@@ -421,6 +421,7 @@
     </xsl:template>
     
     <!-- Taxonomy -->
+   
     <xsl:template match="taxonomy">
         <ol class="schlagworte showResults"><xsl:apply-templates select="*"/></ol>
     </xsl:template>
@@ -438,24 +439,29 @@
             <ol><xsl:apply-templates select="category"/></ol>           
         </li>
     </xsl:template>
-    
+    <!-- 
+        
+    <xsl:template match="category"> 
+        <li class="li{count(ancestor::category)+1}"> 
+            <span class="wrapTerm">                
+                <span class="term {if (category) then 'plusMinus' else ''}"
+                    title="{if (category) then 'Unterschlagworte zeigen/ verbergen' else ''}"><xsl:value-of select="catDesc"/></span>
+                <a href="#find?query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Direkte Suche auf der Sucheseite"><xsl:value-of select="numberOfRecords"/></a> 
+            </span>
+            <xsl:if test="category">
+                <ol>
+                    <xsl:apply-templates select="category"/>
+                </ol>
+            </xsl:if>
+        </li>
+    </xsl:template>
+    -->
     <xsl:template match="category">
-        <xsl:param name="base-path" tunnel="yes">#</xsl:param>
-        <xsl:variable name="has-children" as="xs:boolean" select="exists(category)"/>
-        <li>
-            <xsl:if test="$has-children">
-                <span  title="Details anzeigen/verbergen" class="plusMinus"></span>                
-           </xsl:if> 
-            <a href="#" title="Suchergebnisse filtern" class="aFilter">
-                <xsl:attribute name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/> 
-                <xsl:value-of select="catDesc"/>
-                <span class="zahl"><xsl:value-of select="numberOfRecords"/></span>                
-            </a>
-            <!--      
-            <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
-                <xsl:with-param name="href" select="$base-path||'?query=subject%3D&quot;'||catDesc||'&quot;'"/>
-            </xsl:apply-templates>
-            -->
+        <li> <span class="wrapTerm">
+            <span class="term {if (category) then 'plusMinus' else ''}"
+                title="{if (category) then 'Unterschlagworte zeigen/ verbergen' else ''}"><xsl:value-of select="catDesc"/></span>
+            <a href="#?query=subject%3D&quot;{catDesc}&quot;" class="zahl aFilter" title="Suche filtern"><xsl:value-of select="numberOfRecords"/></a> 
+        </span>
             <xsl:if test="category">
                 <ol style="display:none;"><xsl:apply-templates select="category"/></ol>
             </xsl:if>

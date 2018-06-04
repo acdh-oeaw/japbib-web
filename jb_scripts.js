@@ -594,22 +594,10 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   }
   $('#facet-subjects').on('click', '.showResults a.aFilter', function(e) {
     e.preventDefault();
-    //alert('ok');
     var query = findQueryPartInHref($(this).attr('href')),
       subject = query.query,
       currentQuery = $('#searchInput1').val(),
       newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject; 
-      /*,
-      plusMinus = $(this).prevAll('.plusMinus');
-    if (plusMinus.length === 1 && !plusMinusDependentIsShown(plusMinus)) {
-      toggleNextSubtree.apply(plusMinus, [e]);
-      setTimeout(function() {
-        executeQuery(newQuery)
-      }, 2000);
-    } else {
-      executeQuery(newQuery);
-    }
-    */
     executeQuery(newQuery);
   });
 
@@ -686,7 +674,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
 
   // Schlagwortbaum oeffnen und schliessen (BS)
   var plusMinus = '.schlagworte .plusMinus',
-    ols = '#thesaurus .schlagworte li li ol';
+    ols = '.schlagworte li li ol';
   // Anfangszustand 
   $(plusMinus).removeClass('close');
   $(ols).hide();
@@ -711,17 +699,18 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   // Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
 
   var $wishList = $('#wishList'),
-    ausgewaehlt = [],
-    maxWishes = 3;
+    maxWishes = 3; 
   $wishList.empty();
   $('#chooseQuerymode input').change(function(){ 
-  if($(this).val() === 'combinedSearch') {
-  
+    var ausgewaehlt = []; 
+    
+    if($(this).val() === 'combinedSearch') {  
+        
+    $('#thesaurus .schlagworte').addClass('kombinieren'); 
 
   function neueAuswahl(newTerm, newConj, remove) {
     var termIsNew = true,
-      and
-    conjIsNew = newConj ? true : false,
+      conjIsNew = newConj ? true : false,
       newConj = newConj || 'and';
     if (ausgewaehlt.length)
       for (i in ausgewaehlt) {
@@ -750,7 +739,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
 
     // class=checked hinzufügen/entfernen
     var checked = [];
-    $('#thesaurus .checked').removeClass('checked'); 
+    $('#thesaurus .zahl').removeClass('checked'); 
     $('#thesaurus .zahl').each(function() {
       for (i in ausgewaehlt) {
         if ($( this ).prevAll('.term').text() === ausgewaehlt[i].term)
@@ -758,7 +747,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       }    
     });
     for ( i in checked) {      
-     checked[i].addClass("checked"); 
+     checked[i].addClass("checked");  
     }
 
     baueListe();
@@ -801,7 +790,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       'and';
     neueAuswahl(term, conj);
   });
-  $(document).on('click', '#thesaurus .schlagworte a.zahl', function(e) {
+  $(document).on('click', '#thesaurus .kombinieren .zahl', function(e) {
     e.preventDefault();
     var term = $(this).prevAll('.term:first').html();
     if ($(this).hasClass('checked')) { 
@@ -811,10 +800,12 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
       neueAuswahl(term);
     }
   });   
-  } else {
-    $wishList.empty();
-    $('#thesaurus .checked').removeClass('checked'); 
-    }
+  } 
+  else {
+    $wishList.empty();  
+    $('#thesaurus .schlagworte').removeClass('kombinieren');
+    //$('#thesaurus .zahl').removeClass('checked');  
+  }  
   });
   //wishlist fixieren (BS)
   function fixWishlist() {
