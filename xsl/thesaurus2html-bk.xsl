@@ -25,12 +25,20 @@
         <xsl:apply-imports/>
     </xsl:template>
     
-    <xsl:template match="category"> 
-        <li class="li{count(ancestor::category)+1}"> 
-            <span class="wrapTerm">                
-                <span class="term {if (category) then 'plusMinus' else ''}"
-                    title="{if (category) then 'Unterschlagworte zeigen/ verbergen' else ''}"><xsl:value-of select="catDesc"/></span>
-                <a href="#find?query=subject%3D&quot;{catDesc}&quot;" class="zahl suchen" title="Direkte Suche auf der Sucheseite"><xsl:value-of select="numberOfRecords"/></a> 
+    <xsl:template match="category">
+        <xsl:param name="newTitle" as="xs:string">Treffer für Schlagwortkombination auswählen</xsl:param> 
+        <li class="li{count(ancestor::category)+1}">
+            <xsl:if test="not(matches(@n, '^[123456789]$')) and category">
+                <span  title="Details anzeigen/verbergen" class="plusMinus"></span> 
+            </xsl:if>            
+            <span class="wrapTerm">
+                <xsl:apply-templates select="catDesc"/> 
+                <xsl:apply-templates select="numberOfRecords | numberOfRecordsInGroup"> 
+                    <xsl:with-param name="title"
+                        select="$newTitle"/>
+                    <xsl:with-param name="href"
+                        select="'#thesaurus?query=subject%3D&quot;' || catDesc || '&quot;'"/>
+                </xsl:apply-templates>
             </span>
             <xsl:if test="category">
                 <ol>
@@ -40,8 +48,8 @@
         </li>
     </xsl:template>
     
-    <xsl:template match="catDesc"> 
-        <xsl:value-of select="."/>
+    <xsl:template match="catDesc">
+        <a href="#find?query=subject%3D&quot;{.}&quot;" class='term' title='direkte Abfrage auf der Suchseite'><xsl:value-of select="."/></a>
     </xsl:template> 
 
 </xsl:stylesheet>

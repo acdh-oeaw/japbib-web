@@ -583,18 +583,27 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
           <div id="wrapAbsolute">
             <div id="wrapFixed">
               <div class="pageindex">
-                <h4>Schlagworte auswählen</h4>
+                <h4>Abfragemodus </h4> 
+                <form id="chooseQuerymode">
+                	<ul>
+                		<li><input type="radio"  name="Abfragemodus" id="_dir" value="directSearch" checked="checked" />
+                			<label for="_dir"> Schlagworte direkt suchen</label>
+                		</li>
+                		<li><input type="radio"  name="Abfragemodus"  id="_kom" value="combinedSearch">
+                			<label for="_kom"> Schlagworte kombinieren</label> 
+                		</li>
+                	</ul>
+                </form> 
                 <div id="wishList">
                   <ul>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Shintō" /> Shintō
-                    <a class="andOr">and</a></label></li>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Buddhismus " />
-                    Buddhismus <a class="andOr">and</a></label></li>
-                    <li><label><input checked="checked" name="schlagwort" type="checkbox" value="Altertum (bis 1192)" />
-                    Altertum (bis 1192)</label></li>
-                    <li style="text-align: right; margin-top: 1em;">334 Resultate <button name="button" title=
-                    "Suche nach Schlagworten">anzeigen</button></li>
+                    <li><span><i class="fas fa-check-square" title="Auswahl löschen"></i> Shintō</span>
+                    	<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">AND</a>
+                    </li>
+                    <li><span><i class="fas fa-check-square" title="Auswahl löschen"></i> Buddhismus</span>
+                    	<a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">AND</a>
+                    </li> 
                   </ul>
+                  <a class="fas fa-search" id="abfrage" href="#find" title= "Abfrage auf der Suchseite">Abfrage</a>
                 </div>
                 <form action="sru" id="searchform2" name="searchform2">
                   <input name="query" type="hidden" value="" /> 

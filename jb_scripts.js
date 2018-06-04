@@ -704,15 +704,19 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     if (e.currentTarget !== e.target) {
       return;
     }
-    $(this).nextAll('ol').toggle('slow');
+    $(this).parent('.wrapTerm').nextAll('ol').toggle('slow');
     $(this).toggleClass('close');
   }
 
   // Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
+
   var $wishList = $('#wishList'),
     ausgewaehlt = [],
     maxWishes = 3;
   $wishList.empty();
+  $('#chooseQuerymode input').change(function(){ 
+  if($(this).val() === 'combinedSearch') {
+  
 
   function neueAuswahl(newTerm, newConj, remove) {
     var termIsNew = true,
@@ -761,7 +765,7 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
   }
 
   function baueListe() {
-    var $ue = $('#thesaurus h4');
+    //var $ue = $('#thesaurus h4');
     var newWishes = '';
     var newQ = '';
     $.each(ausgewaehlt, function(i, qObj) {
@@ -775,12 +779,12 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     newQ = encodeURIComponent(newQ);
     $wishList.empty();
     if (ausgewaehlt.length > 0) {
-      $ue.text(' Ausgewählte Schlagworte ');
+      //$ue.text(' Ausgewählte Schlagworte ');
       $wishList
         .append('<ul>' + newWishes + '</ul>')
         .append('<a class="fas fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
     } else {
-      $ue.text('Schlagworte auswählen');
+      //$ue.text('Schlagworte auswählen');
     }
   }
   // Auswahl entfernen
@@ -805,6 +809,11 @@ function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
     }
     else {
       neueAuswahl(term);
+    }
+  });   
+  } else {
+    $wishList.empty();
+    $('#thesaurus .checked').removeClass('checked'); 
     }
   });
   //wishlist fixieren (BS)

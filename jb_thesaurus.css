@@ -37,7 +37,7 @@
   margin-left:0;
   }  
 .schlagworte a {
-  margin-right: .5em;  
+  margin-right: -.3em;  
   margin-left: -.3em;  
   border-radius: .5em;
   padding: 0 .3em;
@@ -53,9 +53,12 @@
   } 
 /* plusMinus */
 
-.schlagworte .plusMinus { 
-position: absolute;
-left: -2em;
+#thesaurus .schlagworte .plusMinus::before {
+  position: absolute; 
+  left: -1.55em;
+  }
+.schlagworte a.plusMinus { 
+position: relative; 
 }
 
 /*  Zahl */  
@@ -71,13 +74,17 @@ left: -2em;
 .aZahl::before  {
   content: ""; /* fa-filter */
   opacity: .8;
-  margin-right: .5em;
+  margin-right: 1.5em;
 } 
-.thesaurus a.zahl:hover::before, 
-.thesaurus .zahl.checked::before, 
-.aZahl::before { 
+.thesaurus a.zahl:hover::before { 
   content: "\f0b0"; /* fa-filter */     
-  content: "\f14a"; /* fa-check */ 
+  content: "\f14a"; /* fa-check */    
+  content: "\f002"; /* fa-search */ 
+} 
+ 
+.thesaurus .zahl.checked::before,
+.thesaurus .zahl.checked:hover::before {      
+  content: "\f14a"; /* fa-check */    
 } 
 #thesaurus .zahl {
   position: relative;
@@ -131,14 +138,22 @@ left: -1.7em;
   font-style: italic;
 }
 span.wrapTerm {
-    display: block; 
+    display: block;
     border-bottom: 1px solid transparent;
+    clear: right;
 }
 span.wrapTerm:hover {  
     border-bottom: 1px solid #ccc;
 }  
-#thesaurus .schlagworte a.term {
-   padding: .3em; 
+#thesaurus .schlagworte .term {
+   padding: .3em ; 
+   padding-right: .5em ; 
+   border-radius: 5px;
+}
+
+#thesaurus .schlagworte .term:hover { 
+  color:#008;
+  background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.08)); 
 }
 
 /* Alles öffnen und schließen */
