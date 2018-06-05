@@ -30,7 +30,7 @@
             <span class="wrapTerm">                
                 <span class="term {if (category) then 'plusMinus' else ''}"
                     title="{if (category) then 'Unterschlagworte zeigen/ verbergen' else ''}"><xsl:value-of select="catDesc"/></span>
-                <a href="#find?query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Direkte Suche auf der Sucheseite"><xsl:value-of select="numberOfRecords"/></a> 
+                <a href="#find?query=subject%3D&quot;{catDesc}&quot;" data-id="q_{catDesc}" class="zahl" title="Direkte Suche auf der Sucheseite"><xsl:value-of select="numberOfRecords"/></a> 
             </span>
             <xsl:if test="category">
                 <ol>

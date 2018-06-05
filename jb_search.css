@@ -394,11 +394,8 @@ tr.search .fa-search {
      Suchresultate 
 
 *************************/
-
-.showResults {
-  padding-top: 2em;
-} 
-#showList { 
+ 
+#showList {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: .5em 1em;
@@ -406,6 +403,9 @@ tr.search .fa-search {
   /* background: rgb(196, 179, 130); */
   } 
 
+#find #showList {
+ margin-top: 2.5em; 
+}
 .results {
   margin: 0;
   padding: 1em 2em 1em 3em;
@@ -544,8 +544,9 @@ div.showEntry {
  padding-left: 2rem;
  text-indent: -2rem;
  border-radius: 1em;
- display: block; 
+ display: block;
  background: rgb(243, 247, 240);
+ color: #008;
  }
 .shortInfo .titel:hover {
  background: rgb(235, 240, 230);

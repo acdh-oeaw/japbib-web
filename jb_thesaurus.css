@@ -7,92 +7,114 @@
 /* Schlagwortbaum */
 
 .schlagworte {
+  margin: 0;
+  padding: .3em 0 1em; 
+  color: rgb(93, 73, 20);
+}
+#thesaurus .schlagworte {
+    max-width: 38em;
     margin: 2em auto; 
     padding: 0 1em 2em;
 }
+
 .schlagworte ul,
 .schlagworte ol {
   margin: 0; 
   padding: 0;
   list-style: none;
-  }
+}
 .schlagworte li {
   position: relative;
   margin: 1px;
   margin-left: 1.7em;
+  margin-top: .2em;
   padding: 0;
-  list-style: none;
-  /* padding-left: 1.5em; */
-  }
+  list-style: none; 
+} 
+#facet-subjects .schlagworte li { 
+    margin-left: 1em;  
+} 
 .schlagworte li::first-letter { 
   text-transform: uppercase;
   }
 .schlagworte span {
   position: relative;
-  z-index: 2;
-  /* display: inline; */
+  z-index: 2; 
   }  
-.schlagworte li.li1  {
-  margin-top: 1em;
-  margin-left:0;
-  clear: both;
-  }  
-.schlagworte a {
-  margin-right: -.3em;  
-  margin-left: -.3em;  
-  border-radius: .5em;
-  padding: 0 .3em;
-}
+
 /* Thema, etc. */
+.schlagworte li.li1  { 
+  margin: 1em 0 .5em -.5em;
+  clear: both;
+  }   
 .schlagworte .li1 > span {
-  margin-left: -.5em;
-  margin-bottom: .5em; 
-  font-weight: 600;
   color: #8e843b;
+  font-weight: 600;
   text-transform: uppercase;
   font-family:  "work sans", "Trebuchet MS", Arial, sans-serif;
-  } 
+  }  
+#facet-subjects .schlagworte li.li1 > span { 
+    margin-left: -.5em;  
+  color: #37629b;
+}
+
 /* plusMinus */
 
-#thesaurus .schlagworte .plusMinus::before {
+.schlagworte .plusMinus {
+  color: rgb(93, 73, 20);
+}
+.schlagworte .plusMinus:hover {
+  color: #008;
+  background: transparent;
+}
+.schlagworte .plusMinus::before {
   position: absolute; 
   left: -1.55em;
   }
-.schlagworte a.plusMinus { 
-position: relative; 
+ 
+#facet-subjects .plusMinus::before {
+  position: absolute;
+  left: -1.6em;
+  line-height: 1.2em;
+  width: 1.2em;
+  font-size: .9em;
 }
 
 /*  Zahl */  
 
 .zahl {
   font-family: calibri, arial;
-  opacity: .7;
-  font-size: .9em;
-}
-.zahl:hover,
-*:hover > .zahl { 
-  opacity: 1;
+  border-radius: .5em; 
+  padding: 0 .5em
 }
 .zahl::before, 
 .aZahl::before {
-  content: "\f0b0"; /* fa-filter */ 
+  content: "\f0b0"; /* fa-filter */
   padding-right: .2em;
   padding-left: .5em;
   font-weight: 900;
-  } 
-#thesaurus .zahl {
+  opacity: .4; 
+  white-space: nowrap;
+} 
+.zahl:hover::before  { 
+  opacity: 1;
+}
+
+#facet-subjects .zahl {
+  font-size: .85em
+}
+.thesaurus .zahl {
   position: relative;
   display: block;
   text-align: right;
+  margin-right: -.3em; 
+  padding-right: .3em;
 }
-.thesaurus .zahl::before, 
-.aZahl::before  { 
+.thesaurus .zahl::before  { 
+  content: "\f002"; /* fa-search */ 
   margin-right: .5em;
   opacity: .15;
 } 
-.thesaurus .zahl::before {   
-  content: "\f002"; /* fa-search */ 
-}
 .thesaurus .kombinieren .zahl::before {
   content: "\f14a"; /* fa-check */
   font-weight: 400;
@@ -103,30 +125,8 @@ position: relative;
   font-weight: 900;
 } 
   
-
-/* spezielle Befehle Filterbaum */
-
-#facet-subjects .schlagworte {
-  margin: 0;
-  padding: 0 .35em 1.5em;
-}
-#facet-subjects .schlagworte li { 
-    margin-left: 1em;  
-} 
-#facet-subjects .schlagworte li.li1 > span { 
-    margin-left: -1em;  
-}
-#facet-subjects .schlagworte .plusMinus {left: -1.7em;}
-#facet-subjects .plusMinus::before {
-  line-height: 1.2em;
-  width: 1.2em;
-}
-
 /* spezielle Befehle Thesaurus */
 
-#thesaurus .schlagworte {
-    max-width: 38em;
-}
 #thesaurus .li1::after {
   content: "suchen:";
   position: absolute;
@@ -148,15 +148,14 @@ position: relative;
 #thesaurus .schlagworte .term {
    padding: 0 .3em;
    padding-right: .5em;
-   border-radius: 5px;
    float: left;
    clear: left;
    background: #fff;
+   color: rgb(0, 36, 136);
 }
-
-#thesaurus .schlagworte .term:hover { 
-  color:#008;
-  background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.08)); 
+#thesaurus .schlagworte .plusMinus:hover,
+#thesaurus .schlagworte .close::before {
+      color: #8e843b;
 }
 
 /* Alles öffnen und schließen */
@@ -238,10 +237,12 @@ position: relative;
   color: #a08628;
   cursor: pointer;
   }   
-.andOr:empty {
+.andOr:empty,
+li:last-child .andOr {
   visibility: hidden;
 }
-#abfrage {
+#abfrage, 
+#wishList p {
   display: block;
   text-align: right;
   padding: 0 1em;
@@ -249,6 +250,10 @@ position: relative;
   border-top: 1px solid rgb(228, 211, 165);
   background: rgba(233, 220, 175, 0.5);
   font-family: calibri, arial;
+}
+#wishList p {
+    text-align: left;
+    border: 0;
 }
 #abfrage:hover {
   background: rgba(233, 220, 175, 0.8);

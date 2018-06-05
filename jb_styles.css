@@ -49,7 +49,7 @@ a {
 a:hover,
 .aHover {
   color:#008;
-  background: linear-gradient( rgba(0, 146, 255, 0.04), rgba(0, 146, 255, 0.08));
+  background: linear-gradient( rgba(0, 146, 255, 0.09), rgba(0, 146, 255, 0.12));
   }
 p { 
   margin: 1em 0;
@@ -575,12 +575,11 @@ PLUS-MINUS, ZAHL
  line-height: 1.2em;
  width: 1.2em;
  text-align: center;
- opacity: 0.4;
+ opacity: 0.6;
  } 
 .plusMinus {
   cursor: pointer;
-  position:relative;
-  color: #008;
+  position:relative; 
 }
 .plusMinus::before {
   content: '\f064' /* fa-share */; 
@@ -590,17 +589,15 @@ PLUS-MINUS, ZAHL
   line-height: 1.4em; 
   text-indent: 0;
   text-align: center;
-  border: 1px solid #a6b8da;
+  border: 1px solid #a6a6a6;
   transform: rotate(60deg) ; 
 }
+.close::before {
+  transform: scaleY(-1) rotate(45deg);   
+} 
 .closeX {
   margin-left: .3em;
 }
-.close::before {
-  transform: scaleY(-1) rotate(45deg);
-  /* opacity: .42; */
-  color: #615a2c;
-} 
 .closeX::after {  
   content: 'X'; 
   content: '\f00d' /* fa-times */
@@ -608,7 +605,7 @@ PLUS-MINUS, ZAHL
 .closeX:hover::after, 
 .plusMinus:hover::before {  
   opacity: 1;
-    background: rgba(96, 148, 188, 0.1);
+  background: rgba(134, 157, 175, 0.1);
 }
 .showEntry .closeX {
   /* float:right; */
