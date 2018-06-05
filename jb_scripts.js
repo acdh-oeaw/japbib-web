@@ -732,25 +732,29 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     wishList.empty();
     
-    function emptyWishlist() {
-        if (wishList.html())
-            wishList.hide(200, function(){wishList.empty();wishList.show();})  
-        else
-           wishList.empty();         
-    }
-
     $('#chooseQuerymode input').change(function() {
 
+        $('#chooseQuerymode .ausgewaehlt').removeClass('ausgewaehlt');
+        $( this).parent().addClass('ausgewaehlt');
+        
         // Ausgangssituation herstellen  
-        ausgewaehlt = [];   
-        emptyWishlist();      
+        ausgewaehlt = [];  
+        
+        var hideTime =  wishList.html() ? 
+            'slow' : 0;            
+        wishList.hide('hideTime', function(){wishList.empty();wishList.show();})   
+
         if ($('.kombinieren').length)
             $('.kombinieren').removeClass('kombinieren');
         if ($('.checked').length)
-            $('.checked').removeClass('checked');
-    
+            $('.checked').removeClass('checked'); 
+
         if ($(this).val() === 'combinedSearch') {
             $('#thesaurus .schlagworte').addClass('kombinieren');
+            $('#thesaurus .schlagworte .zahl').attr('title', 'für kombinierte Suche auswählen');
+        }
+        else {
+            $('#thesaurus .schlagworte .zahl').attr('title', 'direkte Suche auf der Suchseite');
         }
     });
 
@@ -794,15 +798,16 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     function renewWishlist() {     
     // aktualisiere die Wishlist und die gecheckten Zahlen
-        var newWishes = '';
-        var newQ = '';
+        var newWishes = '',
+            newQ = '';
+
         $('#thesaurus .zahl').removeClass('checked'); 
 
         $.each(ausgewaehlt, function(i, qObj) {
            // class=checked hinzufügen 
            $( '.zahl[data-id="'+qObj.id+'"]').addClass('checked');
 
-           newWishes += '<li><span data-name="'+qObj.id+'"><i class="fas fa-check-square" title="Auswahl löschen"></i>' +
+           newWishes += '<li><span data-name="'+qObj.id+'" class="ausgewaehlt" title="Auswahl löschen">' +
              qObj.term +
              '</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
              qObj.conj +
@@ -813,15 +818,26 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
         // neue wishList schreiben
         
+        var showTime= wishList.html() ? 0 : 'slow',
+            hitCount= calculateHits() ? 
+                '('+calculateHits()+' Treffer)' : '';
         wishList.empty();
+        wishList.hide(); 
 
         if (ausgewaehlt.length > 0) { 
             wishList
-                .append('<p>Ausgewählte Schlagworte</p><ul>' + newWishes + '</ul>')
+                .append('<p>Schlagworte (max. '+maxWishes+'):</p><ul>' + newWishes + '</ul>')
+                .append(hitCount)
                 .append('<a class="fas fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
         }
-
+        wishList.show(showTime);
     }
+    // Ergebnis berechnen
+    function calculateHits() {
+        //Anfrage an den Server schicken
+        return 0;
+    }
+
     // Auswahl entfernen
     $(document).on('click', '#wishList li *[data-name]', function() {
         var id = $(this).attr('data-name'); 

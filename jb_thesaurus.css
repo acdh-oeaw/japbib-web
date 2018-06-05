@@ -124,6 +124,10 @@
   opacity: .8;
   font-weight: 900;
 } 
+.thesaurus .zahl.checked:hover::before { 
+  opacity: .8;
+  font-weight: 400;
+} 
   
 /* spezielle Befehle Thesaurus */
 
@@ -189,6 +193,14 @@
 
 /********  Thesaurus, #wishList ***********/
  
+#chooseQuerymode label,
+#chooseQuerymode input {
+   cursor: pointer;
+   margin-left: 1em;
+}
+.ausgewaehlt { 
+    font-weight: bold;
+}
 #wishList ul {
     margin: 1em 1em .5em;
 }
@@ -197,15 +209,9 @@
   padding: 0  1em 0 1em;
   min-height: 1.5em;
   position: relative;
-}
-#wishList li span   {  
+} 
+#wishList .ausgewaehlt { 
   cursor: pointer; 
-} 
-#wishList li span:hover   {  
-  color: #000; 
-} 
-#wishList li .fas,
-#wishList li .far  {
   display: inline-block;
   margin-left: -1.6em;
   margin-right: .2em;
@@ -213,10 +219,20 @@
   color: #96855e;
   cursor: pointer;
   border-radius: 4px;
+  font-weight: normal;  
 } 
-#wishList a.andOr:hover,
-#wishList li span:hover .fas,
-#wishList li span:hover .far {
+#wishList .ausgewaehlt:hover { 
+  color: #7f6f4b;
+}
+#wishList .ausgewaehlt::before {
+  content: "\f14a"; /* fa-check */
+  font-weight: 900;  
+  margin-right:.3em;
+}
+#wishList .ausgewaehlt:hover::before { 
+  font-weight: 400;  
+}
+#wishList a.andOr:hover   {
     color: #fff7d4;
     background:rgba(150, 133, 94, 0.82);
 }
@@ -241,8 +257,7 @@
 li:last-child .andOr {
   visibility: hidden;
 }
-#abfrage, 
-#wishList p {
+#abfrage {
   display: block;
   text-align: right;
   padding: 0 1em;
@@ -252,8 +267,11 @@ li:last-child .andOr {
   font-family: calibri, arial;
 }
 #wishList p {
-    text-align: left;
-    border: 0;
+  margin: 0 0 -.5em;
+  padding: 0 .5em; 
+  font-style: italic;
+  text-align: left;
+  border: 0;
 }
 #abfrage:hover {
   background: rgba(233, 220, 175, 0.8);
