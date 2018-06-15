@@ -1,7 +1,7 @@
 <profile when="2017_07_17_11_49_53" xml:id="dictProfile" xml:space="preserve">
 <ip></ip>
 <autoSwitchString></autoSwitchString>
-<basexRest>https://basex-dev.eos.arz.oeaw.ac.at</basexRest>
+<basexRest>https://vle-curation.acdh.oeaw.ac.at</basexRest>
 <displayString>/concat(
 (mds:name[1]/mds:namePart)[1],
 ": ",
@@ -495,9 +495,13 @@ z# = ž   //zhe alternative
 <queryTemplate></queryTemplate>
 <queryTemplates>
 
-<queryTemplate label="tx_names">
+<!--<queryTemplate label="tx_names">
    declare namespace mds = 'http://www.loc.gov/mods/v3';   
    collection('{dict}')//mds:mods[mds:name/mds:namePart[text() contains text "{subQuery}" using wildcards]]
+</queryTemplate>-->
+<queryTemplate label="tx_names">
+   declare namespace mds = 'http://www.loc.gov/mods/v3';   
+   collection('{dict}')//mds:namePart[contains(., {subQuery})]
 </queryTemplate>
                                                      
 <queryTemplate label="tx_any">
@@ -520,10 +524,24 @@ z# = ž   //zhe alternative
    collection('{dict}')//mds:mods[*/*/mds:title[text() contains text "{subQuery}" using wildcards]]
 </queryTemplate>
 
+
 <queryTemplate label="title_contains">
    declare namespace mds = 'http://www.loc.gov/mods/v3';   
    collection('{dict}')//mds:title[contains(., {subQuery})]/ancestor::mds:mods
 </queryTemplate>
+
+<queryTemplate label="tx_place">
+   declare namespace mds = 'http://www.loc.gov/mods/v3';   
+   collection('{dict}')//mds:mods[*/*/mds:placeTerm[text() contains text "{subQuery}" using wildcards]]
+</queryTemplate>
+
+<queryTemplate label="changed">
+   declare namespace mds = 'http://www.loc.gov/mods/v3';   
+   collection('{dict}')//mds:mods[*/*/mds:symbol[@value contains text "{subQuery}" using wildcards]]
+</queryTemplate>
+
+<!-- <symbol value="bernhard3"/> -->
+
                                                      
 </queryTemplates>
 <requestContentType>application/xml</requestContentType>
