@@ -373,7 +373,7 @@
     </xsl:template>
     
     <xsl:template match="mods:part[mods:detail[@type eq 'volume']]" mode="more-detail">
-       <xsl:value-of select="', '||_:dict('vol-abbr')||' '||mods:detail"/>
+        <xsl:value-of select="', '||_:dict('vol-abbr')||' '||mods:detail[@type eq 'volume']"/>
     </xsl:template>
     
     <xsl:template match="mods:physicalDescription" mode="more-detail">
