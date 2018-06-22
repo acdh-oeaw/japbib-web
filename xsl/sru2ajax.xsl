@@ -119,11 +119,23 @@
             <div class="record-html">
                 <ul><xsl:call-template name="detail-list-items"/></ul>
                 <div class="addInfo">
+                    <xsl:if test="
+                        //mods:relatedItem[@type eq 'series'] or
+                        //mods:physicalDescription or
+                        //mods:subject[topic eq 'Form'] or
+                        //mods:note[@type eq 'footnotes']
+                        ">
                 <h4>Weitere bibliographische Angaben</h4>
-                <ul><xsl:call-template name="more-detail-list-items"/></ul>
+                <ul><xsl:call-template name="more-detail-list-items"/></ul>                        
+                    </xsl:if>
+                    <xsl:if test=" 
+                        //mods:subject[topic eq ('Thema' or 'Region' or 'Zeit')] or 
+                        //mods:subject[@displayLabel eq 'Stichworte']
+                        ">
                 <h4>Inhaltliche Angaben</h4>
                 <ul><xsl:call-template name="topics-list-items"/></ul>
-                <xsl:call-template name="externeSuche"/>
+                    </xsl:if>
+                    <xsl:call-template name="externeSuche"/>
                 </div>
             </div>
             <div class="toggleRecord">
