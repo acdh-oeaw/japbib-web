@@ -183,7 +183,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             baseUrl = $('#searchform1').attr('action'),
             query = $('#searchform1 input[name="query"]').val(),
             sortBy = query.indexOf('sortBy') === -1 ?
-            query.replace(/^([^=]+).*/, '$1') :
+            //query.replace(/^([^=]+).*/, '$1') :
+            'random' :
             query.replace(/^.*sortBy\s+(.*)$/, '$1');
         $('#searchform1 input[name="startRecord"]').val(startRecord);
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);

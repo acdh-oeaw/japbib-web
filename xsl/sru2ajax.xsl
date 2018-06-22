@@ -442,32 +442,9 @@
         <xsl:param name="base-path" tunnel="yes">#</xsl:param>
         <li class="li1">
             <span><xsl:value-of select="catDesc"/></span><!-- auf der obersten Ebene kein query-link! BS-->
-            <!--
-            <xsl:apply-templates select="numberOfRecords|numberOfRecordsInGroup">
-                <xsl:with-param name="href" select="$base-path||'query=subject%3D&quot;'||catDesc||'&quot;'"/>
-                <xsl:with-param name="showGroup" select="true()"/>
-            </xsl:apply-templates>
-            -->
             <ol><xsl:apply-templates select="category"/></ol>           
         </li>
-    </xsl:template>
-    <!-- 
-        
-    <xsl:template match="category"> 
-        <li class="li{count(ancestor::category)+1}"> 
-            <span class="wrapTerm">                
-                <span class="term {if (category) then 'plusMinus' else ''}"
-                    title="{if (category) then 'Unterschlagworte zeigen/ verbergen' else ''}"><xsl:value-of select="catDesc"/></span>
-                <a href="#find?query=subject%3D&quot;{catDesc}&quot;" class="zahl" title="Direkte Suche auf der Sucheseite"><xsl:value-of select="numberOfRecords"/></a> 
-            </span>
-            <xsl:if test="category">
-                <ol>
-                    <xsl:apply-templates select="category"/>
-                </ol>
-            </xsl:if>
-        </li>
-    </xsl:template>
-    -->
+    </xsl:template> 
     <xsl:template match="category">
         <li> <span class="wrapTerm">
             <span class="term {if (category) then 'plusMinus' else ''}"
