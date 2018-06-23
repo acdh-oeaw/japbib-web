@@ -5,12 +5,12 @@ $(document).ready(function() {
 });
 
 function jb_init($, CodeMirror, hasher, crossroads, URI) {
-    var m = {},
-        getResultsLock = false,
-        getResultsErrorTracker = {
-            originalStack: "",
-            raisedErrors: []
-        }
+    var m = {}
+      , getResultsLock = false
+      , getResultsErrorTracker = {
+        originalStack: "",
+        raisedErrors: []
+    }
 
     // Passwort für Testphasen
 
@@ -30,11 +30,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 expires: 14
             });
             $('#testScreen').hide();
-        } else alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');
+        } else
+            alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');
     }
     if (Cookies.get('test') === 'passed')
         $('#testScreen').hide();
-
 
     /*********************************************
 
@@ -51,13 +51,15 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#' + link).show();
         $('.control').add($('#navbar_items a')).removeClass('hilite');
         $('#' + link + '_control').add($('#navbar_items a[href~="#' + link + '"]')).addClass('hilite');
-        fixPageindex(); // toggle position thesaurus pageindex, s.u.
+        fixPageindex();
+        // toggle position thesaurus pageindex, s.u.
     }
 
     function go2subPage(link) {
         go2page('about');
         document.body.scrollTop = // For Chrome, Safari and Opera
-            document.documentElement.scrollTop = 0; // Firefox and IE 
+        document.documentElement.scrollTop = 0;
+        // Firefox and IE 
         $.each($('#about .content div'), function() {
             if ($(this).is(':visible') && this.id !== link)
                 $(this).fadeOut('', function() {
@@ -70,11 +72,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     mainPages.forEach(function(link) {
         crossroads.addRoute(link + '{?query}', function(query) {
             switch (link) {
-                case 'thesaurus':
-                    break;
-                case 'find':
-                default:
-                    fillInSearchFrom(query);
+            case 'thesaurus':
+                break;
+            case 'find':
+            default:
+                fillInSearchFrom(query);
             }
             go2page(link);
             doSearchOnReturn();
@@ -100,7 +102,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     go2subPage('ziele');
 
     //setup crossroads
-    crossroads.routed.add(console.log, console); //log all routes
+    crossroads.routed.add(console.log, console);
+    //log all routes
 
     ////////////////////////////////////////
 
@@ -108,9 +111,12 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     function parseHash(newHash, oldHash) {
         crossroads.parse(newHash);
     }
-    hasher.initialized.add(parseHash); //parse initial hash
-    hasher.changed.add(parseHash); //parse hash changes
-    hasher.init(); //start listening for history change
+    hasher.initialized.add(parseHash);
+    //parse initial hash
+    hasher.changed.add(parseHash);
+    //parse hash changes
+    hasher.init();
+    //start listening for history change
 
     /*********************************************
 
@@ -133,7 +139,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     /**********************************************/
 
-
     // Suche auslösen:
     //// s.a. a-href=#find;  onFetchMoreHits()
 
@@ -148,18 +153,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     // Handler fuer Resultate pro Seiten (paging) 
     $("#maximumRecords").change(function(e) {
-        doSearchOnReturn(false); //Filter nicht erneuern
+        doSearchOnReturn(false);
+        //Filter nicht erneuern
     });
 
     // Handler fuer sortby 
     $(document).on('change', '#sortBy', function(e) {
-        var target = $(this),
-            sortBy = target.val(),
-            currentQuery = $('#searchInput1').val(),
-            sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
-            newQuery = (sortBy) ? 
-              sortLessQuery + ' sortBy ' + sortBy : 
-              sortLessQuery;
+        var target = $(this)
+          , sortBy = target.val()
+          , currentQuery = $('#searchInput1').val()
+          , sortLessQuery = currentQuery.replace(/ sortBy .*$/, '')
+          , newQuery = (sortBy) ? sortLessQuery + ' sortBy ' + sortBy : sortLessQuery;
         if (sortBy === '-') {
             return;
         }
@@ -182,26 +186,23 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     function doSearchOnReturn(optNewFilter, optStartRecord) {
 
         newFilter = optNewFilter === undefined ? true : optNewFilter;
-        var startRecord = optStartRecord || 1,
-            baseUrl = $('#searchform1').attr('action'),
-            query = $('#searchform1 input[name="query"]').val();
+        var startRecord = optStartRecord || 1
+          , baseUrl = $('#searchform1').attr('action')
+          , query = $('#searchform1 input[name="query"]').val();
         // sortBy formatieren
-        var sortBy= 'random'; 
+        var sortBy = 'random';
         if (query.indexOf('sortBy') !== -1) {
             // wenn ein Sort-Parameter mit sortBy übergeben wurde
             sortBy = query.replace(/^.*sortBy\s+(.*)$/, '$1');
         } else {
-            $('#sortBy option').each(function(){
-                sortBy = (query.indexOf($(this).val()+'=') !== -1) ?
-                    // wenn ein Query-Parameter auch ein Sort-Parameter ist
-                    $(this).val() : 
-                    sortBy;  
+            $('#sortBy option').each(function() {
+                sortBy = (query.indexOf($(this).val() + '=') !== -1) ? // wenn ein Query-Parameter auch ein Sort-Parameter ist
+                $(this).val() : sortBy;
             });
-        }                 
+        }
         // "random" aus der query wieder rauslöschen
         if (sortBy === 'random') {
-            var randomQuery = $('#searchform1 input[name="query"]').val()
-                .replace(/^(.*)sortBy\s.*$/, '$1');
+            var randomQuery = $('#searchform1 input[name="query"]').val().replace(/^(.*)sortBy\s.*$/, '$1');
             $('#searchform1 input[name="query"]').val(randomQuery);
         }
         // versteckte Parameter ändern
@@ -209,8 +210,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
         $('#sortBy').val(sortBy);
         getResultsHidden(baseUrl + '?' + $('#searchform1').serialize());
-    };
-
+    }
+    ;
     m.doSearchOnReturn = doSearchOnReturn;
 
     // Daten abfragen:
@@ -221,8 +222,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         checkLock('getResultsHidden()', getResultsLock, getResultsErrorTracker);
         var currentSorting = $('#sortBy').val();
         resultsFramework = resultsFramework || $('.content > .showResults').clone();
-        if (newFilter) $('.showResults').hide('slow');
-        else $('content > .showResults').hide('slow');
+        if (newFilter)
+            $('.showResults').hide('slow');
+        else
+            $('content > .showResults').hide('slow');
         $('.ladeResultate').fadeIn('slow');
         getResultsLock = true;
         $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
@@ -265,14 +268,12 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     function onResultLoaded(statusText, jqXHR, currentSorting) {
         try {
-            var ajaxParts = $('.content > .showResults .ajax-result'),
-                ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics'),
-                searchResult = ajaxParts.find('.search-result > ol'),
-                categoryFilter = newFilter ?
-                ajaxParts.find('.categoryFilter > ol') :
-                $('.pageindex > .schlagworte.showResults').clone(),
-                navResults = ajaxParts.find('.navResults'),
-                frameWork = resultsFramework.clone();
+            var ajaxParts = $('.content > .showResults .ajax-result')
+              , ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics')
+              , searchResult = ajaxParts.find('.search-result > ol')
+              , categoryFilter = newFilter ? ajaxParts.find('.categoryFilter > ol') : $('.pageindex > .schlagworte.showResults').clone()
+              , navResults = ajaxParts.find('.navResults')
+              , frameWork = resultsFramework.clone();
             //frameWork.find('.showOptions select').val(currentSorting);
             if (statusText === 'success' && getResultsErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
                 $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
@@ -292,9 +293,13 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 });
             });
             $('.ladeResultate').fadeOut('slow');
-            $('#find .schlagworte li li ol').hide(); //Anfangszustand bei neuer Abfrage
-            if (newFilter) $('.showResults').show('slow', arrangeHitlist);
-            else $('.content > .showResults').show('slow', arrangeHitlist); // arrangeHitlist = Treffernavigation (BS) s.u.     
+            $('#find .schlagworte li li ol').hide();
+            //Anfangszustand bei neuer Abfrage
+            if (newFilter)
+                $('.showResults').show('slow', arrangeHitlist);
+            else
+                $('.content > .showResults').show('slow', arrangeHitlist);
+            // arrangeHitlist = Treffernavigation (BS) s.u.     
         } finally {
             getResultsLock = false;
             newFilter = true;
@@ -321,13 +326,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
       Gestalte das Feld "Suche"
     **********************************************/
     // Handler fuer .tipp (BS)
-    $('.tipp')
-        .attr('title', 'Tipp')
-        .children().hide();
+    $('.tipp').attr('title', 'Tipp').children().hide();
     $(document).on('click', '.tipp', function() {
-        $(this)
-            .toggleClass('q2x')
-            .children().slideToggle('slow');
+        $(this).toggleClass('q2x').children().slideToggle('slow');
         var title = 'Tipp';
         if ($(this).hasClass('q2x')) {
             title = 'Tipp ausblenden';
@@ -356,10 +357,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         }
     });
     // Suche nach Datum  
-    var years = $('.year a'),
-        rangeSelected = false,
-        startSelected = 0,
-        endSelected = 0;
+    var years = $('.year a')
+      , rangeSelected = false
+      , startSelected = 0
+      , endSelected = 0;
 
     function unselectDate() {
         $(years).removeClass('selected');
@@ -370,7 +371,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     $(document).on('click', '.year a', function(e) {
         e.preventDefault();
         //fruehere Auswahl aufheben
-        if (rangeSelected === true) unselectDate();
+        if (rangeSelected === true)
+            unselectDate();
         $(this).toggleClass('selected');
         //neue Gruppe auswaehlen
         //erste Auswahl
@@ -425,42 +427,37 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         }
     });
 
-
     /*********************************************
       "Treffer"
     **********************************************/
 
     // Handler fuer positionieren und scrollen der Trefferliste << >> (BS)   
 
-    var maxLeft,
-        posLeft,
-        runTime; // scroll-Dauer     
+    var maxLeft, posLeft, runTime;
+    // scroll-Dauer     
 
-    function arrangeHitlist() { // Funktion wird von onResultLoaded aufgerufen
-        if ($('#hitRow') !== 'undefined') {
-            var hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
-                hitsW = $('#hitRow').width(),
-                FW = ($('.navResults').width()-$('.countResults').width())/2, // max. Weite fuer fenster  navResults  
-                widthHere,
-                posHere,
-                centerHere,
-                spaceRightToHere;
-            if (FW < hitsW) { //Fenster kleiner als Hit-list         
+    function arrangeHitlist() {
+        // Funktion wird von onResultLoaded aufgerufen
+        if ($('.hitRow') !== 'undefined') {
+            var hits = $('.hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
+            hitsW = $('.hitRow').width(), FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster  navResults  
+            widthHere, posHere, centerHere, spaceRightToHere;
+            if (FW < hitsW) {
+                //Fenster kleiner als Hit-list         
                 $('#fenster1').width(FW);
-                $('.pull').css("visibility", "visible"); // Nav-Pfeile anzeigen
+                $('.pull').css("visibility", "visible");
+                // Nav-Pfeile anzeigen
                 //  hitRow  positionieren:
                 maxLeft = FW - hitsW;
-                if ($('#hitRow .here').length > 0) {
+                if ($('.hitRow .here').length > 0) {
                     // wenn .here in hitRow
-                    widthHere = $('#hitRow .here').width();
-                    posHere = $('#hitRow .here').position().left + widthHere;
+                    widthHere = $('.hitRow .here').width();
+                    posHere = $('.hitRow .here').position().left + widthHere;
                     spaceRightToHere = hitsW - posHere;
                     centerHere = (FW - widthHere) / 2;
                     if (posHere > FW) {
                         // wenn .here außerhalb des Fensters
-                        posLeft = centerHere < spaceRightToHere ?
-                            centerHere - $('#hitRow .here').position().left :
-                            maxLeft;
+                        posLeft = centerHere < spaceRightToHere ? centerHere - $('.hitRow .here').position().left : maxLeft;
                     } else {
                         posLeft = 0;
                     }
@@ -471,54 +468,56 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 if ($('.first.here').length > 0) {
                     posLeft = 0;
                 }
-            } else { //Fenster größer als Hit-list
+            } else {
+                //Fenster größer als Hit-list
                 // Nav-Pfeile verstecken
                 $('#fenster1').width(hitsW);
                 $('.pull').css("visibility", "hidden");
                 //  hitRow  positionieren
-                maxLeft =
-                    posLeft = 0;
+                maxLeft = posLeft = 0;
             }
             // hitRow in Hinblick auf .here verschieben 
-            $('#hitRow').css('left', posLeft);
+            $('.hitRow').css('left', posLeft);
             //
             stylePull();
+            // $('#navResults2')
+            if ($('#showList > .results > li').length > 9) {
+                $('#navResults2').replaceWith($('.navResults').clone());
+            }
         }
 
         function stylePull() {
             // Navigationspfeile anpassen
-            $('#pullLeft, #pullRight').addClass('active');
-            if ($('#hitRow').position().left >= 0)
-                $('#pullLeft').removeClass('active');
-            if ($('#hitRow').position().left - 1 <= maxLeft)
-                $('#pullRight').removeClass('active');
+            $('.pullLeft, .pullRight').addClass('active');
+            if ($('.hitRow').position().left >= 0)
+                $('.pullLeft').removeClass('active');
+            if ($('.hitRow').position().left - 1 <= maxLeft)
+                $('.pullRight').removeClass('active');
         }
         ///////// hitRow scollen /////////
         function pullHitRowBack() {
-            if ($('#hitRow').position().left < 0) {
-                runTime = $('#hitRow').position().left * -1.8;
-                $('#hitRow').animate({
+            if ($('.hitRow').position().left < 0) {
+                runTime = $('.hitRow').position().left * -1.8;
+                $('.hitRow').animate({
                     left: 0
                 }, runTime, "linear", stylePull);
             }
         }
 
         function pushHitRowForth() {
-            if ($('#hitRow').position().left > maxLeft) {
-                runTime = ($('#hitRow').position().left - maxLeft) * 1.8;
-                $('#hitRow').animate({
+            if ($('.hitRow').position().left > maxLeft) {
+                runTime = ($('.hitRow').position().left - maxLeft) * 1.8;
+                $('.hitRow').animate({
                     left: maxLeft
                 }, runTime, "linear", stylePull);
             }
         }
-        $(document).on('mousedown', '#pullLeft.active', pullHitRowBack);
-        $(document).on('mousedown', ' #pullRight.active', pushHitRowForth);
-        $(document).on('mouseup', '#pullLeft, #pullRight',
-            function() {
-                $('#hitRow').stop();
-                stylePull();
-            }
-        );
+        $(document).on('mousedown', '.pullLeft.active', pullHitRowBack);
+        $(document).on('mousedown', '.pullRight.active', pushHitRowForth);
+        $(document).on('mouseup', '.pullLeft, .pullRight', function() {
+            $('.hitRow').stop();
+            stylePull();
+        });
     }
 
     $(document).on('click', '.hitList a.hits', onFetchMoreHits);
@@ -534,9 +533,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     **********************************************/
     // MODS/ LIDOS/  HTML umschalten (OS) (tlw. obsolet)
     $(document).on('change', '.showResults .showOptions select', function(e) {
-        var target = $(e.target),
-            format = target.val(),
-            entry = target.closest(".showEntry");
+        var target = $(e.target)
+          , format = target.val()
+          , entry = target.closest(".showEntry");
         if (format === 'compact') {
             entry.addClass('compact');
         } else {
@@ -559,7 +558,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             });
         */
     });
-
 
     function refreshCM(div) {
         var editor = div.find('.CodeMirror')[0].CodeMirror;
@@ -584,16 +582,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#thesaurus #showList').hide('slow');
         getCategoriesLock = true;
         $('#thesaurus #showList').load('thesaurus', function(unused1, statusText, jqXHR) {
-            callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]); //s.0.
+            callbackAlwaysAsync(this, jqXHR, onCategoryLoaded, [statusText, jqXHR]);
+            //s.0.
         });
     }
 
     function onCategoryLoaded(statusText, jqXHR) {
         try {
-            var ajaxParts = $('#thesaurus #showList .ajax-result'),
-                ajaxPartsDiagnostics = $('#thesaurus #showList sru\\:diagnostics'),
-                categories = ajaxParts.find('ol.schlagworte'),
-                frameWork = categoryFramework.clone();
+            var ajaxParts = $('#thesaurus #showList .ajax-result')
+              , ajaxPartsDiagnostics = $('#thesaurus #showList sru\\:diagnostics')
+              , categories = ajaxParts.find('ol.schlagworte')
+              , frameWork = categoryFramework.clone();
             if (statusText === 'success' && getCategoriesErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
                 frameWork.find('ol.schlagworte').replaceWith(categories);
             } else {
@@ -601,7 +600,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             }
             $('#thesaurus #showList').replaceWith(frameWork);
             $('.ladeSchlagworte').hide();
-            $('#thesaurus .schlagworte li li ol').hide(); //Anfangszustand bei Neuladen
+            $('#thesaurus .schlagworte li li ol').hide();
+            //Anfangszustand bei Neuladen
             $('#thesaurus #showList').show('slow');
         } finally {
             getCategoriesLock = false;
@@ -611,18 +611,18 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     function findQueryPartInHref(href) {
         // parse url into query string using URI.js library
-        var parsed = URI(href),
-            conventionalQuery = parsed.query(true),
-            fragment = parsed.fragment(),
-            query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
+        var parsed = URI(href)
+          , conventionalQuery = parsed.query(true)
+          , fragment = parsed.fragment()
+          , query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
         return query;
     }
     $('#facet-subjects').on('click', 'a.aFilter', function(e) {
         e.preventDefault();
-        var query = findQueryPartInHref($(this).attr('href')),
-            subject = query.query,
-            currentQuery = $('#searchInput1').val(),
-            newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
+        var query = findQueryPartInHref($(this).attr('href'))
+          , subject = query.query
+          , currentQuery = $('#searchInput1').val()
+          , newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
         executeQuery(newQuery);
     });
 
@@ -654,9 +654,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     // Handler für Klick auf alphabetische Liste für Autoren oder Werktitel 
     $('.suchOptionen .abc a').click(function(e) {
         e.preventDefault();
-        var index = $(e.target).closest("td").attr("data-index"),
-            term = $(e.target).text() + "*",
-            query = index + "=" + term;
+        var index = $(e.target).closest("td").attr("data-index")
+          , term = $(e.target).text() + "*"
+          , query = index + "=" + term;
         //executeQuery(index+"="+term); 
         $('#searchInput1').val(query);
     });
@@ -698,8 +698,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     });
 
     // Schlagwortbaum oeffnen und schliessen (BS)
-    var plusMinus = '.schlagworte .plusMinus',
-        ols = '.schlagworte li li ol';
+    var plusMinus = '.schlagworte .plusMinus'
+      , ols = '.schlagworte li li ol';
 
     // Anfangszustand 
     $(plusMinus).removeClass('close');
@@ -743,112 +743,104 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     }
     $(document).on('scroll', fixPageindex);
 
-
     // Handler fuer Kombinieren von Schlagworten im Thesaurus, #wishList (BS)
 
-    var wishList = $('#wishList'),
-        maxWishes = 3,
-        ausgewaehlt = []; 
+    var wishList = $('#wishList')
+      , maxWishes = 3
+      , ausgewaehlt = [];
 
     wishList.empty();
-    
+
     $('#chooseQuerymode input').change(function() {
 
         $('#chooseQuerymode .ausgewaehlt').removeClass('ausgewaehlt');
-        $( this).parent().addClass('ausgewaehlt');
-        
+        $(this).parent().addClass('ausgewaehlt');
+
         // Ausgangssituation herstellen  
-        ausgewaehlt = [];  
-        
-        var hideTime =  wishList.html() ? 
-            'slow' : 0;            
-        wishList.hide('hideTime', function(){wishList.empty();wishList.show();})   
+        ausgewaehlt = [];
+
+        var hideTime = wishList.html() ? 'slow' : 0;
+        wishList.hide('hideTime', function() {
+            wishList.empty();
+            wishList.show();
+        })
 
         if ($('.kombinieren').length)
             $('.kombinieren').removeClass('kombinieren');
         if ($('.checked').length)
-            $('.checked').removeClass('checked'); 
+            $('.checked').removeClass('checked');
 
         if ($(this).val() === 'combinedSearch') {
             $('#thesaurus .schlagworte').addClass('kombinieren');
             $('#thesaurus .schlagworte .zahl').attr('title', 'für kombinierte Suche auswählen');
-        }
-        else {
+        } else {
             $('#thesaurus .schlagworte .zahl').attr('title', 'direkte Suche auf der Suchseite');
         }
     });
 
     $(document).on('click', '#thesaurus .kombinieren a.zahl', function(e) {
         // wird nur bei ".kombinieren" ausgelöst
-       e.preventDefault(); 
-       $( this ).toggleClass('checked');
-       var remove= $(this).hasClass('checked') ? false : true,
-           subject= $(this).prevAll('.term:first').html(),
-           id= $(this).attr("data-id"); //zur raschen Identifizierung
+        e.preventDefault();
+        $(this).toggleClass('checked');
+        var remove = $(this).hasClass('checked') ? false : true
+          , subject = $(this).prevAll('.term:first').html()
+          , id = $(this).attr("data-id");
+        //zur raschen Identifizierung
 
-       renewChecked(subject, remove, id); 
+        renewChecked(subject, remove, id);
     });
-    
+
     function renewChecked(subject, remove, id) {
-    // aktualisiere den Array  
-      if (remove) {
-          for (i in ausgewaehlt) {
-              if (ausgewaehlt[i].term === subject)
+        // aktualisiere den Array  
+        if (remove) {
+            for (i in ausgewaehlt) {
+                if (ausgewaehlt[i].term === subject)
                     ausgewaehlt.splice(i, 1);
-          }         
-      }
-      else {      
-        ausgewaehlt.unshift({
-          term: subject,
-          conj: 'and', 
-          id: id
-          });
-       }
-       // auf 3 begrenzen
-       if (ausgewaehlt.length > maxWishes)
-           ausgewaehlt.pop();
+            }
+        } else {
+            ausgewaehlt.unshift({
+                term: subject,
+                conj: 'and',
+                id: id
+            });
+        }
+        // auf 3 begrenzen
+        if (ausgewaehlt.length > maxWishes)
+            ausgewaehlt.pop();
 
-       // letzte Konjunktion streichen  
-       if (ausgewaehlt[ausgewaehlt.length-1])     
-           ausgewaehlt[ausgewaehlt.length-1].conj = '';
+        // letzte Konjunktion streichen  
+        if (ausgewaehlt[ausgewaehlt.length - 1])
+            ausgewaehlt[ausgewaehlt.length - 1].conj = '';
 
-       //führe die neuen Arrayangaben aus
-       renewWishlist();
+        //führe die neuen Arrayangaben aus
+        renewWishlist();
     }
 
-    function renewWishlist() {     
-    // aktualisiere die Wishlist und die gecheckten Zahlen
-        var newWishes = '',
-            newQ = '';
+    function renewWishlist() {
+        // aktualisiere die Wishlist und die gecheckten Zahlen
+        var newWishes = ''
+          , newQ = '';
 
-        $('#thesaurus .zahl').removeClass('checked'); 
+        $('#thesaurus .zahl').removeClass('checked');
 
         $.each(ausgewaehlt, function(i, qObj) {
-           // class=checked hinzufügen 
-           $( '.zahl[data-id="'+qObj.id+'"]').addClass('checked');
+            // class=checked hinzufügen 
+            $('.zahl[data-id="' + qObj.id + '"]').addClass('checked');
 
-           newWishes += '<li><span data-name="'+qObj.id+'" class="ausgewaehlt" title="Auswahl löschen">' +
-             qObj.term +
-             '</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' +
-             qObj.conj +
-             '</a></li>';
-           newQ += 'subject="' + qObj.term + '" ' + qObj.conj + ' ';
+            newWishes += '<li><span data-name="' + qObj.id + '" class="ausgewaehlt" title="Auswahl löschen">' + qObj.term + '</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">' + qObj.conj + '</a></li>';
+            newQ += 'subject="' + qObj.term + '" ' + qObj.conj + ' ';
         });
         newQ = encodeURIComponent(newQ);
 
         // neue wishList schreiben
-        
-        var showTime= wishList.html() ? 0 : 'slow',
-            hitCount= calculateHits() ? 
-                '('+calculateHits()+' Treffer)' : '';
-        wishList.empty();
-        wishList.hide(); 
 
-        if (ausgewaehlt.length > 0) { 
-            wishList
-                .append('<p>Schlagworte (max. '+maxWishes+'):</p><ul>' + newWishes + '</ul>')
-                .append(hitCount)
-                .append('<a class="fas fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
+        var showTime = wishList.html() ? 0 : 'slow'
+          , hitCount = calculateHits() ? '(' + calculateHits() + ' Treffer)' : '';
+        wishList.empty();
+        wishList.hide();
+
+        if (ausgewaehlt.length > 0) {
+            wishList.append('<p>Schlagworte (max. ' + maxWishes + '):</p><ul>' + newWishes + '</ul>').append(hitCount).append('<a class="fas fa-search" id="abfrage" href="#find?query=' + newQ + '" title= "Abfrage auf der Suchseite">Abfrage</a>');
         }
         wishList.show(showTime);
     }
@@ -860,24 +852,21 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     // Auswahl entfernen
     $(document).on('click', '#wishList li *[data-name]', function() {
-        var id = $(this).attr('data-name'); 
-        $( '.zahl[data-id="'+id+'"]').trigger('click');
+        var id = $(this).attr('data-name');
+        $('.zahl[data-id="' + id + '"]').trigger('click');
     });
     //  AND/OR/NOT[?]
     $(document).on('click', '.andOr', function(e) {
         e.preventDefault();
-        var id = $(this).parent().find('*[data-name]').attr('data-name'),
-            conj = (this.innerHTML == 'and') ? 'or' :
-            // ( this.innerHTML == 'OR')? 'NOT': 
-            'and';
+        var id = $(this).parent().find('*[data-name]').attr('data-name')
+          , conj = (this.innerHTML == 'and') ? 'or' : // ( this.innerHTML == 'OR')? 'NOT': 
+        'and';
         for (i in ausgewaehlt)
-          if (ausgewaehlt[i].id === id)
-              ausgewaehlt[i].conj = conj; 
-             
+            if (ausgewaehlt[i].id === id)
+                ausgewaehlt[i].conj = conj;
+
         renewWishlist();
     });
-
-
 
     //in m gespeicherte Funktionen aufrufen:
     window.jb80 = m;

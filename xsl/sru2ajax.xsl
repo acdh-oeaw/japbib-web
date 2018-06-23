@@ -61,17 +61,17 @@
         <xsl:choose>
             <xsl:when test="$lastPage > 1">
                 <div class="hitList">
-                    <span id="pullLeft" class="pull fa fa-chevron-circle-left" title="zum Anfang der Trefferliste"></span>
+                    <span class="pullLeft pull fa fa-chevron-circle-left" title="zum Anfang der Trefferliste"></span>
                     <a class="hits first{if ($startRecord &lt;= $maximumRecords) then ' here' else ''}" href="#?startRecord=1" title="Treffer 1–{if ($nOfRec > $maximumRecords) then $maximumRecords else $nOfRec}">1</a>
                     <span class="fenster" id="fenster1">
-                        <span id="hitRow">
+                        <span class="hitRow">
                             <xsl:for-each select="2 to $lastPage - 1">
                                 <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) then ' here' else ''}" href="#?startRecord={((. - 1) * $maximumRecords) + 1}" title="Treffer {(. - 1) * $maximumRecords + 1}–{(. - 1) * $maximumRecords + $maximumRecords}"><xsl:value-of select="."/></a>
                             </xsl:for-each>
                         </span>  
                     </span> 
                     <a class="hits last{if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
-                    <span id="pullRight" class="pull fa fa-chevron-circle-right" title="zum Ende der Trefferliste"></span>
+                    <span class="pullRight pull fa fa-chevron-circle-right" title="zum Ende der Trefferliste"></span>
                 </div>
             </xsl:when>
             <xsl:otherwise>
