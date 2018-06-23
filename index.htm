@@ -3589,9 +3589,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   </td>
                 </tr>
                 <tr>
-                  <td class="showOptions" rowspan="2"><em>Sortierung:</em> <label class="fas fa-sort-amount-down" id=
-                  "chooseMaxHits"><select id="maximumRecords" name="maximumRecords" size="1" title=
-                  "Maximale Treffer pro Seite">
+                  <td class="showOptions" rowspan="2">
+                  	<em>Sortierung:</em> 
+                  	<label class="fas fa-sort-amount-down" id="chooseMaxHits"><!-- 
+                  	--><select id="maximumRecords" name="maximumRecords" size="1" title="Maximale Treffer pro Seite">
                     <option value="10">
                       10
                     </option>
@@ -3607,9 +3608,11 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                     <option value="200">
                       200
                     </option>
-                  </select></label> <label class="fas fa-sort-alpha-down" id="countResults" title="Sortierung der Resultate"></label>
+                  </select>
+                </label> 
+                <label class="fas fa-sort-alpha-down" id="countResults" title="Sortierung der Treffer">
                   <select id="sortBy" size="1" title="Sortierung der Treffer">
-                    <option selected="selected" value="random">
+                    <option value="random">
                       Beliebig
                     </option>
                     <option selected="selected" value="author">
@@ -3621,7 +3624,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                     <option value="date">
                       Jahr
                     </option>
-                  </select> </td>
+                  </select></label></td>
                 </tr>
               </table>
             </form>

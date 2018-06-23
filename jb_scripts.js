@@ -157,7 +157,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             sortBy = target.val(),
             currentQuery = $('#searchInput1').val(),
             sortLessQuery = currentQuery.replace(/ sortBy .*$/, ''),
-            newQuery = sortLessQuery + ' sortBy ' + sortBy;
+            newQuery = (sortBy) ? 
+              sortLessQuery + ' sortBy ' + sortBy : 
+              sortLessQuery;
         if (sortBy === '-') {
             return;
         }
@@ -178,14 +180,31 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     var newFilter = true;
 
     function doSearchOnReturn(optNewFilter, optStartRecord) {
+
         newFilter = optNewFilter === undefined ? true : optNewFilter;
         var startRecord = optStartRecord || 1,
             baseUrl = $('#searchform1').attr('action'),
-            query = $('#searchform1 input[name="query"]').val(),
-            sortBy = query.indexOf('sortBy') === -1 ?
-            //query.replace(/^([^=]+).*/, '$1') :
-            'random' :
-            query.replace(/^.*sortBy\s+(.*)$/, '$1');
+            query = $('#searchform1 input[name="query"]').val();
+        // sortBy formatieren
+        var sortBy= 'random'; 
+        if (query.indexOf('sortBy') !== -1) {
+            // wenn ein Sort-Parameter mit sortBy übergeben wurde
+            sortBy = query.replace(/^.*sortBy\s+(.*)$/, '$1');
+        } else {
+            $('#sortBy option').each(function(){
+                sortBy = (query.indexOf($(this).val()+'=') !== -1) ?
+                    // wenn ein Query-Parameter auch ein Sort-Parameter ist
+                    $(this).val() : 
+                    sortBy;  
+            });
+        }                 
+        // "random" aus der query wieder rauslöschen
+        if (sortBy === 'random') {
+            var randomQuery = $('#searchform1 input[name="query"]').val()
+                .replace(/^(.*)sortBy\s.*$/, '$1');
+            $('#searchform1 input[name="query"]').val(randomQuery);
+        }
+        // versteckte Parameter ändern
         $('#searchform1 input[name="startRecord"]').val(startRecord);
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
         $('#sortBy').val(sortBy);
@@ -421,7 +440,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         if ($('#hitRow') !== 'undefined') {
             var hits = $('#hitRow .hits'), //Treffer innerhalb der beweglichen hitRow
                 hitsW = $('#hitRow').width(),
-                FW = ($('.navResults').width() - $('.countResults').width()) / 2, // max. Weite fuer fenster    
+                FW = ($('.navResults').width()-$('.countResults').width())/2, // max. Weite fuer fenster  navResults  
                 widthHere,
                 posHere,
                 centerHere,
