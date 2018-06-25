@@ -471,7 +471,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             } else {
                 //Fenster größer als Hit-list
                 // Nav-Pfeile verstecken
-                $('#fenster1').width(hitsW);
+                $('.fenster').width(hitsW);
                 $('.pull').css("visibility", "hidden");
                 //  hitRow  positionieren
                 maxLeft = posLeft = 0;
