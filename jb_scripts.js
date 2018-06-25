@@ -444,7 +444,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             widthHere, posHere, centerHere, spaceRightToHere;
             if (FW < hitsW) {
                 //Fenster kleiner als Hit-list         
-                $('#fenster1').width(FW);
+                $('.fenster').width(FW);
                 $('.pull').css("visibility", "visible");
                 // Nav-Pfeile anzeigen
                 //  hitRow  positionieren:

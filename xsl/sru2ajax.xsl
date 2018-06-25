@@ -34,24 +34,28 @@
         <xsl:apply-templates select="sru:searchRetrieveResponse"/>
     </xsl:template>
     
-    <xsl:template match="sru:searchRetrieveResponse">        
+    <xd:doc><xd:desc>
+        Erstelle .ajax-result = provisorischer Container für Elemente, 
+        die von js gegen alte Elemente ausgetauscht werden 
+    </xd:desc></xd:doc>
+    <xsl:template match="sru:searchRetrieveResponse">      
+        
         <div class="ajax-result">
             <div class="navResults">
                 <xsl:call-template name="navbar"/>
             </div>
             <div class="search-result">
-                <xsl:apply-templates
-                    select="sru:records"/>                
+                <xsl:apply-templates select="sru:records"/>                
             </div>
             <div class="categoryFilter">
-                <xsl:apply-templates
-                    select="sru:extraResponseData/subjects/taxonomy"/>
+                <xsl:apply-templates select="sru:extraResponseData/subjects/taxonomy"/>
             </div>
         </div>
     </xsl:template>
-
-    <!-- Results -->
     
+    <xd:doc><xd:desc>
+        Erstelle Navigationszeile (.navResults)
+    </xd:desc></xd:doc>
     <xsl:template name="navbar">
         <xsl:variable name="nOfRec" as="xs:integer" select="/sru:searchRetrieveResponse/sru:numberOfRecords"/>
         <xsl:variable name="lastPage" as="xs:integer" select="(($nOfRec - 1) idiv $maximumRecords) + 1"/>        
@@ -62,28 +66,44 @@
             <xsl:when test="$lastPage > 1">
                 <div class="hitList">
                     <span class="pullLeft pull fa fa-chevron-circle-left" title="zum Anfang der Trefferliste"></span>
-                    <a class="hits first{if ($startRecord &lt;= $maximumRecords) then ' here' else ''}" href="#?startRecord=1" title="Treffer 1–{if ($nOfRec > $maximumRecords) then $maximumRecords else $nOfRec}">1</a>
-                    <span class="fenster" id="fenster1">
+                    <a class="hits first{if ($startRecord &lt;= $maximumRecords) then ' here' else ''}" 
+                       href="#?startRecord=1" title="Treffer 1–{if ($nOfRec > $maximumRecords) then $maximumRecords else $nOfRec}">1</a>
+                    <span class="fenster">
                         <span class="hitRow">
                             <xsl:for-each select="2 to $lastPage - 1">
-                                <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) then ' here' else ''}" href="#?startRecord={((. - 1) * $maximumRecords) + 1}" title="Treffer {(. - 1) * $maximumRecords + 1}–{(. - 1) * $maximumRecords + $maximumRecords}"><xsl:value-of select="."/></a>
+                                <a class="hits{if ($startRecord >= ((. - 1) * $maximumRecords + 1) 
+                                               and $startRecord &lt;= ((. - 1) * $maximumRecords + $maximumRecords)) 
+                                                   then ' here' else ''}" 
+                                    href="#?startRecord={((. - 1) * $maximumRecords) + 1}" 
+                                    title="Treffer {(. - 1) * $maximumRecords + 1}–{(. - 1) * $maximumRecords + $maximumRecords}"
+                                ><xsl:value-of select="."/></a>
                             </xsl:for-each>
                         </span>  
                     </span> 
-                    <a class="hits last{if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then ' here' else ''}" href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"><xsl:value-of select="$lastPage"/></a>
+                    <a class="hits last {if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then 'here' else ''}" 
+                       href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"
+                    ><xsl:value-of select="$lastPage"/></a>
                     <span class="pullRight pull fa fa-chevron-circle-right" title="zum Ende der Trefferliste"></span>
                 </div>
             </xsl:when>
             <xsl:otherwise>
-                <div class="hitList"><span class="fenster" id="fenster1"><span id="hitRow"/></span></div>
+                <div class="hitList"><span class="fenster"><span class="hitRow"/></span></div>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
     
+    
+    <xd:doc>
+        <xd:desc> Ergebnisliste (.search-result) </xd:desc>
+    </xd:doc>
     <xsl:template match="sru:records">
         <ol data-numberOfRecords="{/sru:searchRetrieveResponse/sru:numberOfRecords}" data-nextRecordPosition="{sru:searchRetrieveResponse/sru:nextRecordPosition}" class="results"><xsl:apply-templates select="*"/></ol>
     </xsl:template>
     
+    
+    <xd:doc>
+        <xd:desc> Einzeleintrag, container (li) </xd:desc>
+    </xd:doc>
     <xsl:template match="sru:record">
         <li value="{sru:recordNumber}" >
             <xsl:if test="sru:recordData//mods:genre">
@@ -97,15 +117,33 @@
         </li> 
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Einzeleintrag, Inhalt (.shortInfo) </xd:desc>
+    </xd:doc>
     <xsl:template match="mods:mods">
         <div class="shortInfo">
-        <xsl:if test="not(mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)])"><span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span></xsl:if>
-        <xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]"> <!--Ausschluss von Autoren in relatedItems, BS.; 
-            todo: ask for 'ctb' if no other author available
-            todo: parse <name><etal/></name> as "et al."
-        -->
+        <!-- Einzeleintrag, Kurzinformation: Name -->
+          <xsl:if test="not(mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')]
+              [not(./ancestor::mods:relatedItem)]) "> 
+              <!-- falls nur Mitarb. und kein Autor, etc. -->
+              <xsl:choose>
+                  <xsl:when test="mods:name[mods:role/mods:roleTerm[not(./ancestor::mods:relatedItem)]/normalize-space(.)
+                      = 'ctb']"> 
+                      <xsl:for-each select="mods:name/mods:namePart[not(./ancestor::mods:relatedItem)]">  
+                          <xsl:value-of select="." /><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+                      </xsl:for-each>
+                  </xsl:when>
+                  <xsl:otherwise>                      
+              <span class="authors no-aut"><xsl:value-of select="_:dict('no-aut-abbr')"/></span>
+                  </xsl:otherwise>
+              </xsl:choose>
+          </xsl:if>
+        <xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')]
+            [not(./ancestor::mods:relatedItem)]">  
            <xsl:apply-templates select="."/><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
-        </xsl:for-each><xsl:text xml:space="preserve">, </xsl:text>
+        </xsl:for-each><!--
+            Einzeleintrag, Kurzinformation, Jahr
+        --><xsl:text xml:space="preserve">, </xsl:text>
         <xsl:if test="not(.//mods:originInfo/mods:dateIssued)"><span class="year no-year"><xsl:value-of select="concat('[',_:dict('no-year-abbr'),']')"/></span></xsl:if>
         <xsl:apply-templates select="(./mods:relatedItem[@type='host']/mods:originInfo, ./mods:originInfo)[1]/mods:dateIssued"/>
         <span class="plusMinus titel" title="Details anzeigen/verbergen"><xsl:apply-templates select="mods:titleInfo"/></span>
@@ -113,6 +151,9 @@
         <xsl:apply-templates select="." mode="detail"/>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Einzeleintrag, spez. Information (.showEntry .record-html)</xd:desc>
+    </xd:doc>
     <xsl:template match="mods:mods" mode="detail">
         <div class="showEntry" style="display:none;"> 
             <div class='closeX'></div>
@@ -127,14 +168,9 @@
                         ">
                 <h4>Weitere bibliographische Angaben</h4>
                 <ul><xsl:call-template name="more-detail-list-items"/></ul>                        
-                    </xsl:if>
-                    <xsl:if test=" 
-                        //mods:subject[topic eq ('Thema' or 'Region' or 'Zeit')] or 
-                        //mods:subject[@displayLabel eq 'Stichworte']
-                        ">
+                    </xsl:if> 
                 <h4>Inhaltliche Angaben</h4>
-                <ul><xsl:call-template name="topics-list-items"/></ul>
-                    </xsl:if>
+                <ul><xsl:call-template name="topics-list-items"/></ul> 
                     <xsl:call-template name="externeSuche"/>
                 </div>
             </div>
