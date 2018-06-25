@@ -1,6 +1,3 @@
-[submodule "mass-updates"]
-	path = mass-updates
-	url = https://dschopper@redmine.acdh.oeaw.ac.at/japbib-scripts.git
 [submodule "mass-update"]
 	path = mass-update
-	url = https://dschopper@redmine.acdh.oeaw.ac.at/japbib-scripts.git
+	url = https://redmine.acdh.oeaw.ac.at/japbib-scripts.git
