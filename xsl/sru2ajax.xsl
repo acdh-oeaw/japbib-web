@@ -124,9 +124,9 @@
         <div class="shortInfo">
         <!-- Einzeleintrag, Kurzinformation: Name --> 
               <xsl:choose>
-                  <xsl:when test="mods:name//mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb') "> 
-                      <xsl:for-each select="mods:name
-                          [//mods:roleTerm/normalize-space(.)= ('aut', 'edt', 'trl', 'ctb')]
+                  <xsl:when test="./mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')] "> 
+                      <xsl:for-each select="./mods:name
+                          [mods:role/mods:roleTerm/normalize-space(.)= ('aut', 'edt', 'trl', 'ctb')]
                           /mods:namePart
                           ">  
                           <xsl:value-of select="." /><xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
@@ -217,12 +217,11 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Einzeleintrag, Details für Buch etc.: 
-            Autor + templates für Titel 
-            + Angabe zum Original </xd:desc>
+        <xd:desc>Einzeleintrag, primäre Details für Buch und Artikel : 
+            Autor + Titel+ Ort etc</xd:desc>
     </xd:doc>
     <xsl:template name="detail-list-items">   
-        <xsl:if test="//mods:namePart[not(./ancestor::mods:relatedItem/mods:name)]"><!-- nur wenn ein Autor gefunden wird-->
+        <xsl:if test="mods:name/mods:namePart[not(./ancestor::mods:relatedItem/mods:name)]"><!-- nur wenn ein Autor gefunden wird-->
             <li class="eSegment"><xsl:value-of select="_:dict('aut')"/></li>
             <li>
                 <xsl:for-each select="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')][not(./ancestor::mods:relatedItem)]">
@@ -235,7 +234,7 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Einzeleintrag, bibliogr. Details </xd:desc>
+        <xd:desc>Einzeleintrag, sek. bibliogr. Details: Reihe, Seiten, etc. </xd:desc>
     </xd:doc>
     <xsl:template name="more-detail-list-items">
         <xsl:apply-templates select=".//mods:relatedItem[@type eq 'series']" mode="more-detail"/>
@@ -276,24 +275,27 @@
         </ul>
         </xsl:if>
     </xsl:template> 
-    
+    <!--  
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl')][not(./ancestor::mods:relatedItem)]">
         <xsl:apply-templates select="(mods:namePart|mods:etal)"/>
     </xsl:template>
+    -->
     
-    <xsl:template match="mods:etal">
-        <xsl:value-of select="_:dict(' et al.')"/>
-    </xsl:template>
-    
+    <xd:doc>
+        <xd:desc> Autor formatieren </xd:desc>
+    </xd:doc>    
     <xsl:template match="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')]" mode="detail">
         <xsl:call-template name="link-with-number-of-records">
                 <xsl:with-param name="index">author</xsl:with-param>
                 <xsl:with-param name="term" select="mods:namePart"/>
-            <xsl:with-param name="isLast" select="position() eq last()"/>
+                <xsl:with-param name="isLast" select="position() eq last()"/>
         </xsl:call-template>
         <xsl:value-of select="if (mods:etal) then _:dict(' et al.') else ''"/>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
+    </xd:doc>
     <xsl:template name="link-with-number-of-records">
         <xsl:param name="index" as="xs:string"/>
         <xsl:param name="term" as="node()*"/>
