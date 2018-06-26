@@ -403,7 +403,7 @@
                     /<xsl:call-template name="full-Date"/>
                 </xsl:when> 
                 <xsl:otherwise>
-                    <xsl:text>, </xsl:text><xsl:call-template name="full-Date"/>
+                    <xsl:text >, </xsl:text><xsl:call-template name="full-Date"/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'issue']) 
