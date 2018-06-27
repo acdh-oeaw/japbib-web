@@ -414,7 +414,7 @@
                 --><xsl:if test="../mods:titleInfo/mods:subTitle">
                     <xsl:value-of select="': ' ||../mods:titleInfo/mods:subTitle"/></xsl:if></a></span><!-- 
                 --><xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')
-                ||''
+                ||' '
                 ||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/>
             <xsl:choose>
                 <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
