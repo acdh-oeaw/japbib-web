@@ -231,7 +231,7 @@ declare %private function api:searchRetrieveResponse($version as xs:string, $nor
             else ()}
             <XCQL>{$xcql}</XCQL>
             { if (not($x-no-search-filter)) then 
-            <subjects>{thesaurus:addStatsToThesaurus(prof:time(thesaurus:topics-to-map(if ($hits) then $hits else <db/>), false(), 'thesaurus:topics-to-map '))}</subjects> else () }
+            <subjects>{thesaurus:addStatsToThesaurus(thesaurus:topics-to-map(if ($hits) then $hits else <db/>))}</subjects> else () }
         </sru:extraResponseData>
     </sru:searchRetrieveResponse>
 };

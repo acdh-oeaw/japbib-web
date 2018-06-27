@@ -108,7 +108,7 @@ declare function api:_topics-to-map($db as element(db)) as map(*) {
 declare function api:topics-to-map($db as element(db)) as map(*) {
     let $r := $db/n!db:open-pre("japbib_06", .),
         $log := l:write-log('api:topics-to-map base-uri($r) = '||base-uri(($r//mods:genre)[1]), 'DEBUG'),
-        $matching-texts := prof:time(distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic)), false(), "matching-texts ")
+        $matching-texts := distinct-values(($r//mods:genre!(tokenize(., ' ')), $r//mods:subject[not(@displayLabel)]/mods:topic))
 (:       , $log-matching-texts := l:write-log('api:topics-to-map $matching-texts := '||string-join(subsequence($matching-texts, 1, 30), '; '), 'DEBUG'),:),
         $start := prof:current-ns(),
         $ret := map:merge(api:get-count-for-matching-texts($db, $matching-texts)),
