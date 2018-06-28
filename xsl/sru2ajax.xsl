@@ -310,26 +310,28 @@
     <xsl:template match="mods:name" mode="detail">
         <xsl:param name="roleTerm" select="$acceptedRoles"/>
         <xsl:apply-templates select="mods:namePart" >
-            <xsl:with-param name="roleTerm">$roleTerm</xsl:with-param>
-        </xsl:apply-templates> 
+            <xsl:with-param name="roleTerm" select="$roleTerm" /> 
+        </xsl:apply-templates>  
+        <xsl:if test="mods:etal">
+            <xsl:value-of select="_:dict(' et al.')"/>
+        </xsl:if>
         <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/> 
     </xsl:template>
     
     <xsl:template match="mods:namePart" >
         <xsl:param name="roleTerm" >'aut'</xsl:param> 
-            <!-- <xsl:if test="parent::mods:name/mods:role/mods:roleTerm[. = $roleTerm]"></xsl:if> -->
-                <xsl:call-template name="add-query-link">
+            <!-- <xsl:if test="parent::mods:name/mods:role/mods:roleTerm"></xsl:if> -->
+        <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
+            <xsl:call-template name="add-query-link">
                     <xsl:with-param name="index">author</xsl:with-param>
                     <xsl:with-param name="term" select="."/> 
                 </xsl:call-template> 
+                </xsl:if>
                 <xsl:if test="parent::mods:name/mods:role/mods:roleTerm[not(. = 'aut')]">                    
                     <xsl:value-of select="' (' || _:dict(parent::mods:name/mods:role/mods:roleTerm) || ')'"/>
-                </xsl:if>    
-            
+                </xsl:if>               
     </xsl:template>
-    <xsl:template match="mods:etal">
-        <xsl:value-of select="_:dict(' et al.')"/>
-    </xsl:template>
+     
     <xd:doc>
         <xd:desc>Falls kein gültiger Autor</xd:desc> 
     </xd:doc>
@@ -347,7 +349,7 @@
         <xsl:param name="index" as="xs:string"/>
         <xsl:param name="term" as="node()*"/> 
         <span class="{$index}"><xsl:value-of select="$term"/><a 
-            href="#?query={$index}=&quot;{$term}&quot;" 
+            href="#find?query={$index}=&quot;{$term}&quot;" 
             class="neueSuche fas fa-search" 
             title="Suche nach {$term}"></a></span> 
     </xsl:template>
