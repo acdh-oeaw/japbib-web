@@ -155,19 +155,19 @@
             <xsl:text xml:space="preserve">, </xsl:text> 
             <!--  Einzeleintrag, Kurzinformation, Jahr  -->
             <span class="year">
-            <xsl:choose>
-                <xsl:when test="mods:originInfo/mods:dateIssued|
-                                mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued"> 
-                    <xsl:for-each select="mods:originInfo/mods:dateIssued|
-                        mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued">                         
-                        <xsl:value-of select=".[1]/substring(., 1, 4)"/>  
-                        <xsl:if test=".[@point eq 'start']"><xsl:text>–</xsl:text></xsl:if>
-                    </xsl:for-each>
-                </xsl:when>
-                <xsl:otherwise>            
-                    <xsl:value-of select="_:dict('no-year-abbr')"/>         
-                </xsl:otherwise>
-            </xsl:choose>
+                <xsl:variable name="date" select="mods:originInfo/mods:dateIssued|
+                    mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued"/>  
+                <xsl:choose>
+                    <xsl:when test="$date">          
+                        <xsl:value-of select="$date[1]/substring(., 1, 4)"/>  
+                        <xsl:if test="$date[1][@point eq 'start']">
+                            <xsl:value-of select="'–' || $date[2]" />
+                        </xsl:if> 
+                    </xsl:when>
+                    <xsl:otherwise>            
+                        <xsl:value-of select="_:dict('no-year-abbr')"/>         
+                    </xsl:otherwise>
+                </xsl:choose>
             </span>
             <!--  Einzeleintrag, Kurzinformation, Titel -->
             <xsl:text xml:space="preserve"> </xsl:text>
@@ -342,6 +342,7 @@
             <xsl:value-of select="_:dict('no-aut-abbr')" />
         </xsl:if>
     </xsl:template>
+    
     <xd:doc>
         <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
     </xd:doc>
@@ -352,29 +353,45 @@
             href="#find?query={$index}=&quot;{$term}&quot;" 
             class="neueSuche fas fa-search" 
             title="Suche nach {$term}"></a></span> 
-    </xsl:template>
+    </xsl:template>  
+    
+    <!-- DATUM -->
     
     <xd:doc>
         <xd:desc>Datum formatieren</xd:desc>
     </xd:doc>    
-    <xsl:template name='full-Date'>
-        <xsl:param name="pretext" as="xs:string"  xml:space="preserve" select="''"/>
-        <xsl:value-of select="$pretext"/><span class="date">
-            <xsl:for-each select="./mods:dateIssued">
-            <xsl:choose>
-                <xsl:when test=".[@encoding = 'iso8601']">                    
-                    <xsl:value-of select="./substring(., 1, 4)"/>
-                    <xsl:if test="./substring(., 5)"><xsl:value-of select="'-'||./substring(., 5,2)"/></xsl:if>
-                    <xsl:if test="./substring(., 7)"><xsl:value-of select="'-'||./substring(., 7,2)"/></xsl:if>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of select="."/>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test=".[@point eq 'start']"><xsl:text>–</xsl:text></xsl:if>
-        </xsl:for-each>  
+    <xsl:template match="mods:dateIssued">
+        <span class="date">             
+            <xsl:value-of select=".[1]"/>            
+            <xsl:if test=".[1][@point eq 'start']">
+                <xsl:value-of select="'–' || .[2]"/>
+            </xsl:if>  
         </span>
     </xsl:template>   
+    
+    <xd:doc>
+        <xd:desc/>
+    </xd:doc>
+    <xsl:template match="mods:dateIssued" name='full-date'> 
+        <xsl:param name="pretext" as="xs:string"  xml:space="preserve" select="', '"/> 
+        <xsl:variable name="dateIssued">
+            
+            
+        </xsl:variable>
+        <xsl:value-of select="$pretext"/>
+        <span class="year">
+        <xsl:choose>
+            <xsl:when test=".[@encoding = 'iso8601']">                    
+                <xsl:value-of select="./substring(., 1, 4)"/>
+                <xsl:if test="./substring(., 5)"><xsl:value-of select="'-'||./substring(., 5,2)"/></xsl:if>
+                <xsl:if test="./substring(., 7)"><xsl:value-of select="'-'||./substring(., 7,2)"/></xsl:if>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="."/>
+            </xsl:otherwise>
+        </xsl:choose> 
+        </span>
+    </xsl:template>
     
     <!-- TITLE -->
     
@@ -438,9 +455,9 @@
                 <xsl:with-param name="term" select="mods:publisher"/>
             </xsl:call-template>
             <!-- Datum -->
-            <xsl:call-template name="full-Date" >
+            <xsl:apply-templates select="mods:dateIssued">
                 <xsl:with-param name="pretext" select="', '" />
-            </xsl:call-template> 
+            </xsl:apply-templates> 
             <xsl:if test="./following-sibling::mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued"> 
                 <xsl:value-of select="' [Orig. ' 
                     || ./following-sibling::mods:relatedItem[@type='original']/mods:originInfo/mods:dateIssued 
@@ -457,23 +474,18 @@
     <xsl:template match="mods:relatedItem[@type='host']/mods:originInfo[ancestor::mods:mods/mods:genre[matches(., 'journalArticle|newspaperArticle')]]">
         <li class="eSegment">In: </li>
         <li>
-            <span class='journalTitle'><a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/><!--
-                --><xsl:if test="../mods:titleInfo/mods:subTitle">
+            <span class='journalTitle'>
+                <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort">
+                    <xsl:value-of select="../mods:titleInfo/mods:title"/> 
+                    <xsl:if test="../mods:titleInfo/mods:subTitle">
                     <xsl:value-of select="': ' ||../mods:titleInfo/mods:subTitle"/></xsl:if></a></span><!-- 
                 --><xsl:value-of select="if (../mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')
                 ||' '
                 ||../mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/>
             <xsl:choose>
-                <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']">
-                    <xsl:call-template name="full-Date">
-                        <xsl:with-param name="pretext" >/</xsl:with-param>
-                    </xsl:call-template>
+                <xsl:when test="mods:dateIssued and ../mods:part/mods:detail[@type eq 'volume']"> 
+                    <xsl:apply-templates select="mods:dateIssued" mode="full-date"/>
                 </xsl:when> 
-                <xsl:otherwise>
-                    <xsl:call-template name="full-Date">
-                        <xsl:with-param name="pretext" select="', '" />
-                   </xsl:call-template>
-                </xsl:otherwise>
             </xsl:choose>
             <xsl:value-of select="if (../mods:part/mods:detail[@type eq 'issue']) 
                 then ', '||_:dict('issue')||' '||../mods:part/mods:detail[@type eq 'issue']/mods:number 
@@ -499,9 +511,7 @@
                 <xsl:with-param name="index">publisher</xsl:with-param>
                 <xsl:with-param name="term" select="mods:publisher"/>    
             </xsl:call-template>
-            <xsl:call-template name="full-Date">
-                <xsl:with-param name="pretext" select="', '" />
-            </xsl:call-template>
+            <xsl:apply-templates select="dateIssued" mode="full-date" /> 
             <xsl:value-of select="if (../mods:part/mods:extent[@unit eq 'page']) 
                 then ', '||_:dict('pages')||' '||string-join(../mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
                 else ''"/>
@@ -570,9 +580,9 @@
         <li class="eSegment">Rezensiertes Werk </li>
         <li><xsl:apply-templates select="mods:name" />
             <xsl:for-each select="./mods:originInfo">
-                <xsl:call-template name="full-Date" >
+                <xsl:apply-templates select="mods:dateIssued" >
                     <xsl:with-param name="pretext" select="', '"/>
-                </xsl:call-template>
+                </xsl:apply-templates>
             </xsl:for-each>
             <xsl:apply-templates select="mods:title" /> 
         </li>
