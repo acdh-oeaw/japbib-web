@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dict xml:lang="de">
-    <string xml:id="aut"></string>
+    <string xml:id="aut">Autor</string>
     <string xml:id="trl">Übs.</string>
     <string xml:id="trl-abbr">Übs.</string>
     <string xml:id="edt">Hg.</string>
@@ -11,6 +11,7 @@
     <string xml:id="hnr">Honorar</string>
     <string xml:id="pht">Fotos</string>
     <string xml:id="red">Red.</string>
+    <string xml:id="etal">et al.</string>
     <string xml:id="year">Jahr</string>
     <string xml:id="publisher">Verlag</string>
     <string xml:id="place">Ort</string>
