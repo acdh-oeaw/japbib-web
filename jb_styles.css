@@ -44,7 +44,7 @@ h3 {
 a {
   color:#005;
   text-decoration: none;
-  border-radius: 3px;
+  /* border-radius: 3px; */
   } 
 a:hover,
 .aHover {
