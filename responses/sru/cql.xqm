@@ -180,12 +180,12 @@ declare function cql:searchClause($clause as element(searchClause), $map) {
         (: exact, starts-with, contains, ends-with :)
         $term := if (index:case($index-key ,$map)) then xs:string($clause/term) else lower-case($clause/term),
         $match-mode := if ($relation = 'contains') then 'contains'
-                                                   else if (ends-with($term,'*')) then     
-                                                        if (starts-with($term,'*')) then 'contains'
-                                                        else 'starts-with'
-                                                    else if (starts-with($term,'*')) then 'ends-with'
-                                                    else if (contains($term,'*')) then 'starts-ends-with'
-                else 'exact',
+                       else if (ends-with($term,'*')) then     
+                         if (starts-with($term,'*')) then 'contains'
+                         else 'starts-with'
+                       else if (starts-with($term,'*')) then 'ends-with'
+                       else if (contains($term,'*')) then 'starts-ends-with'
+                       else 'exact',
         $predicate := switch (true())
             case ($index-type eq $index:INDEX_TYPE_FT) return cql:xqft-predicate($match-mode, $match-on-xpath, $term, index:datatype($index-key ,$map), $relation, index:case($index-key,$map))
             default return cql:xquery-predicate($match-mode, $match-on-xpath, $term, index:datatype($index-key ,$map), $relation, index:case($index-key,$map))                     
@@ -225,19 +225,19 @@ let $rtrans-term := _:rdict($term),
 return switch (true())  
   case ($sanitized-term eq 'false') return 'not('||$match-on-xpath||')'
   case ($sanitized-term eq 'true') return $match-on-xpath
-  default return switch ($match-mode)
+  default return 
+      if ($index-datatype != '')
+      then $match-on-xpath||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on-xpath||") "||$relation||" "||$index-datatype||"("||$sanitized-term||")"
+      else switch ($match-mode)
     case ('exact') return $match-on||'="'||$sanitized-term||'"'
-                                    case ('starts-with') return 'starts-with('||$match-on||",'"||$sanitized-term||"')"
-                                    case ('ends-with') return 'ends-with('||$match-on||",'"||$sanitized-term||"')"
-                                    case ('contains') return 'contains('||$match-on||",'"||$sanitized-term||"')"
-                                    case ('starts-ends-with') return 
-                                            let $starts-with := substring-before($sanitized-term,'*')
-                                            let $ends-with := substring-after($sanitized-term,'*')
-                                            return 'starts-with('||$match-on||",'"||$starts-with||"') and ends-with("||$match-on||",'"||$ends-with||"')"
-                                    default return 
-                                        if ($index-datatype != '')
-                                        then $match-on||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on||") "||$relation||" "||$index-datatype||"("||$sanitized-term||")"
-        else $match-on||$relation||"'"||$sanitized-term||"'"   
+    case ('starts-with') return 'starts-with('||$match-on||",'"||$sanitized-term||"')"
+    case ('ends-with') return 'ends-with('||$match-on||",'"||$sanitized-term||"')"
+    case ('contains') return 'contains('||$match-on||",'"||$sanitized-term||"')"
+    case ('starts-ends-with') return 
+      let $starts-with := substring-before($sanitized-term,'*')
+      let $ends-with := substring-after($sanitized-term,'*')
+      return 'starts-with('||$match-on||",'"||$starts-with||"') and ends-with("||$match-on||",'"||$ends-with||"')"
+    default return $match-on||$relation||"'"||$sanitized-term||"'"   
 };
 
 (:~ remove quotes :)

@@ -170,7 +170,7 @@ return if (not($sort-xpath) or $sort-xpath instance of xs:string) then (concat(
                             concat(
                                    "let $__res__ := for $m in ", $nodesExpr ,"&#10;", 
                                    switch ($sort-index/@datatype)
-                                     case"xs:integer" return concat("  let $o := try { xs:integer(normalize-space(($m/",$sort-xpath,")[1]))
+                                     case"xs:integer" return concat("  let $o := try { ($m/",$sort-xpath,")[1] }&#10;
                                      catch err:FORG0001 {()}&#10;")
                                      default return concat("  let $o := normalize-space(($m/",$sort-xpath,")[1])[. ne '']&#10;"),
                                    "  order by ($o, ", $max-sort-value, ")[1] ",
