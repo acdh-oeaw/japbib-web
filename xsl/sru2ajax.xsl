@@ -315,21 +315,21 @@
         <xsl:if test="mods:etal">
             <xsl:value-of select="_:dict(' et al.')"/>
         </xsl:if>
-        <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/> 
     </xsl:template>
     
     <xsl:template match="mods:namePart" >
         <xsl:param name="roleTerm" >'aut'</xsl:param> 
-            <!-- <xsl:if test="parent::mods:name/mods:role/mods:roleTerm"></xsl:if> -->
         <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
             <xsl:call-template name="add-query-link">
-                    <xsl:with-param name="index">author</xsl:with-param>
-                    <xsl:with-param name="term" select="."/> 
-                </xsl:call-template> 
-                </xsl:if>
-                <xsl:if test="parent::mods:name/mods:role/mods:roleTerm[not(. = 'aut')]">                    
-                    <xsl:value-of select="' (' || _:dict(parent::mods:name/mods:role/mods:roleTerm) || ')'"/>
-                </xsl:if>               
+                <xsl:with-param name="index">author</xsl:with-param>
+                <xsl:with-param name="term" select="."/> 
+            </xsl:call-template> 
+        </xsl:if>
+        <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm
+            and parent::mods:name/mods:role/mods:roleTerm[not(. = 'aut')]">                    
+            <xsl:value-of select="' (' || _:dict(parent::mods:name/mods:role/mods:roleTerm) || ')'"/>
+        </xsl:if>               
+        <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/> 
     </xsl:template>
      
     <xd:doc>
@@ -360,24 +360,18 @@
     <xd:doc>
         <xd:desc>Datum formatieren</xd:desc>
     </xd:doc>    
-    <xsl:template match="mods:dateIssued">
-        <span class="date">             
-            <xsl:value-of select=".[1]"/>            
-            <xsl:if test=".[1][@point eq 'start']">
-                <xsl:value-of select="'–' || .[2]"/>
-            </xsl:if>  
-        </span>
+    <xsl:template match="mods:dateIssued">  
+        <xsl:value-of select="."/>
+        <xsl:if test=".[@point='start']">
+            –
+        </xsl:if>
     </xsl:template>   
     
     <xd:doc>
         <xd:desc/>
     </xd:doc>
     <xsl:template match="mods:dateIssued" name='full-date'> 
-        <xsl:param name="pretext" as="xs:string"  xml:space="preserve" select="', '"/> 
-        <xsl:variable name="dateIssued">
-            
-            
-        </xsl:variable>
+        <xsl:param name="pretext" as="xs:string"  xml:space="preserve" select="', '"/>  
         <xsl:value-of select="$pretext"/>
         <span class="year">
         <xsl:choose>
@@ -387,7 +381,7 @@
                 <xsl:if test="./substring(., 7)"><xsl:value-of select="'-'||./substring(., 7,2)"/></xsl:if>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="."/>
+                 <xsl:apply-templates />
             </xsl:otherwise>
         </xsl:choose> 
         </span>
