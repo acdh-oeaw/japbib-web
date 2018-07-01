@@ -93,9 +93,13 @@
   padding-right: .2em;
   padding-left: .5em;
   font-weight: 900;
-  opacity: .4; 
+  opacity: .4;
   white-space: nowrap;
 } 
+#thesaurus .zahl::before {
+  float: left;
+  line-height: 1.5em;  
+}
 .zahl:hover::before  { 
   opacity: 1;
 }
@@ -107,8 +111,9 @@
   position: relative;
   display: block;
   text-align: right;
-  margin-right: -.3em; 
+  margin-right: -.3em;
   padding-right: .3em;
+  height: 1.5em;
 }
 .thesaurus .zahl::before  { 
   content: "\f002"; /* fa-search */ 

@@ -866,8 +866,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 ausgewaehlt[i].conj = conj;
 
         renewWishlist();
-    });
-
+    }); 
+    
     //in m gespeicherte Funktionen aufrufen:
     window.jb80 = m;
 }

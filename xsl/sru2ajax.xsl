@@ -57,11 +57,13 @@
         </div>
     </xsl:template>
     
-    <xd:doc><xd:desc>
+    <xd:doc>
+        <xd:desc>
         
         Navigationszeile (.navResults)
         
-    </xd:desc></xd:doc>
+        </xd:desc>
+    </xd:doc>
     <xsl:template name="navbar">
         <xsl:variable name="nOfRec" as="xs:integer" select="/sru:searchRetrieveResponse/sru:numberOfRecords"/>
         <xsl:variable name="lastPage" as="xs:integer" select="(($nOfRec - 1) idiv $maximumRecords) + 1"/>        
@@ -127,31 +129,31 @@
             </xsl:if>
            <xsl:apply-templates select="sru:recordData/mods:mods"/>
         </li> 
-    </xsl:template>
-    
+    </xsl:template> 
+          
     <xd:doc>
         <xd:desc>Einzeleintrag, Inhalt (.shortInfo) </xd:desc>
     </xd:doc>
     <xsl:template match="mods:mods">
         <div class="shortInfo">
         <!-- Einzeleintrag, Kurzinformation: Name --> 
-              <xsl:choose>
-                  <xsl:when test="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')] "> 
-                      <xsl:for-each select="mods:name
-                          [mods:role/mods:roleTerm/normalize-space(.)= ('aut', 'edt', 'trl', 'ctb')]
-                          /mods:namePart
-                          ">   
-                          <xsl:value-of select="." />
-                          <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.)= ( 'edt', 'trl', 'ctb')">
-                              <xsl:value-of select="' ('|| _:dict(parent::mods:name/mods:role/mods:roleTerm) || ')'" />
-                          </xsl:if> 
-                          <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
-                      </xsl:for-each> 
-                  </xsl:when>
-                  <xsl:otherwise>                      
-                      <xsl:value-of select="_:dict('no-aut-abbr')"/> 
-                  </xsl:otherwise>
-              </xsl:choose> 
+            <xsl:choose>
+                <xsl:when test="mods:name[mods:role/mods:roleTerm/normalize-space(.) = ('aut', 'edt', 'trl', 'ctb')] "> 
+                    <xsl:for-each select="mods:name
+                        [mods:role/mods:roleTerm/normalize-space(.)= ('aut', 'edt', 'trl', 'ctb')]
+                        /mods:namePart
+                        ">   
+                        <xsl:value-of select="." />
+                        <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.)= ( 'edt', 'trl', 'ctb')">
+                            <xsl:value-of select="' ('|| _:dict(parent::mods:name/mods:role/mods:roleTerm) || ')'" />
+                        </xsl:if> 
+                        <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+                    </xsl:for-each> 
+                </xsl:when>
+                <xsl:otherwise>                      
+                    <xsl:value-of select="_:dict('no-aut-abbr')"/> 
+                </xsl:otherwise>
+            </xsl:choose> 
             <xsl:text xml:space="preserve">, </xsl:text> 
             <!--  Einzeleintrag, Kurzinformation, Jahr  -->
             <span class="year">
@@ -171,15 +173,11 @@
             </span>
             <!--  Einzeleintrag, Kurzinformation, Titel -->
             <xsl:text xml:space="preserve"> </xsl:text>
-            <span class="plusMinus titel" title="Details anzeigen/verbergen"><xsl:apply-templates select="mods:titleInfo"/></span>
+            <span class="plusMinus titel" title="Details anzeigen/verbergen">
+                <xsl:apply-templates select="mods:titleInfo"/>
+            </span>
         </div>
-        <xsl:apply-templates select="." mode="detail"/>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Einzeleintrag (mode:detail), spez. Information (.showEntry .record-html)</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:mods" mode="detail">
+        <!--  Einzeleintrag, Details -->
         <div class="showEntry" style="display:none;"> 
             <div class='closeX'></div>
             <div class="record-html">
@@ -189,30 +187,94 @@
                         <xsl:value-of select="_:dict('aut')"/>
                     </li>  
                     <li>
-                        <xsl:apply-templates select="mods:name" mode="detail"/>
+                        <xsl:apply-templates select="mods:name"/>
                         <xsl:call-template name="no-author"/> 
                     </li>
                     <!-- Titel -->
-                    <xsl:apply-templates select="mods:titleInfo" mode="detail"/>
-                    
-                    <!-- Ort, etc -->
+                    <li class="eSegment">
+                        <xsl:value-of select="_:dict('title')"/>
+                    </li>
+                    <li> 
+                        <xsl:apply-templates select="mods:titleInfo"/> 
+                        <xsl:value-of select="if (matches(normalize-space(.), $optionalPeriod)) then '.' else ''"/>    
+                    </li>
+                    <!-- Ort, etc bzw. @host-->
                     <xsl:choose>
-                        <xsl:when test="mods:originInfo">
-                            <xsl:apply-templates select="mods:originInfo" mode="detail" />
+                        <xsl:when test="mods:originInfo">                            
+                            <li class="eSegment">
+                                <xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/>
+                            </li>
+                            <li>                                
+                                <xsl:apply-templates select="mods:originInfo"/> 
+                            </li>
                         </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:apply-templates select="mods:relatedItem[@type eq 'host']" mode="detail" />
-                        </xsl:otherwise>
+                        <xsl:when test="mods:relatedItem[@type eq 'host']">  
+                            <li class="eSegment">
+                                In:
+                            </li>                                
+                            <li>                                 
+                                <xsl:apply-templates select="mods:relatedItem[@type eq 'host']" /> 
+                            </li>
+                        </xsl:when>
                     </xsl:choose>                     
                 </ul>
                 <div class="addInfo">
                     
-                    <!-- Weitere bibl. Angaben -->    
-                    <xsl:call-template name="more-detail-list-items" />
-                         
-                <h4>Inhaltliche Angaben</h4>
-                <ul><xsl:call-template name="topics-list-items"/></ul> 
-                    <xsl:call-template name="externeSuche"/>
+                    <!-- Weitere bibl. Angaben -->  
+                    
+                    <xsl:if test="mods:physicalDescription
+                        | mods:relatedItem[not(@type = 'host')]
+                        | mods:subject[topic = 'Form']
+                        | mods:note[@type eq 'footnotes']
+                        ">
+                        <h4>Weitere bibliographische Angaben</h4>
+                        <ul>
+                            <xsl:apply-templates select="mods:physicalDescription" />
+                            <xsl:apply-templates select="mods:relatedItem[not(@type = 'host')]"  /> 
+                            <xsl:call-template name="primary-subjects"> 
+                                <xsl:with-param name="topic">Form</xsl:with-param> 
+                            </xsl:call-template>         
+                            <xsl:apply-templates select="mods:note[@type eq 'footnotes']" />
+                        </ul>
+                    </xsl:if> 
+                    
+                    <!-- Weitere inhaltl. Angaben -->  
+                    
+                    <xsl:if test="mods:subject[(topic = 'Thema' or 'Zeit' or 'Region') 
+                        or @displayLabel = 'Stichworte']
+                        |mods:genre[matches(., '^[Bb]ook$')]">
+                        <h4>Inhaltliche Angaben</h4>
+                        <ul> 
+                            <xsl:call-template name="primary-subjects">
+                                <xsl:with-param name="topic" select="'Thema'" />              
+                            </xsl:call-template> 
+                            <xsl:call-template name="primary-subjects">
+                                <xsl:with-param name="topic" select="'Zeit'" />              
+                            </xsl:call-template> 
+                            <xsl:call-template name="primary-subjects">
+                                <xsl:with-param name="topic" select="'Region'" />              
+                            </xsl:call-template>  
+                            <xsl:call-template name="keywords"/>
+                              
+                        </ul>  
+                    </xsl:if>
+                    
+                    <!-- Links zu anderen Suchmaschinen -->
+                           
+                    <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]"> 
+                        <xsl:variable name="title4externalQuery" select="mods:titleInfo/mods:title" />
+                        <xsl:variable name="author4externalQuery" select="mods:name/mods:namePart" />
+                        <h4>Externe Suche</h4>
+                        <ul>   
+                            <li>
+                                <a class="externerLink" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="kvk"
+                                    href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&amp;kataloge=BVB&amp;kataloge=NRW&amp;kataloge=HEBIS&amp;kataloge=HEBIS_RETRO&amp;kataloge=KOBV_SOLR&amp;kataloge=GBV&amp;kataloge=DDB&amp;kataloge=STABI_BERLIN&amp;OESTERREICH=&amp;kataloge=BIBOPAC&amp;kataloge=LBOE&amp;kataloge=OENB&amp;SCHWEIZ=&amp;kataloge=SWISSBIB&amp;kataloge=HELVETICAT&amp;kataloge=BASEL&amp;kataloge=ETH&amp;kataloge=VKCH_RERO&amp;digitalOnly=0&amp;embedFulltitle=0&amp;newTab=1&amp;TI={$title4externalQuery}&amp;AU={$author4externalQuery}&amp;autosubmit=true" > 
+                                    Karlsruher Virtueller Katalog
+                                </a>
+                            </li>  
+                            <!-- https://scholar.google.com/scholar?q={$title4externalQuery} -->
+                        </ul>
+                    </xsl:if> 
                 </div>
             </div>
             <div class="toggleRecord">
@@ -251,67 +313,15 @@
         </div>
     </xsl:template> 
     
-    <xd:doc>
-        <xd:desc>Einzeleintrag, sek. bibliogr. Details: Reihe, Seiten, etc. </xd:desc>
-    </xd:doc>
-    <xsl:template name="more-detail-list-items">
-        <xsl:if test="'@mode=bibl-detail'">
-            <h4>Weitere bibliographische Angaben</h4>
-            <ul>
-                 <xsl:apply-templates select="mods:physicalDescription" mode="bibl-detail"/>
-                 <xsl:apply-templates select="mods:relatedItem except mods:relatedItem[@type = 'host']" mode="bibl-detail"/> 
-                 <xsl:call-template name="primary-subjects"> 
-                     <xsl:with-param name="topic">Form</xsl:with-param> 
-                 </xsl:call-template>         
-                 <xsl:apply-templates select="mods:note[@type eq 'footnotes']" mode="bibl-detail"/>
-            </ul>
-        </xsl:if>
-    </xsl:template>
-       
-    <xd:doc>
-        <xd:desc>Schlag- und Stichworte aufrufen</xd:desc>
-    </xd:doc>
-    <xsl:template name="topics-list-items">  
-        <xsl:call-template name="primary-subjects">
-            <xsl:with-param name="topic" select="'Thema'" />              
-        </xsl:call-template> 
-        <xsl:call-template name="primary-subjects">
-            <xsl:with-param name="topic" select="'Zeit'" />              
-        </xsl:call-template> 
-        <xsl:call-template name="primary-subjects">
-            <xsl:with-param name="topic" select="'Region'" />              
-        </xsl:call-template>  
-        <xsl:call-template name="keywords">
-            <xsl:with-param name="keywords" select="mods:subject[@displayLabel eq 'Stichworte']"/>
-        </xsl:call-template>        
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Links zu anderen Suchmaschinen</xd:desc>
-    </xd:doc>
-    <xsl:template name="externeSuche" >        
-        <xsl:if test="mods:genre[matches(., '^[Bb]ook$')]"> 
-            <xsl:variable name="title4externalQuery" select="mods:titleInfo/mods:title" />
-            <xsl:variable name="author4externalQuery" select="mods:name/mods:namePart" />
-        <h4>Externe Suche</h4>
-            <ul>   
-            <li>
-               <a class="externerLink" title="Bibliothekssuche im Karlsruher Virtueller Katalog" target="kvk"
-                   href="http://kvk.bibliothek.kit.edu/?kataloge=SWB&amp;kataloge=BVB&amp;kataloge=NRW&amp;kataloge=HEBIS&amp;kataloge=HEBIS_RETRO&amp;kataloge=KOBV_SOLR&amp;kataloge=GBV&amp;kataloge=DDB&amp;kataloge=STABI_BERLIN&amp;OESTERREICH=&amp;kataloge=BIBOPAC&amp;kataloge=LBOE&amp;kataloge=OENB&amp;SCHWEIZ=&amp;kataloge=SWISSBIB&amp;kataloge=HELVETICAT&amp;kataloge=BASEL&amp;kataloge=ETH&amp;kataloge=VKCH_RERO&amp;digitalOnly=0&amp;embedFulltitle=0&amp;newTab=1&amp;TI={$title4externalQuery}&amp;AU={$author4externalQuery}&amp;autosubmit=true" > 
-                  Karlsruher Virtueller Katalog
-               </a>
-            </li>  
-                <!-- https://scholar.google.com/scholar?q={$title4externalQuery} -->
-        </ul>
-        </xsl:if>
-    </xsl:template> 
+    <!-- Templates für Detailangaben --> 
     
     <xsl:variable name="acceptedRoles" select="'aut', 'edt', 'trl', 'ctb', 'com', 'ill', 'pht', 'red', 'win', 'hnr'"/>
     
     <xd:doc>
         <xd:desc>Autoren-Namen formatieren</xd:desc>
+        <xd:param name="roleTerm"/>
     </xd:doc>
-    <xsl:template match="mods:name" mode="detail">
+    <xsl:template match="mods:name" >
         <xsl:param name="roleTerm" select="$acceptedRoles"/>
         <xsl:apply-templates select="mods:namePart" >
             <xsl:with-param name="roleTerm" select="$roleTerm" /> 
@@ -325,11 +335,14 @@
     
     <xsl:template match="mods:namePart" >
         <xsl:param name="roleTerm" >'aut'</xsl:param> 
-        <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
+        <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">            
+            
             <xsl:call-template name="add-query-link-after-term">
                 <xsl:with-param name="index">author</xsl:with-param>
-                <xsl:with-param name="term" select="."/> 
-            </xsl:call-template> 
+                <xsl:with-param name="term"> 
+                    <xsl:apply-templates/>
+                </xsl:with-param> 
+            </xsl:call-template>     
         </xsl:if>
         <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm
             and parent::mods:name/mods:role/mods:roleTerm[not(. = 'aut')]">                    
@@ -349,13 +362,13 @@
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
+        <xd:desc>query-link nachstellen</xd:desc> 
     </xd:doc>
     <xsl:template name="add-query-link-after-term">
         <xsl:param name="index" as="xs:string"/>
         <xsl:param name="term" as="node()*"/> 
         <xsl:if test="$term">
-            <span class="{$index}">
+            <span class="{$index}"> 
                 <xsl:value-of select="$term"/>
                 <a href="#find?query={$index}=&quot;{$term}&quot;" 
                     class="neueSuche fas fa-search" 
@@ -368,14 +381,12 @@
         <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
     </xd:doc>
     <xsl:template name="add-query-link"> 
-        <xsl:param name="term" as="node()*"/> 
-        <xsl:if test="$term">                 
+        <xsl:param name="term" as="node()*"/>
+        <xsl:param name="text" select="$term"/> 
             <a href="#find?query=&quot;{$term}&quot;" 
-                class="neueSuche" 
-                title="Suche nach {$term}">
-                <xsl:value-of select="$term"/>
-            </a>             
-        </xsl:if>
+                title="Suche nach {$term}"> 
+                <xsl:value-of select="$text"/> 
+            </a>           
     </xsl:template>  
     
     <!-- DATUM -->
@@ -398,183 +409,158 @@
         
     <!-- TITLE -->
     
-    <xd:doc>
-        <xd:desc>Details: Titel</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:titleInfo" mode="detail">
-        <li class="eSegment">
-            <xsl:value-of select="_:dict('title')"/>
-        </li>
-        <li>
-            <span class="title">
-                <xsl:apply-templates select="*"/>
-            </span>
-        </li>
-    </xsl:template>
-    
-    <xsl:variable name="optionalPeriod">[\w"'\)]$</xsl:variable><!-- pattern für Schlusspunkt -->
     <xsl:variable name="optionalSpace">[\w\.]$</xsl:variable> <!-- pattern für Schluss-Space -->
-    
+    <xsl:variable name="optionalPeriod">[\w"'\)]$</xsl:variable><!-- pattern für Schlusspunkt -->
+        
     <xd:doc>
-        <xd:desc>Verbindung von nonSort mit Rest des Titels; Space nur nach Artikeln</xd:desc>
+        <xd:desc>Titel formatieren: Punkt nur nach (Buchstaben, ", ')</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:nonSort">
-        <xsl:value-of select="normalize-space(.)"/>
-        <xsl:value-of select="if (matches(normalize-space(.), $optionalSpace)) then ' ' else ''"/>
-    </xsl:template>    
-    
-    <xd:doc>
-        <xd:desc>Ende des Titels: Punkt nur nach (Buchstaben, ", ')</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:title">
-        <xsl:value-of select="." />
-        <xsl:value-of select="if ((matches(normalize-space(.), $optionalPeriod)) and position() ne last()) then '.' else ''"/>
+    <xsl:template match="mods:titleInfo"> 
+        <xsl:param name="title" >
+            <xsl:apply-templates select="mods:title"/>
+        </xsl:param>
+        <xsl:param name="subTitle">
+            <xsl:apply-templates select="mods:subTitle"/>
+        </xsl:param>
+        <xsl:value-of select="normalize-space(mods:nonSort)"/>
+        <xsl:value-of select="if (matches(normalize-space(mods:nonSort), $optionalSpace)) then ' ' else ''"/>
+            <xsl:copy-of select="$title"/>
+        <xsl:value-of select="if (matches($title, $optionalPeriod) 
+            and mods:subTitle) then '. ' else ''"/>         
+        <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/> 
     </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Subtitle formatieren</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:subTitle">
-        <xsl:text xml:space="preserve"> </xsl:text>
-        <xsl:variable name="subTitle" select="normalize-space(.)" />
-        <xsl:sequence select=  "concat(upper-case(substring($subTitle,1,1)), substring($subTitle, 2) )"/> 
-    </xsl:template>
-    
+     
     <!-- Ort, Verlag, Jahr  -->
     
     <xd:doc>
         <xd:desc>Details zu Ort, etc. für Buch </xd:desc>
     </xd:doc>
-    <xsl:template match="mods:originInfo[parent::mods:mods]" mode="detail">          
-       <li class="eSegment"><xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/></li>
-        <li><xsl:value-of select="( if (mods:place/mods:placeTerm) 
-               then mods:place/mods:placeTerm 
-               else _:dict('no-place-abbr')
-               )" /> 
-            <xsl:value-of select="if (mods:publisher) then ': ' else ''"/>
-            <xsl:call-template name="add-query-link-after-term">
-                <xsl:with-param name="index">publisher</xsl:with-param>
-                <xsl:with-param name="term" select="mods:publisher"/>
-            </xsl:call-template>
-            <!-- Datum -->
-            <xsl:apply-templates select="mods:dateIssued" /> 
-         </li>
-    </xsl:template>
-    
-    <xsl:template match="mods:originInfo">
+    <xsl:template match="mods:originInfo"> 
         <xsl:value-of select="mods:place/mods:placeTerm" />         
         <xsl:value-of select="if (mods:place/mods:placeTerm and mods:publisher) then ': ' else ''"/>
-        <xsl:value-of select="mods:publisher" />
+        <xsl:call-template name="add-query-link-after-term">
+            <xsl:with-param name="index">publisher</xsl:with-param>
+            <xsl:with-param name="term" select="mods:publisher"/>
+        </xsl:call-template> 
         <xsl:value-of select="if (mods:place/mods:placeTerm or mods:publisher) then ', ' else ''"/> 
-        <xsl:apply-templates select="mods:dateIssued" />     
-    </xsl:template>
+        <xsl:apply-templates select="mods:dateIssued" />
+        <xsl:apply-templates select="mods:edition" /> 
+    </xsl:template> 
     
     <xd:doc>
-        <xd:desc>Default für related Items</xd:desc>
+        <xd:desc>Anm. zur Veröffentlichung</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:relatedItem[@type eq 'host']" mode="detail" >
-        <li class="eSegment">In: </li>
-        <li>
-            <xsl:for-each select="*">
-                <xsl:apply-templates/>
-                <xsl:value-of select="if (position() ne last()) then ', ' else ''"/>                
-            </xsl:for-each>
-        </li>
+    <xsl:template match="mods:edition">
+        <xsl:value-of select="' (' || . ||')'"/>
     </xsl:template>
+    
     <xd:doc>
         <xd:desc>Zeitschriftenartikel, Details zusammenstellen</xd:desc>
     </xd:doc>
     <xsl:template match="mods:relatedItem[@type='host']
-        [ancestor::mods:mods/mods:genre[matches(., 'journalArticle|newspaperArticle')]]" mode="detail" priority="1">
-        <li class="eSegment">In: </li>
-        <li>
-            <a href="#?query=title=&quot;{mods:titleInfo/mods:title}&quot;" class="stichwort"> 
-                <xsl:apply-templates select="mods:titleInfo/mods:title" />
-            </a>
-            <xsl:value-of select="if (mods:part/mods:detail[@type eq 'volume']) then ', '||_:dict('volumeJournal')
-            ||' '
-            ||mods:part/mods:detail[@type eq 'volume']/mods:number else ''"/>
-        
-            <xsl:apply-templates select="mods:dateIssued"/>
-            
-            <xsl:value-of select="if (mods:part/mods:detail[@type eq 'issue']) 
-                then ', '||_:dict('issue')||' '||mods:part/mods:detail[@type eq 'issue']/mods:number 
-                else ''"/>
-            <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
-                then ', '||_:dict('pages')||' '||string-join(mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
-                else ''"/>
-        </li>
+        [ancestor::mods:mods/mods:genre[matches(., 'journalArticle|newspaperArticle')]]" priority="1">
+        <xsl:call-template name="add-query-link">
+            <xsl:with-param name="term" select="mods:titleInfo/mods:title"/>
+            <xsl:with-param name="text" >                
+                <xsl:apply-templates select="mods:titleInfo" />
+            </xsl:with-param>
+         </xsl:call-template>   
+        <xsl:value-of select="if (mods:part/mods:detail[@type eq 'volume']) 
+            then ', '||_:dict('volumeJournal') ||' ' 
+            ||mods:part/mods:detail[@type eq 'volume']/mods:number 
+            else ''"/>        
+        <xsl:choose>
+            <xsl:when test="mods:originInfo/mods:dateIssued 
+                and mods:part/mods:detail[@type eq 'volume']">
+                <xsl:value-of select="'/' || mods:originInfo/mods:dateIssued || ', '"/>
+            </xsl:when>
+            <xsl:when test="mods:originInfo/mods:dateIssued">                    
+                <xsl:value-of select="', '"/>
+                <xsl:apply-templates select="mods:originInfo/mods:dateIssued"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="', '"/><xsl:value-of select=" _:dict('no-year-abbr')"/>
+            </xsl:otherwise>
+        </xsl:choose>            
+        <xsl:value-of select="if (mods:part/mods:detail[@type eq 'issue']) 
+            then ', '||_:dict('issue')||' '||mods:part/mods:detail[@type eq 'issue']/mods:number 
+            else ''"/>
+        <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
+            then ', '||_:dict('pages')||' '||string-join(mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
+            else ''"/>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Buchbeiträge, Details zusammenstellen</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:originInfo[parent::mods:relatedItem[ancestor::mods:mods/mods:genre eq 'bookSection' and @type eq 'host']]" mode="detail">
-        <li class="eSegment">In: </li>
-        <li>
-            <xsl:apply-templates select="parent::mods:relatedItem/mods:name" mode="detail" />
-            <xsl:value-of select="', '"/>
-            <a href="#?query=title=&quot;{../mods:titleInfo/mods:title}&quot;" class="stichwort"><xsl:value-of select="../mods:titleInfo/mods:title"/></a>
-            <xsl:value-of select="'. '||_:dict('place')||': '||(if (mods:place/mods:placeTerm) then mods:place/mods:placeTerm else _:dict('no-place-abbr'))"/>
-            <xsl:value-of select="if (mods:publisher) then ', ' else ''"/>
-            <xsl:call-template name="add-query-link-after-term">                
-                <xsl:with-param name="index">publisher</xsl:with-param>
-                <xsl:with-param name="term" select="mods:publisher"/>    
-            </xsl:call-template>
-            <xsl:apply-templates select="dateIssued" /> 
-            <xsl:value-of select="if (../mods:part/mods:extent[@unit eq 'page']) 
-                then ', '||_:dict('pages')||' '||string-join(../mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
-                else ''"/>
-        </li>
+    <xsl:template match="mods:relatedItem[@type eq 'host']         
+        [ancestor::mods:mods/mods:genre[matches(., 'bookSection')]]"  >
+        <xsl:apply-templates select="mods:name" />        
+        <xsl:call-template name="no-author"/>
+        <xsl:value-of select="', '"/>
+        <xsl:call-template name="add-query-link">        
+            <xsl:with-param name="term" select="mods:titleInfo/mods:title" /> 
+        </xsl:call-template> 
+        <xsl:value-of select="', '"/> 
+        <xsl:apply-templates select="mods:originInfo" /> 
+        <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
+            then ', '||_:dict('pages')||' '
+            ||string-join(mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
+            else ''"/>
     </xsl:template>
     
-    <!-- "Weitere bibliographische Angaben" (mode="bibl-detail") -->
+    <!-- "Weitere bibliographische Angaben"   -->
     
     <xd:doc>
-        <xd:desc>Serien und andere Details zusammenstellen</xd:desc>
+        <xd:desc>Serien zusammenstellen</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:relatedItem[@type eq 'series']" mode="bibl-detail">
+    <xsl:template match="mods:relatedItem[@type eq 'series']">
         <li class="eSegment"><xsl:value-of select="_:dict('series')"/></li>
         <li><xsl:call-template name="add-query-link-after-term">
                 <xsl:with-param name="index">series</xsl:with-param>
-                <xsl:with-param name="term" select=".//mods:title"/>
+                <xsl:with-param name="term">
+                    <xsl:apply-templates select="mods:titleInfo"/>
+                </xsl:with-param>
             </xsl:call-template>
-           <xsl:apply-templates mode="bibl-detail" select="* except mods:titleInfo"/></li>
+           <xsl:apply-templates  select="* except mods:titleInfo"/></li>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Bandangaben</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:part[mods:detail[@type eq 'volume']]" mode="bibl-detail">
+    <xsl:template match="mods:part[mods:detail[@type eq 'volume']]">
         <xsl:value-of select="', '||_:dict('vol-abbr')||' '||mods:detail[@type eq 'volume']"/>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Details, Kollationsvermerk (Sammeltemplate)</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:physicalDescription" mode="bibl-detail">
+    <xsl:template match="mods:physicalDescription">
         <li class="eSegment">Kollationsvermerk</li>
-        <xsl:apply-templates mode="bibl-detail"/>
+        <li>            
+            <xsl:apply-templates/>
+            <xsl:value-of select="if (position() ne last()) then ', ' else ''"/> 
+        </li>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Seitenangaben</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:extent" mode="bibl-detail">
-        <li><xsl:value-of select=".||' '||_:dict(@unit||'s')"/></li>
+    <xsl:template match="mods:extent">
+        <xsl:value-of select=".||' '||_:dict(@unit||'s')"/>
     </xsl:template>
     
     <xd:doc>
         <xd:desc>Sonstige Details</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:note" mode="bibl-detail">
-        <li><xsl:value-of select="."/></li>
+    <xsl:template match="mods:note"> 
+        <xsl:value-of select="."/>
     </xsl:template>    
    
     <xd:doc>
         <xd:desc>Angabe zum Original </xd:desc>
     </xd:doc>
-    <xsl:template match="mods:relatedItem[@type eq 'original']" mode="bibl-detail">
+    <xsl:template match="mods:relatedItem[@type eq 'original']" >
         <li class="eSegment">Original</li>
         <li>
             <xsl:for-each select="*">
@@ -587,23 +573,30 @@
     <xd:doc>
         <xd:desc>Review </xd:desc>
     </xd:doc>
-    <xsl:template match="mods:relatedItem[@type eq 'reviewOf']" mode="bibl-detail">
+    <xsl:template match="mods:relatedItem[@type eq 'reviewOf']" >
         <li class="eSegment">Rezensiertes Werk </li>
         <li>
-            <xsl:for-each select="*">
                 <xsl:apply-templates/>
-                <xsl:value-of select="if (position() ne last()) then ', ' else ''"/>                
-            </xsl:for-each>
+                <xsl:value-of select="if (position() ne last()) then ', ' else ''"/> 
         </li>
     </xsl:template> 
     <xd:doc>
         <xd:desc>Andere Version </xd:desc>
     </xd:doc>
-    <xsl:template match="mods:relatedItem[@type eq 'otherVersion']" mode="bibl-detail">
+    <xsl:template match="mods:relatedItem[@type eq 'otherVersion']">
         <li class="eSegment">Andere Version</li>
         <li>
             <xsl:apply-templates/>
+            <xsl:value-of select="if (position() ne last()) then ', ' else ''"/>
         </li>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Fußnoten</xd:desc>
+    </xd:doc> 
+    <xsl:template match="mods:note[@type eq 'footnotes']">        
+        <li class="eSegment">Bemerkungen</li>
+        <li><xsl:value-of select="."/></li>        
     </xsl:template>
     
     <!-- "Weitere inhaltl. Angaben"  -->
@@ -623,27 +616,25 @@
                 </xsl:call-template></li>
             </xsl:for-each>            
         </xsl:if>
-    </xsl:template>
+    </xsl:template>   
     
     <xd:doc>
-        <xd:desc>Fußnoten</xd:desc>
-    </xd:doc> 
-    <xsl:template match="mods:note[@type eq 'footnotes']" mode="bibl-detail">        
-        <li class="eSegment">Bemerkungen</li>
-        <li><xsl:value-of select="."/></li>        
-    </xsl:template>
-    
-    
-    <xsl:template name="keywords">
-        <xsl:param name="keywords" as="element(mods:subject)*"/>
-        <xsl:if test="$keywords">
+        <xd:desc> Stichworte </xd:desc>
+        <xd:param name="keywords"/>
+    </xd:doc>
+    <xsl:template name="keywords"> 
         <li class="eSegment">Stichworte</li>
-        <li><xsl:for-each select="$keywords">
-            <a href="#?query=&quot;{.}&quot;" class="stichwort" title="neue Suche starten"><xsl:value-of select="."/></a>
-            <xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
-        </xsl:for-each>
-        </li></xsl:if>
-    </xsl:template>
+        <li>
+            <xsl:for-each select="mods:subject[@displayLabel='Stichworte']" >
+                <xsl:call-template name="add-query-link">
+                    <xsl:with-param name="term">
+                        <xsl:apply-templates />
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
+            </xsl:for-each>
+        </li>
+    </xsl:template> 
     
     <!-- Taxonomy -->
    
@@ -674,8 +665,12 @@
         <xsl:param name="title" as="xs:string">neue Suche starten</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
     </xsl:template> 
-    <xsl:template match="mods:_match_">
-        <strong><xsl:value-of select="."/></strong>
-    </xsl:template>
+    
+    <!-- _match_ -->
+    
+    <xsl:template match="mods:_match_">  
+         <xsl:value-of select="'_'||.||'_'"/>
+        <xsl:if test="position() ne last()"><xsl:value-of select="' '"/></xsl:if>
+    </xsl:template>  
     
 </xsl:stylesheet>
