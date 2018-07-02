@@ -283,7 +283,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 // wenn nicht alles in Ordnung...
                 handleGetErrors.apply(this, [frameWork, jqXHR.status, $.parseHTML(jqXHR.responseText), getResultsErrorTracker])
             }
+
             $('.content > .showResults').replaceWith(frameWork);
+
             $('.content > .showResults textarea.codemirror-data').each(function() {
                 CodeMirror.fromTextArea(this, {
                     readOnly: true,
@@ -294,6 +296,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             });
             $('.ladeResultate').fadeOut('slow');
             $('#find .schlagworte li li ol').hide();
+            
+            //_MATCH_
+            $(".author, .title, .subject").html(function(_, html) {
+               return html.replace(/_(.+?)_/g, '<b>$1</b>');
+            }); 
             //Anfangszustand bei neuer Abfrage
             if (newFilter)
                 $('.showResults').show('slow', arrangeHitlist);

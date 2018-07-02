@@ -187,8 +187,10 @@
                         <xsl:value-of select="_:dict('aut')"/>
                     </li>  
                     <li>
-                        <xsl:apply-templates select="mods:name"/>
-                        <xsl:call-template name="no-author"/> 
+                        <span class="author">
+                            <xsl:apply-templates select="mods:name"/>
+                            <xsl:call-template name="no-author"/>
+                        </span> 
                     </li>
                     <!-- Titel -->
                     <li class="eSegment">
@@ -331,6 +333,10 @@
         </xsl:if>
         <xsl:value-of select="if (mods:role/mods:roleTerm/normalize-space(.) = $roleTerm and 
             position() ne last()) then '/ ' else ''"/> 
+    </xsl:template>
+    
+    <xsl:template match="mods:namePart" >
+        <xsl:apply-templates/>
     </xsl:template>
     
     <xsl:template match="mods:namePart" >
@@ -668,9 +674,9 @@
     
     <!-- _match_ -->
     
-    <xsl:template match="mods:_match_">  
-         <xsl:value-of select="'_'||.||'_'"/>
-        <xsl:if test="position() ne last()"><xsl:value-of select="' '"/></xsl:if>
+    <xsl:template match="mods:_match_"> 
+        <xsl:value-of select="' _'||.||'_'"/>
+        <xsl:if test="./matches(., '$optionalSpace') and position() ne last()"><xsl:value-of select="' '"/></xsl:if>
     </xsl:template>  
     
 </xsl:stylesheet>
