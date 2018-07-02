@@ -298,8 +298,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             $('#find .schlagworte li li ol').hide();
             
             //_MATCH_
-            $(".author, .title, .subject").html(function(_, html) {
-               return html.replace(/_(.+?)_/g, '<b>$1</b>');
+            $(".2match").html(function(_, html) {
+               return html.replace(/\*(.+?)\*/g, '<b>$1</b>');
             }); 
             //Anfangszustand bei neuer Abfrage
             if (newFilter)
