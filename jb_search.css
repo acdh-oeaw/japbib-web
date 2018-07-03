@@ -1,4 +1,4 @@
-a.neueSuche { 
+a.lupe { 
   margin-left: .3em;
   opacity: .4;
 }
@@ -457,9 +457,11 @@ div.showEntry {
 .showEntry .eSegment {
   float:left;
   clear: left;
-  width: 9rem;
+  width: 8.5rem;
   margin-left: 0em;
   font-style: italic;
+  /* text-align: right; */
+  padding-right: .5rem;
   }  
 .showEntry.compact .eSegment, 
 .showEntry.compact .zahl, 

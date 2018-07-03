@@ -89,13 +89,18 @@
                         </span>  
                     </span> 
                     <a class="hits last {if ($startRecord &gt;= (($lastPage - 1) * $maximumRecords + 1)) then 'here' else ''}" 
-                       href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}"
-                    ><xsl:value-of select="$lastPage"/></a>
+                       href="#?startRecord={(($lastPage - 1) * $maximumRecords) + 1}" title="Treffer {($lastPage - 1) * $maximumRecords + 1}–{$nOfRec}">
+                        <xsl:value-of select="$lastPage"/>
+                    </a>
                     <span class="pullRight pull fa fa-chevron-circle-right" title="zum Ende der Trefferliste"></span>
                 </div>
             </xsl:when>
             <xsl:otherwise>
-                <div class="hitList"><span class="fenster"><span class="hitRow"/></span></div>
+                <div class="hitList">
+                    <span class="fenster">
+                        <span class="hitRow"/>
+                    </span>
+                </div>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>    
@@ -146,15 +151,16 @@
             <xsl:text xml:space="preserve">, </xsl:text> 
             
             <!--  Einzeleintrag, Kurzinformation, Jahr  -->
-            
-            <xsl:apply-templates 
-                select="mods:originInfo/mods:dateIssued|
-                mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued" />
-            <xsl:call-template name="no-year"/>       
+            <span class="year">
+                 <xsl:apply-templates 
+                     select="mods:originInfo/mods:dateIssued|
+                     mods:relatedItem[@type='host']/mods:originInfo/mods:dateIssued" />
+                 <xsl:call-template name="no-year"/>
+            </span>
             <xsl:text xml:space="preserve"> </xsl:text>
             
             <!--  Einzeleintrag, Kurzinformation, Titel -->
-            <a href="#" class="plusMinus titel" title="Details anzeigen/verbergen">
+            <a href="#" class="plusMinus titel 2match" title="Details anzeigen/verbergen">
                 <xsl:apply-templates select="mods:titleInfo"/> 
             </a>
         </div>
@@ -165,20 +171,23 @@
             <div class="record-html">
                 <ul>
                     <!-- Autor -->
-                    <li class="eSegment">
-                        <xsl:value-of select="_:dict('aut')"/>
-                    </li>  
-                    <li> 
-                        <xsl:apply-templates select="mods:name"/>
-                        <xsl:call-template name="no-author"/> 
-                    </li>
+                    <xsl:if test="mods:name">
+                        <li class="eSegment">
+                            <xsl:value-of select="_:dict('aut')"/>
+                        </li>  
+                        <li> 
+                            <xsl:apply-templates select="mods:name"/>
+                            <xsl:call-template name="no-author"/> 
+                        </li>
+                    </xsl:if>
                     <!-- Titel -->
                     <li class="eSegment">
                         <xsl:value-of select="_:dict('title')"/>
                     </li>
                     <li> 
-                        <xsl:apply-templates select="mods:titleInfo"/> 
-                        <xsl:value-of select="if (matches(normalize-space(.), $optionalPeriod)) then '.' else ''"/>    
+                        <span class="title 2match">
+                            <xsl:apply-templates select="mods:titleInfo"/>                                  
+                        </span>
                     </li>
                     <!-- Ort, etc bzw. @host-->
                     <xsl:choose>
@@ -233,8 +242,8 @@
                             </xsl:call-template> 
                             <xsl:call-template name="primary-subjects">
                                 <xsl:with-param name="topic" select="'Region'" />              
-                            </xsl:call-template>  
-                            <xsl:call-template name="keywords"/>                              
+                            </xsl:call-template>   
+                            <xsl:call-template name="Stichwort"/>
                         </ul>  
                     </xsl:if>
                     
@@ -328,7 +337,7 @@
         <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
             <xsl:choose>
                 <xsl:when test="$query">
-                   <xsl:call-template name="add-query-link-after-term"> 
+                   <xsl:call-template name="add-query-link"> 
                        <xsl:with-param name="index">author</xsl:with-param>
                        <xsl:with-param name="term"> 
                            <xsl:apply-templates/>
@@ -359,39 +368,27 @@
             </span>
         </xsl:if>
     </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>query-link nachstellen</xd:desc> 
-        <xd:param name="index"/>
-        <xd:param name="term"/>
-        <xd:param name="query"/>
-    </xd:doc>
-    <xsl:template name="add-query-link-after-term">
-        <xsl:param name="index" as="xs:string"/>
-        <xsl:param name="term" as="node()*"/> 
-        <xsl:param name="query" select="$term"/> 
-        <xsl:if test="$term">
-            <xsl:value-of select="$term"/>
-            <a href="#find?query={if ($index) then concat($index, '=') else ''}&quot;{$query}&quot;" 
-                class="neueSuche fas fa-search" 
-                title="Suche nach {$query}">
-            </a>             
-        </xsl:if>
-    </xsl:template>  
-    
+        
     <xd:doc>
         <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
         <xd:param name="term"/>        
         <xd:param name="query"/>
+        <xd:param name="index"/>
+        <xd:param name="lupe"/>
     </xd:doc>
     <xsl:template name="add-query-link"> 
+        <xsl:param name="index" as="xs:string" select="''"/>
         <xsl:param name="term" as="node()*"/>
         <xsl:param name="query" select="$term"/> 
-            <a href="#find?query=&quot;{$query}&quot;" 
+        <xsl:param name="lupe" select="true()"/>  
+        <xsl:if test="$query">        
+            <xsl:value-of select="if ($lupe) then $term else ''"/>
+            <a href="#find?query={if ($index) then concat($index, '=') else ''}&quot;{$query}&quot;" 
                 title="Suche nach {$query}"
-                class="2match"> 
-                <xsl:value-of select="$term"/> 
-            </a>           
+                class="{if ($lupe) then ' lupe fas fa-search' else ''}" >                 
+                <xsl:value-of select="if ($lupe) then '' else $term"/>
+            </a>                    
+        </xsl:if>  
     </xsl:template>  
     
     <!-- DATUM -->
@@ -440,29 +437,33 @@
     
     <!-- TITLE -->
     
-    <xsl:variable name="optionalSpace">[\w\.]$</xsl:variable> <!-- regex-pattern für Schluss-Space -->
-    <xsl:variable name="optionalPeriod">[\w"'\)]$</xsl:variable><!-- regex-pattern für Schlusspunkt -->
+    <!-- regex-pattern: Schluss-Space nach abc und Punkt -->
+    <xsl:variable name="optionalSpace">[\w\.]$</xsl:variable> 
+    
+    <!-- regex-pattern: Schlusspunkt nach abc und Anf.zeichen -->
+    <xsl:variable name="optionalPeriod">[\w"'\)]$</xsl:variable>
         
     <xd:doc>
-        <xd:desc>Titel formatieren: Punkt nur nach (Buchstaben, ", ')</xd:desc>
+        <xd:desc>Titel formatieren: Schlusspunkt und -space mit Regex ermitteln</xd:desc>
         <xd:param name="title"/>
         <xd:param name="subTitle"/>
     </xd:doc>
     <xsl:template match="mods:titleInfo"> 
+        <xsl:param name="nonSort" >
+            <xsl:apply-templates select="mods:nonSort"/>
+            <xsl:value-of select="if (mods:nonSort[matches(., $optionalSpace)]) then ' ' else ''"/>
+        </xsl:param>
         <xsl:param name="title" >
             <xsl:apply-templates select="mods:title"/>
+            <xsl:value-of select="if (mods:subTitle and mods:title[matches (., $optionalPeriod)]) 
+                then '. ' else ''"/>         
         </xsl:param>
         <xsl:param name="subTitle">
             <xsl:apply-templates select="mods:subTitle"/>
-        </xsl:param>
-        <span class="title 2match">
-            <xsl:value-of select="normalize-space(mods:nonSort)"/>
-            <xsl:value-of select="if (matches(normalize-space(mods:nonSort), $optionalSpace)) then ' ' else ''"/>
-                <xsl:value-of select="$title"/>
-            <xsl:value-of select="if (matches(mods:title, $optionalPeriod) 
-                and mods:subTitle) then '. ' else ''"/>         
-            <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/> 
-        </span>
+        </xsl:param> 
+        <xsl:value-of select="$nonSort"/>
+        <xsl:value-of select="$title"/>        
+        <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/>  
     </xsl:template>
      
     <!-- Ort, Verlag, Jahr  -->
@@ -472,19 +473,21 @@
     </xd:doc>
     <xsl:template match="mods:originInfo"> 
         <span class="place 2match">
-             <xsl:value-of select="mods:place/mods:placeTerm" />         
-             <xsl:value-of select="if (mods:place/mods:placeTerm and mods:publisher) then ': ' else ''"/>
-             <xsl:call-template name="add-query-link-after-term">
-                 <xsl:with-param name="index">publisher</xsl:with-param>
-                 <xsl:with-param name="query" select="mods:publisher"/>
-                 <xsl:with-param name="term">
-                     <xsl:apply-templates select="mods:publisher"/> 
-                 </xsl:with-param> 
-             </xsl:call-template> 
-             <xsl:value-of select="if (mods:place/mods:placeTerm or mods:publisher) then ', ' else ''"/> 
-             <xsl:apply-templates select="mods:dateIssued" />
-             <xsl:apply-templates select="mods:edition" />
+            <xsl:apply-templates select="mods:place/mods:placeTerm"/>
         </span>
+        <xsl:value-of select="if (mods:place/mods:placeTerm and mods:publisher) then ': ' else ''"/>
+        <span class="publisher 2match">
+            <xsl:call-template name="add-query-link">
+                <xsl:with-param name="index">publisher</xsl:with-param>
+                <xsl:with-param name="query" select="mods:publisher"/>
+                <xsl:with-param name="term">
+                    <xsl:apply-templates select="mods:publisher"/> 
+                </xsl:with-param> 
+            </xsl:call-template>             
+        </span>
+        <xsl:value-of select="if (mods:place/mods:placeTerm or mods:publisher) then ', ' else ''"/> 
+        <xsl:apply-templates select="mods:dateIssued" />
+        <xsl:apply-templates select="mods:edition" />
     </xsl:template> 
     
     <xd:doc>
@@ -499,36 +502,35 @@
     </xd:doc>
     <xsl:template match="mods:relatedItem[@type='host']
         [ancestor::mods:mods/mods:genre[matches(., 'journalArticle|newspaperArticle')]]" priority="1">
-        <xsl:call-template name="add-query-link">
-            <xsl:with-param name="query" select="mods:titleInfo/mods:title"/>
-            <xsl:with-param name="term" >                
-                <xsl:apply-templates select="mods:titleInfo" />
-            </xsl:with-param>
-         </xsl:call-template>   
-        <xsl:value-of select="if (mods:part/mods:detail[@type eq 'volume']) 
-            then ', '||_:dict('volumeJournal') ||' ' 
-            ||mods:part/mods:detail[@type eq 'volume']/mods:number 
-            else ''"/>        
-        <xsl:choose>
-            <xsl:when test="mods:originInfo/mods:dateIssued 
-                and mods:part/mods:detail[@type eq 'volume']">
-                <xsl:value-of select="'/' || mods:originInfo/mods:dateIssued || ', '"/>
-            </xsl:when>
-            <xsl:when test="mods:originInfo/mods:dateIssued">                    
-                <xsl:value-of select="', '"/>
+        <span class="journal 2match">
+            <xsl:call-template name="add-query-link">
+                <xsl:with-param name="query" select="mods:titleInfo/mods:title"/>
+                <xsl:with-param name="term" >                
+                    <xsl:apply-templates select="mods:titleInfo" />
+                </xsl:with-param> 
+                <xsl:with-param name="lupe" select="false()"/>
+            </xsl:call-template>            
+        </span>  
+        <xsl:value-of select="' '"/>
+        <xsl:value-of select="if (mods:part/mods:detail[@type eq 'volume'] and
+            mods:part/mods:detail[@type eq 'volume'] ne mods:originInfo/mods:dateIssued[1]) 
+            then _:dict('volumeJournal') ||' ' ||mods:part/mods:detail[@type eq 'volume']/mods:number ||' '
+            else ' '"/>                      
+        (<xsl:choose>
+            <xsl:when test="mods:originInfo/mods:dateIssued">
                 <xsl:apply-templates select="mods:originInfo/mods:dateIssued"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="', '"/><xsl:value-of select=" _:dict('no-year-abbr')"/>
+                <xsl:value-of select="_:dict('no-year-abbr')"/>
             </xsl:otherwise>
-        </xsl:choose>            
+        </xsl:choose>)                   
         <xsl:value-of select="if (mods:part/mods:detail[@type eq 'issue']) 
             then ', '||_:dict('issue')||' '||mods:part/mods:detail[@type eq 'issue']/mods:number 
             else ''"/>
         <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
             then ', '||_:dict('pages')||' '||string-join(mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
             else ''"/>
-    </xsl:template>
+    </xsl:template> 
     
     <xd:doc>
         <xd:desc>Buchbeiträge, Details zusammenstellen</xd:desc>
@@ -537,13 +539,16 @@
         [ancestor::mods:mods/mods:genre[matches(., 'bookSection')]]"  >
         <xsl:apply-templates select="mods:name" />        
         <xsl:call-template name="no-author"/>
-        <xsl:value-of select="', '"/><xsl:call-template name="add-query-link">
+        <xsl:value-of select="', '"/>
+        <xsl:call-template name="add-query-link">
             <xsl:with-param name="query" select="mods:titleInfo/mods:title"/>
             <xsl:with-param name="term" >                
                 <xsl:apply-templates select="mods:titleInfo" />
             </xsl:with-param>
+            <xsl:with-param name="index" select="'title'"/>
+            <xsl:with-param name="lupe" select="false()"/>
         </xsl:call-template> 
-        <xsl:value-of select="', '"/> 
+        <xsl:value-of select="'. '"/> 
         <xsl:apply-templates select="mods:originInfo" /> 
         <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
             then ', '||_:dict('pages')||' '
@@ -560,12 +565,12 @@
         <li class="eSegment"><xsl:value-of select="_:dict('series')"/></li>
         <li>
             <span class="series 2match">
-                <xsl:call-template name="add-query-link-after-term">
-                    <xsl:with-param name="index">series</xsl:with-param>
+                <xsl:call-template name="add-query-link">
                     <xsl:with-param name="term"> 
                         <xsl:apply-templates select="mods:titleInfo"/>
                     </xsl:with-param>
                     <xsl:with-param name="query" select="mods:titleInfo"/>
+                    <xsl:with-param name="lupe" select="false()"/>
                 </xsl:call-template>
             </span>
            <xsl:apply-templates  select="* except mods:titleInfo"/></li>
@@ -659,7 +664,7 @@
                 [following-sibling::mods:subject[@usage = 'secondary'][1][mods:topic[. = $topic]]]/mods:topic">
                 <li>
                     <span class="subject 2match">
-                        <xsl:call-template name="add-query-link-after-term">
+                        <xsl:call-template name="add-query-link">
                             <xsl:with-param name="index">subject</xsl:with-param>
                             <xsl:with-param name="term"> 
                                 <xsl:apply-templates/>
@@ -670,24 +675,34 @@
                 </li>
             </xsl:for-each>            
         </xsl:if>
-    </xsl:template>   
+    </xsl:template>      
+    
+    <xd:doc>
+        <xd:desc>Rahmen für Stichworte</xd:desc>
+    </xd:doc>
+    <xsl:template name="Stichwort">
+        <xsl:if test="mods:subject[@displayLabel = 'Stichworte']">
+            <li class="eSegment">Stichworte</li>
+            <li>
+                <span class="stichworte 2match">
+                    <xsl:apply-templates select="mods:subject[@displayLabel = 'Stichworte']"/>
+                </span>
+            </li>
+        </xsl:if>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc> Stichworte </xd:desc>
-        <xd:param name="keywords"/>
     </xd:doc>
-    <xsl:template name="keywords"> 
-        <li class="eSegment">Stichworte</li>
-        <li>
-            <xsl:for-each select="mods:subject[@displayLabel='Stichworte']" >
-                <xsl:call-template name="add-query-link">
-                    <xsl:with-param name="term">
-                        <xsl:apply-templates />
-                    </xsl:with-param>
-                </xsl:call-template>
-                <xsl:value-of select="if (position() ne last()) then '; ' else ''"/>
-            </xsl:for-each>
-        </li>
+    <xsl:template match="mods:subject[@displayLabel='Stichworte']"> 
+        <xsl:call-template name="add-query-link">
+            <xsl:with-param name="query" select="."/>
+            <xsl:with-param name="term" >                
+                <xsl:apply-templates />
+            </xsl:with-param>
+            <xsl:with-param name="lupe" select="false()"/>
+        </xsl:call-template>  
+        <xsl:value-of select="if (position() ne last()) then '; ' else ''"/> 
     </xsl:template> 
     
     <!-- Taxonomy -->
@@ -723,7 +738,9 @@
     <!-- _match_ -->
     
     <xsl:template match="mods:_match_"> 
-        <xsl:if test="position() ne 1"><xsl:value-of select="' '"/></xsl:if>
+        <xsl:if test="position() ne 1">
+            <xsl:value-of select="' '"/>
+        </xsl:if>
         <xsl:value-of select="'*'||.||'*'"/>
     </xsl:template>  
     
