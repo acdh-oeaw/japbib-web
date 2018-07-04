@@ -297,10 +297,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             $('.ladeResultate').fadeOut('slow');
             $('#find .schlagworte li li ol').hide();
             
-            //_MATCH_
-            $(".2match").html(function(_, html) {
-               return html.replace(/\*(.+?)\*/g, '<b>$1</b>');
-            }); 
             //Anfangszustand bei neuer Abfrage
             if (newFilter)
                 $('.showResults').show('slow', arrangeHitlist);

@@ -322,8 +322,10 @@
             <xsl:value-of select="_:dict(' et al.')"/>
         </xsl:if> 
         </span>
-        <xsl:value-of select="if (mods:role/mods:roleTerm/normalize-space(.) = $roleTerm and 
-            position() ne last()) then '/ ' else ''"/>
+        <xsl:if test="mods:role/mods:roleTerm = $roleTerm">
+            <xsl:value-of select="if (position() ne last()) then '/ ' else ''"/>
+        </xsl:if>
+        
     </xsl:template>
         
     <xd:doc>
@@ -338,10 +340,7 @@
             <xsl:choose>
                 <xsl:when test="$query">
                    <xsl:call-template name="add-query-link"> 
-                       <xsl:with-param name="index">author</xsl:with-param>
-                       <xsl:with-param name="term"> 
-                           <xsl:apply-templates/>
-                       </xsl:with-param>
+                       <xsl:with-param name="index">author</xsl:with-param> 
                        <xsl:with-param name="query" select="."/>
                    </xsl:call-template>   
                 </xsl:when>
@@ -379,17 +378,20 @@
     <xsl:template name="add-query-link"> 
         <xsl:param name="index" as="xs:string" select="''"/>
         <xsl:param name="term" as="node()*"/>
-        <xsl:param name="query" select="$term"/> 
-        <xsl:param name="lupe" select="true()"/>  
-        <xsl:if test="$query">        
-            <xsl:value-of select="if ($lupe) then $term else ''"/>
-            <a href="#find?query={if ($index) then concat($index, '=') else ''}&quot;{$query}&quot;" 
-                title="Suche nach {$query}"
-                class="{if ($lupe) then ' lupe fas fa-search' else ''}" >                 
-                <xsl:value-of select="if ($lupe) then '' else $term"/>
-            </a>                    
-        </xsl:if>  
+        <xsl:param name="query" as="node()*"/>  
+        <xsl:param name="fTerm">
+            <xsl:value-of select="$query"/>
+        </xsl:param>   
+        <xsl:param name="lupe" select="true()"/> 
+               
+        <xsl:value-of select="if ($lupe) then $fTerm else ''"/>
+        <a href="#find?query={if ($index) then concat($index, '=') else ''}&quot;{$query}&quot;" 
+            title="Suche nach {$query}"
+            class="{if ($lupe) then ' lupe fas fa-search' else ''}" >                 
+            <xsl:value-of select="if ($lupe) then '' else $fTerm"/>
+        </a>     
     </xsl:template>  
+    
     
     <!-- DATUM -->
     
@@ -737,11 +739,30 @@
     
     <!-- _match_ -->
     
+    <xd:doc>
+        <xd:desc>_match_ formatieren</xd:desc>
+    </xd:doc>
     <xsl:template match="mods:_match_"> 
-        <xsl:if test="position() ne 1">
-            <xsl:value-of select="' '"/>
-        </xsl:if>
-        <xsl:value-of select="'*'||.||'*'"/>
+        <xsl:value-of select="if (position() ne 1) then ' ' else ''"/>
+        <b><xsl:value-of select="."/></b>
     </xsl:template>  
+    
+    <xd:doc>
+        <xd:desc>zZt nicht in Gebrauch; s.o. "add-query-link"</xd:desc>
+    </xd:doc>
+    <xsl:template name="format-term">
+        <xsl:choose>
+            <xsl:when test="_:dict(.) eq .">
+                <xsl:apply-templates/>    
+            </xsl:when>
+            <xsl:when test="exists(./mods:_match_)">
+                <strong><xsl:value-of select="_:dict(.)"/></strong>
+                <xsl:value-of select="if (position() ne last()) then ' ' else ''"/>
+            </xsl:when>
+            <xsl:otherwise>               
+                <xsl:value-of select="_:dict(.)||' '"/> 
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
     
 </xsl:stylesheet>
