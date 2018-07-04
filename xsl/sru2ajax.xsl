@@ -339,9 +339,8 @@
         <xsl:if test="parent::mods:name/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
             <xsl:choose>
                 <xsl:when test="$query">
-                   <xsl:call-template name="add-query-link"> 
+                   <xsl:call-template name="add-query-link2"> 
                        <xsl:with-param name="index">author</xsl:with-param> 
-                       <xsl:with-param name="query" select="."/>
                    </xsl:call-template>   
                 </xsl:when>
                 <xsl:otherwise>
@@ -367,7 +366,33 @@
             </span>
         </xsl:if>
     </xsl:template>
-        
+    
+    <xd:doc>
+        <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
+        <xd:param name="index"/>
+        <xd:param name="lupe"/>
+    </xd:doc>
+    <xsl:template name="add-query-link2"> 
+        <xsl:param name="term" as="node()*" select="."/>
+        <xsl:param name="index" as="xs:string" select="''"/> 
+        <xsl:param name="lupe" select="true()"/> 
+        <xsl:variable name="link">
+            <xsl:for-each select="./node()[matches(., '[^-]')]">
+                <xsl:value-of select="(if(position() ne 1) then ' ' else '')||."/>                
+            </xsl:for-each>
+        </xsl:variable>  
+        <xsl:if test="$lupe">
+           <xsl:apply-templates/>            
+        </xsl:if>
+        <a href="#find?query={if ($index) then concat($index, '=') else ''}&quot;{$link}&quot;" 
+            title="Suche nach {$link}"
+            class="{if ($lupe) then 'lupe fas fa-search' else ''}" > 
+            <xsl:if test="$lupe = false()">
+                <xsl:apply-templates/>            
+            </xsl:if>
+        </a>     
+    </xsl:template>  
+    
     <xd:doc>
         <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
         <xd:param name="term"/>        
@@ -379,6 +404,7 @@
         <xsl:param name="index" as="xs:string" select="''"/>
         <xsl:param name="term" as="node()*"/>
         <xsl:param name="query" as="node()*"/>  
+        <xsl:param name="queryTest" as="node()*"/>   
         <xsl:param name="fTerm">
             <xsl:value-of select="$query"/>
         </xsl:param>   
@@ -451,23 +477,25 @@
         <xd:param name="subTitle"/>
     </xd:doc>
     <xsl:template match="mods:titleInfo"> 
+        <xsl:param name="link" select="false()"/>
         <xsl:param name="nonSort" >
             <xsl:apply-templates select="mods:nonSort"/>
             <xsl:value-of select="if (mods:nonSort[matches(., $optionalSpace)]) then ' ' else ''"/>
-        </xsl:param>
-        <xsl:param name="title" >
-            <xsl:apply-templates select="mods:title"/>
-            <xsl:value-of select="if (mods:subTitle and mods:title[matches (., $optionalPeriod)]) 
-                then '. ' else ''"/>         
-        </xsl:param>
+        </xsl:param> 
         <xsl:param name="subTitle">
             <xsl:apply-templates select="mods:subTitle"/>
         </xsl:param> 
-        <xsl:value-of select="$nonSort"/>
-        <xsl:value-of select="$title"/>        
+        <xsl:value-of select="$nonSort"/> 
+        <xsl:apply-templates select="mods:title"/>
+        <xsl:value-of select="if (mods:subTitle and mods:title[matches (., $optionalPeriod)]) 
+            then '. ' else ''"/>     
         <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/>  
     </xsl:template>
-     
+    
+    <xsl:template match="mods:titleInfo" mode="link">
+        <xsl:call-template name="add-query-link2"/> 
+    </xsl:template>
+    
     <!-- Ort, Verlag, Jahr  -->
     
     <xd:doc>
@@ -478,19 +506,19 @@
             <xsl:apply-templates select="mods:place/mods:placeTerm"/>
         </span>
         <xsl:value-of select="if (mods:place/mods:placeTerm and mods:publisher) then ': ' else ''"/>
-        <span class="publisher 2match">
-            <xsl:call-template name="add-query-link">
-                <xsl:with-param name="index">publisher</xsl:with-param>
-                <xsl:with-param name="query" select="mods:publisher"/>
-                <xsl:with-param name="term">
-                    <xsl:apply-templates select="mods:publisher"/> 
-                </xsl:with-param> 
-            </xsl:call-template>             
-        </span>
+        <xsl:apply-templates select="mods:publisher"/>
         <xsl:value-of select="if (mods:place/mods:placeTerm or mods:publisher) then ', ' else ''"/> 
         <xsl:apply-templates select="mods:dateIssued" />
         <xsl:apply-templates select="mods:edition" />
     </xsl:template> 
+    
+    <xsl:template match="mods:publisher">
+        <span class="publisher 2match">
+            <xsl:call-template name="add-query-link2">
+                <xsl:with-param name="index">publisher</xsl:with-param> 
+            </xsl:call-template>             
+        </span>
+    </xsl:template>
     
     <xd:doc>
         <xd:desc>Anm. zur Veröffentlichung</xd:desc>
@@ -504,14 +532,8 @@
     </xd:doc>
     <xsl:template match="mods:relatedItem[@type='host']
         [ancestor::mods:mods/mods:genre[matches(., 'journalArticle|newspaperArticle')]]" priority="1">
-        <span class="journal 2match">
-            <xsl:call-template name="add-query-link">
-                <xsl:with-param name="query" select="mods:titleInfo/mods:title"/>
-                <xsl:with-param name="term" >                
-                    <xsl:apply-templates select="mods:titleInfo" />
-                </xsl:with-param> 
-                <xsl:with-param name="lupe" select="false()"/>
-            </xsl:call-template>            
+        <span class="journal 2match"> 
+            <xsl:apply-templates select="mods:titleInfo"/>
         </span>  
         <xsl:value-of select="' '"/>
         <xsl:value-of select="if (mods:part/mods:detail[@type eq 'volume'] and
@@ -732,6 +754,7 @@
         </li>
     </xsl:template> 
     <xsl:template match="numberOfRecords">
+        
         <xsl:param name="href" as="xs:string">#</xsl:param>        
         <xsl:param name="title" as="xs:string">neue Suche starten</xsl:param>
         <a href="{$href}" class="zahl eintrag" title="{$title}"><xsl:value-of select="."/></a>
