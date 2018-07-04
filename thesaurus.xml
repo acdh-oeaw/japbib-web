@@ -1402,15 +1402,12 @@
             <catDesc>Schriftenreihe</catDesc>
          </category>
          <category n="4.5.2.2">
-            <catDesc>Zeitung</catDesc>
-         </category>
-         <category n="4.5.2.3">
             <catDesc>Zeitschrift</catDesc>
          </category>
-         <category n="4.5.2.4">
+         <category n="4.5.2.3">
             <catDesc>Zeitschriftenartige Reihe</catDesc>
          </category>
-         <category n="4.5.2.5">
+         <category n="4.5.2.4">
             <catDesc>Loseblattausgabe</catDesc>
          </category>
       </category>
