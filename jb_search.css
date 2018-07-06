@@ -5,6 +5,9 @@ a.lupe {
 a.neueSuche:hover {  
   opacity: 1;
 } 
+*[class*=long-arrow] {
+    color: #c5b582;
+}
   
 /******************************
   NavResults
@@ -445,8 +448,8 @@ div.showEntry {
   color: #009;
   }
 .showEntry li {
-  margin-left: 9em;
-  min-height: 1.5em; 
+  margin-left: 10em;
+  min-height: 1.5em;
   }
 .showEntry .showOptions {
     margin: 0;
