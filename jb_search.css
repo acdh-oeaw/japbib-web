@@ -552,7 +552,17 @@ div.showEntry {
 .shortInfo .titel:hover {
  background: rgb(235, 240, 230);
 }
-
+.bookTitle {
+    font-style: italic;
+}
+.articleTitle::before {
+  content:'„';
+  display: inline;
+}
+.articleTitle::after {
+  content:'“';
+  display:  inline;
+}
 /*  results Farben*/
 .showEntry,
 #find #showList {
