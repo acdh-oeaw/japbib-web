@@ -387,9 +387,8 @@
             </xsl:when>
             <xsl:otherwise>
                 <a href="#find?query=&quot;{$link}&quot;" 
-                    title="Suche nach {$link}" >
-                    <xsl:apply-templates select="$selection"/>
-                </a>                
+                    title="Suche nach {$link}" 
+                ><xsl:apply-templates select="$selection"/></a>                
             </xsl:otherwise>
         </xsl:choose> 
     </xsl:template>  
@@ -452,21 +451,32 @@
         </xsl:variable> 
         <xsl:choose>
             <xsl:when test="following-sibling::mods:originInfo">   
-                <i>                <xsl:value-of select="$nonSort"/> 
-                <xsl:apply-templates select="mods:title"/>
-                <xsl:value-of select="if (mods:subTitle and mods:title[matches (., $optionalPeriod)]) 
-                    then '.' else ''"/>     
-                <xsl:value-of select="if (mods:subTitle) then ' ' else ''"/>
-                <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/>
+                <i>
+                    <xsl:value-of select="$nonSort"/> 
+                    <xsl:apply-templates select="mods:title"/>
+                    <xsl:value-of select="if 
+                        (mods:title[matches (., $optionalPeriod)]) 
+                        then '.' else ''"/>
+                    <xsl:value-of select="if(mods:subTitle) then ' ' else ''"/>
+                    <xsl:sequence select="upper-case(substring($subTitle,1,1)) 
+                        || substring($subTitle, 2)"/>
+                    <xsl:value-of select="if 
+                        (mods:subTitle[matches (., $optionalPeriod)]) 
+                        then '.' else ''"/>
                 </i>
             </xsl:when>
-            <xsl:otherwise>
-                „<xsl:value-of select="$nonSort"/> 
+            <xsl:otherwise>  
+                <xsl:value-of select="'„'||$nonSort"/> 
                 <xsl:apply-templates select="mods:title"/>
-                <xsl:value-of select="if (mods:subTitle and mods:title[matches (., $optionalPeriod)]) 
-                    then '.' else ''"/>     
-                <xsl:value-of select="if (mods:subTitle) then ' ' else ''"/>
-                <xsl:sequence select="upper-case(substring($subTitle,1,1)) || substring($subTitle, 2) "/>“
+                <xsl:value-of select="if 
+                    (mods:title[matches (., $optionalPeriod)]) 
+                    then '.' else ''"/>
+                <xsl:value-of select="if(mods:subTitle) then ' ' else ''"/>
+                <xsl:sequence select="upper-case(substring($subTitle,1,1)) 
+                    || substring($subTitle, 2)"/>
+                <xsl:value-of select="if 
+                    (mods:subTitle[matches (., $optionalPeriod)]) 
+                        then '.“' else '“'"/> 
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -537,10 +547,16 @@
         <xsl:apply-templates select="mods:part/mods:extent[@unit eq 'page']"/> 
     </xsl:template> 
     
+    <xd:doc>
+        <xd:desc>Jg., Bd.</xd:desc>
+    </xd:doc>
     <xsl:template match="mods:detail[@type eq 'volume']|mods:detail[@type eq 'issue']">
         <xsl:value-of select="', '||_:dict(@type)||' '||mods:number"/>
     </xsl:template>
     
+    <xd:doc>
+        <xd:desc>Seite-Seite</xd:desc>
+    </xd:doc>
     <xsl:template match="mods:extent[@unit eq 'page']">
         <xsl:choose>
             <xsl:when test="mods:start">
@@ -562,7 +578,7 @@
         <xsl:call-template name="no-author"/>
         <xsl:value-of select="', '"/> 
             <xsl:apply-templates select="mods:titleInfo" mode="link"/> 
-        <xsl:value-of select="'. '"/> 
+        <xsl:value-of select="' '"/> 
         <xsl:apply-templates select="mods:originInfo" /> 
         <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
             then ', '||_:dict('pages')||' '
@@ -762,7 +778,8 @@
     <xsl:template match="mods:_match_"> 
         <b><xsl:value-of select="."/></b> 
         <xsl:value-of select="if ( 
-            following-sibling::mods:_match_[1][matches(., '^\w')]) 
+            following-sibling::mods:_match_ 
+            and following-sibling::*[matches(., '[^\w]')] )
             then ' ' else ''"/> 
     </xsl:template>  
   
