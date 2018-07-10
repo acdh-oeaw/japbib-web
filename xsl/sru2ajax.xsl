@@ -512,36 +512,50 @@
         [ancestor::mods:mods/mods:genre[matches(., '(journal|newspaper)Article')] or
         ancestor::mods:mods/mods:subject[matches(., '(Zeitschriften|Zeitungs)artikel')]]" 
         priority="1">
+        <xsl:variable name="edition" select="mods:originInfo/mods:edition"/> 
+        <xsl:variable name="volume" select="mods:part/mods:detail[@type eq 'volume']"/>         
+        <xsl:variable name="date">
+            <xsl:apply-templates select="mods:originInfo/mods:dateIssued">
+                <xsl:with-param name="substring" select="10"/>                    
+            </xsl:apply-templates>
+        </xsl:variable>
+        <!-- Titel -->
         <xsl:apply-templates select="mods:titleInfo" mode="link"/>
-        <xsl:value-of select="' '"/>                
-        <xsl:if test="mods:part/mods:detail[@type eq 'volume'] and
-            mods:part/mods:detail[@type eq 'volume'] ne mods:originInfo/mods:dateIssued[1]">
-            <xsl:apply-templates select="mods:part/mods:detail[@type eq 'volume']"/>
-        </xsl:if>     
-        <xsl:apply-templates select="mods:part/mods:detail[@type eq 'issue']"/> 
-        (<xsl:choose>
-            <xsl:when test="mods:originInfo/mods:dateIssued">
-                <xsl:apply-templates select="mods:originInfo/mods:dateIssued">
-                    <xsl:with-param name="substring" select="10"/>                    
-                </xsl:apply-templates>
+        <xsl:value-of select="' '"/> 
+        <!-- Jahrgang und Jahr übereinstimmen -->
+        <xsl:choose>
+            <xsl:when test="$edition">
+                <xsl:value-of select="$edition"/>
+                <xsl:if test="mods:edition and mods:edition/not(matches(., $date))">
+                    <xsl:value-of select="' ['|| $date|| ']'"/>
+                </xsl:if>
+            </xsl:when>
+            <xsl:when test="$volume">
+                <xsl:value-of select="$volume"/> 
+                <xsl:if test="$volume and $volume/not(matches(., $date))">
+                    <xsl:value-of select="' ('|| $date|| ')'"/>
+                </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="_:dict('no-year-abbr')"/>
+                <xsl:value-of select="$date"/>
             </xsl:otherwise>
         </xsl:choose>
-        <xsl:if test="mods:originInfo/mods:edition">
-            <xsl:value-of select="' ['||mods:originInfo/mods:edition||']'"/>
-        </xsl:if>)          
-        <xsl:value-of select="' '"/>  
+        <!-- Ausgabennummer -->      
+        <xsl:value-of select="if (mods:part/mods:detail[@type eq 'issue'])
+            then '/'||mods:part/mods:detail[@type eq 'issue'] || ''
+            else ''"/>        
+        <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page'])
+            then ', ' else ''"/>
         <xsl:apply-templates select="mods:part/mods:extent[@unit eq 'page']"/> 
     </xsl:template> 
     
     <xd:doc>
         <xd:desc>Jg., Bd.</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:detail[@type eq 'volume']|mods:detail[@type eq 'issue']">
-        <xsl:value-of select="_:dict(@type)||' '||mods:number"/>
-        <xsl:value-of select="if(following-sibling::mods:detail) then ', ' else ' '"/>
+    <xsl:template match="mods:detail">
+        <xsl:value-of select="mods:number"/>
+        <xsl:value-of select="if(following-sibling::mods:detail
+            or parent::mods:part/following-sibling::mods:part/mods:detail) then '/' else ' '"/>
     </xsl:template>
     
     <xd:doc>
@@ -554,26 +568,43 @@
                     ||string-join((mods:start, mods:end), '–')"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select=". || ' ' ||_:dict('pages')"/>
+                <xsl:value-of select="_:dict('pages')|| ' ' || ."/>
             </xsl:otherwise>
         </xsl:choose> 
     </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Seitenangaben für das ganze Werk</xd:desc>
+    </xd:doc>
+    <xsl:template match="mods:extent[parent::mods:physicalDescription]">
+        <xsl:value-of select=".||' '||_:dict('pages')"/>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Band und Seiten </xd:desc>
+    </xd:doc>
+    <xsl:template match="mods:part">
+        <xsl:apply-templates select="mods:detail"/>
+        <xsl:apply-templates select="mods:extent"/> 
+    </xsl:template>
+    
     
     <xd:doc>
         <xd:desc>Buchbeiträge, Details zusammenstellen</xd:desc>
     </xd:doc>
     <!--  [ancestor::mods:mods/mods:genre[matches(., 'bookSection')]] -->
     <xsl:template match="mods:relatedItem[@type eq 'host']"  >
-        <xsl:apply-templates select="mods:name" />        
-        <xsl:call-template name="no-author"/>
-        <xsl:value-of select="', '"/> 
-            <xsl:apply-templates select="mods:titleInfo" mode="link"/> 
-        <xsl:value-of select="' '"/> 
-        <xsl:apply-templates select="mods:originInfo" /> 
-        <xsl:value-of select="if (mods:part/mods:extent[@unit eq 'page']) 
-            then ', '||_:dict('pages')||' '
-            ||string-join(mods:part/mods:extent[@unit eq 'page']/(mods:start, mods:end), '–') 
-            else ''"/>
+        <xsl:apply-templates select="mods:name" />    
+        <xsl:value-of select="if (position() ne 1) then ', ' else ''"/> 
+        <xsl:apply-templates select="mods:titleInfo" mode="link"/> 
+        <xsl:if test="mods:originInfo">
+            <xsl:value-of select="', '"/> 
+            <xsl:apply-templates select="mods:originInfo"/>
+        </xsl:if>
+        <xsl:if test="mods:part">
+            <xsl:value-of select="', '"/> 
+            <xsl:apply-templates select="mods:part"/>
+        </xsl:if>
         <xsl:if test="mods:relatedItem">  
             <xsl:value-of select="', '"/>                
             <xsl:apply-templates select="mods:relatedItem"/>
@@ -591,15 +622,15 @@
         </li>
         <li>
             <xsl:apply-templates select="mods:titleInfo" mode="link"/>
-            <xsl:apply-templates  select="* except mods:titleInfo"/>
+            <xsl:apply-templates  select="node() except mods:titleInfo"/>
         </li>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>Bandangaben</xd:desc>
+        <xd:desc>Serie als Teil von host</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:part[mods:detail[@type eq 'volume']]">
-        <xsl:value-of select="', '||_:dict('vol-abbr')||' '||mods:detail[@type eq 'volume']"/>
+    <xsl:template match="mods:relatedItem[@type eq 'series'][parent::mods:relatedItem]">
+        (<xsl:apply-templates/>)
     </xsl:template>
     
     <xd:doc>
@@ -611,13 +642,6 @@
             <xsl:apply-templates/>
             <xsl:value-of select="if (position() ne last()) then '; ' else ''"/> 
         </li>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>Seitenangaben</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:extent">
-        <xsl:value-of select=".||' '||_:dict(@unit||'s')"/>
     </xsl:template>
     
     <xd:doc>
