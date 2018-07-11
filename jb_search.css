@@ -396,8 +396,9 @@ tr.search .fa-search {
 *************************/
  
 #showList {
-  border: 1px solid #ccc;
+  border: 1px solid #e4dec4;
   border-radius: 5px;
+  /* box-shadow: 0em 0em 8px 0px #c5b58285; */
   padding: .5em 1em;
   padding: 0;
   /* background: rgb(196, 179, 130); */
@@ -467,14 +468,15 @@ div.showEntry {
   clear: left;
   width: 8.5rem;
   margin-left: 0em;
-  /* font-style: italic; */
+  font-style: italic;
   /* text-align: right; */
   padding-right: .5rem;
-  font-family: calibri, arial, sans-serif;
+  /* font-family: calibri, arial, sans-serif; */
   color: #777147;
   } 
 .showEntry small {
-    color: #8682a0; 
+    color: #777147;
+    font-size: 1rem;
 }
 
 .pubForm  .shortInfo .year::after {

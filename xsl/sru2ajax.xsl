@@ -142,11 +142,14 @@
     <!-- Rollen der Beteilgten; s.a. dict-de.html -->
     <xsl:variable name="acceptedRoles" select="'aut', 'edt', 'trl', 'ctb', 'com', 'ill', 'pht', 'red', 'win', 'hnr'"/>
     
-    <!-- regex-pattern: Schluss-Space nach abc und Punkt -->
-    <xsl:variable name="optionalSpace">[\w\.]$</xsl:variable> 
+    <!-- regex-pattern: mögliche alphab. Werte -->
+    <xsl:variable name="letter" select="'\wäüößâāôōûū'"/>
+    
+    <!-- regex-pattern: Schluss-Space nach abc und Punkt --> 
+    <xsl:variable name="optionalSpace">[<xsl:value-of select="$letter"/>\.]$</xsl:variable>
     
     <!-- regex-pattern: Schlusspunkt nach abc und Anf.zeichen -->
-    <xsl:variable name="optionalPeriod">[\wäüößâāôōûū"'\)]$</xsl:variable>
+        <xsl:variable name="optionalPeriod">[<xsl:value-of select="$letter"/>"'\)]$</xsl:variable>
   
           
     <!-- MAIN RECORD TEMPLATE -->
@@ -371,28 +374,26 @@
     <xsl:template name="add-query-link">  
         <xsl:param name="index" />   
         <xsl:param name="selection" select="node()"/>  
-        <xsl:variable name="link">
-            <!-- Regel für _match_ -->
-            <xsl:for-each select="$selection">
-                <xsl:value-of select="normalize-space(.)||' '"/>                
-            </xsl:for-each>            
+        <!-- entfernt <b> im Fall von _match_ -->
+        <xsl:variable name="link">    
+            <xsl:apply-templates select="$selection"/>
         </xsl:variable>  
         
         <xsl:if test="$selection">
-        <xsl:choose>
-            <xsl:when test="$index">
-                <xsl:apply-templates select="$selection"/>
-                <a href="#find?query={concat($index, '=')}&quot;{$link}&quot;" 
-                    title="{concat(_:dict($index), '-')}Suche nach {$link}"
-                    class="{'lupe fas fa-search'}" >
-                </a>
-            </xsl:when>
-            <xsl:otherwise>
-                <a href="#find?query=&quot;{$link}&quot;" 
-                    title="Suche nach {$link}" 
-                ><xsl:apply-templates select="$selection"/></a>                
-            </xsl:otherwise>
-        </xsl:choose> 
+            <xsl:choose>
+                <xsl:when test="$index">
+                    <xsl:apply-templates select="$selection"/>
+                    <a href="#find?query={concat($index, '=')}&quot;{$link}&quot;" 
+                        title="{concat(_:dict($index), '-')}Suche nach {$link}"
+                        class="{'lupe fas fa-search'}" >
+                    </a>
+                </xsl:when>
+                <xsl:otherwise>
+                    <a href="#find?query=&quot;{$link}&quot;" 
+                        title="Suche nach {$link}" 
+                    ><xsl:apply-templates select="$selection"/></a>                
+                </xsl:otherwise>
+            </xsl:choose> 
         </xsl:if>
     </xsl:template>  
     
@@ -791,9 +792,11 @@
     </xd:doc>
     <xsl:template match="mods:_match_"> 
         <b><xsl:value-of select="."/></b> 
-        <xsl:value-of select="if ( 
-            following-sibling::mods:_match_ 
-            and following-sibling::*[matches(., '[^\w]')] )
+        <!-- _match_ schluckt Spaces, daher: 
+            wenn der folgende Textknoten mit Buchstaben beginnt, dann Space -->
+        <xsl:value-of select="if (  
+            following-sibling::node()[1][matches(., '^['||$letter||']')] 
+            )
             then ' ' else ''"/> 
     </xsl:template>  
   

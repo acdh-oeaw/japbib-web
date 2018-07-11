@@ -152,19 +152,25 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     }
 
     // Handler fuer Resultate pro Seiten (paging) 
-    $("#maximumRecords").change(function(e) {
+    $("#maximumRecords").change(function(e) { 
+        if ($('#searchInput1').val() === '') {
+            return;
+        }
+        //Suche ohne Filter zu erneuern
         doSearchOnReturn(false);
-        //Filter nicht erneuern
     });
+
+    var sortBy = 'random';
 
     // Handler fuer sortby 
     $(document).on('change', '#sortBy', function(e) {
-        var target = $(this)
-          , sortBy = target.val()
-          , currentQuery = $('#searchInput1').val()
+        var target = $(this);        
+        sortBy = target.val();
+        var currentQuery = $('#searchInput1').val()
           , sortLessQuery = currentQuery.replace(/ sortBy .*$/, '')
           , newQuery = (sortBy) ? sortLessQuery + ' sortBy ' + sortBy : sortLessQuery;
-        if (sortBy === '-') {
+         
+        if (sortBy === '-' || currentQuery === '') {
             return;
         }
         target.data("sortBy", sortBy);
@@ -183,14 +189,13 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     var newFilter = true;
 
-    function doSearchOnReturn(optNewFilter, optStartRecord) {
+    function doSearchOnReturn(optNewFilter, optStartRecord) { 
 
         newFilter = optNewFilter === undefined ? true : optNewFilter;
         var startRecord = optStartRecord || 1
           , baseUrl = $('#searchform1').attr('action')
           , query = $('#searchform1 input[name="query"]').val();
-        // sortBy formatieren
-        var sortBy = 'random';
+        // sortBy formatieren 
         if (query.indexOf('sortBy') !== -1) {
             // wenn ein Sort-Parameter mit sortBy übergeben wurde
             sortBy = query.replace(/^.*sortBy\s+(.*)$/, '$1');
@@ -210,8 +215,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
         $('#sortBy').val(sortBy);
         getResultsHidden(baseUrl + '?' + $('#searchform1').serialize());
-    }
-    ;
+    } 
     m.doSearchOnReturn = doSearchOnReturn;
 
     // Daten abfragen:
@@ -310,10 +314,16 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     }
 
     // falls Fehler gefunden, diese anzeigen:
+    var errorPretext1 = 'Die Abfrage generierte einen Fehler.' + 
+        '<br/>Versuchen Sie eine andere Abfrage oder informieren Sie die ' + 
+        ' <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB 80, error&amp;body='+
+        'Hier%20bitte%20Details%20der%20Fehlermeldung%20kopieren%20...',
+     errorPretext2 = '">Systemadministration</a>.';
 
     function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         if (anErrorTracker.raisedErrors.length === 0) {
-            frameWork.prepend($('<div class="ajax-error c' + (status - (status % 100)) + '" data-errorCode="' + status + '">').append('<span>Server returned: ' + status + '</span><br/>').append(htmlErrorMessage));
+            frameWork.prepend($('<div class="ajax-error c' + (status - (status % 100)) + '" data-errorCode="' + status + '">').append('<p class="pretext">'+
+            errorPretext1 + errorPretext2 + '</p><span>Server returned: ' + status + '</span><br/>').append(htmlErrorMessage));
         } else {
             var errors = '<pre>Original call:\n' + anErrorTracker.originalStack + '</pre>';
             for (var i = 0; i < anErrorTracker.raisedErrors.length; i++) {
@@ -534,17 +544,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     /*********************************************
       Einzeleintrag
     **********************************************/
-    // MODS/ LIDOS/  HTML umschalten (OS) (tlw. obsolet)
-    $(document).on('change', '.showResults .showOptions select', function(e) {
-        var target = $(e.target)
-          , format = target.val()
-          , entry = target.closest(".showEntry");
-        if (format === 'compact') {
-            entry.addClass('compact');
-        } else {
-            entry.removeClass('compact');
-        }
-    });
+    
     // Handler fuer toggleRecord (MODS und Lidos, BS) 
     $(document).on('click', '.toggleRecord', function(e) {
         var div = $(this).next("[class^=record]");
