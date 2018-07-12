@@ -79,7 +79,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 fillInSearchFrom(query);
             }
             go2page(link);
-            doSearchOnReturn();
+            initSearch();
         });
         crossroads.addRoute(link, function(query) {
             go2page(link);
@@ -129,8 +129,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     /**********************************************
 
-    // Suche auslösen
-    // Ausrichten der Suchparameter; Übergeben der Parameter (doSearchOnReturn)
+    // Suche auslösen (passQuery2URL, executeQuery)
+    // Ausrichten der Suchparameter; Übergeben der Parameter (initSearch)
     // Daten abfragen (getResultsHidden)
     // Fehlerprüfung (checkLock)
     // Verzögerung emulieren (callbackAlwaysAsync)
@@ -146,9 +146,16 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     function searchOnReturn(e) {
         if (e.which === 13) {
-            e.preventDefault();
-            doSearchOnReturn();
+            e.preventDefault(); 
+            passQuery2URL(); 
         }
+    }
+
+    function passQuery2URL() {
+        //Suche wird gestartet, sobald '?query'in href gefunden wird 
+        var query =  '?query=' + $('#searchInput1').val();
+        hasher.prependHash = '';
+        hasher.setHash('find'+query);        
     }
 
     // Handler fuer Resultate pro Seiten (paging) 
@@ -157,7 +164,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             return;
         }
         //Suche ohne Filter zu erneuern
-        doSearchOnReturn(false);
+        initSearch(false);
     });
 
     // Handler fuer sortby 
@@ -166,11 +173,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             return;
         }
         //Suche ohne Filter zu erneuern
-        doSearchOnReturn(false, 1, $(this).val());
+        initSearch(false, 1, $(this).val());
     });
     function executeQuery(query) {
         $('#searchInput1').val(query);
-        doSearchOnReturn();
+        initSearch();
         unselectDate();
     }
     m.executeQuery = executeQuery;
@@ -179,7 +186,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     var newFilter = true;
 
-    function doSearchOnReturn(optNewFilter, optStartRecord, sortByChoice) { 
+    function initSearch(optNewFilter, optStartRecord, sortByChoice) { 
 
         newFilter = optNewFilter === undefined ? true : optNewFilter;
         var startRecord = optStartRecord || 1
@@ -210,13 +217,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         // versteckte Parameter ändern
         $('#searchform1 input[name="startRecord"]').val(startRecord);
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
-        
-        //hasher.prependHash = '';
-        //hasher.setHash('find');
 
         getResultsHidden(baseUrl + '?' + $('#searchform1').serialize());
     } 
-    m.doSearchOnReturn = doSearchOnReturn;
+    m.initSearch = initSearch;
 
     // Daten abfragen:
 
@@ -263,7 +267,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             /* emulate a delay that will always occur if the result is fetched from the real server */
             setTimeout(function() {
                 onResultLoaded.apply(self, argumentsList);
-            }, 1000);
+            }, 500);
         } else {
             onResultLoaded.apply(self, argumentsList);
         }
@@ -410,7 +414,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             rangeSelected = true;
         }
         // Suche formulieren
-        var inputQuery = $('#searchInput1').val();
+        var inputQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '');
         inputQuery = inputQuery.replace(/[and ]*date[=><]+[\d-and te=><]+/, '');
         if ($('.year .selected').length > 0) {
             var dateQuery = inputQuery ? ' and date' : 'date';
@@ -539,7 +543,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     function onFetchMoreHits(e) {
         e.preventDefault();
         var query = findQueryPartInHref($(this).attr('href'));
-        doSearchOnReturn(false, query.startRecord);
+        initSearch(false, query.startRecord);
     }
 
     /*********************************************
@@ -697,8 +701,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         e.preventDefault();
         var query = $('#searchInput1').val();
         if (query.length)
-            executeQuery(query);
+        //executeQuery(query);
         //toggleXQ();
+            passQuery2URL();
     });
 
     // Schlagwortbaum oeffnen und schliessen (BS)
