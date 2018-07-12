@@ -58,8 +58,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     function go2subPage(link) {
         go2page('about');
         document.body.scrollTop = // For Chrome, Safari and Opera
-        document.documentElement.scrollTop = 0;
-        // Firefox and IE 
+        document.documentElement.scrollTop = 0;        // Firefox and IE 
+        
         $.each($('#about .content div'), function() {
             if ($(this).is(':visible') && this.id !== link)
                 $(this).fadeOut('', function() {
@@ -160,24 +160,14 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         doSearchOnReturn(false);
     });
 
-    var sortBy = 'random';
-
     // Handler fuer sortby 
-    $(document).on('change', '#sortBy', function(e) {
-        var target = $(this);        
-        sortBy = target.val();
-        var currentQuery = $('#searchInput1').val()
-          , sortLessQuery = currentQuery.replace(/ sortBy .*$/, '')
-          , newQuery = (sortBy) ? sortLessQuery + ' sortBy ' + sortBy : sortLessQuery;
-         
-        if (sortBy === '-' || currentQuery === '') {
+    $("#sortBy").change(function(e) { 
+        if ($('#searchInput1').val() === '') {
             return;
         }
-        target.data("sortBy", sortBy);
-        $('#searchInput1').val(newQuery);
-        doSearchOnReturn(false);
+        //Suche ohne Filter zu erneuern
+        doSearchOnReturn(false, 1, $(this).val());
     });
-
     function executeQuery(query) {
         $('#searchInput1').val(query);
         doSearchOnReturn();
@@ -189,31 +179,41 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     var newFilter = true;
 
-    function doSearchOnReturn(optNewFilter, optStartRecord) { 
+    function doSearchOnReturn(optNewFilter, optStartRecord, sortByChoice) { 
 
         newFilter = optNewFilter === undefined ? true : optNewFilter;
         var startRecord = optStartRecord || 1
           , baseUrl = $('#searchform1').attr('action')
-          , query = $('#searchform1 input[name="query"]').val();
-        // sortBy formatieren 
-        if (query.indexOf('sortBy') !== -1) {
-            // wenn ein Sort-Parameter mit sortBy übergeben wurde
-            sortBy = query.replace(/^.*sortBy\s+(.*)$/, '$1');
-        } else {
-            $('#sortBy option').each(function() {
-                sortBy = (query.indexOf($(this).val() + '=') !== -1) ? // wenn ein Query-Parameter auch ein Sort-Parameter ist
-                $(this).val() : sortBy;
-            });
-        }
-        // "random" aus der query wieder rauslöschen
-        if (sortBy === 'random') {
-            var randomQuery = $('#searchform1 input[name="query"]').val().replace(/^(.*)sortBy\s.*$/, '$1');
-            $('#searchform1 input[name="query"]').val(randomQuery);
-        }
+          , query = $('#searchInput1').val()
+          , queryWithoutSort = query.replace(/ sortBy .*$/, '')
+          , sortBy = $('#sortBy').val()
+          , querySort
+          , implicitSort
+          , newQuery; 
+
+         //  Sort-Parameter, der mit sortBy übergeben wurde
+        if (query.indexOf('sortBy') !== -1) 
+            querySort = query.replace(/^.*sortBy\s+(.*)$/, '$1');
+
+        // wenn ein Query-Parameter auch ein Sort-Parameter ist
+        $('#sortBy option').each(function() {
+            if (query.indexOf($(this).val() + '=') !== -1) 
+            implicitSort= $(this).val();
+        });        
+
+        sortBy= sortByChoice || querySort || implicitSort || sortBy; 
+          
+        newQuery = sortBy === 'random' ? queryWithoutSort :
+           queryWithoutSort + ' sortBy ' + sortBy;
+        $('#searchInput1').val(newQuery);
+        $('#sortBy').val(sortBy);
         // versteckte Parameter ändern
         $('#searchform1 input[name="startRecord"]').val(startRecord);
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
-        $('#sortBy').val(sortBy);
+        
+        //hasher.prependHash = '';
+        //hasher.setHash('find');
+
         getResultsHidden(baseUrl + '?' + $('#searchform1').serialize());
     } 
     m.doSearchOnReturn = doSearchOnReturn;
@@ -232,6 +232,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             $('content > .showResults').hide('slow');
         $('.ladeResultate').fadeIn('slow');
         getResultsLock = true;
+        //Anfage an Server mit load()
         $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
             callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
         });
@@ -624,7 +625,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         e.preventDefault();
         var query = findQueryPartInHref($(this).attr('href'))
           , subject = query.query
-          , currentQuery = $('#searchInput1').val()
+          , currentQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '') 
           , newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
         executeQuery(newQuery);
     });

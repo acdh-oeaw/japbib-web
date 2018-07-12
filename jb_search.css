@@ -630,6 +630,11 @@ div.showEntry {
   /* height:7px; */
 } 
 
+.skip::before {
+    content: 'Eintrag fehlerhaft oder unvollständig';
+    color: red;
+}
+
 /* MODS und LIDOS */
    
 .mods {

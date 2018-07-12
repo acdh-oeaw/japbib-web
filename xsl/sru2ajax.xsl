@@ -125,14 +125,12 @@
         <xd:desc> Einzeleintrag, container (li) </xd:desc>
     </xd:doc>
     <xsl:template match="sru:record">
-        <li value="{sru:recordNumber}" >
-            <xsl:if test="sru:recordData//mods:genre">
-               <!-- gernre als class einsetzen -->
-               <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"></xsl:variable>
-               <xsl:attribute name="class"> 
-                  <xsl:value-of select="concat('pubForm ', $genre)"/>
-               </xsl:attribute>   
-            </xsl:if>
+        <li value="{sru:recordNumber}" > 
+            <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"/>
+            <xsl:variable name="skip" select="sru:recordData//mods:topic[contains(., 'skip')]"/>
+                <xsl:attribute name="class"> 
+                    <xsl:value-of select="normalize-space('pubForm '||$genre||' '||$skip)"/>
+                </xsl:attribute>     
            <xsl:apply-templates select="sru:recordData/mods:mods"/>
         </li> 
     </xsl:template>  
