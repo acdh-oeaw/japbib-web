@@ -35,23 +35,27 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     }
     if (Cookies.get('test') === 'passed')
         $('#testScreen').hide();
+  
+    /*********************************************************
 
-    /*********************************************
+        Handler fuer "Seitenwechsel" via #IDs
+        und in href verpackte Queries 
 
-      "About", etc. 
+    **********************************************************/ 
 
-    **********************************************/
+    var mainPages = ['about', 'find', 'thesaurus']
+      , aboutSubpages = ['ziele', 'help', 'geschichte', 'bildnachweise', 'dokumentation', 'impressum'];
 
-    // Handler fuer Seitenwechsel (BS)
-    var mainPages = ['about', 'find', 'thesaurus'];
-    var aboutSubpages = ['ziele', 'help', 'geschichte', 'bildnachweise', 'dokumentation', 'impressum'];
-
+        //zeige elemente mit entsprechender ID (link), verstecke Geschwister (.slide) 
     function go2page(link) {
         $('.slide').hide();
         $('#' + link).show();
         $('.control').add($('#navbar_items a')).removeClass('hilite');
         $('#' + link + '_control').add($('#navbar_items a[href~="#' + link + '"]')).addClass('hilite');
+        
+        //Inhaltsverzeichnis der Seite
         fixPageindex();
+
         // toggle position thesaurus pageindex, s.u.
     }
 
@@ -69,28 +73,42 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#about .pageindex a').removeClass('here');
         $('#about .pageindex a[href~="#' + link + '"]').addClass('here');
     }
-    mainPages.forEach(function(link) {
-        crossroads.addRoute(link + '{?query}', function(query) {
-            switch (link) {
-            case 'thesaurus':
-                break;
-            case 'find':
-            default:
-                fillInSearchFrom(query);
-            }
-            go2page(link);
-            initSearch();
-        });
-        crossroads.addRoute(link, function(query) {
-            go2page(link);
-        });
-    });
 
+            // übertrage query aus URL ins Suchfeld
     function fillInSearchFrom(query) {
+            //trennt query-string bei "=" in "key" und "value"; input[name="query"] = Suchfeld (aka #searchInput1)
         $.each(query, function(key, value) {
             $('#searchform1 input[name="' + key + '"]').val(value);
         });
     }
+
+        /*-----------------------------------------------------
+
+        Create  new route pattern listeners, using "crossroads"
+        Wenn ein href-Aufruf dem pattern entspricht, tritt der listener in Aktion
+
+        --------------------------------------------------------*/ 
+
+    mainPages.forEach(function(link) {
+               //crossroads.addRoute sucht in hrefs nach dem pattern "mainPages[i]?query" 
+               //und packt nachfolgende Werte in Variable "query" 
+        crossroads.addRoute(link + '{?query}', function(query) {
+                // schreibe query in Suchfeld:
+        $.each(query, function(key, value) {
+            $('#searchform1 input[name="' + key + '"]').val(value);
+        });
+                // gehe zur gesuchten Seite (find):
+            go2page(link);
+                // starte Suche:
+            initSearch();
+        });
+            //pattern ohne "?"
+        crossroads.addRoute(link, function() {
+            go2page(link);
+        });
+    });
+
+    
 
     aboutSubpages.forEach(function(link) {
         crossroads.addRoute(link, function() {
@@ -101,22 +119,19 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     //Anfangszustand: 
     go2subPage('ziele');
 
-    //setup crossroads
-    crossroads.routed.add(console.log, console);
-    //log all routes
+    ///////////// Standard calls für crossroads + hasher ////
 
-    ////////////////////////////////////////
+    //setup crossroads, log all routes
+    crossroads.routed.add(console.log, console);
 
     //setup hasher
     function parseHash(newHash, oldHash) {
         crossroads.parse(newHash);
     }
-    hasher.initialized.add(parseHash);
-    //parse initial hash
-    hasher.changed.add(parseHash);
-    //parse hash changes
-    hasher.init();
-    //start listening for history change
+    hasher.initialized.add(parseHash); //parse initial hash
+    hasher.changed.add(parseHash);     //parse hash changes
+    hasher.init();                     //start listening for history change
+
 
     /*********************************************
 
@@ -127,9 +142,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     // Anfangszustand
     var hideResults = $('.showResults').hide();
 
-    /**********************************************
+    /*--------------------------------------------
 
-    // Suche auslösen (passQuery2URL, executeQuery)
+    // Suche auslösen (passQuery2URL, passQuery2Searchform)
     // Ausrichten der Suchparameter; Übergeben der Parameter (initSearch)
     // Daten abfragen (getResultsHidden)
     // Fehlerprüfung (checkLock)
@@ -137,34 +152,59 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     // Treffer zuordnen und alten Inhalt ersetzen (onResultLoaded)
     // falls Fehler gefunden, diese anzeigen (handleGetErrors)
 
-    /**********************************************/
+    ----------------------------------------------*/
 
-    // Suche auslösen:
-    //// s.a. a-href=#find;  onFetchMoreHits()
+    
 
-    $('#searchInput1').keypress(searchOnReturn);
+    // Suche auslösen, nachdem Suchfeld ausgefüllt wurde: 
 
-    function searchOnReturn(e) {
-        if (e.which === 13) {
-            e.preventDefault(); 
-            passQuery2URL(); 
+    $('#doSearch').click(function(e) {
+            //Abfrage des Suchfeldes wird mit Parameter "?query=" in URL übertragen
+            //Suche wird von "crossroads" gestartet (initSearch), sobald '?query' in URL gefunden wird (s.o.) 
+            //initSearch liest Abfrage aus Suchfeld 
+        e.preventDefault();  
+        var query =  $('#searchInput1').val();
+        if (query.length) {
+            hasher.prependHash = '';
+            hasher.setHash('find?query='+query);    
         }
-    }
+    });
 
-    function passQuery2URL() {
-        //Suche wird gestartet, sobald '?query'in href gefunden wird 
-        var query =  '?query=' + $('#searchInput1').val();
-        hasher.prependHash = '';
-        hasher.setHash('find'+query);        
+    $('#searchInput1').keypress(function(e) {
+        if (e.which === 13) {
+            e.preventDefault();  
+            $('#doSearch').trigger('click');
+        }
+    });
+
+    // Suche auslösen, nachdem Filter geklickt  wurde: 
+
+    function findQueryPartInHref(href) {
+        // parse url into query string using URI.js library
+        var parsed = URI(href)
+          , conventionalQuery = parsed.query(true)
+          , fragment = parsed.fragment()
+          , query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
+        return query;
     }
+    $('#facet-subjects').on('click', '.aFilter', function(e) {
+        e.preventDefault();
+        var filter = findQueryPartInHref($(this).attr('href')).query
+          , currentQuery = $('#searchInput1').val().replace(/(.*)\s+sortBy.*$/,'$1')
+          , newQuery = currentQuery.length ?  
+            currentQuery + " and " + filter : filter;
+        $('#searchInput1').val(newQuery);
+        $('#doSearch').trigger('click');
+    });
 
     // Handler fuer Resultate pro Seiten (paging) 
     $("#maximumRecords").change(function(e) { 
         if ($('#searchInput1').val() === '') {
             return;
+            //keine Aktion bei leerem Suchfeld
         }
-        //Suche ohne Filter zu erneuern
         initSearch(false);
+            //Suche ohne Filter zu erneuern, mit neuem record-parameter 
     });
 
     // Handler fuer sortby 
@@ -172,15 +212,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         if ($('#searchInput1').val() === '') {
             return;
         }
-        //Suche ohne Filter zu erneuern
         initSearch(false, 1, $(this).val());
+            //Suche ohne Filter zu erneuern, mit neuem sort-parameter
     });
-    function executeQuery(query) {
-        $('#searchInput1').val(query);
-        initSearch();
-        unselectDate();
-    }
-    m.executeQuery = executeQuery;
 
     // Ausrichten der Suchparameter; Übergeben der Parameter:
 
@@ -209,15 +243,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         });        
 
         sortBy= sortByChoice || querySort || implicitSort || sortBy; 
+        $('#sortBy').val(sortBy);
           
         newQuery = sortBy === 'random' ? queryWithoutSort :
            queryWithoutSort + ' sortBy ' + sortBy;
         $('#searchInput1').val(newQuery);
-        $('#sortBy').val(sortBy);
+        
         // versteckte Parameter ändern
         $('#searchform1 input[name="startRecord"]').val(startRecord);
         $('#searchform1 input[name="x-no-search-filter"]').val(!newFilter);
 
+        // als ein querystring an "sru" senden 
         getResultsHidden(baseUrl + '?' + $('#searchform1').serialize());
     } 
     m.initSearch = initSearch;
@@ -236,6 +272,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             $('content > .showResults').hide('slow');
         $('.ladeResultate').fadeIn('slow');
         getResultsLock = true;
+
         //Anfage an Server mit load()
         $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
             callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
@@ -283,7 +320,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
               , categoryFilter = newFilter ? ajaxParts.find('.categoryFilter > ol') : $('.pageindex > .schlagworte.showResults').clone()
               , navResults = ajaxParts.find('.navResults')
               , frameWork = resultsFramework.clone();
-            //frameWork.find('.showOptions select').val(currentSorting);
+            frameWork.find('.showOptions select').val(currentSorting);
             if (statusText === 'success' && getResultsErrorTracker.raisedErrors.length === 0 && ajaxPartsDiagnostics.length === 0) {
                 $('.pageindex .schlagworte.showResults').replaceWith(categoryFilter);
                 frameWork.find('#showList > .navResults').replaceWith(navResults);
@@ -321,9 +358,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     // falls Fehler gefunden, diese anzeigen:
     var errorPretext1 = 'Die Abfrage generierte einen Fehler.' + 
         '<br/>Versuchen Sie eine andere Abfrage oder informieren Sie die ' + 
-        ' <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB 80, error&amp;body='+
-        'Hier%20bitte%20Details%20der%20Fehlermeldung%20kopieren%20...',
-     errorPretext2 = '">Systemadministration</a>.';
+        ' <a href="mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20error&amp;body='+
+        'Hier%20bitte%20Details%20der%20Fehlermeldung%20kopieren%20...'
+      , errorPretext2 = '">Systemadministration</a>.';
 
     function handleGetErrors(frameWork, status, htmlErrorMessage, anErrorTracker) {
         if (anErrorTracker.raisedErrors.length === 0) {
@@ -617,23 +654,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     }
     loadCategory();
 
-    function findQueryPartInHref(href) {
-        // parse url into query string using URI.js library
-        var parsed = URI(href)
-          , conventionalQuery = parsed.query(true)
-          , fragment = parsed.fragment()
-          , query = conventionalQuery === {} ? conventionalQuery : URI(fragment).query(true);
-        return query;
-    }
-    $('#facet-subjects').on('click', 'a.aFilter', function(e) {
-        e.preventDefault();
-        var query = findQueryPartInHref($(this).attr('href'))
-          , subject = query.query
-          , currentQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '') 
-          , newQuery = currentQuery === "" ? subject : currentQuery + " and " + subject;
-        executeQuery(newQuery);
-    });
-
     // Handler für Klick auf (+) in Resultatliste
 
     $(document).on('click', '.results .plusMinus', openOrCloseDetails);
@@ -647,12 +667,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         }
         $(this).toggleClass('close');
     }
-    // Handler für Klick auf Suche in "Resultate"
-    $('.content').on('click', '.showResults a.neueSuche, .showResults a.stichwort', function(e) {
-        e.preventDefault();
-        var query = findQueryPartInHref($(this).attr('href')).query;
-        executeQuery(query);
-    });
 
     // Handler fuer Klick auf (x) in Einzeleintrag (BS)
     $(document).on('click', '.closeX', function() {
@@ -665,18 +679,16 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         var index = $(e.target).closest("td").attr("data-index")
           , term = $(e.target).text() + "*"
           , query = index + "=" + term;
-        //executeQuery(index+"="+term); 
         $('#searchInput1').val(query);
     });
     $('#find a.code').click(function(e) {
         e.preventDefault();
         var query = $(this).text();
-        //executeQuery(query);
         $('#searchInput1').val(query);
     });
 
     // Handler für Suchfeld:  Clear Search und search (BS)
-    //$(document).on('keyup mouseup', 'body', toggleXQ );
+    
     function toggleXQ() {
         if ($('#searchInput1').val().length < 1) {
             $('#clearSearch').hide();
@@ -697,15 +709,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         hasher.setHash('find');
         //toggleXQ();
     });
-    $(document).on('click', '#doSearch', function(e) {
-        e.preventDefault();
-        var query = $('#searchInput1').val();
-        if (query.length)
-        //executeQuery(query);
-        //toggleXQ();
-            passQuery2URL();
-    });
-
     // Schlagwortbaum oeffnen und schliessen (BS)
     var plusMinus = '.schlagworte .plusMinus'
       , ols = '.schlagworte li li ol';
