@@ -162,6 +162,7 @@
             <xsl:apply-templates select="mods:name">
                 <xsl:with-param name="roleTerm" select="'aut', 'edt', 'trl', 'ctb'"/>
                 <xsl:with-param name="query" select="false()"/>
+                <xsl:with-param name="description" select="false()"/>
             </xsl:apply-templates>      
             <xsl:call-template name="no-author"/>            
             <xsl:text xml:space="preserve">, </xsl:text> 
@@ -328,6 +329,7 @@
     <xsl:template match="mods:name" >
         <xsl:param name="roleTerm" select="$acceptedRoles"/>
         <xsl:param name="query" select="true()"/> 
+        <xsl:param name="description" select="true()"/>
         <xsl:if test="mods:namePart 
             and mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
             <xsl:choose>
@@ -350,6 +352,9 @@
         </xsl:if>
         <xsl:if test="mods:etal">
             <xsl:value-of select="_:dict(' et al.')"/>
+        </xsl:if>   
+        <xsl:if test="mods:description and $description = true()">
+            <xsl:value-of select="' ('||mods:description||')'"/>
         </xsl:if>   
     </xsl:template>
      
@@ -742,10 +747,17 @@
         <xd:desc>Filterbaum auf #find, Container</xd:desc>
     </xd:doc>
     <xsl:template match="taxonomy">
+        <xsl:variable name="nOfRec" as="xs:integer" select="/sru:searchRetrieveResponse/sru:numberOfRecords"/>
         <ol class="schlagworte showResults">
-            <xsl:apply-templates select="*"/>
+            <xsl:choose>
+                <xsl:when test="$nOfRec gt 9">
+                    <xsl:apply-templates select="*"/>
+                </xsl:when>
+                <xsl:otherwise>
+                </xsl:otherwise>
+            </xsl:choose>
         </ol>
-    </xsl:template>
+    </xsl:template> 
     
     <xd:doc>
         <xd:desc>Oberste Ebene (Thema, etc.)</xd:desc>

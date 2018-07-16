@@ -9,7 +9,7 @@
             <path label="string-join(mods:titleInfo/*, ' ')" match=".//*[not((ancestor::mods:extension, ancestor-or-self::mods:*[@displayLabel='internal']))]">mods:mods</path>
         </index>
         <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
-            <path label="string-join(*, ' ')" match="mods:title">mods:titleInfo[parent::mods:mods]</path>
+            <path label="." match="*">mods:titleInfo[parent::mods:mods]</path>
         </index>
         <index label="Autor" key="author" case="false" type="ft" coll="?lang=de">
             <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
