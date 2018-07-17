@@ -229,7 +229,7 @@
                     
                     <xsl:if test="mods:physicalDescription
                         | mods:relatedItem[not(@type = 'host')]
-                        | mods:subject[topic = 'Form']
+                        | mods:subject[mods:topic = 'Form']
                         | mods:note[@type eq 'footnotes']
                         ">
                         <h4>Weitere bibliographische Angaben</h4>
@@ -245,7 +245,7 @@
                     
                     <!-- Weitere inhaltl. Angaben -->  
                     
-                    <xsl:if test="mods:subject[(topic = 'Thema' or 'Zeit' or 'Region') 
+                    <xsl:if test="mods:subject[(mods:topic = 'Thema' or 'Zeit' or 'Region') 
                         or @displayLabel = 'Stichworte']
                         |mods:genre[matches(., '^[Bb]ook$')]">
                         <h4>Inhaltliche Angaben</h4>
@@ -325,6 +325,7 @@
         <xd:desc>Autor: name formatieren</xd:desc>
         <xd:param name="roleTerm"/>
         <xd:param name="query"/>
+        <xd:param name="description"/>
     </xd:doc>
     <xsl:template match="mods:name" >
         <xsl:param name="roleTerm" select="$acceptedRoles"/>
