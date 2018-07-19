@@ -45,4 +45,54 @@
     <string xml:id="otherVersion">andere Version</string>
     <!-- Interface -->
     <string xml:id="numberOfRefords">Number of Records</string>
+    <!-- Autoren alias -->
+    <string xml:name="aut" xml:id="Alber, Zofia-Maria">Alberowa, Zofia</string>
+    <string xml:name="aut" xml:id="Gabbert-Avitabile, Gunhild">Gabbert-Avitabile, Gunhild</string>
+    <string xml:name="aut" xml:id="Duppel, Mechthild">Duppel-Takayama, Mechthild</string>
+    <string xml:name="aut" xml:id="Eyjolfsson, Arthur Eythor">Eyjolfsson, Aythor</string>
+    <string xml:name="aut" xml:id="Flunkert, Ute">Schmidt, Ute</string>
+    <string xml:name="aut" xml:id="Gotoh, Yukio">Gotô, Yukio</string>
+    <string xml:name="aut" xml:id="Hiraoka, Kimitake">Mishima, Yukio</string>
+    <string xml:name="aut" xml:id="Itoh, Teiji">Itô, Teiji</string>
+    <string xml:name="aut" xml:id="Itoh, Tsutomu">Itô, Tsutomu</string>
+    <string xml:name="aut" xml:id="Kanze Motokiyo">Zeami</string>
+    <string xml:name="aut" xml:id="Ledderose-Croissant, Doris">Croissant, Doris</string>
+    <string xml:name="aut" xml:id="Masaoka, Tsunenori">Masaoka, Shiki</string>
+    <string xml:name="aut" xml:id="Mukooyama, Hiroo">Mukôyama, Hiroo</string>
+    <string xml:name="aut" xml:id="Myôe">Kôben</string>
+    <string xml:name="aut" xml:id="Nikolajewa, Natalja">Nikolaeva, Natalia S.</string>
+    <string xml:name="aut" xml:id="Ohnishi, Takeo">Ōnishi, Takeo</string>
+    <string xml:name="aut" xml:id="Schauwecker, Detlef">Schauwecker, Detlev</string>
+    <string xml:name="aut" xml:id="Seami">Zeami</string>
+    <string xml:name="aut" xml:id="Takeuti S.">Takeuchi, S.</string>
+    <string xml:name="aut" xml:id="VanWolferen, Karel G.">Wolferen, Karel G. van</string>
+    <string xml:name="aut" xml:id="Watt, Helga S.">Schutte-Watt, Helga</string>
+    <string xml:name="aut" xml:id="Weber, Claudia">Weber-Deutschmann, Claudia</string>
+    <string xml:name="aut" xml:id="Wehinger, Mine">Scheid-Katayama, Mine</string>
+    <string xml:name="aut" xml:id="Kargl, Ingrid">Getreuer-Kargl, Ingrid</string>
+    <string xml:name="aut" xml:id="Scholz, Stanca">Scholz-Cionca, Stanca</string>
+    <string xml:name="aut" xml:id="Wuthenow, Bettina">Wuthenow, Asa-Bettina</string>
+    <string xml:name="aut" xml:id="Nennstiel, Ulrike">Nennstiel, Karin-Ulrike</string>
+    <string xml:name="aut" xml:id="Shokusanjin">Ōta, Nanpo</string>
+    <string xml:name="aut" xml:id="Takizawa, Bakin">[Kyokutei] Bakin</string>
+    <string xml:name="aut" xml:id="Yanagi, Sôetsu">Yanagi, Muneyoshi</string>
+    <string xml:name="aut" xml:id="Ri, Kaisei">Yi, Hoe-song</string>
+    <string xml:name="aut" xml:id="Lee, Hwesong">Yi, Hoe-song</string>
+    <string xml:name="aut" xml:id="Shôwa-tennô">Hirohito</string>
+    <string xml:name="aut" xml:id="Kobayashi, Issa">Issa</string>
+    <string xml:name="aut" xml:id="Kyokutei, Bakin">Bakin</string>
+    <string xml:name="aut" xml:id="Matsuo, Bashô">Bashô</string>
+    <string xml:name="aut" xml:id="Nijô Dono">Go-Fukakusa In no Nijô</string>
+    <string xml:name="aut" xml:id="Taneda, Santôka">Santôka</string>
+    <string xml:name="aut" xml:id="Taneda, Shôichi">Santôka</string>
+    <string xml:name="aut" xml:id="Sugano, Johannes K.">Sugano, Kazutoshi J.</string>
+    <string xml:name="aut" xml:id="Okuju, Martin">Nusser, Horst</string>
+    <string xml:name="aut" xml:id="Ribau, Kenzo">Nusser, Horst</string>
+    <string xml:name="aut" xml:id="Burger, Claudia">Kolatek, Claudia</string>
+    <string xml:name="aut" xml:id="Haaf, Katrin">Gassel, Katrin</string>
+    <string xml:name="aut" xml:id="Schilling, Ulrike">Schilling-Leims, Urlike</string>
+    <string xml:name="aut" xml:id="Raupach-Sumiya, Jörg">Raupach, Jörg</string>
+    <string xml:name="aut" xml:id="Pestemer, Richard">Pestemer-Plöthner, Richard</string>
+    <string xml:name="aut" xml:id="Saitô, Sanki">Saitô, Keichoku</string>
+    <string xml:name="aut" xml:id="Shibaki, Yoshiko">Ōshima, Yoshiko</string>   
 </dict>

@@ -129,6 +129,7 @@
             <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"/>
             <xsl:variable name="skip" select="sru:recordData//mods:topic[contains(., 'skip')]"/>
                 <xsl:attribute name="class"> 
+                   <!-- "skip" kennzeichnet Treffer, die irgendwann einmal ganz entfernt werden sollten -->
                     <xsl:value-of select="normalize-space('pubForm '||$genre||' '||$skip)"/>
                 </xsl:attribute>     
            <xsl:apply-templates select="sru:recordData/mods:mods"/>
@@ -147,7 +148,7 @@
     <xsl:variable name="optionalSpace">[<xsl:value-of select="$letter"/>\.]$</xsl:variable>
     
     <!-- regex-pattern: Schlusspunkt nach abc und Anf.zeichen -->
-        <xsl:variable name="optionalPeriod">[<xsl:value-of select="$letter"/>"'\)]$</xsl:variable>
+    <xsl:variable name="optionalPeriod">[<xsl:value-of select="$letter"/>"'\)]$</xsl:variable>
   
           
     <!-- MAIN RECORD TEMPLATE -->
@@ -194,7 +195,10 @@
                             <xsl:value-of select="_:dict('aut')"/>
                         </li>  
                         <li> 
-                            <xsl:apply-templates select="mods:name"/>
+                            <xsl:apply-templates select="mods:name">
+                                <xsl:with-param name="addAlias" select="true()"/>
+                                <xsl:with-param name="nameBreak"><br/></xsl:with-param>
+                            </xsl:apply-templates>
                             <xsl:call-template name="no-author"/> 
                         </li>
                     </xsl:if>
@@ -234,11 +238,11 @@
                         ">
                         <h4>Weitere bibliographische Angaben</h4>
                         <ul>
-                            <xsl:apply-templates select="mods:physicalDescription" />
                             <xsl:apply-templates select="mods:relatedItem[not(@type = 'host')]"  /> 
                             <xsl:call-template name="primary-subjects">
                                 <xsl:with-param name="topic" select="'Form'" />
                             </xsl:call-template>       
+                            <xsl:apply-templates select="mods:physicalDescription" />
                             <xsl:apply-templates select="mods:note[@type eq 'footnotes']" />
                         </ul>
                     </xsl:if> 
@@ -326,11 +330,15 @@
         <xd:param name="roleTerm"/>
         <xd:param name="query"/>
         <xd:param name="description"/>
+        <xd:param name="addAlias"/>
+        <xd:param name="nameBreak"/>
     </xd:doc>
     <xsl:template match="mods:name" >
         <xsl:param name="roleTerm" select="$acceptedRoles"/>
         <xsl:param name="query" select="true()"/> 
         <xsl:param name="description" select="true()"/>
+        <xsl:param name="nameBreak" select="'/ '"/>
+        <xsl:param name="addAlias" select="false()"/>
         <xsl:if test="mods:namePart 
             and mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
             <xsl:choose>
@@ -345,10 +353,18 @@
                 </xsl:otherwise>
             </xsl:choose>  
             <xsl:if test="mods:role/mods:roleTerm[not(. = 'aut')]">
-                <xsl:value-of select="' (' || _:dict(mods:role/mods:roleTerm) || ')'"/>
+                <xsl:for-each select="mods:role/mods:roleTerm[not(. = 'aut')]">  
+                    <xsl:value-of select="if (position() eq 1) then ' (' else ''"/>                  
+                    <xsl:value-of select="_:dict(.)"/>           
+                    <xsl:value-of select="if (position() ne last()) then ', ' else ')'"/>
+                </xsl:for-each> 
             </xsl:if>
-            <xsl:if test="following-sibling::mods:name[1][mods:namePart]/mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
-                <xsl:value-of select="'/ '"/>
+            <xsl:if test="$addAlias=true()">
+                <xsl:call-template name="alias"/>
+            </xsl:if>
+            <xsl:if test="following-sibling::mods:name[1][mods:namePart]
+                /mods:role/mods:roleTerm/normalize-space(.) = $roleTerm">
+                <xsl:copy-of select="$nameBreak"/> 
             </xsl:if>
         </xsl:if>
         <xsl:if test="mods:etal">
@@ -357,6 +373,33 @@
         <xsl:if test="mods:description and $description = true()">
             <xsl:value-of select="' ('||mods:description||')'"/>
         </xsl:if>   
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>Suche nach alias Namen in dict-de.xml</xd:desc>
+    </xd:doc>
+    <xsl:template name="alias">
+        <xsl:variable name="aka">
+            <xsl:choose>
+                <xsl:when test="normalize-space(mods:namePart) ne _:dict(normalize-space(mods:namePart))">
+                    <xsl:value-of select="_:dict(normalize-space(mods:namePart))"/>
+                </xsl:when>
+                <xsl:when test="normalize-space(mods:namePart) ne _:rdict(normalize-space(mods:namePart))">
+                    <xsl:value-of select="_:rdict(normalize-space(mods:namePart))"/>
+                </xsl:when> 
+            </xsl:choose> 
+        </xsl:variable>
+        <xsl:if test="$aka ne ''">
+            <small>
+                <xsl:value-of select="' ('"/>
+                <i>al.</i>
+                <xsl:value-of select="' '"/>
+                <xsl:call-template name="add-query-link">  
+                    <xsl:with-param name="text" select="$aka" />
+                </xsl:call-template>
+                <xsl:value-of select="')'"/>
+            </small>
+        </xsl:if>
     </xsl:template>
      
     <xd:doc>
@@ -378,24 +421,47 @@
     <xsl:template name="add-query-link">  
         <xsl:param name="index" />   
         <xsl:param name="selection" select="node()"/>  
+        <xsl:param name="text"/>  
         <!-- entfernt <b> im Fall von _match_ -->
-        <xsl:variable name="link">    
-            <xsl:apply-templates select="$selection"/>
+        <xsl:variable name="link">   
+            <xsl:choose>
+                <xsl:when test="$text eq ''">
+                    <xsl:apply-templates select="$selection"/>                    
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$text"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>  
         
         <xsl:if test="$selection">
             <xsl:choose>
-                <xsl:when test="$index">
-                    <xsl:apply-templates select="$selection"/>
-                    <a href="#find?query={concat($index, '=')}&quot;{$link}&quot;" 
-                        title="{concat(_:dict($index), '-')}Suche nach {$link}"
-                        class="{'lupe fas fa-search'}" >
+                <xsl:when test="$index">  
+                    <xsl:choose>
+                        <xsl:when test="$text eq ''">
+                            <xsl:apply-templates select="$selection"/>                    
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="$text"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <a href="#find?query={$index||'='}&quot;{$link}&quot;" 
+                        title="{_:dict($index)||'-'}Suche nach {$link}"
+                        class="lupe fas fa-search">
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
                     <a href="#find?query=&quot;{$link}&quot;" 
-                        title="Suche nach {$link}" 
-                    ><xsl:apply-templates select="$selection"/></a>                
+                        title="Suche nach {$link}" >  
+                        <xsl:choose>
+                            <xsl:when test="$text eq ''">
+                                <xsl:apply-templates select="$selection"/>                    
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="$text"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </a>                
                 </xsl:otherwise>
             </xsl:choose> 
         </xsl:if>
