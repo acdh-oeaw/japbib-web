@@ -13,7 +13,7 @@ a.neueSuche:hover {
  
 .navResults {
   font-family: calibri, arial, sans-serif;
-  font-family: work sans, arial;
+  font-family: "work sans", arial;
   padding: 1px 1em;
   line-height: 2rem;
   height: 3.5em;
@@ -25,7 +25,7 @@ a.neueSuche:hover {
  font-size: 1.5rem;
  color: #8e843b;
  font-family: 'trebuchet ms';
- font-family: work sans, arial;
+ font-family: "work sans", arial;
  font-weight: bold;
 }
 .hitList {
@@ -143,7 +143,7 @@ form#searchform3 {
     z-index: 10;
     padding: 4.5em 0;
     color: #383838;
-    text-shadow: 1px 2px #e0ebf587;
+    text-shadow: 1px 2px #e0ebf5;
     text-align: center;
 }
 .ladeResultate p {
@@ -569,11 +569,6 @@ div.showEntry {
 .showEntry,
 #find #showList {
   background: rgb(228, 211, 165);
-  <
-  div class="clear" style="clear: both;">;
-  <
-  div class="clear" style="clear: both;">;
-  /* background: #fff7d4; */
   }
 
 .navResults { 
@@ -615,7 +610,6 @@ div.showEntry {
 .toggleRecord i {
   position: absolute;
   right:0;
-  padding-top: -8px;
   font-weight: bold;
   line-height: 14px;
   padding: 7px 1em 1px; 

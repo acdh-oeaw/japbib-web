@@ -7,174 +7,174 @@
 /* Schlagwortbaum */
 
 .schlagworte {
-  margin: 0;
-  padding: .3em 0 1em; 
-  color: rgb(93, 73, 20);
+    margin: 0;
+    padding: .3em 0 1em;
+    color: rgb(93, 73, 20);
 }
 #thesaurus .schlagworte {
     max-width: 38em;
-    margin: 2em auto; 
+    margin: 2em auto;
     padding: 0 1em 2em;
 }
 
 .schlagworte ul,
 .schlagworte ol {
-  margin: 0; 
-  padding: 0;
-  list-style: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 .schlagworte li {
-  position: relative;
-  margin: 1px;
-  margin-left: 1.7em;
-  margin-top: .2em;
-  padding: 0;
-  list-style: none; 
-} 
-#facet-subjects .schlagworte li { 
-    margin-left: 1em;  
-} 
-.schlagworte li::first-letter { 
-  text-transform: uppercase;
-  }
+    position: relative;
+    margin: 1px;
+    margin-left: 1.7em;
+    margin-top: .2em;
+    padding: 0;
+    list-style: none;
+}
+#facet-subjects .schlagworte li {
+    margin-left: 1em;
+}
+.schlagworte li::first-letter {
+    text-transform: uppercase;
+}
 .schlagworte span {
-  position: relative;
-  z-index: 2; 
-  }  
+    position: relative;
+    z-index: 2;
+}
 
 /* Thema, etc. */
-.schlagworte li.li1  { 
-  margin: 1em 0 .5em -.5em;
-  clear: both;
-  }   
+.schlagworte li.li1 {
+    margin: 1em 0 .5em -.5em;
+    clear: both;
+}
 .schlagworte .li1 > span {
-  color: #8e843b;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-family:  "work sans", "Trebuchet MS", Arial, sans-serif;
-  }  
-#facet-subjects .schlagworte li.li1 > span { 
-    margin-left: -.5em;  
-  color: #37629b;
+    color: #8e843b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: "work sans", "Trebuchet MS", Arial, sans-serif;
+}
+#facet-subjects .schlagworte li.li1 > span {
+    margin-left: -.5em;
+    color: #37629b;
 }
 
 /* plusMinus */
 
 .schlagworte .plusMinus {
-  color: rgb(93, 73, 20);
+    color: rgb(93, 73, 20);
 }
 .schlagworte .plusMinus:hover {
-  color: #008;
-  background: transparent;
+    color: #008;
+    background: transparent;
 }
 .schlagworte .plusMinus::before {
-  position: absolute; 
-  left: -1.55em;
-  }
- 
-#facet-subjects .plusMinus::before {
-  position: absolute;
-  left: -1.6em;
-  line-height: 1.2em;
-  width: 1.2em;
-  font-size: .9em;
+    position: absolute;
+    left: -1.55em;
 }
 
-/*  Zahl */  
+#facet-subjects .plusMinus::before {
+    position: absolute;
+    left: -1.6em;
+    line-height: 1.2em;
+    width: 1.2em;
+    font-size: .9em;
+}
+
+/*  Zahl */
 
 .zahl {
-  font-family: calibri, arial;
-  border-radius: .5em; 
-  padding: 0 .5em
+    font-family: calibri, arial;
+    border-radius: .5em;
+    padding: 0 .5em
 }
-.zahl::before, 
+.zahl::before,
 .aZahl::before {
-  content: "\f0b0"; /* fa-filter */
-  padding-right: .2em;
-  padding-left: .5em;
-  font-weight: 900;
-  opacity: .4;
-  white-space: nowrap;
-} 
-#thesaurus .zahl::before {
-  float: left;
-  line-height: 1.5em;  
+    content: "\f0b0"; /* fa-filter */
+    padding-right: .2em;
+    padding-left: .5em;
+    font-weight: 900;
+    opacity: .4;
+    white-space: nowrap;
 }
-.zahl:hover::before  { 
-  opacity: 1;
+#thesaurus .zahl::before {
+    float: left;
+    line-height: 1.5em;
+}
+.zahl:hover::before {
+    opacity: 1;
 }
 
 #facet-subjects .zahl {
-  font-size: .85em
+    font-size: .85em
 }
 .thesaurus .zahl {
-  position: relative;
-  display: block;
-  text-align: right;
-  margin-right: -.3em;
-  padding-right: .3em;
-  height: 1.5em;
+    position: relative;
+    display: block;
+    text-align: right;
+    margin-right: -.3em;
+    padding-right: .3em;
+    height: 1.5em;
 }
-.thesaurus .zahl::before  { 
-  content: "\f002"; /* fa-search */ 
-  margin-right: .5em;
-  opacity: .15;
-} 
+.thesaurus .zahl::before {
+    content: "\f002"; /* fa-search */
+    margin-right: .5em;
+    opacity: .15;
+}
 .thesaurus .kombinieren .zahl::before {
-  content: "\f14a"; /* fa-check */
-  font-weight: 400;
+    content: "\f14a"; /* fa-check */
+    font-weight: 400;
 }
 .thesaurus .zahl:hover::before,
-.thesaurus .zahl.checked::before { 
-  opacity: .8;
-  font-weight: 900;
-} 
-.thesaurus .zahl.checked:hover::before { 
-  opacity: .8;
-  font-weight: 400;
-} 
-  
+.thesaurus .zahl.checked::before {
+    opacity: .8;
+    font-weight: 900;
+}
+.thesaurus .zahl.checked:hover::before {
+    opacity: .8;
+    font-weight: 400;
+}
+
 /* spezielle Befehle Thesaurus */
 
 #thesaurus .li1::after {
-  content: "suchen:";
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-style: italic;
+    content: "suchen:";
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-style: italic;
 }
 #thesaurus .kombinieren .li1::after {
-  content: "kombinieren:"; 
+    content: "kombinieren:";
 }
 #thesaurus .wrapTerm {
     display: block;
     border-bottom: 1px solid transparent;
     clear: right;
 }
-#thesaurus .wrapTerm:hover {  
+#thesaurus .wrapTerm:hover {
     border-bottom: 1px solid #ccc;
-}  
+}
 #thesaurus .schlagworte .term {
-   padding: 0 .3em;
-   padding-right: .5em;
-   float: left;
-   clear: left;
-   background: #fff;
-   color: rgb(0, 36, 136);
+    padding: 0 .3em;
+    padding-right: .5em;
+    float: left;
+    clear: left;
+    background: #fff;
+    color: rgb(0, 36, 136);
 }
 #thesaurus .schlagworte .plusMinus:hover,
 #thesaurus .schlagworte .close::before {
-      color: #8e843b;
+    color: #8e843b;
 }
 
 /* Alles öffnen und schließen */
 
 .showOptions h2 {
-  text-align: left;
-  float: left;
-  padding-left: 1rem;
-  line-height: 3.5rem;
-  margin: 0;
+    text-align: left;
+    float: left;
+    padding-left: 1rem;
+    line-height: 3.5rem;
+    margin: 0;
 }
 #expandAll {
     padding: .5em;
@@ -182,107 +182,107 @@
     /* float: right; */
 }
 #expandAll > div {
-  line-height: 1.2em;
+    line-height: 1.2em;
 }
 #expandAll a {
-  text-transform: lowercase;
-  color: #333300;
-  display: inline-block;
-  margin-left: -1.5em;
-  padding: 0 .5em 0 2.5em;
-  border-radius: .5em;
-  position: relative;
-  z-index: 2;
-  width: 6em;
+    text-transform: lowercase;
+    color: #333300;
+    display: inline-block;
+    margin-left: -1.5em;
+    padding: 0 .5em 0 2.5em;
+    border-radius: .5em;
+    position: relative;
+    z-index: 2;
+    width: 6em;
 }
 
 /********  Thesaurus, #wishList ***********/
- 
+
 #chooseQuerymode label,
 #chooseQuerymode input {
-   cursor: pointer;
-   margin-left: 1em;
+    cursor: pointer;
+    margin-left: 1em;
 }
-.ausgewaehlt { 
+.ausgewaehlt {
     font-weight: bold;
 }
 #wishList ul {
     margin: 1em 1em .5em;
 }
 #wishList li {
-  display: block;
-  padding: 0  1em 0 1em;
-  min-height: 1.5em;
-  position: relative;
-} 
-#wishList .ausgewaehlt { 
-  cursor: pointer; 
-  display: inline-block;
-  margin-left: -1.6em;
-  margin-right: .2em;
-  padding: .2em;
-  color: #96855e;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: normal;  
-} 
-#wishList .ausgewaehlt:hover { 
-  color: #7f6f4b;
+    display: block;
+    padding: 0 1em 0 1em;
+    min-height: 1.5em;
+    position: relative;
+}
+#wishList .ausgewaehlt {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: -1.6em;
+    margin-right: .2em;
+    padding: .2em;
+    color: #96855e;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: normal;
+}
+#wishList .ausgewaehlt:hover {
+    color: #7f6f4b;
 }
 #wishList .ausgewaehlt::before {
-  content: "\f14a"; /* fa-check */
-  font-weight: 900;  
-  margin-right:.3em;
+    content: "\f14a"; /* fa-check */
+    font-weight: 900;
+    margin-right: .3em;
 }
-#wishList .ausgewaehlt:hover::before { 
-  font-weight: 400;  
+#wishList .ausgewaehlt:hover::before {
+    font-weight: 400;
 }
-#wishList a.andOr:hover   {
+#wishList a.andOr:hover {
     color: #fff7d4;
-    background:rgba(150, 133, 94, 0.82);
+    background: rgba(150, 133, 94, 0.82);
 }
-#wishList a.andOr  {
-  position: absolute;
-  right: -.5rem;
-  top: .75em;
-  font-size: .8em;
-  line-height:1.8em;
-  padding: 0;
-  width: 2.4em;
-  text-align: center;
-  text-indent: 0;
-  font-family: "Courier New", Courier, monospace;
-  font-weight: bold;
-  text-transform: uppercase;
-  background: rgba(233, 220, 175, 0.5);
-  color: #a08628;
-  cursor: pointer;
-  }   
+#wishList a.andOr {
+    position: absolute;
+    right: -.5rem;
+    top: .75em;
+    font-size: .8em;
+    line-height: 1.8em;
+    padding: 0;
+    width: 2.4em;
+    text-align: center;
+    text-indent: 0;
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: rgba(233, 220, 175, 0.5);
+    color: #a08628;
+    cursor: pointer;
+}
 .andOr:empty,
 li:last-child .andOr {
-  visibility: hidden;
+    visibility: hidden;
 }
 #abfrage {
-  display: block;
-  text-align: right;
-  padding: 0 1em;
-  line-height: 2em;
-  border-top: 1px solid rgb(228, 211, 165);
-  background: rgba(233, 220, 175, 0.5);
-  font-family: calibri, arial;
+    display: block;
+    text-align: right;
+    padding: 0 1em;
+    line-height: 2em;
+    border-top: 1px solid rgb(228, 211, 165);
+    background: rgba(233, 220, 175, 0.5);
+    font-family: calibri, arial;
 }
 #wishList p {
-  margin: 0 0 -.5em;
-  padding: 0 .5em; 
-  font-style: italic;
-  text-align: left;
-  border: 0;
+    margin: 0 0 -.5em;
+    padding: 0 .5em;
+    font-style: italic;
+    text-align: left;
+    border: 0;
 }
 #abfrage:hover {
-  background: rgba(233, 220, 175, 0.8);
+    background: rgba(233, 220, 175, 0.8);
 }
 #abfrage::before {
-  font-size: 1.2em;
-  opacity: .5; 
-  padding-right:.5em;
+    font-size: 1.2em;
+    opacity: .5;
+    padding-right: .5em;
 }
