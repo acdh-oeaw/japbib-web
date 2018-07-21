@@ -370,9 +370,13 @@
         <xsl:if test="mods:etal">
             <xsl:value-of select="_:dict(' et al.')"/>
         </xsl:if>   
-        <xsl:if test="mods:description and $description = true()">
-            <xsl:value-of select="' ('||mods:description||')'"/>
-        </xsl:if>   
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>name/description vorläufig nicht anzeigen</xd:desc>
+    </xd:doc>
+    <xsl:template match="mods:description">
+        <xsl:value-of select="''"/>
     </xsl:template>
     
     <xd:doc>
@@ -417,6 +421,7 @@
         <xd:desc>Elemente mit query-link ausstatten</xd:desc> 
         <xd:param name="index"/> 
         <xd:param name="selection"/>
+        <xd:param name="text"/>
     </xd:doc>
     <xsl:template name="add-query-link">  
         <xsl:param name="index" />   
