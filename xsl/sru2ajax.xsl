@@ -428,7 +428,7 @@
         <xsl:param name="selection" select="node()"/>  
         <xsl:param name="text"/>  
         <!-- entfernt <b> im Fall von _match_ -->
-        <xsl:variable name="link">   
+        <xsl:variable name="term">   
             <xsl:choose>
                 <xsl:when test="$text eq ''">
                     <xsl:apply-templates select="$selection"/>                    
@@ -442,30 +442,16 @@
         <xsl:if test="$selection">
             <xsl:choose>
                 <xsl:when test="$index">  
-                    <xsl:choose>
-                        <xsl:when test="$text eq ''">
-                            <xsl:apply-templates select="$selection"/>                    
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="$text"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                    <a href="#find?query={$index||'='}&quot;{$link}&quot;" 
-                        title="{_:dict($index)||'-'}Suche nach {$link}"
+                    <xsl:sequence select="$term"/>
+                    <a href="#find?query={$index||'='}&quot;{$term}&quot;" 
+                        title="{_:dict($index)||'-'}Suche nach {$term}"
                         class="lupe fas fa-search">
                     </a>
                 </xsl:when>
                 <xsl:otherwise>
-                    <a href="#find?query=&quot;{$link}&quot;" 
-                        title="Suche nach {$link}" >  
-                        <xsl:choose>
-                            <xsl:when test="$text eq ''">
-                                <xsl:apply-templates select="$selection"/>                    
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$text"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                    <a href="#find?query=&quot;{$term}&quot;" 
+                        title="Suche nach {$term}" >  
+                        <xsl:sequence select="$term"/>
                     </a>                
                 </xsl:otherwise>
             </xsl:choose> 
