@@ -11,9 +11,6 @@ a.lupe:hover {
 .listAuthorsByResult a.lupe::before {  
   margin-right: .3em; 
 }
-.author {
-  color: #333;
-}
 .listAuthorsByResult {
   column-count: 2;
 }
@@ -44,48 +41,35 @@ a.lupe:hover {
   margin-right: -.3em;
   list-style: none;
 }
-
-
-#navbar {
-  height: 19px;
-  font-size: 14px;
-  line-height:15px;
-  font-family: calibri, arial, sans-serif;
-  /* font-family: work sans, arial; */
-  position:relative;
-}
-#navbar_items {
-  display: block;
-  position: absolute;
-  left: 9em;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  }
-#navbar_items li {
-  display: block;
-  position: relative;
-  float: left;
-  margin-right: -.3em;
-  list-style: none;
-  } 
-#resultOptions a {
+#resultOptions span {
   display: inline-block;
   position: relative;
-  padding: .2em 1em;
-  background: #c5b684;
-  border: 1px solid rgb(255, 247, 212);
-  border-color: #e4d3a5 #e4d3a5 rgb(255, 247, 212);
+  padding: .2em 1em;  
   border-radius: .6em .6em .1em .1em;
-  color: #fff;
   }
-#resultOptions a.hilite,
-#resultOptions a:hover {
+#resultOptions #Treffer,
+#resultOptions.showAut #Autoren,
+#resultOptions.showAut #Treffer:hover,
+#resultOptions  #Autoren:hover {
   background: rgb(237, 227, 185);  
   color:#333;
- border: 1px solid #e4d3a5; 
+  border: 1px solid #e4d3a5; 
+  z-index: 1; 
   }
+#resultOptions.showAut #Treffer,
+#resultOptions  #Autoren  {
+  background: #c5b684;
+  color: #fff;
+  border: 1px solid rgb(255, 247, 212);
+  z-index: 0;
+  }
+#resultOptions.showAut #Treffer:hover,
+#resultOptions  #Autoren:hover {
+  cursor: pointer;  
+} 
+#resultOptions.showAut #Autoren:hover {
+  cursor: default;  
+} 
 
 
 /******************************
@@ -477,30 +461,26 @@ tr.search .fa-search {
 
 *************************/
  
-#showList, #showAuthors {
+.showList {
   border: 1px solid #e4dec4;
-  border-radius: 5px;
-  /* box-shadow: 0em 0em 8px 0px #c5b58285; */
-  padding: .5em 1em;
-  padding: 0;
-  /* background: rgb(196, 179, 130); */
+  border-radius: 5px; 
+  overflow: hidden;
   } 
-
-#find #showList {
- margin-top: 2.5em; 
-}
 .results {
   margin: 0;
   padding: 1em 2em 1em 3em;
   padding-left: 3em;
   position: relative;
 } 
-.shortInfo {
-    color: #615a2c;
+.shortInfo, 
+.author {
     color: #5e5723;
     padding-left: .5em;
     margin-top: .5em;
     /* margin-left: 1em; */
+}
+
+.author { 
 }
 #show_entry th {
   text-align: right;
@@ -648,16 +628,16 @@ div.showEntry {
   display:  inline;
 }
 /*  results Farben*/
-.showEntry,
-#find #showList {
-  background: rgb(228, 211, 165);
+.showEntry {
+  /* background: rgb(228, 211, 165); */
+  border-radius: 5px;
+  overflow: hidden;
   }
 
 .navResults {
   background: rgb(237, 227, 185);
   }
-.results {
-  background: rgba(255, 255, 216, 0.97);
+.results { 
   background: rgba(255, 255, 255, 1);
   color: #463a2e;
 } 
