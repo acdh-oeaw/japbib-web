@@ -6,10 +6,10 @@
     <string xml:id="trl-abbr">Übs.</string>
     <string xml:id="edt">Hg.</string>
     <string xml:id="ctb">Mitarb.</string>
-    <string xml:id="com">Mitarb.</string>
+    <string xml:id="com">Ausw.</string>
     <string xml:id="ill">Ill.</string>
     <string xml:id="win">Einl./Nachw.</string>
-    <string xml:id="hnr">Honorar</string>
+    <string xml:id="hnr">Honoratior</string>
     <string xml:id="pht">Fotos</string>
     <string xml:id="red">Red.</string>
     <string xml:id="etal">et al.</string>
@@ -94,5 +94,6 @@
     <string xml:name="aut" xml:id="Raupach-Sumiya, Jörg">Raupach, Jörg</string>
     <string xml:name="aut" xml:id="Pestemer, Richard">Pestemer-Plöthner, Richard</string>
     <string xml:name="aut" xml:id="Saitô, Sanki">Saitô, Keichoku</string>
-    <string xml:name="aut" xml:id="Shibaki, Yoshiko">Ōshima, Yoshiko</string>   
+    <string xml:name="aut" xml:id="Shibaki, Yoshiko">Ōshima, Yoshiko</string> 
+    <string xml:name="aut" xml:id="Uslar, Gerda von">Uslar, Gisela von</string>   
 </dict>
