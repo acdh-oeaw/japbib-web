@@ -179,6 +179,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               <p>Die vorliegende Website enthält — abgesehen von den Metainformationen „Über JB 80“
               — die Bereiche „Thesaurus“ und „Suchen und Finden“. Im Folgenden werden die
               verschiedenen Suchfunktionen auf Thesaurus und Suchseite erklärt.</p>
+              
               <h3>Thesaurus</h3>
               <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Das
               Schlagwortschema wurde im Zuge der Recherchen zu diesem Projekt sukzessive entwickelt
@@ -187,14 +188,13 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               Verschlagwortung wurde dabei extensiv durchgeführt, das heißt, eine Publikation wurde
               zumeist nicht nur einem, sondern mehreren relevanten Themen zugeordnet.</p>
               <p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten
-              gesucht werden. Ein Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der
-              Suchseite aus. Es können auch kombinierte Schlagwortabfragen durchgeführt werden.
-              Dazu muss man auf die neben dem Schlagwort stehende Zahl klicken.</p>
-              <ul class="helpExample thesaurus">
-                <li>Beispiel</li>
-                <li class="plusMinus">Wirtschaft <span class='aZahl aHover'>13949</span></li>
-              </ul>
-              <p>Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und
+              gesucht werden. Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class=
+              "plusMinus"></span>“ als Zeichen dafür, dass dahinter noch weitere Schlagworte
+              versteckt sind. Ein Klick auf die Zahl neben dem Schlagwort löst eine entsprechende Abfrage auf der
+              Suchseite aus. </p> 
+              <p>Es können auch kombinierte Schlagwortabfragen durchgeführt werden.
+              Dazu muss man im Feld „Abfragemodus“ auf „kombinierte Suche“ klicken.
+              Die ausgewählten Begriffe werden im im Feld „Abfragemodus“ angezeigt und
               können von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei
               Schlagworte ausgewählt werden.</p>
               <p>Ausgewählte Schlagworte (A, B) sind üblicherweise durch „and“ verbunden, das
@@ -205,66 +205,43 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               <ul class="helpExample">
                 <li>Beispiele</li>
                 <li>Finde Beiträge zur Religion im Altertum: <a class='code aHover' href=
-                "#find?query=subject%3D%22Philosophie%20und%20Religion%22%20AND%20subject%3D%22Altertum%20(bis%201192)%22%20%20">
+                "#find?query=subject%3D%22Philosophie%20und%20Religion%22%20and%20subject%3D%22Altertum%20(bis%201192)%22%20%20">
                   subject="Philosophie und Religion" and subject="Altertum (bis 1192)"</a>
                 </li>
                 <li>Finde Bücher (aber keine Artikel) zu den Themen „Politik“ oder „Gesellschaft“:
                 <a class='code aHover' href=
-                "#find?query=subject%3D%22selbst%C3%A4ndige%20Publikation%22%20AND%20subject%3D%22Gesellschaft%22%20OR%20subject%3D%22Politik%22%20%20">
-                  subject="selbständige Publikation" and subject="Gesellschaft" or
-                  subject="Politik"</a>
+                "#find?query=query=subject%3D%22Gesellschaft%22%20or%20subject%3D%22Politik%22%20and%20subject%3D%22Einzelwerk%22">
+                  subject="Gesellschaft" or subject="Politik" and subject="Einzelwerk"
+                  </a>
                 </li>
                 <li>Finde Übersetzungen moderner Lyrik: <a class='code aHover' href=
-                "#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20AND%20subject%3D%22Gegenwart%20(ab%201945)%22%20AND%20subject%3D%22Lyrik%22%20%20">
+                "#find?query=subject%3D%22Literatur%C3%BCbersetzung%22%20and%20subject%3D%22Gegenwart%20(ab%201945)%22%20and%20subject%3D%22Lyrik%22%20%20">
                   subject="Literaturübersetzung" and subject="Gegenwart (ab 1945)" and
                   subject="Lyrik"</a>
-                </li>
-                <li>In welchen Zeitschriften wurden vergleichende linguistische Studien mit
-                Japanbezug publiziert? <a class="code aHover" href=
-                "#find?query=subject%3D%22Japan%20im%20internationalen%20Vergleich%22%20AND%20subject%3D%22Grammatik%20und%20Syntax%22%20AND%20subject%3D%22Zeitschriftenartikel%22%20%20">
-                  subject="Japan im internationalen Vergleich" and subject="Grammatik und Syntax"
-                  and subject="Zeitschriftenartikel"</a>
-                </li>
+                </li> 
               </ul>
               <p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die
               Verschlagwortung historisch gewachsen ist und keinen Anspruch auf Vollständigkeit
               erheben kann. Daher ist es ratsam, verschiedene Schlagworte und Suchstrategien
               auszuprobieren.</p>
-              <h4>Zahlenangaben</h4>
-              <p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class=
-              "plusMinus"></span>“ als Zeichen dafür, dass dahinter noch weitere Schlagworte
-              versteckt sind. Die Zahl neben dem Schlagwort umfasst Einträge, die mit dem
-              jeweiligen Schlagworten und seinen Untergruppen gekennzeichnet sind.</p>
-              <!--Öffnet man allerdings die Untergruppen (<span class=
-              "plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber
-              keiner Untergruppe zugeordnet sind.
-              <ul class="helpExample thesaurus">
-                <li>Beispiel</li>
-                <li class="plusMinus">&nbsp;Geschichte <span class='aZahl'>2633</span></li>
-                <li class="plusMinus close">&nbsp;Geschichte <span class='aZahl'>340</span></li> 
-              </ul>
-              <p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort
-              „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>
-          -->
+
               <h3>Suchen und Finden</h3>
               <p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige „Reiter“
               mit Suchvorschlägen zu sehen. Ins Suchfeld können beliebige, frei gewählte
-              Suchbegriffe einbgetragen werden. Die unter den „Reitern“ liegenden Felder
+              Suchbegriffe einbgetragen werden. Die mit den den „Reitern“ verknüpften Suchhilfe-Tools
               vereinfachen folgende Suchvorgänge:</p>
               <ul class="helpExample">
                 <li>Felder</li>
-                <li><i class="far fa-user"></i> ... alphabetische Suche nach Autoren</li>
-                <li><i class="fas fa-book"></i> ... alphabetische Suche nach Werktiteln</li>
+                <li><i class="far fa-user"></i> ... Suche nach Autoren</li>
+                <li><i class="fas fa-book"></i> ... Suche nach Werktiteln</li>
                 <li><i class="far fa-clock"></i> ... Suche nach Publikationszeitraum (sinnvoll in
                 Kombination mit anderen Suchbegriffen)</li>
                 <li><i class="far fa-lightbulb"></i> ... Suche mit Platzhaltern (*): Beim Eintippen
                 eines beliebigen Schlagworts öffnet sich das Feld „Suchhilfe“ und schlägt
                 Modifikationen, etwa „Sternchensuche“ oder Suche nach Titeln vor.</li>
               </ul>
-              <p>Sobald man einen Vorschlag anklickt, wird die Suche ausgeführt. Der Suchbegriff
-              erscheint aber auch im Suchfeld und lässt sich hier händisch weiter modifizieren. Mit
-              der Return-Taste oder einem Klick auf die Lupe kann man alles, was im Suchfeld steht,
-              erneut abfragen.</p>
+              <p>Die Suchhilfe-Tools tragen Begriffe in das Suchfeld ein, die hier händisch weiter modifiziert werden können. Mit
+              der Return-Taste oder einem Klick auf die Lupe kann man den Suchtext abfragen. Die Suche wird auch in der Adresszeile der Suchseite gespeichert.</p>
               <h4>Suchparameter</h4>
               <p>Für spezifische Fragen stehen u.a. folgende Suchparameter zur Verfügung:</p>
               <ul>
@@ -272,7 +249,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <li><code>title=</code> Suche wird auf Werktitel eingegrenzt</li>
                 <li><code>subject=</code> Suche wird auf Schlagworte eingegrenzt</li>
                 <li><code>publisher=</code> Suche wird auf Verlage eingegrenzt</li>
-                <li><code>series=</code> Suche wird auf Reihen eingegrenzt</li>
+                <!--<li><code>series=</code> Suche wird auf Reihen eingegrenzt</li>-->
                 <li><code>date=</code> Suche wird auf Publikationszeitraum eingegrenzt</li>
               </ul>
               <p>Alle Parameter können auch in Kombination (verbunden durch „and“ oder „or“)
@@ -281,26 +258,29 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <li>Beispiele</li>
                 <li>Welche Rezensionen gibt es zum „Verzeichnis des deutschsprachigen
                 Japan-Schrifttums“? <a class="code aHover" href=
-                "#find?query=subject%3D%22Rezension%22%20AND%20title%3D*Verzeichnis*">subject="Rezension"
-                and title=*Verzeichnis*</a>
-                </li>
+                "#find?query=subject%3D%22Rezension%22%20and%20title%3D*Japan-Schrifttum*">subject="Rezension" and title=*Japan-Schrifttum*</a>
+                </li> 
               </ul>
+
               <h4>Suchfilter</h4>
               <p>Sobald eine Suche ausgeführt wurde, öffnet sich im Feld „Such-Filter“ ein
               Schlagwortbaum, der dem Thesaurus entspricht. Er enthält allerdings nur jene
               Schlagworte, die im gefundenen Sample enthalten sind. Auch die Zahlen beziehen sich
               auf das gefundene Sample. Damit lässt sich die Suche effizient filtern oder
               „thrillen“.</p>
+              
               <h4>Sortierung der Ergebnisse</h4>
-              <p>Die Sortierung der Treffer kann im Suchmenü auf „Autor“, „Titel“ oder „Jahr“
+              <p>Die Sortierung der Treffer kann im Suchmenü auf „Autor“, „Titel“, „Jahr“ oder „Beliebig“
               eingestellt werden. „Jahr“ bedeutet Sortierung nach Publiaktionsjahr.</p>
+
               <h4>Trefferanzahl</h4>
-              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 10, kann aber
-              auf bis zu 200 erhöht werden.</p>
+              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 20, kann aber
+              auf bis zu 200 erhöht oder auf 10 gesenkt werden.</p>
+
               <h3>Detailergebnisse</h3>
               <p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen
               Datensatz sowie eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet
-              wurden. Das Anklicken der „<span class="showEntry"><a class="zahl">Lupe</a></span>“
+              wurden. Das Anklicken der „<span class="showEntry"><a class="lupe fas fa-search">Lupe</a></span>“
               neben den Schlagworten startet eine neue Suche nach dem betreffenden Schlagwort. Das
               Gleiche gilt für Autoren, Verlage, Reihen und Werktitel.</p>
               <p>Zusätzlich gibt es oft auch noch „Stichworte“, die im Lauf der Recherchearbeiten
@@ -310,10 +290,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               <p>Am unteren Rand der Einzeleinträge kann man sich den betreffenden Sourcecode
               anzeigen lassen.</p>
               <ul>
-                <li>„MODS“ zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich
+                <li><i class="fa fa-code mods"></i> zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich
                 nach dem „Metadata Object Description Schema“ (MODS) der Library of Congress,
                 Washington DC.</li>
-                <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde großteils
+                <li><i class="fa fa-code lidos"></i> zeigt den ursprünglichen Datensatz an. Dieser wurde großteils
                 maschinell in den MODS-Standard übersetzt.</li>
               </ul>
               <h4>Fehler in der Datenbank</h4>
@@ -326,11 +306,12 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               großem Dank entgegen genommen.</p>
               <p class="next">Weiter zu: <a href="#geschichte">Geschichte des Projekts</a></p>
             </div>
+
             <div id="geschichte">
               <h2>Geschichte des Projekts</h2>
-              <p>Die vorliegende Bibliographie wurde 1989 von Dr. Peter Getreuer, Studienassistent
-              und Bibliothekar am Institut für Japanologie der Universität Wien, initiiert und
-              entworfen. Nach seinem frühen Tod wurde das Projekt am Institut für Kultur- und
+              <p>Die vorliegende Bibliographie wurde 1989 von Prof. Dr. Sepp Linhart und Dr. Peter 
+              Getreuer am Institut für Japanologie der Universität Wien, initiiert und
+              entworfen. Nach dem frühen Tod von Getreuer wurde das Projekt am Institut für Kultur- und
               Geistesgeschichte Asiens (<a class="externerLink" href="https://www.ikga.oeaw.ac.at"
               title="Institut für Kultur- und Geistesgeschichte Asiens">IKGA</a>) der ÖAW unter der
               Leitung von Dr. Susanne Formanek weiter geführt. Die Recherchen und die Herausgabe
@@ -348,11 +329,12 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               Daniel Schopper und Dr. Karl-Heinz Mörth vom Austrian Centre for Digital Humanities
               (<a class="externerLink" href="https://www.oeaw.ac.at/acdh/" title=
               "Austrian Centre for Digital Humanities">ACDH</a>) der ÖAW erneut aufgenommen. Unter
-              Mithilfe von Lennart Hruska wurde das Projekt in eine zeitgemäße Softwareumgebung
+              Mithilfe von  Hruska wurde das Projekt in eine zeitgemäße Softwareumgebung
               migriert. Das ACDH übernahm die Anpassung der Daten an das „Metadata Object
               Description Schema“ (MODS) der Library of Congress sowie die Datenbank-Programmierung
               (Basex). Das IKGA blieb für die Inhalte der Datenbank und die Gestaltung des
               Benutzinterfaces verantwortlich.</p>
+
               <h3>Publizierte Bände</h3>
               <ul>
                 <li>Susanne Formanek, Peter Getreuer, 1989<br>
@@ -371,6 +353,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 Verzeichnis des deutschsprachigen Japan-Schrifttums 1994–1997. (MKGA 5.) Wien:
                 VÖAW, 2002.</li>
               </ul>
+
               <h3>Unterschiede zwischen Online- und Buchfassung</h3>
               <p><i>Daten</i>: Die Online-Version beinhaltet neben den Einträgen aus den
               publizierten Bänden auch die Daten der Jahre 1998–2000, die von Angela Kramer
@@ -385,6 +368,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
               Grundstruktur des Thesaurus blieb jedoch bestehen.</p>
               <p class="next">Weiter zu: <a href="#dokumentation">Technische Dokumentation</a></p>
             </div>
+
             <div id="dokumentation">
               <h2>Technische Dokumentation</h2>
               <p>Arbeiten an der Online-Fassung JB 80:</p>
@@ -404,7 +388,9 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 (Karma).</li>
                 <li>ab 2017/7: Manuelle und automatisierte Datenkorrekturen. Testen und Korrigieren
                 der Suchroutinen.</li>
+                <li>ab 2018/5: Diverse Umstrukturierungen der Datensätze, um die Sucheffizienz zu erhöhen.</li>
               </ul>
+
               <h3>Suchroutine (Stand Mai 2018)</h3>
               <ul>
                 <li>Die Suche erfolgt über eine <i>Context Query Language</i> Suchabfrage im
@@ -412,16 +398,8 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 mit diversen Websitelementen generiert.</li>
                 <li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die
                 Adresse <code>[Basis-URL]/sru</code>.</li>
-                <li>Abgesehen von den interaktiv generierten <i>query</i>-Parametern, wird
-                standardmäßig auch ein XSL-Stylesheet angefordert
-                (<code>x-style=sru2ajax.xsl</code>). Es kann aber statt des Stylesheets auch „none“
-                angegeben werden, um die XSLT Transformation des ursprünglichen HTML-Codes zu
-                verhindern.</li>
-                <li>Außerdem kann mit dem Parameter <code>x-no-search-filter=</code> die
-                automatische Erneuerung des Suchfilterbaums unterdrückt werden.</li>
                 <li>Die Sucheabfrage wird von den Routinen im Verzeichnis
-                <code>responses/sru</code> bearbeitet.</li>
-                <li>Die Abfrage wird mit einem fertigen Java CQL Parser in eine XML Form
+                <code>responses/sru</code> bearbeitet und mit einem vorprogrammierten Java CQL Parser in XML Form
                 gebracht.</li>
                 <li>Die Abfrage als XML wird in eine XQuery Abfrage umgewandelt. Die dafür
                 notwendige Konfiguration ist in der Datei <code>maps.xml</code> enthalten.</li>
@@ -431,8 +409,8 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 eingepackt.</li>
                 <li>Mithilfe von gecachten Daten (<code>__sru_cache_de_data__</code>) werden
                 Trefferzahlen ermittelt und ebenfalls in den SRU-Rahmen eingefügt.</li>
-                <li>Das so entstandene XML-File wird mit dem angegebenen XSLT-Stylesheet
-                umgewandelt und das XHTML-Ergebnis an den Browser geliefert.</li>
+                <li>Das so entstandene XML-File wird mit einem XSLT-Stylesheet in einen HTML-Code
+                umgewandelt und das Ergebnis an den Browser übergeben.</li>
                 <li>Der Browser ersetzt mithilfe von Javascript die relevanten HTML-Elemente der
                 Seite um die gewünschten Ergebnisse anzuzeigen.</li>
               </ul>
@@ -517,18 +495,25 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   "mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a></p>
                 </li>
               </ul>
+
               <h3>Beteiligte Personen</h3>
               <ul class="impressum">
-                <li><i>Konzeption der bibliographischen Sammlung:</i> <span>Peter Getreuer, Susanne
-                Formanek</span> <i>Bibliographische Recherche:</i> <span>Peter Getreuer, Susanne
+                <li><i>Konzeption der bibliographischen Sammlung:</i> <span>Sepp Linhart, Peter Getreuer, Susanne
+                Formanek</span> 
+                <i>Bibliographische Recherche:</i> <span>Peter Getreuer, Susanne
                 Formanek, Karina Kleiber, Angela Kramer, Gabriele Pauer, Lennart Hruska</span>
                 <i>Konzeption der Online-Version:</i> <span>Bernhard Scheid, Daniel Schopper,
-                Karl-Heinz Mörth</span> <i>Datenbank-Programmierung:</i> <span>Daniel Schopper,
-                Omar Siam</span> <i>Layout und Contentmanagement:</i> <span>Bernhard Scheid, Omar
-                Siam, Daniel Schopper</span> <i>Adaptierung der Datensätze für die
-                Online-Version:</i> <span>Lennart Hruska, Daniel Schopper, Omar Siam, Patrizia
-                Mayer, Maximilian Mayrhauser, Bernhard Scheid</span></li>
+                Karl-Heinz Mörth</span> 
+                <i>Datenbank-Programmierung:</i> <span>Daniel Schopper,
+                Omar Siam</span> 
+                <i>Server-Programmierung:</i> <span>Omar Siam</span> 
+                <i>Layout und Contentmanagement:</i> <span>Bernhard Scheid, Omar
+                Siam, Daniel Schopper</span> 
+                <i>Adaptierung der Datensätze für die
+                Online-Version:</i> <span>Lennart Hruska, Daniel Schopper, Omar Siam, Bernhard Scheid, Patrizia
+                Mayer, Maximilian Mayrhauser, Leonora Pillhofer, Natalie Schnauder, Benedikt Weiser</span></li>
               </ul>
+              
               <h3>Haftungsausschluss</h3>
               <ul class="impressum">
                 <li>
@@ -540,6 +525,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   aus.</p>
                 </li>
               </ul>
+              
               <h3>Urheberrechtlicher Hinweis</h3>
               <ul class="impressum">
                 <li>
@@ -550,14 +536,16 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   Bedingungen).</p>
                 </li>
               </ul>
+              
               <h3>Datenschutzrechtlicher Hinweis</h3>
               <ul class="impressum">
                 <li>
                   <p>Wir weisen darauf hin, dass zum Zwecke der Systemsicherheit und der Übersicht
-                  über das Nutzungsverhalten der Besuchenden im Rahmen von Cookies diverse
+                  über das Nutzungsverhalten der Besuchenden  diverse
                   personenbezogene Daten (Besuchszeitraum, Betriebssystem, Browserversion, innere
                   Auflösung des Browserfensters, Herkunft nach Land, wievielter Besuch seit Beginn
-                  der Aufzeichnung) mittels Piwik-Tracking gespeichert werden. Die Daten werden bis
+                  der Aufzeichnung) mit Hilfe von Tracking-Cookies der Open-Source-Webanalytik-Plattform 
+                  Matomo (ehem. Piwik) ermittelt werden. Die Daten werden bis
                   auf weiteres gespeichert. Soweit dies erfolgt, werden diese Daten nicht ohne Ihre
                   ausdrückliche Zustimmung an Dritte weitergegeben.</p>
                 </li>

@@ -600,23 +600,27 @@ PLUS-MINUS, ZAHL
   margin-left: .3em;
 }
 .closeX::after {  
-  content: 'X'; 
-  content: '\f00d' /* fa-times */
+  content: '\f00d'; /* fa-times */
+  position: absolute;
+  right: .3em;
 }
 .closeX:hover::after, 
 .plusMinus:hover::before {  
   opacity: 1;
   background: rgba(134, 157, 175, 0.1);
 }
-.showEntry .closeX {
-  /* float:right; */
-  display: block;
-  text-align: right;
+.showEntry .closeX { 
   line-height: 1em;
   cursor: pointer;
-  padding: .3em .6em;
+  padding: .3em .6em; 
 }
-
+.genre {
+  padding-left: 3rem;
+  color: #a2906d;
+  font-family: "Courier New", Courier, monospace;
+  font-style: italic;
+  letter-spacing: .3em;
+}
 .shortInfo .plusMinus::before {
  margin-right: .3em;
  }

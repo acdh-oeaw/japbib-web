@@ -121,13 +121,14 @@
         </ol>
     </xsl:template>    
     
+    
     <xd:doc>
         <xd:desc> Einzeleintrag, container (li) </xd:desc>
     </xd:doc>
     <xsl:template match="sru:record">
+        <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"/>
+        <xsl:variable name="skip" select="sru:recordData//mods:topic[contains(., 'skip')]"/>
         <li value="{sru:recordNumber}" > 
-            <xsl:variable name="genre" select="sru:recordData//mods:genre[1]/lower-case(.)"/>
-            <xsl:variable name="skip" select="sru:recordData//mods:topic[contains(., 'skip')]"/>
                 <xsl:attribute name="class"> 
                    <!-- "skip" kennzeichnet Treffer, die irgendwann einmal ganz entfernt werden sollten -->
                     <xsl:value-of select="normalize-space('pubForm '||$genre||' '||$skip)"/>
@@ -186,7 +187,11 @@
         
         <!--  Einzeleintrag, Details -->
         <div class="showEntry" style="display:none;"> 
-            <div class='closeX'></div>
+            <div class='closeX'>
+                <span class="genre">
+                    <xsl:value-of select="mods:genre[1]/lower-case(.)"/>
+                </span>
+            </div>
             <div class="record-html">
                 <ul>
                     <!-- Autor --> 
