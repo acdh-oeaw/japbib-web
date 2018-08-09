@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <dict xml:lang="de">
     <!-- roleTerm -->
     <string xml:id="aut">Autor</string>
@@ -47,53 +47,109 @@
     <string xml:id="numberOfRefords">Number of Records</string>
     <!-- Autoren alias -->
     <string xml:name="aut" xml:id="Alber, Zofia-Maria">Alberowa, Zofia</string>
-    <string xml:name="aut" xml:id="Gabbert-Avitabile, Gunhild">Gabbert-Avitabile, Gunhild</string>
+    <string xml:name="aut" xml:id="Aoyama, Mitsuko">Coudenhove-Kalergi, Mitsuko</string>
+    <string xml:name="aut" xml:id="Bernegger, Brigit">Bernegger, Brigitt</string>
+    <string xml:name="aut" xml:id="Burger, Claudia">Kolatek, Claudia</string>
     <string xml:name="aut" xml:id="Duppel, Mechthild">Duppel-Takayama, Mechthild</string>
     <string xml:name="aut" xml:id="Eyjolfsson, Arthur Eythor">Eyjolfsson, Aythor</string>
     <string xml:name="aut" xml:id="Flunkert, Ute">Schmidt, Ute</string>
+    <string xml:name="aut" xml:id="Gabbert-Avitabile, Gunhild">Gabbert-Avitabile, Gunhild</string>
     <string xml:name="aut" xml:id="Gotoh, Yukio">Gotô, Yukio</string>
+    <string xml:name="aut" xml:id="Haaf, Katrin">Gassel, Katrin</string>
     <string xml:name="aut" xml:id="Hiraoka, Kimitake">Mishima, Yukio</string>
     <string xml:name="aut" xml:id="Itoh, Teiji">Itô, Teiji</string>
     <string xml:name="aut" xml:id="Itoh, Tsutomu">Itô, Tsutomu</string>
     <string xml:name="aut" xml:id="Kanze Motokiyo">Zeami</string>
+    <string xml:name="aut" xml:id="Kargl, Ingrid">Getreuer-Kargl, Ingrid</string>
+    <string xml:name="aut" xml:id="Kirsch, Hans-Christian">Hetmann, Frederik</string>
+    <string xml:name="aut" xml:id="Kobayashi, Issa">Issa</string>
+    <string xml:name="aut" xml:id="Kyokutei, Bakin">Bakin</string>
     <string xml:name="aut" xml:id="Ledderose-Croissant, Doris">Croissant, Doris</string>
+    <string xml:name="aut" xml:id="Lee, Hwesong">Yi, Hoe-song</string>
+    <string xml:name="aut" xml:id="Lewinski-Sträuli, Marianne">Lewinsky-Sträuli, Marianne</string>
+    <string xml:name="aut" xml:id="Liepke, Claus Ulrich">Liepke-Nakamura, Claus-Ulrich</string>
+    <string xml:name="aut" xml:id="Lühl, Hendrik">Lühl, Hendrick</string>
     <string xml:name="aut" xml:id="Masaoka, Tsunenori">Masaoka, Shiki</string>
-    <string xml:name="aut" xml:id="Mukooyama, Hiroo">Mukôyama, Hiroo</string>
+    <string xml:name="aut" xml:id="Matsuo, Bashô">Bashô</string>
+    <string xml:name="aut" xml:id="Miyata-Willenborg, Susanne">Miyata, Susanne</string>
+    <string xml:name="aut" xml:id="Mukooyama, Hiroo">Mukōyama, Hiroo</string>
+    <string xml:name="aut" xml:id="Muntschick, Wolfgang">Muntschik, Wolfgang</string>
     <string xml:name="aut" xml:id="Myôe">Kôben</string>
+    <string xml:name="aut" xml:id="Nennstiel, Ulrike">Nennstiel, Karin-Ulrike</string>
+    <string xml:name="aut" xml:id="Nijô Dono">Go-Fukakusa In no Nijô</string>
     <string xml:name="aut" xml:id="Nikolajewa, Natalja">Nikolaeva, Natalia S.</string>
     <string xml:name="aut" xml:id="Ohnishi, Takeo">Ōnishi, Takeo</string>
+    <string xml:name="aut" xml:id="Okuju, Martin">Nusser, Horst</string>
+    <string xml:name="aut" xml:id="Pestemer, Richard">Pestemer-Plöthner, Richard</string>
+    <string xml:name="aut" xml:id="Raupach-Sumiya, Jörg">Raupach, Jörg</string>
+    <string xml:name="aut" xml:id="Ri, Kaisei">Yi, Hoe-song</string>
+    <string xml:name="aut" xml:id="Ribau, Kenzo">Nusser, Horst</string>
+    <string xml:name="aut" xml:id="Rießland, Andreas">Riessland, Andreas</string>
+    <string xml:name="aut" xml:id="Saitô, Sanki">Saitô, Keichoku</string>
     <string xml:name="aut" xml:id="Schauwecker, Detlef">Schauwecker, Detlev</string>
+    <string xml:name="aut" xml:id="Schilling, Ulrike">Schilling-Leims, Urlike</string>
+    <string xml:name="aut" xml:id="Scholz, Stanca">Scholz-Cionca, Stanca</string>
     <string xml:name="aut" xml:id="Seami">Zeami</string>
+    <string xml:name="aut" xml:id="Shibaki, Yoshiko">Ōshima, Yoshiko</string> 
+    <string xml:name="aut" xml:id="Shokusanjin">Ōta, Nanpo</string>
+    <string xml:name="aut" xml:id="Shôwa-tennô">Hirohito</string>
+    <string xml:name="aut" xml:id="Sugano, Johannes K.">Sugano, Kazutoshi J.</string>
+    <string xml:name="aut" xml:id="Suzuki, Daisetsu Teitaro">Suzuki, Daisetz T.</string>
     <string xml:name="aut" xml:id="Takeuti S.">Takeuchi, S.</string>
+    <string xml:name="aut" xml:id="Takizawa, Bakin">[Kyokutei] Bakin</string>
+    <string xml:name="aut" xml:id="Taneda, Santôka">Santôka</string>
+    <string xml:name="aut" xml:id="Taneda, Shôichi">Santôka</string>
+    <string xml:name="aut" xml:id="Uslar, Gerda von">Uslar, Gisela von</string>
+    <string xml:name="aut" xml:id="Uspenskij, Michail">Uspenskij, Mihail</string>
+    <string xml:name="aut" xml:id="Vandewalle, Philippe">Vandevalle, Philippe</string>
     <string xml:name="aut" xml:id="VanWolferen, Karel G.">Wolferen, Karel G. van</string>
     <string xml:name="aut" xml:id="Watt, Helga S.">Schutte-Watt, Helga</string>
     <string xml:name="aut" xml:id="Weber, Claudia">Weber-Deutschmann, Claudia</string>
     <string xml:name="aut" xml:id="Wehinger, Mine">Scheid-Katayama, Mine</string>
-    <string xml:name="aut" xml:id="Kargl, Ingrid">Getreuer-Kargl, Ingrid</string>
-    <string xml:name="aut" xml:id="Scholz, Stanca">Scholz-Cionca, Stanca</string>
+    <string xml:name="aut" xml:id="Wershofen, Thomas">Wershofen, Thomas von</string>
     <string xml:name="aut" xml:id="Wuthenow, Bettina">Wuthenow, Asa-Bettina</string>
-    <string xml:name="aut" xml:id="Nennstiel, Ulrike">Nennstiel, Karin-Ulrike</string>
-    <string xml:name="aut" xml:id="Shokusanjin">Ōta, Nanpo</string>
-    <string xml:name="aut" xml:id="Takizawa, Bakin">[Kyokutei] Bakin</string>
-    <string xml:name="aut" xml:id="Yanagi, Sôetsu">Yanagi, Muneyoshi</string>
-    <string xml:name="aut" xml:id="Ri, Kaisei">Yi, Hoe-song</string>
-    <string xml:name="aut" xml:id="Lee, Hwesong">Yi, Hoe-song</string>
-    <string xml:name="aut" xml:id="Shôwa-tennô">Hirohito</string>
-    <string xml:name="aut" xml:id="Kobayashi, Issa">Issa</string>
-    <string xml:name="aut" xml:id="Kyokutei, Bakin">Bakin</string>
-    <string xml:name="aut" xml:id="Matsuo, Bashô">Bashô</string>
-    <string xml:name="aut" xml:id="Nijô Dono">Go-Fukakusa In no Nijô</string>
-    <string xml:name="aut" xml:id="Taneda, Santôka">Santôka</string>
-    <string xml:name="aut" xml:id="Taneda, Shôichi">Santôka</string>
-    <string xml:name="aut" xml:id="Sugano, Johannes K.">Sugano, Kazutoshi J.</string>
-    <string xml:name="aut" xml:id="Okuju, Martin">Nusser, Horst</string>
-    <string xml:name="aut" xml:id="Ribau, Kenzo">Nusser, Horst</string>
-    <string xml:name="aut" xml:id="Burger, Claudia">Kolatek, Claudia</string>
-    <string xml:name="aut" xml:id="Haaf, Katrin">Gassel, Katrin</string>
-    <string xml:name="aut" xml:id="Schilling, Ulrike">Schilling-Leims, Urlike</string>
-    <string xml:name="aut" xml:id="Raupach-Sumiya, Jörg">Raupach, Jörg</string>
-    <string xml:name="aut" xml:id="Pestemer, Richard">Pestemer-Plöthner, Richard</string>
-    <string xml:name="aut" xml:id="Saitô, Sanki">Saitô, Keichoku</string>
-    <string xml:name="aut" xml:id="Shibaki, Yoshiko">Ōshima, Yoshiko</string> 
-    <string xml:name="aut" xml:id="Uslar, Gerda von">Uslar, Gisela von</string>   
+    <string xml:name="aut" xml:id="Wydler, Agathe">Wylder, Agatha</string>
+    <string xml:name="aut" xml:id="Yanagi, Sôetsu">Yanagi, Muneyoshi</string>     
+    <!-- Reihe_-_Serie_-_Band --> 
+    <string xml:name="series" xml:id="BJOAF">Bochumer Jahrbuch zur Ostasienforschung</string> 
+    <string xml:name="series" xml:id="MOAG">Mitteilungen der Gesellschaft für Natur- und Völkerkunde Ostasiens</string>
+    <string xml:name="series" xml:id="NOAG">Nachrichten der Gesellschaft für Natur- und Völkerkunde Ostasiens</string>
+    <string xml:name="series" xml:id="OLZ">Orientalistische Literaturzeitung</string>
+    <string xml:name="series" xml:id="RIW">Recht der Internationalen Wirtschaft</string>
+    <string xml:name="series" xml:id="Schriftenreihe Japanisches Recht">Japanisches Recht</string>
+    <string xml:name="series" xml:id="ZfbF">Schmalenbachs Zeitschrift für betriebswirtschaftliche Forschung</string> 
+    <string xml:name="series" xml:id="ZStW">Zeitschrift für die gesamte Strafrechtswissenschaft</string>  
+    <!-- Stichworte -->
+    <string xml:name="SW" xml:id="AFTA">ASEAN Free Trade Area</string> 
+    <string xml:name="SW" xml:id="APEC">Asia-Pacific Economic Cooperation</string>
+    <string xml:name="SW" xml:id="ARF">ASEAN Regional Forum</string>
+    <string xml:name="SW" xml:id="ASEAN">Association of Southeast Asian Nations</string>
+    <string xml:name="SW" xml:id="Bank of Japan">Nippon Ginkô</string>
+    <string xml:name="SW" xml:id="Burma">Myanmar (seit 1989)</string>
+    <string xml:name="SW" xml:id="Donen">Japanisches Entwicklungsunternehmen für Kernkraftwerke und Brennelemente; gegr. 1967</string>
+    <string xml:name="SW" xml:id="EAEC">East Asia Economic Caucus</string>
+    <string xml:name="SW" xml:id="EAEG">East Asia Economic Group</string>
+    <string xml:name="SW" xml:id="GRUR">Gewerblicher Rechtsschutz und Urheberrecht</string>
+    <string xml:name="SW" xml:id="Hôrei">Japanisches IPR-Gesetz, 1898-06-21</string> 
+    <string xml:name="SW" xml:id="IMS">Integrated Manufacturing System</string>
+    <string xml:name="SW" xml:id="Informed consent">Patienten-Selbstbestimmungsrecht u. ärztl. Haftungspflicht</string>
+    <string xml:name="SW" xml:id="IPO">International Procurement Office</string>
+    <string xml:name="SW" xml:id="IPR">Internationales Privatrecht (dessen Kern das Hôrei bildet)</string>
+    <string xml:name="SW" xml:id="Jieitai">Selbstverteidigungsstreitkräfte</string>
+    <string xml:name="SW" xml:id="JIT">Just-in-time-Produktion</string>
+    <string xml:name="SW" xml:id="Kanban seido">Just-in-time-Produktion</string>
+    <string xml:name="SW" xml:id="KEDO">Korean Peninsula Energy Development Organization</string>
+    <string xml:name="SW" xml:id="Keireitsu">Unternehmensgruppen (Corporate groups)</string>
+    <string xml:name="SW" xml:id="Kûdôka">Produktionsverlagerung ins Ausland</string>
+    <string xml:name="SW" xml:id="NTT">Nippon Telegraph and Telephone Corp.</string>
+    <string xml:name="SW" xml:id="OTC-Aktie">ungelistet (over the counter) gehandelte Aktie</string>
+    <string xml:name="SW" xml:id="Poka-yoke">fehlererkennende Einrichtungen bei Industriemaschinen und -anlagen</string>
+    <string xml:name="SW" xml:id="Sanka">Berg- bzw. Waldleute</string>
+    <string xml:name="SW" xml:id="Schriftenreihe Japanisches Recht">Japanisches Recht</string> 
+    <string xml:name="SW" xml:id="SE">Simultaneous Engineering</string>
+    <string xml:name="SW" xml:id="Senmonka">Spezialist mit gesetzlich definierter beruflicher Qualifikation</string>
+    <string xml:name="SW" xml:id="SMED">Single-Minute Exchange of Die (spezielles Toyota-Produktionssystem)</string>
+    <string xml:name="SW" xml:id="Sôkaiya">ursprünglich: Person, die im Auftrag eines Unternehmens für einen ruhigen Ablauf der Hauptversammlung sorgte (seit 1902 bekannt); heute eher: Unternehmenserpresser</string>
+    <string xml:name="SW" xml:id="TPM">Total Productive Maintenance</string>
+    <string xml:name="SW" xml:id="TQM">Total Quality Management (Qualitätsmanagement)</string>
 </dict>
