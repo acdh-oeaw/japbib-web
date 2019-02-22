@@ -3,7 +3,8 @@
   "version": "0.5.0",
   "description": "",
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start karma.conf.js"
+    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
   },
   "devDependencies": {
     "chai": "^4.0.1",
@@ -22,5 +23,18 @@
     "karma-sinon": "^1.0.5",
     "mocha": "^3.4.2",
     "sinon": "^2.3.2"
+  },
+  "dependencies": {
+    "@bower_components/codemirror": "components/codemirror#^5.26.0",
+    "@bower_components/crossroads": "millermedeiros/crossroads.js#^0.12.2",
+    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^5.0.8",
+    "@bower_components/hasher": "millermedeiros/Hasher#^1.2.0",
+    "@bower_components/jquery": "jquery/jquery-dist#^3.1.1",
+    "@bower_components/js-cookie": "js-cookie/js-cookie#*",
+    "@bower_components/js-signals": "millermedeiros/js-signals#^1.0.0",
+    "@bower_components/urijs": "medialize/URI.js#^1.18.10"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
   }
 }
