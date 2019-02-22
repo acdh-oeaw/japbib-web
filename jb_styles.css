@@ -6,7 +6,7 @@
   bottom: 0;
   z-index: 20;
   background: rgba(255, 255, 255, 0.85);
-  background-image:url('../images/bg.png');
+  background-image:url('./images/bg.png');
   text-align: center;
   padding: 190px 0;
 }
