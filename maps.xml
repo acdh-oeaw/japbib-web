@@ -15,7 +15,7 @@
             <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
         </index>
         <index key="date" datatype="xs:integer" scr="=">
-            <path label="." match="text()">mods:mods/mods:originInfo[parent::mods:mods]/mods:dateIssued[@keyDate="yes"]</path>
+            <path label="." match="text()">mods:dateIssued[@keyDate="yes"]</path>
         </index>
         <index key="subject" case="false" type="ft" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
