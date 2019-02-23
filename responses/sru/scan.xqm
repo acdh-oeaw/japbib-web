@@ -100,23 +100,27 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
         $scanClauseIndex :=  $scanClauseParsed/index,
         $index-xpath := index:index-as-xpath-from-map($scanClauseIndex, $map, 'path-only'),
         $index-match := index:index-as-xpath-from-map($scanClauseIndex, $map, 'match-only'),
+        $label-xpath := index:index-as-xpath-from-map($scanClauseIndex, $map, 'label'),
         $xpath_or_diagnostics := 
             if (some $x in ($index-xpath, $index-match) satisfies $x instance of element(sru:diagnostics)) 
             then ($index-xpath, $index-match)[self::sru:diagnostics] 
-            else "//"||$index-xpath||"/"||$index-match,
+            else "//"||$index-xpath,
+        $label-rel-xpath := if (exists($label-xpath)) then replace($label-xpath, $index-xpath, '', 'q') else $index-match,
         $xquery := if ($xpath_or_diagnostics instance of xs:string) then
                      concat(
                          string-join(for $n in $ns return "declare namespace "||$n/@prefix||" = '"||$n/@uri||"';"),
-                         "for $t in db:open('", $model:dbname, "')", $xpath_or_diagnostics, "
-                          let $v := normalize-space(data($t))
+                         "import module namespace _ = 'urn:sur2html' at '../localization.xqm';
+                          for $t in db:open('", $model:dbname, "')", $xpath_or_diagnostics, "
+                          let $v := normalize-space(string-join($t/", $index-match,"/data(), ' ')) 
                           group by $v
-                          let $c := count($t) 
+                          let $c := count($t),
+                              $l := string-join(data(($t", $label-rel-xpath,")[1]), ' ') 
                           order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
                           return <_>
                               <sru:term xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
                                  <sru:numberOfRecords>{$c}</sru:numberOfRecords>
                                  <sru:value>{$v}</sru:value>
-                                 <sru:displayTerm>{$v}</sru:displayTerm>
+                                 <sru:displayTerm>{$l}</sru:displayTerm>
                               </sru:term>,
                               <node-pre>{string-join(db:node-pre($t/ancestor::mods:mods), ',')}</node-pre></_>"
                      ) else '()',

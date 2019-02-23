@@ -9,7 +9,7 @@
             <path label="string-join(mods:titleInfo/*, ' ')" match=".//*[not((ancestor::mods:extension, ancestor-or-self::mods:*[@displayLabel='internal']))]">mods:mods</path>
         </index>
         <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
-            <path label="." match="*">mods:titleInfo[parent::mods:mods]</path>
+            <path label="." match="(* except mods:nonSort)">mods:titleInfo[parent::mods:mods]</path>
         </index>
         <index label="Autor" key="author" case="false" type="ft" coll="?lang=de">
             <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
@@ -24,7 +24,7 @@
             <path label="_:dict(.)">(mods:subject[@usage eq 'primary' and not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
         <index label="Reihe" key="series" case="false" type="ft" coll="?lang=de">
-            <path label="." match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
+            <path label="mods:titleInfo/mods:title//text()" match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
         </index>
         <index key="publisher" case="no" type="ft" coll="?lang=de">
             <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
