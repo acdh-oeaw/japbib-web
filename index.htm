@@ -175,27 +175,24 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 
               <h3>Thesaurus</h3>
 
-              <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Das Schlagwortschema wurde
-              im Zuge der Recherchen zu diesem Projekt sukzessive entwickelt und verfeinert. Die umfangreichste
+              <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Die umfangreichste
               Schlagwortgruppe „Thema“ bezieht sich auf Sachgebiete und umfasst knapp 400 Schlagworte in 13
               Hauptgruppen. Die Verschlagwortung wurde dabei extensiv durchgeführt, das heißt, eine Publikation wurde
               zumeist nicht nur einem, sondern mehreren relevanten Themen zugeordnet.</p>
 
               <p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten gesucht werden. Ein
-              Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. Es können auch
-              kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man auf die neben dem Schlagwort stehende
-              Zahl klicken.</p>
+              Klick auf die Zahl neben einem Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. </p>
 
-              <ul class="helpExample thesaurus">
+              <ul class="helpExample thesaurus ">
                 <li>Beispiel</li>
-                <li class="plusMinus"> Wirtschaft <span class='aZahl aHover'>13949</span></li> 
+                <li class=""> <span class="wrapTerm"><span class="term plusMinus">Wirtschaft</span> <a href=''>13949</a></span></li> 
               </ul>
 
-              <p>Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können
-              von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt
+              <p>Es können auch
+              kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man in der Box "Abfagemodus" den Punkt „direkte Suche“ auf „kombinierte Suche“ umstellen und dann wiederum auf die Zahlen neben den Schlagworten klicken. Es können maximal drei Schlagworte ausgewählt
               werden.</p>
               <p>Ausgewählte Schlagworte (A, B) sind üblicherweise durch „and“ verbunden, das heißt, der gesuchte Eintrag muss sowohl 
-              A als auch B enthalten (Gruppe der Treffer wird kleiner). Wenn man allerdings „and“ manuell auf „or“ umstellt, 
+              A als auch B enthalten (Gruppe der Treffer wird kleiner). Wenn man allerdings „and“ duch Anklicken auf „or“ umstellt, 
               wird nach Einträgen  gesucht, die entweder A oder B oder beide enthalten (Gruppe der Treffer wird größer).</p>
               <ul class="helpExample">
                 <li>Beispiele</li>
@@ -222,26 +219,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   subject="Zeitschriftenartikel"</a>
                 </li>
               </ul>
-              <p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung
-              historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erheben kann. Daher ist es ratsam,
+              <p>Besonders bei den Schlagworten der unteren Ebenen ist es ratsam,
               verschiedene Schlagworte und Suchstrategien auszuprobieren.</p>
 
-              <h4>Zahlenangaben</h4>
-              
-              <p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class="plusMinus"></span>“
-              als Zeichen dafür, dass dahinter noch weitere Schlagworte versteckt sind. Die Zahl neben dem Schlagwort umfasst  Einträge, die mit dem jeweiligen Schlagworten und seinen Untergruppen gekennzeichnet sind. </p>
-              <!--Öffnet man allerdings die Untergruppen (<span class=
-              "plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber
-              keiner Untergruppe zugeordnet sind.
-              <ul class="helpExample thesaurus">
-                <li>Beispiel</li>
-                <li class="plusMinus">&nbsp;Geschichte <span class='aZahl'>2633</span></li>
-                <li class="plusMinus close">&nbsp;Geschichte <span class='aZahl'>340</span></li> 
-              </ul>
-              <p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort
-              „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>
-          -->
-
+         
               <h3>Suchen und Finden</h3>
               
               <p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige „Reiter“ mit Suchvorschlägen zu sehen. 
@@ -278,8 +259,8 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <li>Beispiele</li>
                 <li>Welche Rezensionen gibt es zum „Verzeichnis des deutschsprachigen Japan-Schrifttums“? 
                   <a class="code aHover" href=
-                  "#find?query=subject%3D%22Rezension%22%20AND%20title%3D*Verzeichnis*">
-                  subject="Rezension" and title=*Verzeichnis*</a>
+                  "#find?query=subject%3D%22Rezension%22%20AND%20title%3D*Verzeichnis%20des%20deutschsprachigen%20Japan-Schrifttums*">
+                  subject="Rezension" and title=*Verzeichnis des deutschsprachigen Japan-Schrifttums*</a>
                 </li>
               </ul>
 
@@ -297,35 +278,33 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 
               <h4>Trefferanzahl</h4>
 
-              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 10, kann aber auf bis zu 200 erhöht
+              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 20, kann aber auf bis zu 200 erhöht
               werden. </p>
 
               <h3>Detailergebnisse</h3>
               
               <p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen Datensatz sowie
-              eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der „<span class="showEntry"><a class="zahl">Lupe</a></span>“
+              eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der „<a class="lupe fas fa-search">Lupe</a>“
               neben den Schlagworten startet eine neue Suche nach dem betreffenden Schlagwort. Das Gleiche gilt für
-              Autoren, Verlage, Reihen und Werktitel.</p>
+              Autoren und Werktitel.</p>
 
-              <p>Zusätzlich gibt es oft auch noch „Stichworte“, die im Lauf der Recherchearbeiten unsystematisch
-              vergeben wurden. Das Anklicken eines Stichworts führt zu einer Volltextsuche innerhalb der gesamten
-              Datensätze.</p>
+              <p>Zusätzlich gibt es oft auch noch „Stichworte“. Das Anklicken eines Stichworts führt zu einer einfachen Volltextsuche.</p>
 
               <h4>MODS und Lidos</h4>
 
-              <p>Am unteren Rand der Einzeleinträge kann man sich den betreffenden Sourcecode anzeigen lassen.</p>
+              <p>Am unteren Rand der Einzeleinträge kann man sich den XML-Code des betreffenden Eintrags anzeigen lassen.</p>
 
               <ul> 
                 <li>„MODS“ zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich nach dem „Metadata
                 Object Description Schema“ (MODS) der Library of Congress, Washington DC.</li>
-                <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde großteils maschinell in den
+                <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde teils maschinell teils händisch in den
                 MODS-Standard übersetzt.</li>
               </ul>
               
               <h4>Fehler in der Datenbank</h4>
               
-              <p>Bei der mechanischen Übertragung der Daten aus dem ursprünglichen Format in MODS-Standard ließen sich Fehlinterpretationen und Informationsverluste nicht gänzlich vermeiden. Derartige Fehler sowie Fehler, die noch aus den originalen Datensätzen stammen, werden sukzessive ausgebessert. Mittelfristig sind auch inhaltliche Ergänzungen vorgesehen. Jeder entsprechende <a href=
-              "mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback" class="email">Hinweis</a> wird mit großem Dank entgegen
+              <p>Bei der mechanischen Übertragung der Daten aus dem ursprünglichen Format in MODS-Standard ließen sich Fehlinterpretationen und Informationsverluste nicht gänzlich vermeiden. Die Datenbank wird jedoch  sukzessive korrigiert und verbessert. Jeder <a href=
+              "mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback" class="email">Hinweis</a> auf technische oder inhaltliche Fehler wird mit großem Dank entgegen
               genommen.</p>
               <p class="next">Weiter zu: <a href="#geschichte">Geschichte des Projekts</a></p>
             </div>
@@ -334,21 +313,20 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 
               <h2>Geschichte des Projekts</h2>
 
-              <p>Die vorliegende Bibliographie wurde 1989 von Dr. Peter Getreuer, Studienassistent und Bibliothekar am
-              Institut für Japanologie der Universität Wien, initiiert und entworfen. Nach seinem frühen Tod wurde das
+              <p>Das vorliegende Bibliographieprojekt wurde in den 1980er Jahren von Sepp Linhart, Prof. für Japanologie an der Universität Wien, und Susanne Formenek konzipiert. Die Arbeit an der Datenbank lag zunächst in den Händen von Peter Getreuer, Bibliothekar an der Wiener Japanologie. Nach dessen frühem Tod wurde das
               Projekt am Institut für Kultur- und Geistesgeschichte Asiens 
-              (<a href="https://www.ikga.oeaw.ac.at" class="externerLink" title="Institut für Kultur- und Geistesgeschichte Asiens">IKGA</a>) der ÖAW unter der Leitung von Dr. Susanne Formanek weiter geführt. Die Recherchen und die
+              (<a href="https://www.ikga.oeaw.ac.at" class="externerLink" title="Institut für Kultur- und Geistesgeschichte Asiens">IKGA</a>) der ÖAW unter der Leitung von Susanne Formanek weiter geführt. Die Recherchen und die
               Herausgabe der Einzelbände für die Jahre 1980 bis 1989 wurden von Getreuer und Formanek durchgeführt, für
-              die Jahre danach übernahmen Mag. Karina Kleiber, Dr. Gabriele Pauer und Mag. Angela Kramer (1998–2000)
-              diese Aufgaben. Während die Ergebnisse für die Jahre 1980 bis 1997 in fünf Bänden publiziert wurden, wurde
-              die Herausgabe weiterer Bände zugunsten einer Online-Version der Bibliographie aufgegeben.</p>
+              die Jahre danach übernahmen Karina Kleiber, Gabriele Pauer und Angela Kramer 
+              diese Aufgaben. Die Ergebnisse für die Jahre 1980 bis 1997 liegen in fünf Bänden vor, die
+              die Herausgabe eines Bandes 1998 bis 1999 wurde jedoch zugunsten einer Online-Version der Bibliographie aufgegeben.</p>
 
-              <p>Arbeiten an der Online-Version begannen 2008 unter Susanne Formanek und MMag. Lennart Hruska, wobei
+              <p>Arbeiten an der Online-Version begannen 2008 unter Susanne Formanek und Lennart Hruska, wobei
               letzterer für die Datenkorrektur und -adaptierung zuständig war. Schon damals war klar, dass die
               Recherchen nicht über das Jahr 2000 hinausgeführt werden sollten.</p>
 
               <p>Der Abschluss des Online-Projekts wurde schließlich krankheitsbedingt unterbrochen. 2016 wurde das
-              Projekt von Dr. Bernhard Scheid in Kooperation mit Mag. Daniel Schopper und Dr. Karl-Heinz Mörth vom 
+              Projekt von Bernhard Scheid (ÖAW) in Kooperation mit Daniel Schopper und Dr. Karl-Heinz Mörth vom 
               Austrian Centre for Digital Humanities
               (<a href="https://www.oeaw.ac.at/acdh/" class="externerLink" title="Austrian Centre for Digital Humanities">ACDH</a>) 
               der ÖAW erneut aufgenommen. Unter Mithilfe von Lennart Hruska wurde das Projekt in eine zeitgemäße
@@ -427,7 +405,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
 					<li>Die Suche erfolgt über eine <i>Context Query Language</i> Suchabfrage im Browser. Diese wird durch manuelle Eingabe im Suchfeld 
 						oder durch Nutzerinteraktion mit diversen Websitelementen generiert. </li>
 					<li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die Adresse <code>[Basis-URL]/sru</code>. </li> 
-					<li>Abgesehen von den interaktiv generierten <i>query</i>-Parametern, wird standardmäßig auch ein XSL-Stylesheet angefordert (<code>x-style=sru2ajax.xsl</code>). Es kann aber statt des Stylesheets auch „none“ angegeben werden, um die XSLT Transformation des ursprünglichen HTML-Codes zu verhindern.
+					<li>Abgesehen von den interaktiv generierten <i>query</i>-Parametern, wird standardmäßig auch ein XSL-Stylesheet angefordert (<code>x-style=sru2ajax.xsl</code>).
 					<li>Außerdem kann mit dem Parameter <code>x-no-search-filter=</code> die automatische Erneuerung des Suchfilterbaums unterdrückt werden. 
 					<li> Die Sucheabfrage wird von den Routinen im Verzeichnis <code>responses/sru</code> bearbeitet.
 					<li> Die Abfrage wird mit einem fertigen Java CQL Parser in eine XML Form gebracht. </li>
@@ -517,25 +495,25 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   <p>Austrian Centre for Digital Humanities (ACDH)<br />
                   Dr. Ignaz Seipel-Platz 2, 1010 Wien, Österreich<br />
                   E-Mail: <a href="mailto:acdh-tech@oeaw.ac.at">acdh-tech@oeaw.ac.at</a></p><i>Redaktion:</i>
-                  <p>Dr. Bernhard Scheid<br />
+                  <p>Bernhard Scheid<br />
                   E-Mail: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a></p>
                 </li>
               </ul>
               <h3>Beteiligte Personen</h3>
               <ul class="impressum">
                 <li><i>Konzeption der bibliographischen Sammlung:</i> 
-                <span>Peter Getreuer, Susanne Formanek</span>
+                <span>Dr. Susanne Formanek, Prof. Dr. Sepp Linhart, Dr. Peter Getreuer</span>
                 <i>Bibliographische Recherche:</i> 
-                <span>Peter Getreuer, Susanne Formanek, Karina Kleiber, Angela
-                Kramer, Gabriele Pauer, Lennart Hruska</span> 
+                <span>Formanek, Getreuer, Mag. Karina Kleiber, Mag. Angela
+                Kramer, Dr. Gabriele Pauer, Mag. Lennart Hruska</span> 
                 <i>Konzeption der Online-Version:</i> 
-                <span>Bernhard Scheid, Daniel Schopper, Karl-Heinz Mörth</span> 
+                <span>Dr. Bernhard Scheid, Mag. Daniel Schopper, Dr. Karl-Heinz Mörth</span> 
                 <i>Datenbank-Programmierung:</i> 
-                <span>Daniel Schopper, Omar Siam</span> 
+                <span>Schopper, Mag. Omar Siam</span> 
                 <i>Layout und Contentmanagement:</i> 
-                <span>Bernhard Scheid, Omar Siam, Daniel Schopper</span> 
+                <span>Scheid, Siam, Schopper</span> 
                 <i>Adaptierung der Datensätze für die Online-Version:</i> 
-                <span>Lennart Hruska, Daniel Schopper, Omar Siam, Patrizia Mayer, Maximilian Mayrhauser, Bernhard Scheid</span>
+                <span>Hruska, Schopper, Siam, Scheid, Patrizia Mayer, Maximilian Mayrhauser, Nora Pillhofer, Benedikt Weiser, Natalie Schnauder</span>
                 </li>
               </ul>
               <h3>Haftungsausschluss</h3>
