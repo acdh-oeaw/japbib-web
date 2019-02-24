@@ -20,7 +20,7 @@ declare namespace bxerr = "http://basex.org/errors";
 
 declare variable $c:thesaurus-fn := $model:dbname||'-thesaurus.xml';
 (: Note that the cache full text index is specialised for german! May work with English but other languages may vary. :)
-declare variable $c:index-options := map{'textindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false(), 'language': 'de'};
+declare variable $c:index-options := map{'textindex': true(), 'tokenindex': true(), 'ftindex': true(), 'casesens': false(), 'diacritics': false(), 'language': 'de'};
 
 declare function c:scan($terms as document-node(), $scanClauseParsed as element(scanClause), $sort as xs:string) {
     let $fn := c:scan-filename($scanClauseParsed, $sort)

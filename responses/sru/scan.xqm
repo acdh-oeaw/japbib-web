@@ -226,7 +226,7 @@ let $numbered-terms :=
     return $t update insert node   
         <sru:extraTermData>
            <fcs:position>{$pos}</fcs:position>
-           <api:node-pre>{$pres[$pos]/text()}</api:node-pre>
+           <api:node-pre>{$pres[$pos]/@value}</api:node-pre>
         </sru:extraTermData>
     after ./sru:displayTerm}
     </sru:terms>
