@@ -63,6 +63,12 @@ function api:bower_components-file($file as xs:string) as item()+ {
 };
 
 declare
+  %rest:path("japbib-web/fonts/{$file=.+}")
+function api:fonts-file($file as xs:string) as item()+ {
+  api:file('fonts/'||$file)
+};
+
+declare
   %rest:path("japbib-web/images/{$file=.+}")
 function api:images-file($file as xs:string) as item()+ {
   api:file('images/'||$file)
