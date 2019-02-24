@@ -19,13 +19,13 @@ module.exports = {
   module:{
     rules: [
       { test: /\.css$/, use: ['style-loader', 'css-loader']},
-      { test: /\.(woff|woff2|eot|ttf|otf)$/, use: {loader: 'url-loader', options: {limit: 204800}}},
-      { test: /\.(png|svg|jpg|gif)$/, use: {loader: 'url-loader', options: {limit: 204800}}}     
+      { test: /\.(woff|woff2|eot|ttf|otf)$/, use: {loader: 'url-loader', options: {limit: 20480}}},
+      { test: /\.(png|svg|jpg|gif)$/, use: {loader: 'url-loader', options: {limit: 20480}}}     
     ]
   },
   performance: {
     hints: "warning", // enum
-    maxAssetSize: 204800, // int (in bytes),
+    maxAssetSize: 20480, // int (in bytes),
     maxEntrypointSize: 800000, // int (in bytes)
     assetFilter: function(assetFilename) {
       // Function predicate that provides asset filenames
