@@ -17,13 +17,12 @@
 
 body {
   color:#555;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: 'Gelasio', 'Georgia', Times, serif;
   overflow-y: scroll;
   /* font-family: open sans-serif; */
   } 
 h2, h3, h4  {
-  font-family: "Trebuchet MS", Arial, sans-serif;
-  font-family: "work sans"; 
+  font-family: 'Work Sans', "Trebuchet MS", Arial, sans-serif;
   } 
 h2 {
   color: #8e843b;
@@ -57,7 +56,7 @@ p {
 }
 *::before,
 *::after {
-  font-family: 'Font Awesome 5 Free', calibri, arial;
+  font-family: 'Font Awesome 5 Free', 'Calibri', arial;
   moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
@@ -120,8 +119,7 @@ h1 {
   text-align: center;
   margin: 0 245px;
   padding: 46px 0 0;
-  font-family: "trebuchet ms";
-  font-family: work sans;
+  font-family: 'Work Sans', "Trebuchet MS", Arial, sans-serif;
   font-size: 32px;
   font-weight: 600;
   z-index: 1;
@@ -151,8 +149,7 @@ h1 {
   height: 19px;
   font-size: 14px;
   line-height:15px;
-  font-family: calibri, arial, sans-serif;
-  /* font-family: work sans, arial; */
+  font-family: 'Carlito', 'Calibri', arial, sans-serif;
   position:relative;
 }
 #navbar_items {
@@ -215,8 +212,7 @@ td.control {
   overflow: hidden;
   border-right: 3px solid #fff7d4;
   cursor: pointer;
-  font-family: calibri, arial;
-  font-family: work sans;
+  font-family: 'Work Sans', "Trebuchet MS", Arial, sans-serif;
   font-weight: 600;
 }
 .control.hilite {
@@ -329,7 +325,7 @@ td.control {
   border: 1px solid rgb(191, 207, 203);
   border-radius: 5px 5px 0 0;
   background-color: rgb(255, 247, 212);
-  font-family: calibri, arial, sans-serif;
+  font-family: 'Carlito', 'Calibri', arial, sans-serif;
   line-height: 1.2em;
 }
 
@@ -364,7 +360,6 @@ td.control {
   background: #eed;
   background: rgb(208, 219, 216);
   color: rgba(0, 0, 85, .8);
-  /* font-family: calibri, arial; */
   /* opacity: .8; */
   }
 .pageindex ul { 
@@ -478,7 +473,7 @@ td.control {
 .tipp {
   position: relative; 
   color: rgba(0, 44, 88, 1);
-  font-family: 'Font Awesome 5 Free', calibri, arial, sans-serif;
+  font-family: 'Font Awesome 5 Free', 'Calibri', arial, sans-serif;
   moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
