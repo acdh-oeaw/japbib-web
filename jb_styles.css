@@ -28,9 +28,9 @@ h2 {
   color: #8e843b;
   margin: 0 0 1.5em;
   } 
-h2:first-child { 
-    position: relative;
-    z-index: 2; 
+h2:first-child {
+    /* position: relative; */
+    /* z-index: 2; */
 } 
 h3 {
   color: #8e843b; 

@@ -254,16 +254,16 @@ tr.examples {
     font-size: .9em;
     border: 1px solid #ccc;
 }
-.examples small {
+.search.year {
+ font-family: calibri, arial;
+} 
+.search small {
     display: block;
     color: #888;
     font-family: calibri, arial, sans-serif;
     font-size: 1em;
 }
-.examples .year {
- font-family: calibri, arial;
-} 
-.examples  a {
+.search.year  a {
  padding: 0 .25em;
  display: inline-block;
  border: 1px solid transparent;
@@ -322,8 +322,8 @@ tr.examples {
  /* background-color: rgba(220, 230, 230, 1); */
 } 
 .suchOptionen, .examples th:hover, .examples.here th {
-  background: rgba(255, 255, 245, 0.7);
-  border-top: 1px solid #ccc;
+  background: rgb(243, 247, 240);
+  /* border-top: 1px solid #ccc; */
   /* background-color: white; */
 } 
 .examples th:hover, .examples.here th { 
@@ -338,16 +338,16 @@ tr.examples {
 .examples th,
 .examples *[data-index], 
 .examples li  {
-  border-color: #ccc;
+  /* border-color: #ccc; */
 } 
 #searchform1 h2 { 
     color: #005; 
 }
-.examples  a:hover, 
-.examples  a.selected { 
+.search.year  a:hover, 
+.search.year  a.selected { 
   background: #c5f9fb;
 }  
-.examples .year a:hover {  
+.search.year a:hover {  
   border-color: #0d95bd;
 } 
 .examples .code {
@@ -355,12 +355,22 @@ tr.examples {
 }
 
 .searchNav {
-    margin: -1.8em auto .8em;
+    /* margin: -1.8em auto .8em; */
+    position: absolute;
+    top: -2em;
+    left: 0;
+    right: 0;
+    /* margin: auto; */
 }
 .searchNav i {
     display: inline-block;
-    padding: .5em .3em; 
-    border-radius: 50% 50% 0 0;
+    padding: .5em .75em;
+    margin: auto -1px;
+    border: 1px solid;
+    border-radius: 8px 8px 0 0;
+    border-color: #ccc #ccc transparent;
+    background: rgba(243, 247, 240, 0.5);
+    cursor: pointer;  
 }
 
 .searchNav i:hover {
@@ -368,7 +378,7 @@ tr.examples {
     background: #f3f7f0;
 }
 .startSearch {
-  width:3em;
+  /* width:3em; */
   display:inline-block;
   text-align:left;
 }
@@ -388,9 +398,14 @@ tr.examples {
 } 
 
 .search {
-    padding: .5em 1em 1em;
-    /* text-align: left; */
+    padding: 1.5em 1em 0;
+    background: #f3f7f0;
+    z-index:1;
+    position:relative;
 } 
+.mainInput {
+    padding: 1.5em 1em;
+}
 
 .search .fa {
   cursor: pointer;
@@ -586,11 +601,11 @@ div.showEntry {
     font-style: italic;
 }
 .articleTitle::before {
-  content:'„';
+  content:'â€ž';
   display: inline;
 }
 .articleTitle::after {
-  content:'“';
+  content:'â€œ';
   display:  inline;
 }
 /*  results Farben*/
@@ -653,7 +668,7 @@ div.showEntry {
 } 
 
 .skip::before {
-    content: 'Eintrag fehlerhaft oder unvollständig';
+    content: 'Eintrag fehlerhaft oder unvollstÃ¤ndig';
     color: red;
 }
 

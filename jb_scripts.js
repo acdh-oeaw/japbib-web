@@ -36,6 +36,8 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     if (Cookies.get('test') === 'passed')
         $('#testScreen').hide();
   
+  /*Test ausschalten... */
+        $('#testScreen').hide();
     /*********************************************************
 
         Handler fuer "Seitenwechsel" via #IDs
@@ -380,37 +382,42 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     /*********************************************
       Gestalte das Feld "Suche"
     **********************************************/
-    // Handler fuer .tipp (BS)
-    $('.tipp').attr('title', 'Tipp').children().hide();
-    $(document).on('click', '.tipp', function() {
-        $(this).toggleClass('q2x').children().slideToggle('slow');
-        var title = 'Tipp';
-        if ($(this).hasClass('q2x')) {
-            title = 'Tipp ausblenden';
-        }
-        $(this).attr('title', title);
+    // Handler fuer suchOptionen (BS) 
+    $('.search.help').hide();
+    $(document).on('click', '.searchNav i', function() {
+        var id =  's_'+ $(this).attr('data-index'); 
+        $('#'+id).slideToggle('slow'); 
+        $('#'+id).find('input').val(''); 
+    }); 
+
+    // Suche nach Autor oder Titel
+    $(document).on('click', '.search.examples a', function(e) {
+        e.preventDefault();
+       var inputQueryBefore = $('#searchInput1').val()
+         , newInputID = $(this).attr('data-search')
+         , newInputIndex = $(this).attr('data-index')+'='
+         , newInput= newInputIndex+$('#'+newInputID).val()+'*'
+         , and= inputQueryBefore.length > 0 ? ' and ' : '';
+        $('#searchInput1').val(inputQueryBefore+and+newInput);
+    }); 
+    // Suchhilfe
+    $('.search.help input').on('keyup', function() {
+        var index= $(this).attr('data-index')+'='
+          , newInput = index+($(this).val())+'*'
+          , inputQueryBefore = $('#searchInput1').val()
+          , and= inputQueryBefore.length > 0 ? ' and ' : ''
+          , replaceText = new RegExp('(and )?'+index+'\\w+\\*'); 
+        inputQueryBefore = inputQueryBefore.replace(replaceText, ''); 
+        $('#searchInput1').val(inputQueryBefore+and+newInput);
     });
-    // Handler fuer suchOptionen (BS)
-    // Navigation
-    $('.examples td[data-index]').hide();
-    //$('.examples td[data-index]:first').show();
-    $('.examples th').click(function() {
-        if ($(this).parent().hasClass('here')) {
-            $('.examples').removeClass('here');
-            $('.examples').animate({
-                height: "1.6em"
-            }, 'slow');
-            $('.examples td[data-index]').fadeOut('slow');
-        } else {
-            $('.examples').removeClass('here');
-            $('.examples td[data-index]').fadeOut('slow');
-            $(this).parent().addClass('here');
-            $('.examples').animate({
-                height: "6em"
-            }, 'slow');
-            $(this).siblings('td[data-index]').fadeIn('slow');
-        }
+    
+
+    /**/
+
+    $(document).on('click', '.search.examples .clearSearch', function() { 
+        $(this).parents('.search.examples').find('input').val(''); 
     });
+
     // Suche nach Datum  
     var years = $('.year a')
       , rangeSelected = false
@@ -462,24 +469,6 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             inputQuery += dateQuery;
         }
         $('#searchInput1').val(inputQuery);
-    });
-    // Suchhilfe
-    $('#searchInput1').on('keyup', function() {
-        var eingetippt = ($(this).val());
-        var rex1 = /[=* "]([^=* "]{4})/;
-        var rex2 = /^(?!auth|subj|titl)[^=* "]{4}/;
-        var match = rex1.exec(eingetippt) || rex2.exec(eingetippt);
-        var q = '';
-        // Ergebnisse vor ..= ausschließen
-        if (match && match[1])
-            q = match[1];
-        else if (match)
-            q = match[0];
-        if (q) {
-            $('#searchHelp b').text(q);
-            if ($('#searchHelp td').is(':hidden'))
-                $('#searchHelp th').trigger('click');
-        }
     });
 
     /*********************************************

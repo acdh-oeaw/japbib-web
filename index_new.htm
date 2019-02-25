@@ -3411,25 +3411,26 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
             <h2>Suche</h2> 
             <div class="suchOptionen">
               <div class="searchNav examples">
-                <i class="far fa-user" title="nach Autoren suchen"></i>
-                <i class="fas fa-book" title="nach Titeln suchen"></i>
-                <i class="far fa-clock" title="nach Publikationszeitraum suchen"></i>
+                <i class="far fa-user" 
+                title="nach Autor suchen" data-index="author"></i><i class="fas fa-book" 
+                title="nach Titel suchen" data-index="title"></i><i class="far fa-clock" 
+                title="nach Publikationszeitraum suchen" data-index="date"></i>
               </div>
-              <div  class="search examples">
-                <input id="searchInputAut" name="query" placeholder="nach Autor suchen..." size="15" title="nach Autor suchen" value="" />
+              <div  class="search help examples" title="nach Autor suchen" id='s_author'>
+                <input id="InputAuthor" name="subquery" placeholder="nach Autor suchen..." size="15" value=""  data-index="author"/>
                 <span class="startSearch">
-                    <i class="fa fa-times" id="clearSearch" title="Suchfeld leeren"></i> 
-                    <a class="far fa-user" href="" id="doSearchAut" title="Suche starten [return]"></a>
-                </span>
+                    <i class="fa fa-times clearSearch" title="Suchfeld leeren"></i> 
+                    <a class="far fa-user" href="" data-search="InputAuthor" title="Suche starten [return]" data-index="author"></a>
+                </span><small>Eingabehilfe für Autorensuche</small>
               </div>
-              <div  class="search examples">
-                <input id="searchInputTit" name="query" placeholder="nach Titel suchen..." size="15" title="nach Titel suchen" value="" />
+              <div  class="search help examples" title="nach Titel suchen" id='s_title'>
+                <input id="InputTitle" name="subquery" placeholder="nach Titel suchen..." size="15" value=""  data-index="title"/>
                 <span class="startSearch">
-                    <i class="fa fa-times" id="clearSearch" title="Suchfeld leeren"></i> 
-                    <a class="fas fa-book" href="" id="doSearchTit" title="Suche starten [return]"></a>
-                </span>
+                    <i class="fa fa-times clearSearch" title="Suchfeld leeren"></i> 
+                    <a class="fas fa-book" href="" data-search="InputTitle" title="Suche starten [return]" data-index="title"></a>
+                </span><small>Eingabehilfe für Titelsuche</small>
               </div>
-              <div class="search examples"><!--
+              <div class="search help year" title="nach Publikationszeitraum suchen"  id='s_date'  data-index="date"><!--
                   --><a href="" title="Publikationen ab 1980">1980</a><!--
                   --><a href="" title="Publikationen ab/bis 1981">81</a><!--
                   --><a href="" title="Publikationen ab/bis 1982">82</a><!--
@@ -3450,10 +3451,10 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                   --><a href="" title="Publikationen ab/bis 1997">97</a><!--
                   --><a href="" title="Publikationen ab/bis 1998">98</a><!--
                   --><a href="" title="Publikationen ab/bis 1999">99</a><!--
-                  --><a href="" title="Publikationen bis 2000">2000</a> <small>
-                    nach Publikationszeitraum suchen...</small>
+                  --><a href="" title="Publikationen bis 2000">2000</a> 
+                  <small>Eingabehilfe für Suche nach Publikationszeitraum</small>
               </div>
-              <div  class="search">
+              <div  class="search mainInput">
               <input id="searchInput1" name="query" placeholder="Suchbegriff eingeben..." size="40" title="JB80 durchsuchen " value="" />
                 <input name="version" type="hidden" value="1.2" /> 
                 <input name="operation" type="hidden" value= "searchRetrieve" /> 
@@ -3461,7 +3462,7 @@ Vorläufiger Matomo Tracker (ehem. PIWIK)
                 <input name="x-style" type= "hidden" value="sru2ajax.xsl" /> 
                 <input name="x-no-search-filter" type="hidden" value="false" /> 
                 <span class="startSearch">
-                    <i class="fa fa-times" id="clearSearch" title="Suchfeld leeren"></i> 
+                    <i class="fa fa-times clearSearch" id="clearSearch" title="Suchfeld leeren"></i> 
                     <a class="fa fa-search" href="" id="doSearch" title="Suche starten [return]"></a>
                 </span>
               </div>
