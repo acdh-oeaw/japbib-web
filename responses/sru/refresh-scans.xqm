@@ -49,7 +49,9 @@ declare %private function api:prepared-scans-for-json-direct($items as element(_
     return copy $ret := $envelope
     modify (
       for $t in $ret//sru:term
-      return rename node $t as '_'
+      return rename node $t as '_',
+      for $n-pre in $ret//*:node-pre
+      return delete node $n-pre
     )
     return $ret
 };
