@@ -1,0 +1,13 @@
+import './jb_assets.css';
+import $ from './bower_components/jquery/dist/jquery.min.js';
+import CodeMirror from './bower_components/codemirror/lib/codemirror.js';
+import codemirrorXml from './bower_components/codemirror/mode/xml/xml.js';
+import codemirrorFoldcode from './bower_components/codemirror/addon/fold/foldcode.js';
+import codemirrorFoldgutter from './bower_components/codemirror/addon/fold/foldgutter.js';
+import codemirrorXMLFold from './bower_components/codemirror/addon/fold/xml-fold.js';
+import signals from './bower_components/js-signals/dist/signals.min.js';
+import hasher from './bower_components/hasher/dist/js/hasher.min.js';
+import crossroads from './bower_components/crossroads/dist/crossroads.min.js';
+import URI from './bower_components/urijs/src/URI.min.js';
+import Cookies from  './bower_components/js-cookie/src/js.cookie.js';
+import main from './jb_scripts.js';

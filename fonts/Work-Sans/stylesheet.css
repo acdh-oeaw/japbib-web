@@ -1,0 +1,20 @@
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('WorkSans-SemiBold.woff2') format('woff2'),
+         url('WorkSans-SemiBold.woff') format('woff'),
+         url('WorkSans-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('WorkSans-SemiBoldItalic.woff2') format('woff2'),
+         url('WorkSans-SemiBoldItalic.woff') format('woff'),
+         url('WorkSans-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+
+}

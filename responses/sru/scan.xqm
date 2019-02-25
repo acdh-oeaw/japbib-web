@@ -122,7 +122,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                                  <sru:value>{$v}</sru:value>
                                  <sru:displayTerm>{$l}</sru:displayTerm>
                               </sru:term>,
-                              <node-pre>{string-join(db:node-pre($t/ancestor::mods:mods), ',')}</node-pre></_>"
+                              <node-pre value='{string-join(db:node-pre($t/ancestor::mods:mods), &quot; &quot;)}'/></_>"
                      ) else '()',
         $logXQuery := l:write-log('api:do-scan $xpath_or_diagnostics := '||$xpath_or_diagnostics||' $xquery := '||$xquery, 'DEBUG'),
         $terms_or_diagnostics := 
@@ -226,7 +226,7 @@ let $numbered-terms :=
     return $t update insert node   
         <sru:extraTermData>
            <fcs:position>{$pos}</fcs:position>
-           <api:node-pre>{$pres[$pos]/text()}</api:node-pre>
+           <api:node-pre>{$pres[$pos]/@value}</api:node-pre>
         </sru:extraTermData>
     after ./sru:displayTerm}
     </sru:terms>

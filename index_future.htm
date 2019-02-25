@@ -1,12 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head> 
   <meta http-equiv="X-UA-Compatible" content="IE=11"/>
   <meta charset="UTF-8" />
   <title>Japan-Bibliographie</title>
-  <link href="jb_assets.css" rel="stylesheet" type="text/css" />
-  <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+  <link href="bower_components/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
+  <link href="bower_components/codemirror/addon/fold/foldgutter.css" rel="stylesheet" type="text/css" />
+  <link href="bower_components/font-awesome/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet" type="text/css" /> 
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:600" rel="stylesheet">
+  <link href="jb_styles2.css" rel="stylesheet" type="text/css" />
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/codemirror/lib/codemirror.js"></script>
   <script src="bower_components/codemirror/mode/xml/xml.js"></script>
@@ -18,32 +20,30 @@
   <script src="bower_components/crossroads/dist/crossroads.min.js"></script>
   <script src="bower_components/urijs/src/URI.min.js"></script> 
   <script src="bower_components/js-cookie/src/js.cookie.js"></script> 
-  <script src="jb_scripts.js"></script>
-  <!-- script src="./bower_components/bundle.js"></script -->
+  <script src="jb_scripts2.js"></script>
 <!-- 
-Matomo Tracker https://matomo.acdh.oeaw.ac.at
+Vorläufiger Matomo Tracker (ehem. PIWIK) 
+    Ergebnisse unter www.univie.ac.at/rel_jap/piwik/ (Bescheid/pwpiwik)
+    Matomo Code (4.3.2018): 
 -->
-
-
-<!-- Matomo -->
 <script type="text/javascript">
-  var _paq = window._paq || [];
+  var _paq = _paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setCookieDomain", "*.www.oeaw.ac.at"]);
+  _paq.push(["setDomains", ["*.www.oeaw.ac.at/jb80","*.www.oeaw.ac.at/jb80/index.htm"]]);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u="https://matomo.acdh.oeaw.ac.at/";
-    _paq.push(['setTrackerUrl', u+'matomo.php']);
-    _paq.push(['setSiteId', '121']);
+    var u="//www.univie.ac.at/rel_jap/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '4']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
   })();
 </script>
-<noscript>
-  <!-- Matomo Image Tracker-->
-  <img src="https://matomo.acdh.oeaw.ac.at/matomo.php?idsite=121&rec=1" style="border:0" alt="" />
-  <!-- End Matomo -->
-</noscript>
+<noscript><img src="//www.univie.ac.at/rel_jap/piwik/piwik.php?idsite=4&rec=1" style="border:0;" alt="" /></noscript>
+<!-- End Matomo Code -->
 </head>
 <body class="background">
   <div id="testScreen"> 
@@ -72,13 +72,16 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
     <div id="navbar">
       <ul id="navbar_items">
         <li>
-          <a class="hilite" href="#about" style="z-index: 3">Über JB 80</a>
+          <a class="hilite" href="#about" style="z-index: 4">Über JB 80</a>
         </li>
         <li>
-          <a href="#thesaurus" style="z-index: 2">Thesaurus</a>
+          <a href="#thesaurus" style="z-index: 3">Thesaurus</a>
         </li>
         <li>
-          <a href="#find" style="z-index: 1">Suchen und Finden</a>
+          <a href="#suchen" style="z-index: 2">Suchen</a>
+        </li>
+        <li>
+          <a href="#find" style="z-index: 1">Finden</a>
         </li>
       </ul>
     </div>
@@ -98,6 +101,7 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 ========================================================-->
         <td class="slide" id="about">
           <div class="pageindex">
+          	<div>
             <h4>Über JB 80</h4>
             <ul>
               <li>
@@ -121,9 +125,11 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
             </ul>
             <div class="i_container"><img alt="" src="images/utamaro_letter.jpg" width="250" /></div>
           </div>
+          </div>
           <div class="content">
             <div id="ziele">
               <h2>Umfang und Ziele dieser Bibliographie</h2>
+            
               <p>Die vorliegende Bibliographie wurde von JapanologInnen der Universität Wien und der Österreichischen
               Akademie der Wissenschaften erstellt. Die über 30.000 bibliographischen Einträge wurden nach folgenden
               Kriterien gesammelt:</p>
@@ -171,24 +177,27 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 
               <h3>Thesaurus</h3>
 
-              <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Die umfangreichste
+              <p>Der Thesaurus ist ein System von hierarchisch strukturierten Schlagworten. Das Schlagwortschema wurde
+              im Zuge der Recherchen zu diesem Projekt sukzessive entwickelt und verfeinert. Die umfangreichste
               Schlagwortgruppe „Thema“ bezieht sich auf Sachgebiete und umfasst knapp 400 Schlagworte in 13
               Hauptgruppen. Die Verschlagwortung wurde dabei extensiv durchgeführt, das heißt, eine Publikation wurde
               zumeist nicht nur einem, sondern mehreren relevanten Themen zugeordnet.</p>
 
               <p>Mit Hilfe der Thesaurus-Seite können bibliographische Einträge nach Schlagworten gesucht werden. Ein
-              Klick auf die Zahl neben einem Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. </p>
+              Klick auf ein Schlagwort löst eine entsprechende Abfrage auf der Suchseite aus. Es können auch
+              kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man auf die neben dem Schlagwort stehende
+              Zahl klicken.</p>
 
-              <ul class="helpExample thesaurus ">
+              <ul class="helpExample thesaurus">
                 <li>Beispiel</li>
-                <li class=""> <span class="wrapTerm"><span class="term plusMinus">Wirtschaft</span> <a href=''>13949</a></span></li> 
+                <li class="plusMinus"> Wirtschaft <span class='aZahl aHover'>13949</span></li> 
               </ul>
 
-              <p>Es können auch
-              kombinierte Schlagwortabfragen durchgeführt werden. Dazu muss man in der Box "Abfagemodus" den Punkt „direkte Suche“ auf „kombinierte Suche“ umstellen und dann wiederum auf die Zahlen neben den Schlagworten klicken. Es können maximal drei Schlagworte ausgewählt
+              <p>Die ausgewählten Begriffe werden im Menü rechts des Schlagwortbaums angezeigt und können
+              von dort aus an die Suchseite weitergeleitet werden. Es können maximal drei Schlagworte ausgewählt
               werden.</p>
               <p>Ausgewählte Schlagworte (A, B) sind üblicherweise durch „and“ verbunden, das heißt, der gesuchte Eintrag muss sowohl 
-              A als auch B enthalten (Gruppe der Treffer wird kleiner). Wenn man allerdings „and“ duch Anklicken auf „or“ umstellt, 
+              A als auch B enthalten (Gruppe der Treffer wird kleiner). Wenn man allerdings „and“ manuell auf „or“ umstellt, 
               wird nach Einträgen  gesucht, die entweder A oder B oder beide enthalten (Gruppe der Treffer wird größer).</p>
               <ul class="helpExample">
                 <li>Beispiele</li>
@@ -215,10 +224,26 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                   subject="Zeitschriftenartikel"</a>
                 </li>
               </ul>
-              <p>Besonders bei den Schlagworten der unteren Ebenen ist es ratsam,
+              <p>Besonders bei den Schlagworten der unteren Ebenen ist zu bedenken, dass die Verschlagwortung
+              historisch gewachsen ist und keinen Anspruch auf Vollständigkeit erheben kann. Daher ist es ratsam,
               verschiedene Schlagworte und Suchstrategien auszuprobieren.</p>
 
-         
+              <h4>Zahlenangaben</h4>
+              
+              <p>Neben den Schlagworten der oberen Ebenen befindet sich zunächst ein „<span class="plusMinus"></span>“
+              als Zeichen dafür, dass dahinter noch weitere Schlagworte versteckt sind. Die Zahl neben dem Schlagwort umfasst  Einträge, die mit dem jeweiligen Schlagworten und seinen Untergruppen gekennzeichnet sind. </p>
+              <!--Öffnet man allerdings die Untergruppen (<span class=
+              "plusMinus close"></span>-Zustand), so werden nur noch jene Einträge gezählt, die dem Oberbegriff, aber
+              keiner Untergruppe zugeordnet sind.
+              <ul class="helpExample thesaurus">
+                <li>Beispiel</li>
+                <li class="plusMinus">&nbsp;Geschichte <span class='aZahl'>2633</span></li>
+                <li class="plusMinus close">&nbsp;Geschichte <span class='aZahl'>340</span></li> 
+              </ul>
+              <p>Es gibt also unter den 2633 Einträgen zum Thema „Geschichte“ 340 Einträge, die mit dem Hauptschlagwort
+              „Geschichte“, aber keiner Unterkategorie gekennzeichnet sind.</p>
+          -->
+
               <h3>Suchen und Finden</h3>
               
               <p>Im Bereich Suchen und Finden sind zunächst nur ein Suchfeld und einige „Reiter“ mit Suchvorschlägen zu sehen. 
@@ -255,8 +280,8 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                 <li>Beispiele</li>
                 <li>Welche Rezensionen gibt es zum „Verzeichnis des deutschsprachigen Japan-Schrifttums“? 
                   <a class="code aHover" href=
-                  "#find?query=subject%3D%22Rezension%22%20AND%20title%3D*Verzeichnis%20des%20deutschsprachigen%20Japan-Schrifttums*">
-                  subject="Rezension" and title=*Verzeichnis des deutschsprachigen Japan-Schrifttums*</a>
+                  "#find?query=subject%3D%22Rezension%22%20AND%20title%3D*Verzeichnis*">
+                  subject="Rezension" and title=*Verzeichnis*</a>
                 </li>
               </ul>
 
@@ -274,33 +299,35 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 
               <h4>Trefferanzahl</h4>
 
-              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 20, kann aber auf bis zu 200 erhöht
+              <p>Die maximale Anzahl an gezeigten Treffern liegt standardmäßig bei 10, kann aber auf bis zu 200 erhöht
               werden. </p>
 
               <h3>Detailergebnisse</h3>
               
               <p>Durch Anklicken der Listeneinträge enthält man den detaillierten bibliographischen Datensatz sowie
-              eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der „<a class="lupe fas fa-search">Lupe</a>“
+              eine Liste der Schlagworte, die dem gefunden Eintrag zugeordnet wurden. Das Anklicken der „<span class="showEntry"><a class="zahl">Lupe</a></span>“
               neben den Schlagworten startet eine neue Suche nach dem betreffenden Schlagwort. Das Gleiche gilt für
-              Autoren und Werktitel.</p>
+              Autoren, Verlage, Reihen und Werktitel.</p>
 
-              <p>Zusätzlich gibt es oft auch noch „Stichworte“. Das Anklicken eines Stichworts führt zu einer einfachen Volltextsuche.</p>
+              <p>Zusätzlich gibt es oft auch noch „Stichworte“, die im Lauf der Recherchearbeiten unsystematisch
+              vergeben wurden. Das Anklicken eines Stichworts führt zu einer Volltextsuche innerhalb der gesamten
+              Datensätze.</p>
 
               <h4>MODS und Lidos</h4>
 
-              <p>Am unteren Rand der Einzeleinträge kann man sich den XML-Code des betreffenden Eintrags anzeigen lassen.</p>
+              <p>Am unteren Rand der Einzeleinträge kann man sich den betreffenden Sourcecode anzeigen lassen.</p>
 
               <ul> 
                 <li>„MODS“ zeigt die Daten so, wie sie in der Datenbank eingetragen sind, nämlich nach dem „Metadata
                 Object Description Schema“ (MODS) der Library of Congress, Washington DC.</li>
-                <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde teils maschinell teils händisch in den
+                <li>„Lidos“ zeigt den ursprünglichen Datensatz an. Dieser wurde großteils maschinell in den
                 MODS-Standard übersetzt.</li>
               </ul>
               
               <h4>Fehler in der Datenbank</h4>
               
-              <p>Bei der mechanischen Übertragung der Daten aus dem ursprünglichen Format in MODS-Standard ließen sich Fehlinterpretationen und Informationsverluste nicht gänzlich vermeiden. Die Datenbank wird jedoch  sukzessive korrigiert und verbessert. Jeder <a href=
-              "mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback" class="email">Hinweis</a> auf technische oder inhaltliche Fehler wird mit großem Dank entgegen
+              <p>Bei der mechanischen Übertragung der Daten aus dem ursprünglichen Format in MODS-Standard ließen sich Fehlinterpretationen und Informationsverluste nicht gänzlich vermeiden. Derartige Fehler sowie Fehler, die noch aus den originalen Datensätzen stammen, werden sukzessive ausgebessert. Mittelfristig sind auch inhaltliche Ergänzungen vorgesehen. Jeder entsprechende <a href=
+              "mailto:bernhard.scheid@oeaw.ac.at?subject=JB%2080,%20Feedback" class="email">Hinweis</a> wird mit großem Dank entgegen
               genommen.</p>
               <p class="next">Weiter zu: <a href="#geschichte">Geschichte des Projekts</a></p>
             </div>
@@ -309,20 +336,21 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 
               <h2>Geschichte des Projekts</h2>
 
-              <p>Das vorliegende Bibliographieprojekt wurde in den 1980er Jahren von Sepp Linhart, Prof. für Japanologie an der Universität Wien, und Susanne Formenek konzipiert. Die Arbeit an der Datenbank lag zunächst in den Händen von Peter Getreuer, Bibliothekar an der Wiener Japanologie. Nach dessen frühem Tod wurde das
+              <p>Die vorliegende Bibliographie wurde 1989 von Dr. Peter Getreuer, Studienassistent und Bibliothekar am
+              Institut für Japanologie der Universität Wien, initiiert und entworfen. Nach seinem frühen Tod wurde das
               Projekt am Institut für Kultur- und Geistesgeschichte Asiens 
-              (<a href="https://www.ikga.oeaw.ac.at" class="externerLink" title="Institut für Kultur- und Geistesgeschichte Asiens">IKGA</a>) der ÖAW unter der Leitung von Susanne Formanek weiter geführt. Die Recherchen und die
+              (<a href="https://www.ikga.oeaw.ac.at" class="externerLink" title="Institut für Kultur- und Geistesgeschichte Asiens">IKGA</a>) der ÖAW unter der Leitung von Dr. Susanne Formanek weiter geführt. Die Recherchen und die
               Herausgabe der Einzelbände für die Jahre 1980 bis 1989 wurden von Getreuer und Formanek durchgeführt, für
-              die Jahre danach übernahmen Karina Kleiber, Gabriele Pauer und Angela Kramer 
-              diese Aufgaben. Die Ergebnisse für die Jahre 1980 bis 1997 liegen in fünf Bänden vor, die
-              die Herausgabe eines Bandes 1998 bis 1999 wurde jedoch zugunsten einer Online-Version der Bibliographie aufgegeben.</p>
+              die Jahre danach übernahmen Mag. Karina Kleiber, Dr. Gabriele Pauer und Mag. Angela Kramer (1998–2000)
+              diese Aufgaben. Während die Ergebnisse für die Jahre 1980 bis 1997 in fünf Bänden publiziert wurden, wurde
+              die Herausgabe weiterer Bände zugunsten einer Online-Version der Bibliographie aufgegeben.</p>
 
-              <p>Arbeiten an der Online-Version begannen 2008 unter Susanne Formanek und Lennart Hruska, wobei
+              <p>Arbeiten an der Online-Version begannen 2008 unter Susanne Formanek und MMag. Lennart Hruska, wobei
               letzterer für die Datenkorrektur und -adaptierung zuständig war. Schon damals war klar, dass die
               Recherchen nicht über das Jahr 2000 hinausgeführt werden sollten.</p>
 
               <p>Der Abschluss des Online-Projekts wurde schließlich krankheitsbedingt unterbrochen. 2016 wurde das
-              Projekt von Bernhard Scheid (ÖAW) in Kooperation mit Daniel Schopper und Dr. Karl-Heinz Mörth vom 
+              Projekt von Dr. Bernhard Scheid in Kooperation mit Mag. Daniel Schopper und Dr. Karl-Heinz Mörth vom 
               Austrian Centre for Digital Humanities
               (<a href="https://www.oeaw.ac.at/acdh/" class="externerLink" title="Austrian Centre for Digital Humanities">ACDH</a>) 
               der ÖAW erneut aufgenommen. Unter Mithilfe von Lennart Hruska wurde das Projekt in eine zeitgemäße
@@ -386,7 +414,7 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
               	</li> 
               	<li> ab 2017/6:
               		Einrichten eines GIT-Repositorys.
-              		Grundbausteine der Serverarchitektur: BaseX; XSLT, XQuery, XPath; Javascript.
+              		Grundbausteine der Serverarchitektur: Basex; XSLT, XQuery, XPath; Javascript.
               		Programmierung des Thesaurus.
               		Programmierung der Suchroutinen.
               		Programmierung der Fehlerkontrolle (Karma).
@@ -396,23 +424,6 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
               		Testen und Korrigieren der Suchroutinen.
               	</li> 
               </ul> 
-				  <h3>Suchroutine (Stand Mai 2018)</h3>
-				<ul>
-					<li>Die Suche erfolgt über eine <i>Context Query Language</i> Suchabfrage im Browser. Diese wird durch manuelle Eingabe im Suchfeld 
-						oder durch Nutzerinteraktion mit diversen Websitelementen generiert. </li>
-					<li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die Adresse <code>[Basis-URL]/sru</code>. </li> 
-					<li>Abgesehen von den interaktiv generierten <i>query</i>-Parametern, wird standardmäßig auch ein XSL-Stylesheet angefordert (<code>x-style=sru2ajax.xsl</code>).
-					<li>Außerdem kann mit dem Parameter <code>x-no-search-filter=</code> die automatische Erneuerung des Suchfilterbaums unterdrückt werden. 
-					<li> Die Sucheabfrage wird von den Routinen im Verzeichnis <code>responses/sru</code> bearbeitet.
-					<li> Die Abfrage wird mit einem fertigen Java CQL Parser in eine XML Form gebracht. </li>
-					<li> Die Abfrage als XML wird in eine XQuery Abfrage umgewandelt. Die dafür notwendige Konfiguration ist in der Datei <code>maps.xml</code> enthalten. </li>
-					<li> Für die Umwandlung der Abfrage wird der Full Text Index von BaseX verwendet.</li>
-					<li> Die XQuery-Abfrage wird ausgeführt und das Ergebnis in einen SRU-Rahmen eingepackt. </li>
-					<li> Mithilfe von gecachten Daten (<code>__sru_cache_de_data__</code>) werden Trefferzahlen ermittelt und ebenfalls in den SRU-Rahmen eingefügt.</li>
-					<li> Das so entstandene XML-File wird mit dem angegebenen XSLT-Stylesheet umgewandelt und das XHTML-Ergebnis an den Browser geliefert.</li>
-					<li> Der Browser ersetzt mithilfe von Javascript die relevanten HTML-Elemente der Seite um die gewünschten Ergebnisse anzuzeigen.  
-				</ul>
-				
               <p class="next">Weiter zu: <a href="#bildnachweise">Bildnachweise</a></p>
             </div>
             <div id="bildnachweise">
@@ -464,15 +475,6 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                       Artelino</a></p>
                     </td>
                   </tr>
-                  <tr>
-                    <td>
-                    	<img src="images/arhat_large.jpg" />
-                    </td>
-                    <td>
-                      <p>Arhat (chin. <i>luohan</i>, jap. <i>rakan</i>, buddhistischer Heiliger)</p>
-                      <p>Hängerollbild (Farbe auf Seide), 129,1 x 65,7 cm; anon. Künstler nach einem Vorbild von Guanxiu (832–912); aus einer Serie von <i>Sechzehn Arhats</i>; Kyoto, Kōdai-ji.</p>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
               <p class="next">Weiter zu: <a href="#impressum">Impressum</a></p>
@@ -491,25 +493,25 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                   <p>Austrian Centre for Digital Humanities (ACDH)<br />
                   Dr. Ignaz Seipel-Platz 2, 1010 Wien, Österreich<br />
                   E-Mail: <a href="mailto:acdh-tech@oeaw.ac.at">acdh-tech@oeaw.ac.at</a></p><i>Redaktion:</i>
-                  <p>Bernhard Scheid<br />
+                  <p>Dr. Bernhard Scheid<br />
                   E-Mail: <a href="mailto:bernhard.scheid@oeaw.ac.at">bernhard.scheid@oeaw.ac.at</a></p>
                 </li>
               </ul>
               <h3>Beteiligte Personen</h3>
               <ul class="impressum">
                 <li><i>Konzeption der bibliographischen Sammlung:</i> 
-                <span>Dr. Susanne Formanek, Prof. Dr. Sepp Linhart, Dr. Peter Getreuer</span>
+                <span>Peter Getreuer, Susanne Formanek</span>
                 <i>Bibliographische Recherche:</i> 
-                <span>Formanek, Getreuer, Mag. Karina Kleiber, Mag. Angela
-                Kramer, Dr. Gabriele Pauer, Mag. Lennart Hruska</span> 
+                <span>Peter Getreuer, Susanne Formanek, Karina Kleiber, Angela
+                Kramer, Gabriele Pauer, Lennart Hruska</span> 
                 <i>Konzeption der Online-Version:</i> 
-                <span>Dr. Bernhard Scheid, Mag. Daniel Schopper, Dr. Karl-Heinz Mörth</span> 
+                <span>Bernhard Scheid, Daniel Schopper, Karl-Heinz Mörth</span> 
                 <i>Datenbank-Programmierung:</i> 
-                <span>Schopper, Mag. Omar Siam</span> 
+                <span>Daniel Schopper, Omar Siam</span> 
                 <i>Layout und Contentmanagement:</i> 
-                <span>Scheid, Siam, Schopper</span> 
+                <span>Bernhard Scheid, Omar Siam, Daniel Schopper</span> 
                 <i>Adaptierung der Datensätze für die Online-Version:</i> 
-                <span>Hruska, Schopper, Siam, Scheid, Patrizia Mayer, Maximilian Mayrhauser, Nora Pillhofer, Benedikt Weiser, Natalie Schnauder</span>
+                <span>Lennart Hruska, Daniel Schopper, Omar Siam, Patrizia Mayer, Maximilian Mayrhauser, Bernhard Scheid</span>
                 </li>
               </ul>
               <h3>Haftungsausschluss</h3>
@@ -555,63 +557,22 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                     THESAURUS
                         
 ==========================================-->
-        <td class="slide thesaurus hide" id="thesaurus" style="display: none;">
-          <div id="wrapAbsolute">
-            <div id="wrapFixed">
-              <div class="pageindex">
-                <h4>Abfragemodus </h4> 
-                <form id="chooseQuerymode">
-                	<ul>
-                		<li><label for="_dir" class="ausgewaehlt"><input type="radio"  name="Abfragemodus" id="_dir" value="directSearch" checked="checked" />
-                			 Direkte Suche</label>
-                		</li>
-                		<li><label for="_kom"> <input type="radio"  name="Abfragemodus"  id="_kom" value="combinedSearch">
-                			Kombinierte Suche</label> 
-                		</li>
-                	</ul>
-                </form>
-                <div id="wishList">
-                  <ul>
-                    <li>
-                      <span><i class="fas fa-check-square" title="Auswahl löschen"></i>1</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">and</a>
-                    </li>
-                    <li>
-                      <span><i class="fas fa-check-square" title="Auswahl löschen"></i>2</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">and</a>
-                    </li>
-                    <li>
-                      <span><i class="fas fa-check-square" title="Auswahl löschen"></i>3</span><a class="andOr" title="Suche eingrenzen (AND)/ erweitern (OR)">and</a>
-                    </li>
-                  </ul>
-                  <a class="fas fa-search" id="abfrage" href="#find" title="Abfrage auf der Suchseite">Abfrage</a>
-                </div>
-                <form action="sru" id="searchform2" name="searchform2">
-                  <input name="query" type="hidden" value="" /> 
-                  <input name="version" type="hidden" value="1.2" />
-                  <input name="operation" type="hidden" value="searchRetrieve" /> 
-                  <input name="maximumRecords" type= "hidden" value="1" /> 
-                  <input name="startRecord" type="hidden" value="1" /> 
-                  <input name="x-style" type= "hidden" value="thesaurus2html.xsl" />
-                </form>
-                <div class="i_container">
-                  <img alt="" src="images/kason%20book.jpg" width="250" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content">
-            <div style="position:relative">
-              <div class="tipp">
+        <td class="slide thesaurus hide" id="thesaurus" style="display: none;"> 
+          <div class="hinweis pageindex">
+          	<div>                   
                 <ul>
                   <li>Über diese Seite ist eine Suche nach hierarchisch geordneten Schlagworten möglich.</li>
                   <li>Ein Klick auf ein Schlagwort löst eine entsprechende Suche auf der Seite „Suchen und Finden“
                   aus.</li>
-                  <li>Ein Klick auf die Zahl nach dem Schlagwort führt zur Anzeige im Feld „Ausgewählte Schlagworte“.
-                  Dadurch lässt sich auch eine Kombinaltion von Schlagworten abfragen.</li>
-                  <li>Die Schlagworte werden standardmäßig mit <code>and</code> verküpft (Suchfeld wird kleiner),
-                  können aber durch Anklicken auch mit <code>or</code> verbunden werden (Suchfeld wird größer).</li>
-                </ul>
-              </div>
+                  <li>Für  Suchabfragen mit mehreren Schlagworten s. <a href="#statistics">Komplexe Abfragen</a></li>
+                  <li>S.a. <a href="#help">Benützung dieser Seiten</a>.</li>
+                </ul>  
+                <div class="i_container">
+                  <img alt="" src="images/kason%20book.jpg" width="250" />
+                </div> 
             </div>
+          </div>
+          <div class="content">
             <div id="showList">
               <div class="showOptions">
                 <h2>Thesaurus</h2>
@@ -624,7 +585,7 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                   </div>
                 </div>
               </div>
-              <ol class="schlagworte" xmlns="http://www.w3.org/1999/xhtml">
+              <ol class="schlagworte test" xmlns="http://www.w3.org/1999/xhtml">
                 <li class="li1">
 
 						<!--======================================= THEMA ======================-->
@@ -3389,7 +3350,212 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
         <td class="control" id="thesaurus_control">
           <a href="#thesaurus"><span>Thesaurus</span></a>
         </td>
+<!--========================================= 
+                        
+                    SUCHEN
+                     
+==========================================-->
 
+        <td class="slide" id="suchen"> 
+          <div class="hinweis pageindex">  
+          	<div>
+            <ul>            	
+              <li><b>Schnellsuche</b>: Suche Autoren oder Werktitel per Anfangsbuchstabe.</li>
+              <li><b>Kombinierte Suche</b>: Freitext und Schlagworte erweitern die Suche (Verbindung der Suchbegriffe mit „or“), 
+                „Schlag&shy;worte aus&shy;schließen“ und „Publi&shy;kations&shy;form“  schränken die Suche ein.</li> 
+              <li><b>Detaillierte Liste</b>: alle Treffer werden inklusive biblio&shy;graphi&shy;scher Details gelistet (Standard&shy;format). </li>
+              <li><b>Autoren-Liste</b>: gefundene Autoren werden nach Anzahl der gefun&shy;denen Publi&shy;kationen aufgelistet.<!-- Ermöglicht einen Überblick über die Produktivität innerhalb des abgefragten Themengebiets.--></li>
+              <li><b>Balkendiagramm</b>: Schlagworte nach Treffer pro Publi&shy;kations&shy;jahr (chrono&shy;logische Ent&shy;wicklung des abge&shy;fragten Themen&shy;gebiets). </li>            
+              <li><b>Netzwerkgraphik</b>: Autor-Schlagwort Relationen als Netzwerkgraphik. </li> 
+            </ul>  
+        	<p> Alle Suchresultate werden auf der Seite „Finden“ angezeigt. </p>
+          </div>
+          </div>     	
+          <div class="content"> 
+            <h2>Suchen</h2>
+                <h3> Schnellsuche </h3> 
+            <form action="sru" id="searchform3" name="searchform3">  
+                       <input type="radio" id="show_at" name="quickSearchOption" value="author" checked="checked" /> Autoren 
+                       <input type="radio" id="show_tl" name="quickSearchOption" value="title" /> Werktitel  
+                  <div class="abc" data-index="author"> 
+                       <a href="" title="Suche Anfangsbuchstabe A">A</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe B">B</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe C">C</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe D">D</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe E">E</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe F">F</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe G">G</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe H">H</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe I">I</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe J">J</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe K">K</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe L">L</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe M">M</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe N">N</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe O">O</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe P">P</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe Q">Q</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe R">R</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe S">S</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe T">T</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe U">U</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe V">V</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe W">W</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe X">X</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe V">Y</a><!--
+                    --><a href="" title="Suche Anfangsbuchstabe Z">Z</a> 
+                    </div>
+                  </form>
+            <form action="sru" id="searchform2" name="searchform2">  
+              <table  class="complexSearch"> 
+        			<td colspan="2">
+        				<h3> Kombinierte Suche </h3>
+        			</td>
+        		</tr>
+        		<tr >
+	              <th >Freitext</th>
+	              <td >
+	            	  <input id="searchInput2" name="query" placeholder="Suchbegriff eingeben..." size="26" title="JB80 durchsuchen " value="" />
+                    <input name="version" type="hidden" value="1.2" /> 
+                    <input name="operation" type="hidden" value= "searchRetrieve" /> 
+                    <input name="startRecord" type="hidden" value="1" /> 
+                    <input name="x-style" type= "hidden" value="sru2ajax.xsl" /> 
+                    <input name="x-no-search-filter" type="hidden" value="false" /> 
+                    <i class="fa fa-times clearSearch" title="Suchfeld leeren"></i> 
+	              </td>
+	            </tr>
+	            <tr>
+	              <th>Schlagworte</th>
+	              <td>
+	              <label id="chooseTerm">
+	              <select name=" " size="" title= "Schlagworte auswählen">
+	                <option selected="selected" value="">
+	                  keine
+	                </option>
+	                <option value="term 1">
+	                  Schlagwort 1 (Thesaurus anzeigen)
+	                </option>
+	                <option value="term 2">
+	                  Schlagwort 2 (Thesaurus anzeigen)
+	                </option>
+	                <option value="term 3">
+	                  Schlagwort 3 (Thesaurus anzeigen)
+	                </option> 
+	              </select>              
+	              </label> 
+	              </td>
+	            </tr>
+	            <tr class="">
+	              <th class="">Ausschließen</th>
+	              <td class="">
+	              	<label id="skipTerm">
+	              <select  name=" " size="" title= "Schlagworte ausschließen">
+	                <option selected="selected" value="no">
+	                  keine
+	                </option>
+	                <option value="term 1">
+	                  Schlagwort 1 (Thesaurus anzeigen)
+	                </option> 
+	              </select>              
+	              </label> 
+	              </td>
+	            </tr>
+	            <tr>
+	              <th>Publikationsform </th>
+	              <td>
+	              	<label id="chooseForm">
+	              <select  name=" " size="1" title= "Publikationsform wählen">
+	                <option selected="selected" value="all">
+	                  alle
+	                </option>
+	                <option value="book">
+	                  Bücher
+	                </option>
+	                <option value="bookSection">
+	                  Kapitel in Sammelband
+	                </option>
+	                <option value="journalArticle">
+	                  Zeitschriftenartikel
+	                </option>
+	                <option value="newspaperArticle">
+	                  Zeitungsartikel
+	                </option>
+	              </select>
+	              </label>
+	              </td>
+	            </tr>
+	            <tr class="">
+	              <th class="">Publikationszeitraum </th>
+	              <td class="">
+	              	<label id="timeStart">
+	              <select  name=" " size="1" title= "Publikationszeitraum ">
+	                <option selected="selected" value="1980">
+	                  1980
+	                </option>
+	                <option   value="1985">
+	                  1985
+	                </option>
+	                <option  value="1990">
+	                  1990
+	                </option>
+	                <option   value="1995">
+	                  1995
+	                </option>
+	                <option   value="2000">
+	                  2000
+	                </option> 
+	              </select>
+	              </label>
+	              bis
+	              <label id="timeEnd">
+	              <select name=" " size="1" title= "Publikationszeitraum ">
+	                <option selected="selected" value="2000">
+	                  2000
+	                </option> 
+	                <option  value="1995">
+	                  1995
+	                </option>
+	                <option  value="1990">
+	                  1990
+	                </option>
+	                <option  value="1985">
+	                  1985
+	                </option>
+	                <option  value="1980">
+	                  1980
+	                </option>
+	              </select>
+	              </label>
+	              </td>
+	            </tr>
+	            <tr>
+	            	<th>
+	            	 Anzeige
+	            	</th>
+	            	<td> 
+	            	  <fieldset>
+    					<input type="radio" id="show_dl" name="Anzeigemodus" value="detail" checked />
+    					<label for="dl"> Detaillierte Liste  </label> <br/>
+    					<input type="radio" id="show_al" name="Anzeigemodus" value="authors" />
+    					<label for="dl"> Autoren-Liste  </label>  <br/>
+    					<input type="radio" id="show_bd" name="Anzeigemodus" value="balken" />
+    					<label for="dl"> Balkendiagramm  </label>  <br/>
+    					<input type="radio" id="show_nw" name="Anzeigemodus" value="network" />
+    					<label for="dl"> Netzwerkgraphik  </label> 
+    				  </fieldset> 
+	            	</td>
+	            </tr>
+	            <tr> 
+	            	<th></th>
+	            	<td><input type="submit" name="startSearch" value="Kombinierte Suche starten" />&nbsp;<i class="fa fa-search"></i></td> 
+	            </tr>
+          	  </table>
+          	</form> 
+          </div>
+        </td>
+        <td class="control" id="suchen_control">
+          <a href="#suchen"><span>Suchen</span></a>
+        </td>
 <!--========================================= 
                         
                     FIND
@@ -3398,160 +3564,18 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 
         <td class="slide hide" id="find" style="display: none;">
           <div class="pageindex" id="facet-subjects">
+          	<div>
             <h4><span class="showResults">Such-Filter</span></h4>
-            <ol class="schlagworte showResults">  </ol>
+            <ol class="schlagworte showResults">
+              <!-- Import-->
+            </ol>
             <div class="i_container"><img alt="" src="images/book%20hokusai2.jpg" width="250"></div>
+          </div>
           </div>
           <div class="content">
             <form action="sru" id="searchform1" name="searchform1">
-            <h2>Suche</h2>
-              <table class="suchOptionen">
-                <tr class="examples">
-                  <th class="top here"><!--Autoren--><i class="far fa-user" title="nach Autoren suchen"></i></th>
-                  <td class="abc" data-index="author">
-                    <!-- <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=A*+sortBy+author"> 
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe A">A</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe B">B</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe C">C</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe D">D</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe E">E</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe F">F</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe G">G</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe H">H</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe I">I</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe J">J</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe K">K</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe L">L</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe M">M</a><br /><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe N">N</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe O">O</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe P">P</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Q">Q</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe R">R</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe S">S</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe T">T</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe U">U</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">V</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe W">W</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe X">X</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe V">Y</a><!--
-                    --><a href="" title="Suche Autoren mit Anfangsbuchstabe Z">Z</a><!--
-                     <a href="" title="Suche Autoren mit nicht-alphbetischen Anfangszeichen">Sonstige</a>                                        
-                     <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=author=*+sortBy+author">alle</a> -->
-                     <small>nach Autoren suchen...</small>
-                  </td>
-                </tr>
-                <tr class="examples">
-                  <th class="top"><!--Werktitel--><i class="fas fa-book" title="nach Titeln suchen"></i></th>
-                  <td class="abc" data-index="title">
-                    <a href="" title="Suche Titel mit Anfangsbuchstabe A">A</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe B">B</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe C">C</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe D">D</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe E">E</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe F">F</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe G">G</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe H">H</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe I">I</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe J">J</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe K">K</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe L">L</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe M">M</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe N">N</a><br /><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe O">O</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe P">P</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Q">Q</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe R">R</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe S">S</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe T">T</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe U">U</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe V">V</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe W">W</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe X">X</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Y">Y</a><!--
-                    --><a href="" title="Suche Titel mit Anfangsbuchstabe Z">Z</a><!--
-                    <a href="" title="Suche Titel mit nicht-alphbetischen Anfangszeichen">Sonstige</a> 
-                        <a href="sru?version=1.2&amp;x-style=sru2ajax.xsl&amp;operation=searchRetrieve&amp;maximumRecords=10&amp;query=title=*+sortBy+title">alle</a>-->
-                     <small>nach Titeln suchen...</small>
-                  </td>
-                </tr>
-                <tr class="examples">
-                  <th class="top"><!--Jahr--><i class="far fa-clock" title="nach Publikationszeitraum suchen"></i></th>
-                  <td class="year" data-index="date">
-                    <!--
-	                --><a href="" title="Publikationen ab 1980">1980</a><!--
-	                --><a href="" title="Publikationen ab/bis 1981">81</a><!--
-	                --><a href="" title="Publikationen ab/bis 1982">82</a><!--
-	                --><a href="" title="Publikationen ab/bis 1983">83</a><!--
-	                --><a href="" title="Publikationen ab/bis 1984">84</a><!--
-	                --><a href="" title="Publikationen ab/bis 1985">85</a><!--
-	                --><a href="" title="Publikationen ab/bis 1986">86</a><!--
-	                --><a href="" title="Publikationen ab/bis 1987">87</a><!--
-	                --><a href="" title="Publikationen ab/bis 1988">88</a><!--
-	                --><a href="" title="Publikationen ab/bis 1989">89</a><!--
-	                --><a href="" title="Publikationen ab/bis 1990">90</a><br /><!--
-	                --><a href="" title="Publikationen ab/bis 1991">91</a><!--
-	                --><a href="" title="Publikationen ab/bis 1992">92</a><!--
-	                --><a href="" title="Publikationen ab/bis 1993">93</a><!--
-	                --><a href="" title="Publikationen ab/bis 1994">94</a><!--
-	                --><a href="" title="Publikationen ab/bis 1995">95</a><!--
-	                --><a href="" title="Publikationen ab/bis 1996">96</a><!--
-	                --><a href="" title="Publikationen ab/bis 1997">97</a><!--
-	                --><a href="" title="Publikationen ab/bis 1998">98</a><!--
-	                --><a href="" title="Publikationen ab/bis 1999">99</a><!--
-	                --><a href="" title="Publikationen bis 2000">2000</a> <small>
-                    nach Publikationszeitraum suchen...</small>
-                  </td>
-                </tr>
-                <tr class="examples" id="searchHelp">
-                  <th class="top"><!--Suchhilfe--><i class="far fa-lightbulb" title="Suche mit Platzhalter"></i></th>
-                  <td class="suggestion" data-index="">
-                    <ol>
-                      <li>
-                        <a class="code" href="" title="Autorensuche mit Platzhalter">author=<b>Buch</b>*</a>
-                      </li>
-                      <li>
-                        <a class="code" href="" title="Titelsuche mit Platzhalter">title=*<b>Buch</b>*</a>
-                      </li>
-                      <li>
-                        <a class="code" href="" title="Schlagwortsuche mit Platzhalter">subject=*<b>Buch</b>*</a>
-                      </li>
-                      <li>
-                        <a class="code" href="" title=
-                        "Sowohl Schlagworte als auch Titel durchsuchen">subject=*<b>Buch</b>* or title=*<b>Buch</b>*</a>
-                      </li>
-                    </ol>
-                    <small>Suche mit Platzhalter...</small>
-                  </td>
-                </tr>
-                <tr class="tipp" id="Beispiele" title="Tipp">
-                  <td class="suchmethoden" colspan="2">
-                      <p>Über das Suchfeld lässt sich eine einfache freie Suche durchführen. Um die Suche genauer abzustimmen, stehen außerdem folgende Methoden zur Verfügung: </p>
-                    <div>
-
-                      <p>Suche modifizieren:</p>
-                      <ol>
-                        <li><code title="Platzhalter">*</code> (Platzhalter für beliebige andere Zeichen)</li>
-                        <li><code title="sowohl A als auch B">and</code> (suche sowohl A als auch B, Suchfeld wird
-                        kleiner)</li>
-                        <li><code title="entweder A oder B">or</code> (suche entweder A oder B, Suchfeld wird
-                        größer)</li>
-                        <li><code title="exakte Suche">"..."</code> (exakte Suche)</li>
-                      </ol>
-                    </div>
-                    <div>
-                      <p>Such-Parameter:</p>
-                      <ol>
-                        <li><code title="Autorennamen suchen">author=</code> (Suche wird auf Autorennamen
-                        beschränkt)</li>
-                        <li><code title="Werktitel suchen">title=</code> (Suche wird auf Werktitel beschränkt)</li>
-                        <li><code title="Schlagworte suchen">subject=</code> (Suche wird auf Thesaurus-Schlagworte
-                        beschränkt)</li>
-                      </ol>
-                    </div>
-                    <p> Komlexere Abfragen lassen sich auch mit den Suchhilfen oberhalb des Suchfeldes realisieren. Siehe dazu auch <a href="#help">Benützung dieser Seiten</a>.</p>
-                  </td>
-                </tr>
+            <h2>Finden</h2>
+              <table class="suchOptionen">   
                 <tr class="search">
                   <td colspan="2">
                     <input id="searchInput1" name="query" placeholder="Suchbegriff eingeben..." size="40" title="JB80 durchsuchen " value="" />
@@ -3565,14 +3589,13 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                   </td>
                 </tr>
                 <tr>
-                  <td class="showOptions" rowspan="2">
-                  	<em>Sortierung:</em> 
-                  	<label class="fas fa-sort-amount-down" id="chooseMaxHits"><!-- 
-                  	--><select id="maximumRecords" name="maximumRecords" size="1" title="Maximale Treffer pro Seite">
-                    <option value="10">
+                  <td class="showOptions" rowspan="2"><em>Sortierung:</em> <label class="fas fa-sort-amount-down" id=
+                  "chooseMaxHits"><select id="maximumRecords" name="maximumRecords" size="1" title=
+                  "Maximale Treffer pro Seite">
+                    <option selected="selected" value="10">
                       10
                     </option>
-                    <option selected="selected" value="20">
+                    <option value="20">
                       20
                     </option>
                     <option value="50">
@@ -3584,14 +3607,9 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                     <option value="200">
                       200
                     </option>
-                  </select>
-                </label> 
-                <label class="fas fa-sort-alpha-down" id="countResults" title="Sortierung der Treffer">
-                  <select id="sortBy"  name="x-sort" size="1" title="Sortierung der Treffer">
-                    <option value="random" selected="selected">
-                      Beliebig
-                    </option>
-                    <option value="author">
+                  </select></label> <label class="fas fa-sort-alpha-down" id="countResults" title="Sortierung der Resultate"></label>
+                  <select id="sortBy" size="1" title="Sortierung der Treffer">
+                    <option selected="selected" value="author">
                       Autor
                     </option>
                     <option value="title">
@@ -3600,26 +3618,60 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                     <option value="date">
                       Jahr
                     </option>
-                  </select></label></td>
+                  </select> </td>
                 </tr>
               </table>
             </form>
+            <div class="tipp" id="suchtipps">
+              <div>
+                    <p>Alle Suchresultate – auch jene von <a href="#thesaurus">Thesaurus</a> und <a href="#suchen">Suchen</a> — werden auf dieser Seite angezeigt. Es können aber auch Suchanfragen von hier aus gestartet werden. Um die Suche genauer abzustimmen, stehen folgende Methoden zur Verfügung: </p> 
+
+                      <p>Suche modifizieren:</p>
+                      <ol>
+                        <li><code title="Platzhalter">*</code> (Platzhalter für beliebige andere Zeichen)</li>
+                        <li><code title="sowohl A als auch B">and</code> (suche sowohl A als auch B, Suchfeld wird
+                        kleiner)</li>
+                        <li><code title="entweder A oder B">or</code> (suche entweder A oder B, Suchfeld wird
+                        größer)</li>
+                        <li><code title="exakte Suche">"..."</code> (exakte Suche)</li>
+                      </ol> 
+                      <p>Such-Parameter:</p>
+                      <ol>
+                        <li><code title="Autorennamen suchen">author=</code> (Suche wird auf Autorennamen
+                        beschränkt)</li>
+                        <li><code title="Werktitel suchen">title=</code> (Suche wird auf Werktitel beschränkt)</li>
+                        <li><code title="Schlagworte suchen">subject=</code> (Suche wird auf Thesaurus-Schlagworte
+                        beschränkt)</li>
+                      </ol> 
+                    <p> Siehe auch <a href="#help">Benützung dieser Seiten</a>.</p>
+                </div>
+              </div>
             <div class="showResults">
               <div id="showList">
                 <div class="navResults"> 
                   <div class="countResults">
-                    <span class="numberofRecords">0</span> Treffer
+                    <span class="numberofRecords">310</span> Treffer
                   </div>
                   <div class="hitList">
-                    <span class="pull fa fa-chevron-circle-left pullLeft" title="zum Anfang scrollen"></span> 
-                    <a class="hits first" href="" title="Treffer 1–10">1</a> 
-                    <span class="fenster" id="fenster1">
-                    	<span class="hitRow">
-                    		<a class="hits" href="" title="Treffer 11—20">2</a>
-                    	</span>
-                    </span>
-                    <a class="hits last" title="Treffer 21–30">3</a>
-                    <span class="pull fa fa-chevron-circle-right pullRight" title="zum Ende scrollen"></span>
+                    <span class="pull fa fa-chevron-circle-left" id="pullLeft" title="zum Anfang scrollen"></span> <a class="hits first"
+                    href="" title="Treffer 1–10">1</a> <span class="fenster" id="fenster1"><span id="hitRow"><a class=
+                    "hits" href="" title="Treffer 11—20">2</a> <a class="hits" href="" title="Treffer 21—30">3</a>
+                    <a class="hits" href="" title="Treffer 31—40">4</a> <a class="hits" href="" title=
+                    "Treffer 41—50">5</a> <a class="hits" href="" title="Treffer 51—60">6</a> <a class="hits" href=""
+                    title="Treffer 61–70">7</a> <a class="hits" href="" title="Treffer 71—80">8</a> <a class="hits"
+                    href="" title="Treffer 81—90">9</a> <a class="hits" href="" title="Treffer 91—100">10</a> <a class=
+                    "hits here" href="" title="Treffer 101—110">11</a> <a class="hits" href="" title=
+                    "Treffer 111—120">12</a> <a class="hits" href="" title="Treffer ">13</a> <a class="hits" href=""
+                    title="Treffer ">14</a> <a class="hits" href="" title="Treffer ">15</a> <a class="hits" href=""
+                    title="Treffer ">16</a> <a class="hits" href="" title="Treffer ">17</a> <a class="hits" href=""
+                    title="Treffer ">18</a> <a class="hits" href="" title="Treffer ">19</a> <a class="hits" href=""
+                    title="Treffer ">20</a> <a class="hits" href="" title="Treffer ">21</a> <a class="hits" href=""
+                    title="Treffer ">22</a> <a class="hits" href="" title="Treffer ">23</a> <a class="hits" href=""
+                    title="Treffer ">24</a> <a class="hits" href="" title="Treffer ">25</a> <a class="hits" href=""
+                    title="Treffer ">26</a> <a class="hits" href="" title="Treffer ">27</a> <a class="hits" href=""
+                    title="Treffer ">28</a> <a class="hits" href="" title="Treffer ">29</a> <a class="hits" href=""
+                    title="Treffer ">30</a></span></span> <a class="hits last" title="Treffer 301–310">31</a>
+                    <span class="pull fa fa-chevron-circle-right" id="pullRight" title="zum Ende scrollen"></span>
                   </div>
                 </div>
                 <!--========================================
@@ -3627,77 +3679,18 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                                     Resultatliste
 
                 ========================================== -->
-                <ol class="results" data-nextrecordposition="" data-numberofrecords="3">
-                  <li value="1" class="pubForm book">
-                    <div class="shortInfo">
-                    	<span class="year"></span>
-                        <span class="plusMinus titel close" title="Details anzeigen/verbergen">
-                        	<span class="title"></span>
-                        </span>
-                    </div>
-                    <div class="showEntry" style="display: none;">
-                    	<div class="closeX"></div>
-                    	<div class="record-html">
-                    		<ul>
-                    			<li class="eSegment">Autor</li>
-                    			<li><a href="#?query=author=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
-                    			<li class="eSegment">Titel</li>
-                    			<li></li>
-                    			<li class="eSegment">Ort/Verlag/Jahr</li>
-                    			<li><a href="#?query=publisher=" class="neueSuche fas fa-search" title="neue Suche starten"></a>, <span class=""></span></li>
-                    		</ul>
-                    		<div class="addInfo">
-                    			<h4>Weitere bibliographische Angaben</h4>
-                    			<ul>
-                    				<li class="eSegment">Reihe</li>
-                    				<li><a href="#?query=series=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
-                    				<li class="eSegment">Kollationsvermerk</li>
-                    				<li></li>
-                    				<li class="eSegment">Form</li>
-                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
-                    				<li class="eSegment">Bemerkungen</li>
-                    				<li></li>
-                    			</ul>
-                    			<h4>Inhaltliche Angaben</h4>
-                    			<ul>
-                    				<li class="eSegment">Thema</li>
-                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
-                    				<li><a href="#?query=primarysubject=" class="neueSuche fas fa-search" title="neue Suche starten"></a></li>
-                    				<li class="eSegment">Stichworte</li>
-                    				<li><a href="#?query=" class="stichwort" title="neue Suche starten"></a>; <a href="#?query=" class="stichwort" title="neue Suche starten"></a></li>
-                    			</ul>
-                    			<h4>Externe Suche</h4>
-                    			<ul>
-                    				<li><a class="externerLink" href="https://scholar.google.com/scholar?q=" title="Suchen mit Google Scholar" target="_blank">Google Scholar</a></li>
-                    			</ul>
-                    		</div>
-                    	</div>
-                    	<div class="toggleRecord">
-                    		<i class="fa fa-code mods" title="Aktuellen Code anzeigen"></i>
-                    	</div>
-                    	<div class="record-mods" style="display:none;">
-                    		<div class="showOptions">
-                    			Aktueller Code
-                    			<div class="tipp" title="Tipp"><span class="display" style="display: none;">Derzeitige Form des Datensatzes als XML Dokument, nach MODS-Standard (<a class="externalLink" href="http://www.loc.gov/standards/mods/">Library of Congress</a>).</span>
-                    			</div>
-                    		</div>
-                    		<textarea rows="20" cols="80" class="codemirror-data" xml:space="preserve" style="display: none;">
-                    		</textarea>
-                    	</div>              
-                    </div>
-                  </li> 
+                <ol class="results" data-nextrecordposition="" data-numberofrecords="">
                 </ol>
-                <div id="navResults2"></div>
               </div>
             </div>
           </div>
           <div class="clearFloat"></div>
         </td>
         <td class="control" id="find_control">
-          <a href="#find"><span>Suchen und Finden</span></a>
+          <a href="#find"><span>Finden</span></a>
         </td>
       </tr>
-      <tr colspan="6">
+      <tr colspan="8">
         <td class="ladeResultate" style="display:none;"> 
             <div>
               <p>Lade Daten, bitte ein wenig Geduld ... <i aria-hidden="true" class="fas fa-sync-alt fa-spin fa-2x fa-fw"></i></p>

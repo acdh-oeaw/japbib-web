@@ -147,7 +147,7 @@ declare function api:get-count-for-matching-text($mods-mods-node-pres as xs:inte
 let (: $all-occurences-mods-mods-node-pres := db:node-pre(ft:search("japbib_06", $s, map{'mode': 'phrase', 'content': 'entire'})[(ancestor::mods:genre|ancestor::mods:subject[not(@displayLabel)])]/ancestor::mods:mods), :)
     $matching-subjects := cache:text-nodes-in-cached-file-equal($s, $subject-terms-cache)/ancestor::sru:term,
     (: $log := if (count($matching-subjects > 1)) then l:write-log('more than one matching subject ?! '||$s||': '||string-join($matching-subjects/(sru:displayTerm|sru:numberOfRecords), ', '), 'DEBUG') else (), :)
-    $all-occurences-mods-mods-node-pres := tokenize($matching-subjects[1]//scan-api:node-pre, ',')!xs:integer(.),
+    $all-occurences-mods-mods-node-pres := tokenize($matching-subjects[1]//scan-api:node-pre/@value, ' ')!xs:integer(.),
     (: $log := l:write-log('$all-occurences := '||count($all-occurences-mods-mods-node-pres)||' $all-results := '||count($mods-mods-node-pres), 'DEBUG'), :)
     (: changing the parameters in the following equation leads to wrong results. Intersection is not cummutative ?! :)
     $intersection := $all-occurences-mods-mods-node-pres[. = $mods-mods-node-pres],
