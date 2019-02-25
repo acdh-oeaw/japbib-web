@@ -601,11 +601,11 @@ div.showEntry {
     font-style: italic;
 }
 .articleTitle::before {
-  content:'â€ž';
+  content:'„';
   display: inline;
 }
 .articleTitle::after {
-  content:'â€œ';
+  content:'“';
   display:  inline;
 }
 /*  results Farben*/
@@ -668,7 +668,7 @@ div.showEntry {
 } 
 
 .skip::before {
-    content: 'Eintrag fehlerhaft oder unvollstÃ¤ndig';
+    content: 'Eintrag fehlerhaft oder unvollständig';
     color: red;
 }
 
