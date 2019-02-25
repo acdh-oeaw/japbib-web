@@ -404,11 +404,12 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     $('.search.help input').on('keyup', function() {
         var index= $(this).attr('data-index')+'='
           , newInput = index+($(this).val())+'*'
-          , inputQueryBefore = $('#searchInput1').val()
-          , and= inputQueryBefore.length > 0 ? ' and ' : ''
-          , replaceText = new RegExp('(and )?'+index+'\\w+\\*'); 
-        inputQueryBefore = inputQueryBefore.replace(replaceText, ''); 
-        $('#searchInput1').val(inputQueryBefore+and+newInput);
+          , replaceText = new RegExp('[and ]*'+index+'.*?\,\*')
+          , inputQueryBefore = $('#searchInput1').val().replace(replaceText, '')
+          , and = inputQueryBefore.length > 0 ? ' and ' : ''; 
+        
+        if ($(this).val().replace(/\s/, '').length > 0)
+          $('#searchInput1').val(inputQueryBefore+and+newInput);
     });
     
 
@@ -458,8 +459,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             rangeSelected = true;
         }
         // Suche formulieren
-        var inputQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '');
-        inputQuery = inputQuery.replace(/[and ]*date[=><]+[\d-and te=><]+/, '');
+        var replacePattern = new RegExp('[and ]*date=[><]*\d{4}')
+          , inputQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '');
+
+        inputQuery = inputQuery.replace(/[and ]*date=[><]*\d{4}/, '');
+        
         if ($('.year .selected').length > 0) {
             var dateQuery = inputQuery ? ' and date' : 'date';
             if (startSelected === endSelected)
