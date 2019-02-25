@@ -268,9 +268,27 @@ tr.examples {
  display: inline-block;
  border: 1px solid transparent;
  border-width: 1px 0;
- border-radius: 0;
+ border-radius: 50%;
  }  
 
+.search .fa, 
+.search .fas, 
+.search .far { 
+    display: inline-block;
+    width: 1.75em;
+    line-height: 1.75em;
+    border-radius: 50%;
+    text-align: center;
+    padding: 0;
+    color: #005;
+    opacity: .5;
+}
+
+.search .fa:hover, 
+.search .fas:hover, 
+.search .far:hover { 
+    opacity: 1;
+}
 /*  Suchoptionen */
   
 .showOptions {
@@ -336,53 +354,63 @@ tr.examples {
   background: rgb(250, 255, 255);
 }
 
+.searchNav {
+    margin: -1.8em auto .8em;
+}
+.searchNav i {
+    display: inline-block;
+    padding: .5em .3em; 
+    border-radius: 50% 50% 0 0;
+}
+
+.searchNav i:hover {
+    background: #d7e6e6;
+    background: #f3f7f0;
+}
+.startSearch {
+  width:3em;
+  display:inline-block;
+  text-align:left;
+}
 
  /*******  Suchfeld *********/
 
 #searchform1 input {
-  box-sizing: border-box; 
-  display: block; 
-  width: 100%;
-  padding: .5em;
+  box-sizing: border-box;
+  display: inline;
+  padding: .5em 2em .5em 1em;
   font-size: 1rem;
   font-family: calibri, arial, sans-serif;
+  width:calc(100% - 4em);
+} 
+#searchform1 .examples input {
+  padding: .2em 2em .2em 1em;
 } 
 
-tr.search  {
-  position: relative;
-  display: block;
-  /* margin-top: -1em; */
-  padding: 0 0 1em 0;
-  background: #f3f7f0;
-}
-tr.search td {
-  display: block; 
-  margin: .5em 2.5em; 
-  position: static;
-}
-tr.search .fa {
-  position: absolute;
-  top: 1px;
+.search {
+    padding: .5em 1em 1em;
+    /* text-align: left; */
+} 
+
+.search .fa {
   cursor: pointer;
 }
-tr.search .fa-times {
+.search .fa-times {
   right: 2.75rem;
-  /* top: 1.5rem; */
-  padding: .5em;
+  padding: 0 .5em;
   background: rgba(255, 255, 255, 0.68);
   margin: 2px;
+  margin-left: -2em;
   opacity: .3;
 }
-tr.search .fa-search:hover,
-tr.search .fa-times:hover {
+.search .fa-search:hover,
+.search .fa-times:hover {
     opacity: 1;
 }
-tr.search .fa-search {
-  right: 0px;
-  /* top: 1.5rem; */
+.search .fa-search {
+  display: inline-block;
   opacity: .6;
   font-size: 1.5rem;
-  display: block;
   line-height: 2.4rem;
   padding: 0;
   width: 2.5rem;
