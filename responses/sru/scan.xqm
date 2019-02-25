@@ -114,7 +114,7 @@ declare %private function api:do-scan($scanClauseParsed as element(scanClause), 
                           let $v := normalize-space(string-join($t/", $index-match,"/data(), ' ')) 
                           group by $v
                           let $c := count($t),
-                              $l := string-join(data(($t", $label-rel-xpath,")[1]), ' ') 
+                              $l := string-join(data(($t[1]", $label-rel-xpath,")), ' ') 
                           order by ", if ($x-sort = 'text') then '$v ascending' else '$c descending', "
                           return <_>
                               <sru:term xmlns:sru='http://www.loc.gov/zing/srw/' xmlns:fcs='http://clarin.eu/fcs/1.0'>
