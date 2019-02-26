@@ -172,7 +172,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         }
     });
 
-    $('#searchInput1').keypress(function(e) {
+    $('#searchInput1, #inputAuthor, #inputTitle').keypress(function(e) {
         if (e.which === 13) {
             e.preventDefault();  
             $('#doSearch').trigger('click');
@@ -382,7 +382,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     /*********************************************
       Gestalte das Feld "Suche"
     **********************************************/
-    // Handler fuer suchOptionen (BS) 
+    // Handler fuer suchOptionen (BS)
+
+    //Felder schließen und leeren 
     $('.search.help').hide();
     $(document).on('click', '.searchNav i', function() {
         var id =  's_'+ $(this).attr('data-index'); 
@@ -390,36 +392,35 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#'+id).find('input').val(''); 
     }); 
 
-    // Suche nach Autor oder Titel
-    $(document).on('click', '.search.examples a', function(e) {
-        e.preventDefault();
-       var inputQueryBefore = $('#searchInput1').val()
-         , newInputID = $(this).attr('data-search')
-         , newInputIndex = $(this).attr('data-index')+'='
-         , newInput= newInputIndex+$('#'+newInputID).val()+'*'
-         , and= inputQueryBefore.length > 0 ? ' and ' : '';
-        $('#searchInput1').val(inputQueryBefore+and+newInput);
-    }); 
-    // Suchhilfe
-    $('.search.help input').on('keyup', function() {
-        var index= $(this).attr('data-index')+'='
-          , newInput = index+($(this).val())+'*'
-          , replaceText = new RegExp('[and ]*'+index+'.*?\,\*')
-          , inputQueryBefore = $('#searchInput1').val().replace(replaceText, '')
-          , and = inputQueryBefore.length > 0 ? ' and ' : ''; 
-        
-        if ($(this).val().replace(/\s/, '').length > 0)
-          $('#searchInput1').val(inputQueryBefore+and+newInput);
-    });
-    
-
-    /**/
-
     $(document).on('click', '.search.examples .clearSearch', function() { 
         $(this).parents('.search.examples').find('input').val(''); 
     });
+    $(document).on('click', '.hideSearch', function(e) {
+        e.preventDefault();
+        $(this).parents('.search.examples').hide('slow'); 
+    });
+ 
+    // Suchhilfe Autor oder Titel
+    $('.search.help input').on('keyup', function() {
+        var index= $(this).attr('data-index')
+          , newInput = $(this).val().replace(/\s+/,'').length > 0 ? index+'='+($(this).val())+'*' : ''
+          , replaceText = new RegExp('(\s*and |\s*)'+index+'=[^\\*]*\\*', 'g')
+          , inputQueryBefore = $('#searchInput1').val()
+            .replace(replaceText, '')
+            .replace(/ sortBy .*$/, '')
+            .replace(/(^\s*and | and\s*$)/g, '')
+            .replace(/\s\s/g, ' ')
+            .replace(/^\s+$/, '')
+          , and = (inputQueryBefore.length > 0 && newInput.length > 0) 
+            ? ' and ' : ''
+          , sortby = (inputQueryBefore.length > 0 && index==='author') 
+            ? ' sortBy author' : ''; 
+         
+        $('#searchInput1').val(inputQueryBefore+and+newInput+sortby);
+    });
+    
 
-    // Suche nach Datum  
+    // Suchhilfe für Datum  
     var years = $('.year a')
       , rangeSelected = false
       , startSelected = 0
@@ -459,10 +460,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             rangeSelected = true;
         }
         // Suche formulieren
-        var replacePattern = new RegExp('[and ]*date=[><]*\d{4}')
-          , inputQuery = $('#searchInput1').val().replace(/ sortBy .*$/, '');
-
-        inputQuery = inputQuery.replace(/[and ]*date=[><]*\d{4}/, '');
+        var inputQuery = $('#searchInput1').val()
+            .replace(/ sortBy .*$/, '')
+            .replace(/(\s*and |\s*)date.*?=\d{4}/g, '')
+            .replace(/^\s*and /, '') ;
         
         if ($('.year .selected').length > 0) {
             var dateQuery = inputQuery ? ' and date' : 'date';
@@ -470,8 +471,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
                 dateQuery += '=' + (1980 + startSelected);
             else
                 dateQuery += '>=' + (1980 + startSelected) + ' and date<=' + (1980 + endSelected);
-            inputQuery += dateQuery;
+             
+            inputQuery += dateQuery+' sortBy date';
         }
+
         $('#searchInput1').val(inputQuery);
     });
 

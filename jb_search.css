@@ -267,7 +267,7 @@ tr.examples {
  padding: 0 .25em;
  display: inline-block;
  border: 1px solid transparent;
- border-width: 1px 0;
+ /* border-width: 1px 0; */
  border-radius: 50%;
  }  
 
@@ -347,8 +347,8 @@ tr.examples {
 .search.year  a.selected { 
   background: #c5f9fb;
 }  
-.search.year a:hover {  
-  border-color: #0d95bd;
+.search.year a:hover {
+  border-color: #f3c70a;
 } 
 .examples .code {
   background: rgb(250, 255, 255);
@@ -378,44 +378,46 @@ tr.examples {
     background: #f3f7f0;
 }
 .startSearch {
-  /* width:3em; */
+  width: 6rem;
   display:inline-block;
   text-align:left;
+  position: absolute;
+  margin-left: -4.5rem;
 }
 
  /*******  Suchfeld *********/
 
-#searchform1 input {
+#searchform1 input, 
+.subquery {
   box-sizing: border-box;
   display: inline;
+  display: inline-block;
   padding: .5em 2em .5em 1em;
   font-size: 1rem;
   font-family: calibri, arial, sans-serif;
-  width:calc(100% - 4em);
+  width: calc(100% - 4rem);
+  margin-right: 2rem;
 } 
 #searchform1 .examples input {
   padding: .2em 2em .2em 1em;
 } 
-
 .search {
     padding: 1.5em 1em 0;
     background: #f3f7f0;
     z-index:1;
     position:relative;
+    border: 1px solid #eee;
 } 
 .mainInput {
-    padding: 1.5em 1em;
+    padding: 1.5em 1em 1.5em;
 }
 
 .search .fa {
   cursor: pointer;
 }
-.search .fa-times {
-  right: 2.75rem;
+.search .clearSearch {
   padding: 0 .5em;
-  background: rgba(255, 255, 255, 0.68);
-  margin: 2px;
-  margin-left: -2em;
+  /* background: rgba(255, 255, 255, 0.68); */
   opacity: .3;
 }
 .search .fa-search:hover,
