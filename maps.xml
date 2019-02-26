@@ -10,13 +10,13 @@
             <path label="string-join(mods:titleInfo/*, ' ')" match=".//*[not((ancestor::*:LIDOS-Dokument, ancestor-or-self::mods:*[@displayLabel='internal']))]">mods:mods</path>
         </index>
         <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
-            <path label="." match="(* except mods:nonSort)">mods:titleInfo[parent::mods:mods]</path>
+            <path label="*" match="(* except mods:nonSort)">mods:titleInfo[parent::mods:mods]</path>
         </index>
         <index label="Autor" key="author" case="false" type="ft" coll="?lang=de">
-            <path label="." match="mods:namePart">mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]</path>
+            <path>mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]/mods:namePart</path>
         </index>
         <index key="date" datatype="xs:integer" scr="=">
-            <path label="." match="text()">mods:dateIssued[@keyDate="yes"]</path>
+            <path>mods:dateIssued[@keyDate="yes"]/text()</path>
         </index>
         <index key="subject" case="false" type="ft" coll="?lang=de">
             <path label="_:dict(.)">(mods:subject[not(@displayLabel)]/mods:topic|mods:genre)</path>
@@ -25,10 +25,10 @@
             <path label="_:dict(.)">(mods:subject[@usage eq 'primary' and not(@displayLabel)]/mods:topic|mods:genre)</path>
         </index>
         <index label="Reihe" key="series" case="false" type="ft" coll="?lang=de">
-            <path label="mods:titleInfo/mods:title//text()" match="mods:titleInfo/mods:title//text()">mods:relatedItem[@type = 'series']</path>
+            <path>mods:relatedItem[@type = 'series']/mods:titleInfo/mods:title//text()</path>
         </index>
         <index key="publisher" case="no" type="ft" coll="?lang=de">
-            <path label=".">mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
+            <path>mods:mods/mods:originInfo[parent::mods:mods]/mods:publisher</path>
         </index>
         <index label="Bezeichner für einen Eintrag" key="id">
             <path>mods:recordIdentifier</path>
