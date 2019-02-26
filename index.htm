@@ -26,28 +26,28 @@
   <script src="bower_components/js-cookie/src/js.cookie.js"></script> 
   <script src="jb_scripts.js"></script>
 <!-- 
-Vorläufiger Matomo Tracker (ehem. PIWIK) 
-    Ergebnisse unter www.univie.ac.at/rel_jap/piwik/ (Bescheid/pwpiwik)
-    Matomo Code (4.3.2018): 
+Matomo Tracker https://matomo.acdh.oeaw.ac.at
 -->
+
+<!-- Matomo -->
 <script type="text/javascript">
-  var _paq = _paq || [];
+  var _paq = window._paq || [];
   /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-  _paq.push(["setCookieDomain", "*.www.oeaw.ac.at"]);
-  _paq.push(["setDomains", ["*.www.oeaw.ac.at/jb80","*.www.oeaw.ac.at/jb80/index.htm"]]);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u="//www.univie.ac.at/rel_jap/piwik/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', '4']);
+    var u="https://matomo.acdh.oeaw.ac.at/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '121']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
   })();
 </script>
-<noscript><img src="//www.univie.ac.at/rel_jap/piwik/piwik.php?idsite=4&rec=1" style="border:0;" alt="" /></noscript>
-<!-- End Matomo Code -->
+<noscript>
+  <!-- Matomo Image Tracker-->
+  <img src="https://matomo.acdh.oeaw.ac.at/matomo.php?idsite=121&rec=1" style="border:0" alt="" />
+  <!-- End Matomo -->
+</noscript>
 </head>
 <body class="background">
   <div id="testScreen"> 
