@@ -117,7 +117,7 @@ declare function cql:xcql-to-orderExpr ($xcql as node(), $context as xs:string) 
             then $map
             else 
                let $sortIndexMap := index:index-from-map($sortIndex/text(), $map),
-                   $sortIndexXpath := index:index-as-xpath-from-map($sortIndex, $map)
+                   $sortIndexXpath := string-join((index:index-as-xpath-from-map($sortIndex, $map), index:index-as-xpath-from-map($sortIndex, $map)/@sort), '/')
                return
                     if ($sortIndexXpath instance of element(sru:diagnostics))
                     then $sortIndexXpath
