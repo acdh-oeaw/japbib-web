@@ -32,21 +32,29 @@ function api:file($file as xs:string) as item()+ {
   let $path := api:base-dir()|| $file
   return if (file:exists($path)) then
     if (matches($file, '\.(htm|html|js|map|css|png|gif|jpg|jpeg|ico|woff|woff2|ttf)$', 'i')) then
-    (
-      web:response-header(map { 'media-type': web:content-type($path) }, 
-                          map { 'X-UA-Compatible': 'IE=11' }),
-      file:read-binary($path)
+    let $bin := file:read-binary($path)
+       , $hash := xs:string(xs:hexBinary(hash:md5($bin)))
+       , $hashBrowser := request:header('If-None-Match', '')
+    return if ($hash = $hashBrowser) then
+      web:response-header(map{}, map{}, map{'status': 304, 'message': 'Not Modified'})
+    else (
+      web:response-header(map { 'media-type': web:content-type($path),
+                                'method': 'basex',
+                                'binary': 'yes' }, 
+                          map { 'X-UA-Compatible': 'IE=11'
+                              , 'Cache-Control': 'max-age=3600,public'
+                              , 'ETag': $hash }),
+      $bin
     ) else api:forbidden-file($file)
   else if (matches($file, 'runTests/.+\.(xml)$')) then
 	api:run-tests(replace($file, 'runTests/', ''))
   else
   (
-  <rest:response>
-    <http:response status="404" message="{$file} was not found.">
-      <http:header name="Content-Language" value="en"/>
-      <http:header name="Content-Type" value="text/html; charset=utf-8"/>
-    </http:response>
-  </rest:response>,
+    web:response-header(map{'media-type': 'text/html',
+                            'method': 'html'}, 
+                        map{'Content-Language': 'en',
+                        'X-UA-Compatible': 'IE=11'},
+                        map{'status': 404, 'message':$file||' was not found'}),
   <html xmlns="http://www.w3.org/1999/xhtml">
     <title>{$file||' was not found'}</title>
     <body>        
@@ -193,7 +201,10 @@ function api:run-tests($file as xs:string) as item()+ {
 declare
   %rest:path("japbib-web/runtime")
 function api:runtime-info() as item()+ {
-  let $runtime-info := db:system()
+  let $runtime-info := db:system(),
+      $xslt-runtime-info := xslt:transform(<_/>,
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output method="xml"/><xsl:template match='/'><_><product-name><xsl:value-of select="system-property('xsl:product-name')"/></product-name><product-version><xsl:value-of select="system-property('xsl:product-version')"/></product-version></_></xsl:template></xsl:stylesheet>)/*
   return
   <html xmlns="http://www.w3.org/1999/xhtml">
     <title>Runtime info</title>
@@ -207,6 +218,10 @@ function api:runtime-info() as item()+ {
            <td>{$item}</td>
          </tr>
        }
+         <tr>
+           <td>{$xslt-runtime-info/*:product-name/text()}</td>
+           <td>{$xslt-runtime-info/*:product-version/text()}</td>
+         </tr>
        </table>
     </body>
   </html>
