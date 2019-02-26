@@ -202,13 +202,14 @@ let $match-on-xpath := if ($match-on-xpath) then $match-on-xpath else 'text()',
     $case-sensitive := if ($case) then ' using case sensitive' else ' using case insensitive',
     $rtrans-term := _:rdict($term),
     $sanitized-term := cql:sanitize-xqft-term($rtrans-term),
+    $at-start := if (string-length($sanitized-term) = 3 and $wildcards ne '') then ' at start' else '',
     $language := " using language '"||db:info($model:dbname)/indexes/language||"' "
 return switch (true())  
   case ($sanitized-term eq 'false') return 'not('||$match-on-xpath||')'
   case ($sanitized-term eq 'true') return $match-on-xpath
   default return if ($index-datatype != '')
         then $match-on-xpath||" castable as "||$index-datatype||" and "||$index-datatype||"("||$match-on-xpath||") "||$relation||" "||$index-datatype||"("||$term||")"
-        else $match-on-xpath||'/text() contains text "'||$sanitized-term||'"'||$wildcards||$case-sensitive||$language
+        else $match-on-xpath||'/text() contains text "'||$sanitized-term||'"'||$wildcards||$case-sensitive||$language||$at-start
 };
 
 declare %private function cql:sanitize-xqft-term($term) {
