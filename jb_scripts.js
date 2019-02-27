@@ -1,3 +1,8 @@
+// For matomo. The matomo code snippet will make this
+// a way to execute functions of the tracking system
+var window = window || {};
+var _paq = window._paq || [];
+
 $(document).ready(function() {
     if (!window.__karma__) {
         jb_init(jQuery, CodeMirror, hasher, crossroads, URI)
@@ -59,6 +64,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         fixPageindex();
 
         // toggle position thesaurus pageindex, s.u.
+        
+        // track a page view
+        _paq.push(['trackPageView']);
     }
 
     function go2subPage(link) {
@@ -74,6 +82,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         });
         $('#about .pageindex a').removeClass('here');
         $('#about .pageindex a[href~="#' + link + '"]').addClass('here');
+        
+        // track a page view
+        _paq.push(['trackPageView']);
     }
 
             // übertrage query aus URL ins Suchfeld
@@ -277,7 +288,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
         //Anfage an Server mit load()
         $('.content > .showResults').load(href, function(unused1, statusText, jqXHR) {
-            callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting]);
+            callbackAlwaysAsync(this, jqXHR, onResultLoaded, [statusText, jqXHR, currentSorting, href]);
         });
     }
 
@@ -314,7 +325,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     // Treffer zuordnen und alten Inhalt ersetzen:
 
-    function onResultLoaded(statusText, jqXHR, currentSorting) {
+    function onResultLoaded(statusText, jqXHR, currentSorting, requestHref) {
         try {
             var ajaxParts = $('.content > .showResults .ajax-result')
               , ajaxPartsDiagnostics = $('.content > .showResults sru\\:diagnostics')
@@ -354,6 +365,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         } finally {
             getResultsLock = false;
             newFilter = true;
+            var requestQuery = URI(requestHref).query(true),
+                searchKeyword = requestQuery.query,
+                searchCategory = requestQuery.query.replace(/^([^=]+)=.*/g, '$1');
+            _paq.push(['trackSiteSearch',
+            // Search keyword searched for
+            searchKeyword,
+            // Search category selected in your search engine. If you do not need this, set to false
+            searchCategory,
+            // Number of results on the Search results page. Zero indicates a 'No Result Search Keyword'. Set to false if you don't know
+            $(navResults).find('.numberofRecords').text()
+            ]);
         }
     }
 
