@@ -348,7 +348,7 @@ tr.examples {
   background: #c5f9fb;
 }  
 .search.year a:hover {
-  border-color: #f3c70a;
+  border-color: #00d5ff;
 } 
 .examples .code {
   background: rgb(250, 255, 255);
@@ -398,6 +398,9 @@ tr.examples {
   width: calc(100% - 4rem);
   margin-right: 2rem;
 } 
+span.subquery {
+  padding: 0 2em; 
+}
 #searchform1 .examples input {
   padding: .2em 2em .2em 1em;
 } 
