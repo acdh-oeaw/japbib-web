@@ -1,14 +1,15 @@
-// For matomo. The matomo code snippet will make this a link to the tracker
+// For matomo. The matomo code snippet will make this
+// a way to execute functions of the tracking system
 var window = window || {};
 var _paq = window._paq || [];
 
 $(document).ready(function() {
     if (!window.__karma__) {
-        jb_init(jQuery, CodeMirror, hasher, crossroads, URI, _paq)
+        jb_init(jQuery, CodeMirror, hasher, crossroads, URI)
     }
 });
 
-function jb_init($, CodeMirror, hasher, crossroads, URI, _paq) {
+function jb_init($, CodeMirror, hasher, crossroads, URI) {
     var m = {}
       , getResultsLock = false
       , getResultsErrorTracker = {
