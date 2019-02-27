@@ -412,6 +412,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     **********************************************/
     // Handler fuer suchOptionen (BS)
 
+    // Handler fuer .tipp
+    $('.tipp').attr('title', 'Tipp').children().hide();
+    $(document).on('click', '.tipp', function() {
+        $(this).toggleClass('q2x').children().slideToggle('slow');
+        var title = 'Tipp';
+        if ($(this).hasClass('q2x')) {
+            title = 'Tipp ausblenden';
+        }
+        $(this).attr('title', title);
+    });
+
     //Felder schließen und leeren 
     $('.search.help').hide();
     $(document).on('click', '.searchNav i', function() {
@@ -433,9 +444,9 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             .replace(/(^\s*and | and\s*$)/g, '')
             .replace(/\s\s/g, ' ')
             .replace(/^\s+$/, '')
-          , and = (oldQuery.length > 0 && input.length > 0) 
+          , and = (oldQuery.length > 0 && newInput.length > 0) 
             ? ' and ' : ''
-          , sortby = (sortIndex.match(/author|date/) && oldQuery) 
+          , sortby = (sortIndex.match(/(author|date)/) && (oldQuery||newInput)) 
             ? ' sortBy '+sortIndex : ''; 
          
         $('#searchInput1').val(oldQuery+and+newInput+sortby);
