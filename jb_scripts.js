@@ -66,6 +66,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         // toggle position thesaurus pageindex, s.u.
         
         // track a page view
+        _paq.push(['setCustomUrl', URI().href()]);
         _paq.push(['trackPageView']);
     }
 
@@ -84,6 +85,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         $('#about .pageindex a[href~="#' + link + '"]').addClass('here');
         
         // track a page view
+        _paq.push(['setCustomUrl', URI().href()]);
         _paq.push(['trackPageView']);
     }
 
@@ -101,6 +103,10 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         Wenn ein href-Aufruf dem pattern entspricht, tritt der listener in Aktion
 
         --------------------------------------------------------*/ 
+
+    function fromRoute() {
+        _paq.push(['setReferrerUrl', URI().href()]);
+    }
 
     mainPages.forEach(function(link) {
                //crossroads.addRoute sucht in hrefs nach dem pattern "mainPages[i]?query" 
@@ -136,6 +142,7 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     //setup crossroads, log all routes
     crossroads.routed.add(console.log, console);
+    crossroads.routed.add(fromRoute);
 
     //setup hasher
     function parseHash(newHash, oldHash) {
