@@ -197,7 +197,7 @@
                     <!-- Autor --> 
                     <xsl:if test="mods:name/mods:role/mods:roleTerm[. = $acceptedRoles]"> 
                         <li class="eSegment">
-                            <xsl:value-of select="_:dict('aut')"/>
+                            <xsl:value-of select="_:dict('aut')"/>:
                         </li>  
                         <li> 
                             <xsl:apply-templates select="mods:name">
@@ -209,7 +209,7 @@
                     </xsl:if>
                     <!-- Titel -->
                     <li class="eSegment">
-                        <xsl:value-of select="_:dict('title')"/>
+                        <xsl:value-of select="_:dict('title')"/>:
                     </li>
                     <li> 
                         <xsl:apply-templates select="mods:titleInfo"/>  
@@ -218,14 +218,14 @@
                     <xsl:choose>
                         <xsl:when test="mods:originInfo">                            
                             <li class="eSegment">
-                                <xsl:value-of select="_:dict('place')||'/'||_:dict('publisher')||'/'||_:dict('year')"/>
+                                Erschienen:
                             </li>
                             <li>                                
                                 <xsl:apply-templates select="mods:originInfo"/> 
                             </li>
                         </xsl:when>
                         <xsl:when test="mods:relatedItem[@type eq 'host']">  
-                            <li class="eSegment">In:</li>                                
+                            <li class="eSegment">Erschienen in:</li>                                
                             <li>                                 
                                 <xsl:apply-templates select="mods:relatedItem[@type eq 'host']" /> 
                             </li>
@@ -685,7 +685,7 @@
     </xd:doc>
     <xsl:template match="mods:relatedItem[@type eq 'series']">
         <li class="eSegment">
-            <xsl:value-of select="_:dict('series')"/>
+            <xsl:value-of select="_:dict('series')"/>:
         </li>
         <li>
             <xsl:apply-templates select="mods:titleInfo" mode="link"/>
@@ -704,7 +704,7 @@
         <xd:desc>Details, Kollationsvermerk (Sammeltemplate)</xd:desc>
     </xd:doc>
     <xsl:template match="mods:physicalDescription">
-        <li class="eSegment">Kollationsvermerk</li>
+        <li class="eSegment">Kollation:</li>
         <li>            
             <xsl:apply-templates/>
             <xsl:value-of select="if (position() ne last()) then '; ' else ''"/> 
@@ -722,7 +722,7 @@
         <xd:desc>Angabe zur Originalversion, etc. </xd:desc>
     </xd:doc>
     <xsl:template match="mods:relatedItem[@type[matches(., 'original|reviewOf|otherVersion')]]" >
-        <li class="eSegment"><xsl:value-of select="_:dict(@type)"/></li>
+        <li class="eSegment"><xsl:value-of select="_:dict(@type)"/>:</li>
         <li>
             <xsl:if test="mods:name">                
                 <xsl:apply-templates select="mods:name"/>
@@ -744,7 +744,7 @@
         <xd:desc>Fußnoten</xd:desc>
     </xd:doc> 
     <xsl:template match="mods:note[@type eq 'footnotes']">        
-        <li class="eSegment">Bemerkungen</li>
+        <li class="eSegment">Bemerkungen:</li>
         <li><xsl:value-of select="."/></li>        
     </xsl:template>
     
@@ -758,7 +758,7 @@
         <xsl:if test="mods:subject[@usage = 'primary']
             [following-sibling::mods:subject[@usage = 'secondary'][mods:topic[. = $topic]]]">            
             <li class="eSegment">
-                <xsl:value-of select="$topic"/>
+                <xsl:value-of select="$topic"/>:
             </li>
             <xsl:for-each select="mods:subject[@usage = 'primary']
                 [following-sibling::mods:subject[@usage = 'secondary'][1][mods:topic[. = $topic]]]">
@@ -789,7 +789,7 @@
     </xd:doc>
     <xsl:template name="Stichwort">
         <xsl:if test="mods:subject[@displayLabel = 'Stichworte']">
-            <li class="eSegment">Stichworte</li>
+            <li class="eSegment">Stichworte:</li>
             <li> 
                 <xsl:apply-templates select="mods:subject[@displayLabel = 'Stichworte']"/> 
             </li>

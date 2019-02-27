@@ -615,6 +615,7 @@ PLUS-MINUS, ZAHL
   font-family: "Courier New", Courier, monospace;
   font-style: italic;
   letter-spacing: .3em;
+  /* text-transform: uppercase; */
 }
 .shortInfo .plusMinus::before {
  margin-right: .3em;

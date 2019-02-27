@@ -273,7 +273,7 @@ tr.examples {
 
 .search .fa, 
 .search .fas, 
-.search .far { 
+.search .far {
     display: inline-block;
     width: 1.75em;
     line-height: 1.75em;
@@ -282,13 +282,16 @@ tr.examples {
     padding: 0;
     color: #005;
     opacity: .5;
+    cursor: pointer;
 }
 
 .search .fa:hover, 
 .search .fas:hover, 
 .search .far:hover { 
     opacity: 1;
+  background: linear-gradient( rgba(0, 146, 255, 0.09), rgba(0, 146, 255, 0.12));
 }
+
 /*  Suchoptionen */
   
 .showOptions {
@@ -325,6 +328,7 @@ tr.examples {
   background: rgb(243, 247, 240);
   /* border-top: 1px solid #ccc; */
   /* background-color: white; */
+  padding-top: 1em;
 } 
 .examples th:hover, .examples.here th { 
   border-bottom-color: rgb(243, 247, 240);
@@ -343,12 +347,14 @@ tr.examples {
 #searchform1 h2 { 
     color: #005; 
 }
-.search.year  a:hover, 
-.search.year  a.selected { 
+
+.search.year  a.selected {
   background: #c5f9fb;
+  background: #ffca00;
+  background: #ffe064;
 }  
-.search.year a:hover {
-  border-color: #00d5ff;
+.search.year a:hover { 
+  background: #ffca00;
 } 
 .examples .code {
   background: rgb(250, 255, 255);
@@ -384,6 +390,9 @@ tr.examples {
   position: absolute;
   margin-left: -4.5rem;
 }
+.year .startSearch {
+  margin-top: -1em;
+}
 
  /*******  Suchfeld *********/
 
@@ -399,7 +408,8 @@ tr.examples {
   margin-right: 2rem;
 } 
 span.subquery {
-  padding: 0 2em; 
+  padding: 0; 
+  padding-left: 2rem;
 }
 #searchform1 .examples input {
   padding: .2em 2em .2em 1em;
@@ -409,23 +419,19 @@ span.subquery {
     background: #f3f7f0;
     z-index:1;
     position:relative;
-    border: 1px solid #eee;
+    /* border: 1px solid #eee; */
 } 
 .mainInput {
     padding: 1.5em 1em 1.5em;
 }
 
-.search .fa {
-  cursor: pointer;
-}
 .search .clearSearch {
   padding: 0 .5em;
   /* background: rgba(255, 255, 255, 0.68); */
   opacity: .3;
-}
-.search .fa-search:hover,
-.search .fa-times:hover {
-    opacity: 1;
+} 
+.search .fa.clearSearch { 
+background: transparent;
 }
 .search .fa-search {
   display: inline-block;
@@ -501,8 +507,8 @@ div.showEntry {
     color: #8e843b;
 }
 .showEntry h4 {
-    font-family: calibri, arial, sans-serif;
     padding-left: 1rem;
+    text-decoration: underline;
 }
 
 .showEntry .showOptions {
@@ -511,16 +517,20 @@ div.showEntry {
     padding-left: 1em;
     /* background: #ccc; */
 }
-.showEntry .eSegment {
+.showEntry .eSegment, 
+.showEntry h4 {
+  font-size: 1rem; 
+  font-weight: normal;
+  font-family: courier, monospace;
+  color: #555;
+
+}
+.showEntry .eSegment{
   float:left;
   clear: left;
   width: 8.5rem;
-  margin-left: 0em;
-  font-style: italic;
-  /* text-align: right; */
-  padding-right: .5rem;
-  /* font-family: calibri, arial, sans-serif; */
-  color: #777147;
+  margin-left: 0em; 
+  padding-right: .5rem; 
   } 
 .showEntry small {
     color: #777147;
@@ -606,11 +616,11 @@ div.showEntry {
     font-style: italic;
 }
 .articleTitle::before {
-  content:'„';
+  content:'â€ž';
   display: inline;
 }
 .articleTitle::after {
-  content:'“';
+  content:'â€œ';
   display:  inline;
 }
 /*  results Farben*/
@@ -673,7 +683,7 @@ div.showEntry {
 } 
 
 .skip::before {
-    content: 'Eintrag fehlerhaft oder unvollständig';
+    content: 'Eintrag fehlerhaft oder unvollstÃ¤ndig';
     color: red;
 }
 
