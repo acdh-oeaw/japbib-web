@@ -388,37 +388,43 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
     $('.search.help').hide();
     $(document).on('click', '.searchNav i', function() {
         var id =  's_'+ $(this).attr('data-index'); 
-        $('#'+id).slideToggle('slow'); 
+        $('#'+id).slideToggle('fast'); 
         $('#'+id).find('input').val(''); 
     }); 
 
-    $(document).on('click', '.search.examples .clearSearch', function() { 
-        $(this).parents('.search.examples').find('input').val(''); 
-    });
     $(document).on('click', '.hideSearch', function(e) {
         e.preventDefault();
-        $(this).parents('.search.examples').hide('slow'); 
+        $(this).parents('.search').hide('slow'); 
     });
  
     // Suchhilfe Autor oder Titel
-    $('.search.help input').on('keyup', function() {
-        var index= $(this).attr('data-index')
-          , newInput = $(this).val().replace(/\s+/,'').length > 0 ? index+'='+($(this).val())+'*' : ''
-          , replaceText = new RegExp('(\s*and |\s*)'+index+'=[^\\*]*\\*', 'g')
-          , inputQueryBefore = $('#searchInput1').val()
-            .replace(replaceText, '')
+    function replaceSearchData(input, replacePattern, index) {
+        var inputQueryBefore = $('#searchInput1').val()
+            .replace(replacePattern, '')
             .replace(/ sortBy .*$/, '')
             .replace(/(^\s*and | and\s*$)/g, '')
             .replace(/\s\s/g, ' ')
             .replace(/^\s+$/, '')
-          , and = (inputQueryBefore.length > 0 && newInput.length > 0) 
+          , and = (inputQueryBefore.length > 0 && input.length > 0) 
             ? ' and ' : ''
-          , sortby = (inputQueryBefore.length > 0 && index==='author') 
-            ? ' sortBy author' : ''; 
+          , sortby = index ? ' sortBy '+index : ''; 
          
-        $('#searchInput1').val(inputQueryBefore+and+newInput+sortby);
+        $('#searchInput1').val(inputQueryBefore+and+input+sortby);
+    }
+    $('.search.help input').on('keyup', function(){ 
+        var index= $(this).attr('data-index')
+          , newInput = $(this).val().replace(/\s+/,'').length > 0 ? index+'='+($(this).val())+'*' : ''
+          , replaceText = new RegExp('(\s*and |\s*)'+index+'=[^\\*]*\\*', 'g')
+          , sortIndex = index.match(/author|date/) ?  index : '';
+
+        replaceSearchData(newInput, replaceText, sortIndex);   
     });
     
+    $(document).on('click', '.search.examples .clearSearch', function() { 
+       var input= $(this).parents('.search.examples').find('input');
+       $( input ).val(''); 
+       $( input ).trigger('keyup');  
+    });
 
     // Suchhilfe für Datum  
     var years = $('.year a')
@@ -432,6 +438,27 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         startSelected = 0;
         endSelected = 0;
     }
+
+    function replaceDate() {
+        // Suche formulieren
+        var inputQuery = $('#searchInput1').val()
+            .replace(/ sortBy .*$/, '')
+            .replace(/(\s*and |\s*)date.*?=\d{4}/g, '')
+            .replace(/^\s*and /, '') ;
+        
+        if ($('.year .selected').length > 0) {
+            var dateQuery = inputQuery ? ' and date' : 'date';
+            if (startSelected === endSelected)
+                dateQuery += '=' + (1980 + startSelected);
+            else
+                dateQuery += '>=' + (1980 + startSelected) + ' and date<=' + (1980 + endSelected);
+             
+            inputQuery += dateQuery+' sortBy date';
+        }
+
+        $('#searchInput1').val(inputQuery);
+    }
+
     $(document).on('click', '.year a', function(e) {
         e.preventDefault();
         //fruehere Auswahl aufheben
@@ -459,23 +486,12 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             }
             rangeSelected = true;
         }
-        // Suche formulieren
-        var inputQuery = $('#searchInput1').val()
-            .replace(/ sortBy .*$/, '')
-            .replace(/(\s*and |\s*)date.*?=\d{4}/g, '')
-            .replace(/^\s*and /, '') ;
-        
-        if ($('.year .selected').length > 0) {
-            var dateQuery = inputQuery ? ' and date' : 'date';
-            if (startSelected === endSelected)
-                dateQuery += '=' + (1980 + startSelected);
-            else
-                dateQuery += '>=' + (1980 + startSelected) + ' and date<=' + (1980 + endSelected);
-             
-            inputQuery += dateQuery+' sortBy date';
-        }
+        replaceDate();
+    });
 
-        $('#searchInput1').val(inputQuery);
+    $(document).on('click', '.year .clearSearch', function() { 
+        unselectDate();  
+        replaceDate();
     });
 
     /*********************************************
