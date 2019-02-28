@@ -615,13 +615,14 @@ div.showEntry {
 .bookTitle {
     font-style: italic;
 }
-.articleTitle::before {
-  content:'â€ž';
+.articleTitle::before,
+.articleTitle::after {
+  content:'„';
   display: inline;
+  font-family: 'Gelasio', 'Georgia', Times, serif;
 }
 .articleTitle::after {
-  content:'â€œ';
-  display:  inline;
+  content:'“'; 
 }
 /*  results Farben*/
 .showEntry,

@@ -556,7 +556,9 @@ td.control {
   top: -2.5em; 
   right: 0; 
   }
-   
+.tipp a {
+  text-decoration: underline;
+}
 /*****************
 PLUS-MINUS, ZAHL
 ******************/
