@@ -17,32 +17,29 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         raisedErrors: []
     }
 
-    // Passwort für Testphasen
+    // Cookies OK    
 
+    /*
     $('#psw').keypress(testOnReturn);
-    $('#testPw').click(allowTest);
 
     function testOnReturn(e) {
         if (e.which === 13) {
             e.preventDefault();
-            allowTest();
+            allowAccess();
         }
     }
-
-    function allowTest() {
-        if ($('#psw').val().toLowerCase() === 'test') {
+    */
+    $('#testOK').click(allowAccess);
+    function allowAccess(e) { 
+            e.preventDefault();  
             Cookies.set('test', 'passed', {
                 expires: 14
             });
             $('#testScreen').hide();
-        } else
-            alert('Passwort erfragen bei bernhard.scheid@oeaw.ac.at');
-    }
+        } 
     if (Cookies.get('test') === 'passed')
         $('#testScreen').hide();
-  
-  /*Test ausschalten... */
-        $('#testScreen').hide();
+   
     /*********************************************************
 
         Handler fuer "Seitenwechsel" via #IDs

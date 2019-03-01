@@ -1,16 +1,22 @@
 #testScreen {
   position: absolute;
-  top: 0;
+  top: 154px;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.85);
-  background-image:url('./images/bg.png');
+  background: rgba(255, 255, 255, 0.75); 
+  background-image: url(./images/bg.png);
   text-align: center;
-  padding: 190px 0;
+  /* padding: 190px 0; */
 }
-
+.cookies {
+  width: 500px;
+  margin: auto;
+  padding: 1em 2em 8em;
+  background: #ffffff; 
+  background-image: url(./images/cookies.png);
+}
 /**********************
    Schrift & basic tags
 **********************/ 
@@ -19,7 +25,6 @@ body {
   color:#555;
   font-family: 'Gelasio', 'Georgia', Times, serif;
   overflow-y: scroll;
-  /* font-family: open sans-serif; */
   } 
 h2, h3, h4  {
   font-family: 'Work Sans', "Trebuchet MS", Arial, sans-serif;

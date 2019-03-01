@@ -45,12 +45,13 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
 </head>
 <body class="background">
   <div id="testScreen"> 
-    <p>Dieses Projekt ist derzeit in Arbeit.</p>
-    <p>Zu Testzwecken bitte Passwort eingeben.</p> 
-    <form>
-      <input type="password" id="psw" name="psw" />
-      <input type="submit" value="Test" id='testPw' />
+    <div class=cookies>
+    <p>Dieses Projekt verwendet Cookies <br/>zur statistischen Erfassung von Besucher-Daten.</p> 
+    <form><!--
+      <input type="password" id="psw" name="psw" />-->
+      <input type="submit" value="OK" id='testOK' />
     </form> 
+  </div>
   </div>
   <div id="head">
     <img class="figure" src="images/hokkei_reading.png" />
@@ -596,11 +597,10 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
               <div class="tipp">
                 <ul>
                   <li>Über diese Seite ist eine Suche nach hierarchisch geordneten Schlagworten möglich.</li>
-                  <li>Ein Klick auf ein Schlagwort löst eine entsprechende Suche auf der Seite „Suchen und Finden“
+                  <li>Ein Klick auf die Zahl nach einem Schlagwort löst eine entsprechende Suche auf der Seite „Suchen und Finden“
                   aus.</li>
-                  <li>Ein Klick auf die Zahl nach dem Schlagwort führt zur Anzeige im Feld „Ausgewählte Schlagworte“.
-                  Dadurch lässt sich auch eine Kombinaltion von Schlagworten abfragen.</li>
-                  <li>Die Schlagworte werden standardmäßig mit <code>and</code> verküpft (Suchfeld wird kleiner),
+                  <li>Über das Feld „Abfragemodus“ läßt sich auch eine Kombinaltion von Schlagworten abfragen.</li>
+                  <li>Kombinierte Schlagworte werden standardmäßig mit <code>and</code> verküpft (Suchfeld wird kleiner),
                   können aber durch Anklicken auch mit <code>or</code> verbunden werden (Suchfeld wird größer).</li>
                 </ul>
               </div>
