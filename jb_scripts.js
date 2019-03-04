@@ -19,26 +19,20 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
 
     // Cookies OK    
 
-    /*
-    $('#psw').keypress(testOnReturn);
-
-    function testOnReturn(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            allowAccess();
-        }
-    }
-    */
-    $('#testOK').click(allowAccess);
+    $('#coockieOK').click(allowAccess);
     function allowAccess(e) { 
-            e.preventDefault();  
-            Cookies.set('test', 'passed', {
-                expires: 14
-            });
-            $('#testScreen').hide();
-        } 
-    if (Cookies.get('test') === 'passed')
-        $('#testScreen').hide();
+            e.preventDefault();
+            // für 26 Wochen merken
+            _paq.push(['rememberConsentGiven', 4368])
+            $('#coockieScreen').hide();
+        }
+    $('#noCoockiesPlease').click(allowAccessNoConsent);
+    function allowAccessNoConsent(e) { 
+            e.preventDefault();
+            $('#coockieScreen').hide();
+        }
+    if (Cookies.get('mtm_consent') !== undefined)
+        $('#coockieScreen').hide();
    
     /*********************************************************
 

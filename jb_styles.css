@@ -1,4 +1,4 @@
-#testScreen {
+#coockieScreen {
   position: absolute;
   top: 154px;
   left: 0;
@@ -16,6 +16,9 @@
   padding: 1em 2em 8em;
   background: #ffffff; 
   background-image: url(./images/cookies.png);
+}
+#noCoockiesPlease {
+  font-size: 75%;
 }
 /**********************
    Schrift & basic tags
