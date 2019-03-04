@@ -617,12 +617,12 @@ div.showEntry {
 }
 .articleTitle::before,
 .articleTitle::after {
-  content:'„';
+  content:'\201e';
   display: inline;
   font-family: 'Gelasio', 'Georgia', Times, serif;
 }
 .articleTitle::after {
-  content:'“'; 
+  content:'\201c'; 
 }
 /*  results Farben*/
 .showEntry,
