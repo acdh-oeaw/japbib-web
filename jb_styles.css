@@ -13,12 +13,32 @@
 .cookies {
   width: 500px;
   margin: auto;
-  padding: 1em 2em 8em;
-  background: #ffffff; 
+  padding: 1em 2em 14em;
+  background: #ffffff;
   background-image: url(./images/cookies.png);
+  background-position-y: 163px;
+  background-repeat: no-repeat;
 }
 #noCoockiesPlease {
-  font-size: 75%;
+  font-size: 1rem;
+}
+.cookieCheck {
+  width: 14rem;
+  background: #b17131;
+  color: #fff;
+  font-family: calibri;
+  font-family: 'Work Sans', "Trebuchet MS", Arial, sans-serif;
+  font-size: 1.4em;
+  border: 0;
+  padding: .5em .3em;
+  margin: 0 auto .5em;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0px 0px 6px 3px rgba(88, 61, 34, 0.19);
+}
+.cookieCheck:hover {
+  background: #e67f18;
+  cursor: pointer;
 }
 /**********************
    Schrift & basic tags
@@ -159,7 +179,7 @@ h1 {
   line-height: 15px;
   font-family: 'Carlito', 'Calibri', arial, sans-serif;
   position:relative;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   text-transform: uppercase;
 }
 #navbar_items {
