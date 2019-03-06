@@ -15,8 +15,10 @@
   margin: auto;
   padding: 1em 2em 14em;
   background: #ffffff;
-  background-image: url(./images/cookies.png);
-  background-position-y: 163px;
+  background-image: url('./images/cookies.png');
+  background-position-y: 170px;
+  /* background-position-y: 500%; */
+  background-position-y: bottom;
   background-repeat: no-repeat;
 }
 #noCoockiesPlease {
@@ -339,7 +341,7 @@ td.control {
 .content {
   margin-right: 16.5rem;
   margin-left: auto;
-  max-width: 50em; 
+  max-width: 50em;
   line-height: 1.5em;
 }
 #about .content {
@@ -501,7 +503,7 @@ td.control {
 *****************/  
 
 .tipp {
-  position: relative; 
+  position: relative;
   color: rgba(0, 44, 88, 1);
   font-family: 'Font Awesome 5 Free', 'Calibri', arial, sans-serif;
   moz-osx-font-smoothing: grayscale;
@@ -510,7 +512,7 @@ td.control {
   font-style: normal;
   font-variant: normal;
   text-rendering: auto;
-  line-height: 1;
+  line-height: 1.2;
   z-index: 11;
   }
 .tipp::before {
@@ -540,8 +542,9 @@ td.control {
   position: absolute;
   z-index: 7;
   top: .8em;
-  left: 0; 
-  width: 16em;
+  /* left: 0; */
+  right: 0;
+  min-width: 14em;
   margin: 0;
   padding: 1em;
   background: rgba(225, 247, 255, .93);
@@ -549,25 +552,15 @@ td.control {
   border-radius: 5px;
   box-shadow: 4px 4px 6px rgba(51, 51, 51, 0.15);
   text-align: left;
+  white-space: normal;
   } 
 .tipp ul, 
 .showEntry .tipp ul {
   padding-left: 2em;
   }
-.tipp li, 
-.showEntry .tipp li {
-  padding-left: 0;
-  margin: 0;
-  list-style: disc;
-  } 
 #Beispiele.tipp > * {
-  padding: 0 1.5em 1em;  
-  width: 120%;
-  } 
-#Beispiele.tipp::before {
-  position: absolute;
-  top: -0.2em;
-  right: 0;
+  padding: 0 1.5em 1em;
+  /* width: 120%; */
   } 
 .tipp > *::after  {
   content: '\f00d';
@@ -583,8 +576,8 @@ td.control {
   } 
 #thesaurus .tipp {
   position: absolute;
-  top: -2.5em; 
-  right: 0; 
+  top: -2em;
+  right: 0;
   }
 .tipp a {
   text-decoration: underline;
@@ -693,4 +686,40 @@ code,
   } 
 .clearFloat {
     clear: both;
+}
+
+/* mobile etc. */
+
+@media only screen and (orientation: portrait), (max-width: 800px){
+  body {
+    text-size-adjust: 150%;
+  } 
+  #thesaurus .pageindex {
+    /* display: none; */
+    max-height: 2em;
+    overflow: hidden;
+    position: absolute;
+    z-index: 5;
+    top: -2em; 
+    transition: .5s; 
+  }
+  #thesaurus .pageindex:hover,
+  #find .pageindex:hover {
+    max-height: 80em;
+  }
+    #find .pageindex {
+    float: none;
+    position: absolute;
+    z-index: 2;
+    right: 2.5em;
+    /* top: 2.5em; */
+    margin-top: -2em;
+    max-height: 2em;
+    overflow: hidden;
+    transition: .5s;
+  }
+  .content {
+    margin-right:auto;
+  }
+  
 }

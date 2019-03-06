@@ -181,6 +181,7 @@
     padding: .5em;
     position: relative;
     /* float: right; */
+    white-space: nowrap;
 }
 #expandAll > div {
     line-height: 1.2em;

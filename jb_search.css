@@ -27,6 +27,7 @@ a.neueSuche:hover {
  font-family: 'trebuchet ms';
  font-family: "work sans", arial;
  font-weight: bold;
+ white-space: nowrap;
 }
 .hitList {
   line-height: 2rem; 
@@ -199,9 +200,15 @@ table.suchOptionen,
   position: absolute;
   display: block;
   width: 100%;
+  /* min-width: 50%; */
   top: -5.6em;
-  right: 3px;
+  /* right: 3px; */
+  /* right: initial; */
+  left: 0;
+  /* top: 0; */
   z-index: 11;
+  text-align: left;
+  text-align: right;
   } 
 
 /********************************
@@ -323,6 +330,7 @@ tr.examples {
 #searchform1 {
  background-color: rgb(215, 230, 230);
  /* background-color: rgba(220, 230, 230, 1); */
+ white-space: nowrap;
 } 
 .suchOptionen, .examples th:hover, .examples.here th {
   background: rgb(243, 247, 240);
@@ -389,6 +397,7 @@ tr.examples {
   text-align:left;
   position: absolute;
   margin-left: -4.5rem;
+  white-space: nowrap;
 }
 .year .startSearch {
   margin-top: -1em;
