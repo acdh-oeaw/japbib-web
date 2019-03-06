@@ -162,7 +162,7 @@
             
             <!-- Einzeleintrag, Kurzinformation: Name -->  
             <xsl:apply-templates select="mods:name">
-                <xsl:with-param name="roleTerm" select="'aut', 'edt', 'trl', 'ctb'"/>
+                <xsl:with-param name="roleTerm" select="'aut', 'edt', 'trl', 'ctb', 'red'"/>
                 <xsl:with-param name="query" select="false()"/>
                 <xsl:with-param name="description" select="false()"/>
             </xsl:apply-templates>      
@@ -254,9 +254,8 @@
                     
                     <!-- Weitere inhaltl. Angaben -->  
                     
-                    <xsl:if test="mods:subject[(mods:topic = 'Thema' or 'Zeit' or 'Region') 
-                        or @displayLabel = 'Stichworte']
-                        |mods:genre[matches(., '^[Bb]ook$')]">
+                    <xsl:if test="mods:subject[(mods:topic[matches(., '^(Thema|Zeit|Region)$')]) 
+                        or @displayLabel = 'Stichworte']">
                         <h4>Inhaltliche Angaben</h4>
                         <ul> 
                             <xsl:call-template name="primary-subjects">
@@ -637,7 +636,7 @@
             <xsl:otherwise>
                 <xsl:value-of select="_:dict('pages')|| ' ' || ."/>
             </xsl:otherwise>
-        </xsl:choose> 
+        </xsl:choose>  
     </xsl:template>
     
     <xd:doc>
@@ -645,6 +644,7 @@
     </xd:doc>
     <xsl:template match="mods:extent[parent::mods:physicalDescription]">
         <xsl:value-of select=".||' '||_:dict('pages')"/>
+        <xsl:value-of select="if (position() ne last()) then '; ' else ''"/> 
     </xsl:template>
     
     <xd:doc>
