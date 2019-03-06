@@ -17,6 +17,11 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
         raisedErrors: []
     }
 
+    function displayVisitorID() {
+        m.visitor_id = this.getVisitorId();
+        $('#visitorID').replaceWith(m.visitor_id)
+    }
+
     // Cookies OK    
 
     $('#coockieOK').click(allowAccess);
@@ -25,15 +30,17 @@ function jb_init($, CodeMirror, hasher, crossroads, URI) {
             // für 26 Wochen merken
             _paq.push(['rememberConsentGiven', 4368])
             $('#coockieScreen').hide();
+            _paq.push([displayVisitorID]);
         }
     $('#noCoockiesPlease').click(allowAccessNoConsent);
     function allowAccessNoConsent(e) { 
             e.preventDefault();
             $('#coockieScreen').hide();
         }
-    if (Cookies.get('mtm_consent') !== undefined)
-        $('#coockieScreen').hide();
-   
+    if (Cookies.get('mtm_consent') !== undefined) {
+        $('#coockieScreen').hide();        
+        _paq.push([displayVisitorID]);
+    }
     /*********************************************************
 
         Handler fuer "Seitenwechsel" via #IDs
