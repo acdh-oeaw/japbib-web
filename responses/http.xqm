@@ -46,8 +46,6 @@ function api:file($file as xs:string) as item()+ {
                               , 'ETag': $hash }),
       $bin
     ) else api:forbidden-file($file)
-  else if (matches($file, 'runTests/.+\.(xml)$')) then
-	api:run-tests(replace($file, 'runTests/', ''))
   else
   (
     web:response-header(map{'media-type': 'text/html',
@@ -175,13 +173,15 @@ function api:test-error($error-qname as xs:string) as item()+ {
 declare
   %rest:path("japbib-web/runTests/{$file=[^/].+\.(xml)}")
 function api:run-tests($file as xs:string) as item()+ {
-  let $path := file:base-dir()|| $file
-  return (: if (file:exists($path) and doc($path)/tests) then
+  let $path := file:base-dir()||'..'||file:dir-separator()||'tests'||file:dir-separator()||$file,
+      $jid := jobs:eval(``[doc("`{$path}`")]``, (), map {'cache': true()}), $_ := jobs:wait($jid),
+      $input := jobs:result($jid)
+  return if (file:exists($path) and $input/tests) then
   (
     web:response-header(map { 'media-type': 'text/xml'}),
-    serialize(jobs:eval(unparsed-text('tests/runTests.xquery'), map{'': doc($path)}))
+    serialize(let $jid := jobs:eval(unparsed-text('../tests/runTests.xquery'), map{'': $input}, map {'cache': true()}), $_ := jobs:wait($jid) return jobs:result($jid))
   )
-  else :)
+  else
   (
   <rest:response>
     <http:response status="404" message="Tests in {$file} were not found.">
