@@ -26,7 +26,7 @@ declare namespace mods = "http://www.loc.gov/mods/v3";
 declare namespace zr = "http://explain.z3950.org/dtd/2.1/";
 
 declare variable $api:force-xml-style := 'none';
-declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2html.xsl";
+declare variable $api:sru2html := $sru-api:path-to-stylesheets||"sru2ajax.xsl";
 (: should provide a BaseX json direct XML representation:)
 declare variable $api:sru2json := $sru-api:path-to-stylesheets||"sru2json.xsl";
 
