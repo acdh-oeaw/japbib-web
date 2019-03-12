@@ -10,7 +10,7 @@
             <path label="string-join(mods:titleInfo/*, ' ')" match=".//*[not((ancestor::*:LIDOS-Dokument, ancestor-or-self::mods:*[@displayLabel='internal']))]">mods:mods</path>
         </index>
         <index label="Titel" key="title" case="false" type="ft" coll="?lang=de">
-            <path label="../*" match="." sort="(../* except mods:nonSort)">mods:titleInfo[parent::mods:mods]/mods:title</path>
+            <path sort="ancestor::mods:mods/mods:titleInfo/mods:title">mods:titleInfo[@context='mods']</path>
         </index>
         <index label="Autor" key="author" case="false" type="ft" coll="?lang=de">
             <path>mods:name[parent::mods:mods and (mods:role/mods:roleTerm ! normalize-space(.)) = ('aut', 'edt', 'trl', 'cbt')]/mods:namePart</path>
