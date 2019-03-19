@@ -1,14 +1,6 @@
-JavaScript and XQuery Code:
+MIT License
 
-The MIT License (MIT)
-
-Copyright (c) 2019
-Bernhard Scheid
-Institute for the Cultural and Intellectual History of Asia at the Austrian Academy of Sciences
-Omar Siam
-Daniel Schopper
-Austrian Centre for Digital Humanities at the Austrian Academy of Sciences
-
+Copyright 2019 Omar Siam, Daniel Schopper ACDH-ÖAW Bernhard Scheid ACDH-IKGA
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -26,11 +18,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE
-
-Texts and Data:
-
-Bernhard Scheid
-Institute for the Cultural and Intellectual History of Asia at the Austrian Academy of Sciences
-
-CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+SOFTWARE.
