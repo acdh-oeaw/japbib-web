@@ -24,8 +24,9 @@ Institute for the Cultural and Intellectual History of Asia at the Austrian Acad
 
 CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
 
-# 3rd party libraries
+### 3rd party libraries
 
+```
 ├─ MIT
 │  ├─ @bower_components/codemirror@5.43.0
 │  │  ├─ URL: git+https://github.com/codemirror/CodeMirror.git
@@ -59,7 +60,7 @@ CC BY 4.0 https://creativecommons.org/licenses/by/4.0/
 │     └─ VendorUrl: http://millermedeiros.github.com/js-signals/
 └─ MIT*
    └─ @bower_components/font-awesome@0.0.0
-
+```
 THE FOLLOWING SETS FORTH ATTRIBUTION NOTICES FOR THIRD PARTY SOFTWARE THAT MAY BE CONTAINED IN PORTIONS OF THE JAPBIB-WEB PRODUCT.
 
 -----
