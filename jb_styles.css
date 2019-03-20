@@ -86,8 +86,8 @@ p {
 }
 *::before,
 *::after {
-  font-family: 'Font Awesome 5 Free', 'Calibri', arial;
-  moz-osx-font-smoothing: grayscale;
+  font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands', 'Calibri', arial;
+  moz-osx-font-smoothing: grayscale; 
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   font-style: normal;
