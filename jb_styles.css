@@ -13,13 +13,18 @@
 .cookies {
   width: 500px;
   margin: auto;
-  padding: 1em 2em 14em;
+  padding: 1em 2em 12em;
   background: #ffffff;
-  background-image: url('./images/cookies.png');
+  background-image: url('./images/mice.jpg');
   background-position-y: 170px;
   /* background-position-y: 500%; */
   background-position-y: bottom;
+  background-position-x: right;
   background-repeat: no-repeat;
+  text-align: left;
+}
+.cookies p {
+  margin-bottom:3em;
 }
 #noCoockiesPlease {
   font-size: 1rem;
@@ -34,6 +39,7 @@
   border: 0;
   padding: .5em .3em;
   margin: 0 auto .5em;
+  /* margin: 0; */
   border-radius: 8px;
   font-weight: bold;
   box-shadow: 0px 0px 6px 3px rgba(88, 61, 34, 0.19);
@@ -485,12 +491,12 @@ td.control {
  padding: 0;
  }
 .impressum li {
- margin-left:3em;
+ margin-left:2em;
  margin-bottom:1em;
  }
 .impressum i {
  display: block; 
- text-indent: -3em;
+ text-indent: -2em;
  }
 .impressum span {
  display: block; 
