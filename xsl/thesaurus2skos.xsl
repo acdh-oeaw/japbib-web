@@ -40,12 +40,17 @@
     <xsl:template match="taxonomy">
         <rdf:Description rdf:about="{$base-url}">
             <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
-            <dct:title>JB 80 Thesaurus</dct:title>
+            <dct:title>Deutschsprachige Japan-Bibliographie 1980–2000 (JB 80) – Thesaurus</dct:title>
+            <dct:created><xsl:value-of select="current-date()"/></dct:created>
             <dct:rights>https://creativecommons.org/licenses/by/4.0/</dct:rights>
+            <dct:extent><xsl:value-of select="count(//category)"/> descriptors</dct:extent>
             <dct:language>German</dct:language>
             <dct:format>application/rdf+xml</dct:format>
+            <dct:hasVersion>1.0</dct:hasVersion>
+            <dct:publisher>Austrian Centre for </dct:publisher>
             <dct:author>Bernhard Scheid</dct:author>
             <dct:contributor>Lennart-Pascal Hruska</dct:contributor>
+            <dct:contributor>Daniel Schopper</dct:contributor>
             <xsl:for-each select="category">
                 <skos:hasTopConcept rdf:resource="{jb80:url(.)}"/>
             </xsl:for-each>
@@ -53,11 +58,16 @@
         <xsl:apply-templates/>
     </xsl:template>
     
+    <xsl:template match="numberOfRecords">
+        <skos:note><xsl:value-of select="."/> Einträge</skos:note>
+    </xsl:template>
+    
     <xsl:template match="category">
         <rdf:Description rdf:about="{jb80:url(.)}">
             <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
             <xsl:apply-templates select="* except category"/>
             <skos:inScheme rdf:resource="{jb80:url(ancestor::taxonomy)}"/>
+            <skos:notation><xsl:value-of select="@n"/></skos:notation>
             <xsl:if test="parent::category">
                 <skos:broader rdf:resource="{jb80:url(parent::category/@n)}"/>
             </xsl:if>
