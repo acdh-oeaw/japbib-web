@@ -59,7 +59,7 @@
     </xsl:template>
     
     <xsl:template match="numberOfRecords">
-        <skos:note><xsl:value-of select="."/> Einträge</skos:note>
+        <skos:note><xsl:value-of select="concat(., ' ')"/>Einträge</skos:note>
     </xsl:template>
     
     <xsl:template match="category">
