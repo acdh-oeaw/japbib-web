@@ -59,6 +59,8 @@
     <string xml:name="aut" xml:id="Hiraoka, Kimitake">Mishima, Yukio</string>
     <string xml:name="aut" xml:id="Itoh, Teiji">Itô, Teiji</string>
     <string xml:name="aut" xml:id="Itoh, Tsutomu">Itô, Tsutomu</string>
+    <string xml:name="aut" xml:id="Jirka-Schmitz, Patricia">Jirka-Schmitz, Patrizia</string>
+    <string xml:name="aut" xml:id="Jirka-Schmitz, Patrizia">Jirka-Schmitz, Patricia</string>
     <string xml:name="aut" xml:id="Kanze Motokiyo">Zeami</string>
     <string xml:name="aut" xml:id="Kargl, Ingrid">Getreuer-Kargl, Ingrid</string>
     <string xml:name="aut" xml:id="Kirsch, Hans-Christian">Hetmann, Frederik</string>
@@ -79,7 +81,8 @@
     <string xml:name="aut" xml:id="Nijô Dono">Go-Fukakusa In no Nijô</string>
     <string xml:name="aut" xml:id="Nikolajewa, Natalja">Nikolaeva, Natalia S.</string>
     <string xml:name="aut" xml:id="Ohnishi, Takeo">Ōnishi, Takeo</string>
-    <string xml:name="aut" xml:id="Okuju, Martin">Nusser, Horst</string>
+    <string xml:name="aut" xml:id="Okuju, Martin">Nusser, Horst</string> 
+    <string xml:name="aut" xml:id="Ölschleger, Hans Dieter">Ölschleger, Hans-Dieter</string>
     <string xml:name="aut" xml:id="Pestemer, Richard">Pestemer-Plöthner, Richard</string>
     <string xml:name="aut" xml:id="Raupach-Sumiya, Jörg">Raupach, Jörg</string>
     <string xml:name="aut" xml:id="Ri, Kaisei">Yi, Hoe-song</string>
