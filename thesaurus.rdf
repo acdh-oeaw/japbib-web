@@ -6,13 +6,17 @@
          xml:base="http://vocabs.acdh.oeaw.ac.at/JB80">
    <rdf:Description rdf:about="http://vocabs.acdh.oeaw.ac.at/JB80">
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
-      <skos:prefLabel>Deutschsprachige Japan-Bibliographie 1980–2000 (JB 80) – Thesaurus</skos:prefLabel>
       <dct:title>Deutschsprachige Japan-Bibliographie 1980–2000 (JB 80) – Thesaurus</dct:title>
+      <dct:created>2019-04-03+02:00</dct:created>
       <dct:rights>https://creativecommons.org/licenses/by/4.0/</dct:rights>
+      <dct:extent>496 descriptors</dct:extent>
       <dct:language>German</dct:language>
       <dct:format>application/rdf+xml</dct:format>
+      <dct:hasVersion>1.0</dct:hasVersion>
+      <dct:publisher>Austrian Centre for </dct:publisher>
       <dct:author>Bernhard Scheid</dct:author>
       <dct:contributor>Lennart-Pascal Hruska</dct:contributor>
+      <dct:contributor>Daniel Schopper</dct:contributor>
       <skos:hasTopConcept rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80#c1"/>
       <skos:hasTopConcept rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80#c2"/>
       <skos:hasTopConcept rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80#c3"/>
@@ -1912,13 +1916,6 @@
       <skos:prefLabel xml:lang="de">Arbeitsbedingungen</skos:prefLabel>
       <skos:inScheme rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80"/>
       <skos:notation>1.11.2.2</skos:notation>
-      <skos:broader rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80#c1.11.2"/>
-   </rdf:Description>
-   <rdf:Description rdf:about="http://vocabs.acdh.oeaw.ac.at/JB80#c1.11.2.3">
-      <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
-      <skos:prefLabel xml:lang="de">Arbeitsbedingungen</skos:prefLabel>
-      <skos:inScheme rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80"/>
-      <skos:notation>1.11.2.3</skos:notation>
       <skos:broader rdf:resource="http://vocabs.acdh.oeaw.ac.at/JB80#c1.11.2"/>
    </rdf:Description>
    <rdf:Description rdf:about="http://vocabs.acdh.oeaw.ac.at/JB80#c1.11.2.4">
