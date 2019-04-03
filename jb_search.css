@@ -305,7 +305,6 @@ tr.examples {
   text-align: right;
   font-family: calibri, arial, sans-serif;
   background: rgba(233, 220, 175, 0.7);
-  /* margin: -.5em -1em 1.5em; */
   padding: .2em .5em;
 }
 .suchOptionen .showOptions {
@@ -313,7 +312,9 @@ tr.examples {
   text-align: center;
   color: #555;
   border-radius: 0 0 7px 7px;
+  font-size: 1.2rem;
 }
+
 .showOptions label::before {  
   padding-left: .5em;
   padding-right: .2em;
@@ -321,6 +322,10 @@ tr.examples {
 }
 .showOptions label.hover::before {   
   opacity: 1; 
+}
+.showOptions select {
+  font-size: 1.2rem;
+  font-family: calibri, arial, sans-serif;
 }
 
 
