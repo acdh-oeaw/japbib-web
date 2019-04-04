@@ -47,7 +47,9 @@
             <dct:language>German</dct:language>
             <dct:format>application/rdf+xml</dct:format>
             <dct:hasVersion>1.0</dct:hasVersion>
-            <dct:publisher>Austrian Centre for </dct:publisher>
+            <dct:publisher>Institute for the Cultural and Intellectual History of Asia (IKGA)</dct:publisher>
+            <dct:author>Peter Getreuer</dct:author>
+            <dct:author>Susanne Formanek</dct:author>
             <dct:author>Bernhard Scheid</dct:author>
             <dct:contributor>Lennart-Pascal Hruska</dct:contributor>
             <dct:contributor>Daniel Schopper</dct:contributor>
