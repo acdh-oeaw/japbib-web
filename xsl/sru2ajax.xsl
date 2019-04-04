@@ -162,7 +162,7 @@
             
             <!-- Einzeleintrag, Kurzinformation: Name -->  
             <xsl:apply-templates select="mods:name">
-                <xsl:with-param name="roleTerm" select="'aut', 'edt', 'trl', 'ctb', 'red'"/>
+                <xsl:with-param name="roleTerm" select="'aut', 'edt', 'trl', 'ctb', 'red', 'com'"/>
                 <xsl:with-param name="query" select="false()"/>
                 <xsl:with-param name="description" select="false()"/>
             </xsl:apply-templates>      
@@ -561,14 +561,22 @@
         <xsl:apply-templates select="mods:dateIssued" >
             <xsl:with-param name="substring" select="10"/>
         </xsl:apply-templates>
+        <xsl:apply-templates select="mods:dateOther" />
         <xsl:apply-templates select="mods:edition" />
     </xsl:template> 
-     
+    
     <xd:doc>
         <xd:desc>Anm. zur Veröffentlichung</xd:desc>
     </xd:doc>
     <xsl:template match="mods:edition">
         <xsl:value-of select="' (' || . ||')'"/>
+    </xsl:template> 
+    
+    <xd:doc>
+        <xd:desc>Anm. zum Datum</xd:desc>
+    </xd:doc>
+    <xsl:template match="mods:dateOther">
+        <xsl:value-of select="' [' || . ||']'"/>
     </xsl:template>
     
     <xd:doc>
