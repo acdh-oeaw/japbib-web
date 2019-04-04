@@ -70,9 +70,15 @@
             <xsl:apply-templates select="* except category"/>
             <skos:inScheme rdf:resource="{jb80:url(ancestor::taxonomy)}"/>
             <skos:notation><xsl:value-of select="@n"/></skos:notation>
+            <xsl:if test="parent::taxonomy">
+                <skos:topConceptOf rdf:resource="{jb80:url(parent::taxonomy)}"/>
+            </xsl:if>
             <xsl:if test="parent::category">
                 <skos:broader rdf:resource="{jb80:url(parent::category/@n)}"/>
             </xsl:if>
+            <xsl:for-each select="category">
+                <skos:narrower rdf:resource="{jb80:url(@n)}"/>
+            </xsl:for-each>
         </rdf:Description>
         <xsl:apply-templates select="category"/>
     </xsl:template>
