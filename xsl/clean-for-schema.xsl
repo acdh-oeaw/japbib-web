@@ -28,36 +28,29 @@
         <xd:desc>Porcess a few for now</xd:desc>
     </xd:doc>
     <xsl:template match="/">
+        <xsl:processing-instruction name="xml-model">href="http://www.loc.gov/standards/mods/v3/mods-3-7.xsd"</xsl:processing-instruction>
         <modsCollection>
             <xsl:apply-templates select="subsequence(./*:modsCollection/*:mods, 1, 50000)"/>
         </modsCollection>
     </xsl:template>
     
     <xd:doc>
-        <xd:desc>text() in originInfo -> to comment</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:originInfo/text()[normalize-space(.) ne '']">
-        <xsl:comment select="."/>
-    </xsl:template>
-    
-    <xd:doc>
-        <xd:desc>no part in originInfo, after that tag</xd:desc>
-    </xd:doc>
-    <xsl:template match="mods:relatedItem/mods:originInfo[mods:part]">
-        <originInfo>
-            <xsl:apply-templates select="* except *:part"/>
-        </originInfo>
-        <xsl:apply-templates select="*:part"/>
-    </xsl:template>
-    
-    <xd:doc>
         <xd:desc>no note in part, after that</xd:desc>
     </xd:doc>
-    <xsl:template match="mods:part[mods:note]">
+    <xsl:template match="mods:part[.//mods:note]">
         <part>
             <xsl:apply-templates select="* except *:note"/> 
         </part>
-        <xsl:apply-templates select="*:note"/>
+        <xsl:apply-templates select=".//*:note"/>
+    </xsl:template>
+    
+    <xd:doc>
+        <xd:desc>no note in extent in part, after part</xd:desc>
+    </xd:doc>
+    <xsl:template match="mods:extent[mods:note]">
+        <extent>
+            <xsl:apply-templates select="* except *:note"/> 
+        </extent>
     </xsl:template>
     
     <xd:doc>
@@ -148,6 +141,16 @@
         <xd:desc>remove keyDate != yes</xd:desc>
     </xd:doc>
     <xsl:template match="@keyDate[. != 'yes']"/>
+    
+    <xd:doc>
+        <xd:desc>Remove empty nodes physicalDescription, orginInfo</xd:desc>
+    </xd:doc>
+    <xsl:template match="(mods:physicalDescription|mods:originInfo)[not(text()|*)]" priority="2"/>  
+    
+    <xd:doc>
+        <xd:desc>Remove empty nodes, there are to many false positives</xd:desc>
+    </xd:doc>
+<!--    <xsl:template match="*[not(text()|*)]" priority="2"/>-->
     
     <xd:doc>
         <xd:desc>Copy the rest</xd:desc>
