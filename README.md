@@ -1,5 +1,9 @@
 # Web application for the JB 80 Japan bibliography project
 
+## Getting the data
+
+The data used by this app is availabel [here](https://github.com/acdh-oeaw/japbib-data)/Die Daten finden sie [hier](https://github.com/acdh-oeaw/japbib-data)
+
 ## Licenses
 
 ### JavaScript and XQuery Code:
