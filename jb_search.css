@@ -324,7 +324,7 @@ tr.examples {
   opacity: 1; 
 }
 .showOptions select {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-family: calibri, arial, sans-serif;
 }
 
@@ -404,8 +404,7 @@ tr.examples {
   margin-left: -4.5rem;
   white-space: nowrap;
 }
-.year .startSearch {
-  /* margin-top: -1em; */
+.year .startSearch { 
 }
 
  /*******  Suchfeld *********/
@@ -700,7 +699,7 @@ div.showEntry {
 } 
 
 .skip::before {
-    content: 'Eintrag fehlerhaft oder unvollstÃƒÂ¤ndig';
+    content: 'Eintrag fehlerhaft oder unvollständig';
     color: red;
 }
 
