@@ -4,6 +4,10 @@
 
 The data used by this app is availabel [here](https://github.com/acdh-oeaw/japbib-data)/Die Daten finden sie [hier](https://github.com/acdh-oeaw/japbib-data)
 
+## Setting up an instance
+
+Anleitung vorerst nur auf deutsch [im Wiki](https://github.com/acdh-oeaw/japbib-web/wiki/Software-BaseX-einrichten)
+
 ## Licenses
 
 ### JavaScript and XQuery Code:
