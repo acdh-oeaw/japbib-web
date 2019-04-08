@@ -201,7 +201,7 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                   "#find?query=subject=%22Gegenwart%20(ab%201945)%22%20and%20subject=%22Einzelwerk%22%20and%20subject=%22Prosa%22">
                   subject="Gegenwart (ab 1945)" and subject="Einzelwerk" and subject="Prosa"</a>
                 </li>
-                <li>Finde Zen-Buddhismus als Sujet ín der westlichen Kunst:
+                <li>Finde Zen-Buddhismus als Sujet in der westlichen Kunst:
                   <a class="code aHover" href=
                   "#find?query=subject=%22Japan%20als%20Gegenstand%20nicht-jap.%20Kunst%22%20%20%20and%20subject=%22Zen-Buddhismus%22">
                   subject="Japan als Gegenstand nicht-jap. Kunst" and subject="Zen-Buddhismus"</a>
@@ -360,7 +360,29 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
             <div id="dokumentation">
               <h2>Technische Dokumentation</h2>
 
-              <p>Arbeiten an der Online-Fassung JB 80:</p>
+              <h3>GitHub</h3>
+
+              <p>Das Projekt wird mithilfe des Online-Entwicklerdienstes GitHub verwaltet. Alle Quelldateien sind über GitHub frei zugänglich und können, vorbehaltlich der Namensnennung des Urhebers, auch weiter verwendet werden. Abgesehen davon gibt es auf GitHub auch eine Dokumentation des für JB80 adaptierten MODS-Schemas:</p>
+              <ul>
+             	<li><a href="https://github.com/acdh-oeaw/japbib-web" class="externerLink">Project space</a> auf GitHub</li>
+             	<li><a href="https://github.com/acdh-oeaw/japbib-web/wiki" class="externerLink">Dokumentation</a> auf GitHub</li>
+              </ul>
+				  <h3>Suchroutine (Stand Mai 2018)</h3>
+				<ul>
+					<li>Die Suche erfolgt über eine <i>Context Query Language</i> (CQL) Suchabfrage im Browser. Diese wird durch manuelle Eingabe im Suchfeld 
+						oder durch Nutzerinteraktion mit diversen Websitelementen generiert. </li>
+					<li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die Adresse <code>[Basis-URL]/sru</code>. </li> 
+					<li> Die Sucheabfrage wird von den Routinen im Verzeichnis <code>responses/sru</code> bearbeitet.
+					<li> Die Abfrage wird mit einem extern erstellten CQL-Parser in Java (Apache Maven) in XML-Form gebracht. </li>
+					<li> Die Abfrage als XML wird in eine XQuery-Abfrage umgewandelt. Die dafür notwendige Konfiguration ist in der Datei <code>maps.xml</code> enthalten. </li>
+					<li> Für die Umwandlung der Abfrage wird der Full Text Index von BaseX verwendet.</li>
+					<li> Die XQuery-Abfrage wird ausgeführt und das Ergebnis in einen SRU-Rahmen eingepackt. </li>
+					<li> Mithilfe von gecachten Daten (<code>__sru_cache_de_data__</code>) werden Trefferzahlen ermittelt und ebenfalls in den SRU-Rahmen eingefügt.</li>
+					<li> Das so entstandene XML-File wird mit einem XSLT-Stylesheet (<code>x-style=sru2ajax.xsl</code>) umgewandelt und das XHTML-Ergebnis an den Browser geliefert.</li>
+					<li> Der Browser ersetzt mithilfe von Javascript die relevanten HTML-Elemente der Seite um die gewünschten Ergebnisse anzuzeigen.  
+				</ul>
+				
+              <h3>Arbeiten an der Online-Fassung</h3>
               <ul>
               	<li> ab 2016/4:               		
               		Überprüfung und Adaptierung der Schlagwörter.
@@ -396,22 +418,10 @@ Matomo Tracker https://matomo.acdh.oeaw.ac.at
                 <li> 2019/3:
                    Installation eines Matomo-Counters.
                 </li> 
+                <li> 2019/4:
+                   Veröffentlichung des Projekts (Kickoff 8.4.2019); Installation auf GitHub.
+                </li> 
               </ul> 
-				  <h3>Suchroutine (Stand Mai 2018)</h3>
-				<ul>
-					<li>Die Suche erfolgt über eine <i>Context Query Language</i> (CQL) Suchabfrage im Browser. Diese wird durch manuelle Eingabe im Suchfeld 
-						oder durch Nutzerinteraktion mit diversen Websitelementen generiert. </li>
-					<li>Die Abfrage wird als GET Request an den Server geschickt, und zwar an die Adresse <code>[Basis-URL]/sru</code>. </li> 
-					<li> Die Sucheabfrage wird von den Routinen im Verzeichnis <code>responses/sru</code> bearbeitet.
-					<li> Die Abfrage wird mit einem extern erstellten CQL-Parser in Java (Apache Maven) in XML-Form gebracht. </li>
-					<li> Die Abfrage als XML wird in eine XQuery-Abfrage umgewandelt. Die dafür notwendige Konfiguration ist in der Datei <code>maps.xml</code> enthalten. </li>
-					<li> Für die Umwandlung der Abfrage wird der Full Text Index von BaseX verwendet.</li>
-					<li> Die XQuery-Abfrage wird ausgeführt und das Ergebnis in einen SRU-Rahmen eingepackt. </li>
-					<li> Mithilfe von gecachten Daten (<code>__sru_cache_de_data__</code>) werden Trefferzahlen ermittelt und ebenfalls in den SRU-Rahmen eingefügt.</li>
-					<li> Das so entstandene XML-File wird mit einem XSLT-Stylesheet (<code>x-style=sru2ajax.xsl</code>) umgewandelt und das XHTML-Ergebnis an den Browser geliefert.</li>
-					<li> Der Browser ersetzt mithilfe von Javascript die relevanten HTML-Elemente der Seite um die gewünschten Ergebnisse anzuzeigen.  
-				</ul>
-				
               <p class="next">Weiter zu: <a href="#bildnachweise">Bildnachweise</a></p>
             </div>
             <div id="bildnachweise">
