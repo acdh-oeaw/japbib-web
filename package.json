@@ -1,7 +1,7 @@
 {
-  "name": "japbib",
-  "version": "0.5.0",
-  "description": "",
+  "name": "japbib-web",
+  "version": "1.0.0",
+  "description": "Website und User Interface für die Japan Bibliographie 1980-2000",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
