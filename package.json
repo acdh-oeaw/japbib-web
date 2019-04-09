@@ -2,6 +2,30 @@
   "name": "japbib-web",
   "version": "1.0.0",
   "description": "Website und User Interface für die Japan Bibliographie 1980-2000",
+  "keywords": [ "website", "japanese-study", "japanologie", "cultural-science", "skulturwissenschaft"],
+  "homepage": "https://www.oeaw.ac.at/jb80/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acdh-oeaw/japbib-web.git"
+  },
+  "license": "(MIT AND CC-BY-4.0)",
+  "author": {
+    "name": "Berhard Scheid",
+    "email": "Bernhard.Scheid@oeaw.ac.at",
+    "url": "http://www.ikga.oeaw.ac.at/Mitarbeiter/Scheid"
+  },
+  "contributors": [
+    {
+      "name": "Omar Siam",
+      "email": "Omar.Siam@oeaw.ac.at",
+      "url": "https://www.oeaw.ac.at/acdh/team/current-team/omar-siam/"
+    },
+    {
+      "name": "Daniel Schopper",
+      "email": "Daniel.Schopper@oeaw.ac.at",
+      "url": "https://www.oeaw.ac.at/acdh/team/current-team/daniel-schopper/"
+    }
+  ],
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
