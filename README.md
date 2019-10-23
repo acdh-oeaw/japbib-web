@@ -2,7 +2,7 @@
 
 ## Getting the data
 
-The data used by this app is availabel [here](https://github.com/acdh-oeaw/japbib-data)/Die Daten finden sie [hier](https://github.com/acdh-oeaw/japbib-data)
+The data used by this app is available [here (bibliography)](https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/hdl.handle.net/21.11115/0000-000C-297E-A) and [here (keywords)](https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/hdl.handle.net/21.11115/0000-000C-298C-9)/Die Daten finden sie [hier (Bibliographie)](https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/hdl.handle.net/21.11115/0000-000C-297E-A) unde [hier (Schlagwörter)](https://arche.acdh.oeaw.ac.at/browser/oeaw_detail/hdl.handle.net/21.11115/0000-000C-298C-9)
 
 ## Setting up an instance
 
