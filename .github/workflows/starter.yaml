@@ -18,7 +18,7 @@ jobs:
 # Usually you don't deal with all commits since the repository was created.
 # Increase if you e.g don't find a tag you want to display in the application
       fetch-depth: 1
-      submodules: "true"
+      submodules: "false"
 #      herokuish_base_image: ghcr.io/acdh-oeaw/herokuish-for-cypress/main:latest-22
       APP_NAME: japbib-web
 # This together with the branch name is also used as the namespace to deploy to
