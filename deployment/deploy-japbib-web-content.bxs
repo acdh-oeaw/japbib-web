@@ -1,0 +1,4 @@
+<commands>
+	<set option="CHOP">false</set>
+	<create-db name="japbib_06">../webapp/japbib-web/deployment/japbib_06-2019-04-05.xml</create-db>
+</commands>

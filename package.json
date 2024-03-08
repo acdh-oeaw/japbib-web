@@ -65,6 +65,10 @@
     "@bower_components/urijs": "medialize/URI.js#^1.18.10"
   },
   "engines": {
-    "yarn": ">= 1.0.0"
+	"node": "20.x",
+    "yarn": "1.22.x",
+	"jvm": "17",
+	"basex": "9.1.2",
+	"saxon": "9.9.1-8"
   }
 }
