@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', 'junction') } catch (e) { }\""
+    "postinstall": "node -e \"try { require('fs').cpSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', {recursive: true}) } catch (e) { }\""
   },
   "devDependencies": {
     "chai": "^4.0.1",
@@ -66,7 +66,7 @@
   },
   "engines": {
 	"node": "20.x",
-    "yarn": "1.22.x",
+  "yarn": "1.22.x",
 	"jvm": "17",
 	"basex": "9.1.2",
 	"saxon": "9.9.1-8"
