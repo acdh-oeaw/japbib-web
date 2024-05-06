@@ -2,6 +2,7 @@
 // a way to execute functions of the tracking system
 var window = window || {};
 var _paq = window._paq || [];
+jQuery.migrateEnablePatches( "self-closed-tags" )
 
 $(document).ready(function() {
     if (!window.__karma__) {

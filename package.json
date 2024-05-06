@@ -2,7 +2,13 @@
   "name": "japbib-web",
   "version": "1.0.0",
   "description": "Website und User Interface für die Japan Bibliographie 1980-2000",
-  "keywords": [ "website", "japanese-study", "japanologie", "cultural-science", "skulturwissenschaft"],
+  "keywords": [
+    "website",
+    "japanese-study",
+    "japanologie",
+    "cultural-science",
+    "skulturwissenschaft"
+  ],
   "homepage": "https://www.oeaw.ac.at/jb80/",
   "repository": {
     "type": "git",
@@ -28,7 +34,9 @@
   ],
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "postinstall": "node -e \"try { require('fs').cpSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', {recursive: true}) } catch (e) { }\""
+    "postinstall:copy-bower-components": "node -e \"try { require('fs').cpSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', {recursive: true}) } catch (e) { }\"",
+    "postinstall:compile-jquery-migrate": "cd node_modules/@bower_components/jquery-migrate && npm install && npm run build && cd ../../..",
+    "postinstall": "npm run postinstall:compile-jquery-migrate && npm run postinstall:copy-bower-components"
   },
   "devDependencies": {
     "chai": "^4.0.1",
@@ -55,20 +63,21 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "@bower_components/codemirror": "components/codemirror#^5.26.0",
+    "@bower_components/codemirror": "components/codemirror#^5.65.12",
     "@bower_components/crossroads": "millermedeiros/crossroads.js#^0.12.2",
-    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^5.0.8",
+    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^5.15.4",
     "@bower_components/hasher": "millermedeiros/Hasher#^1.2.0",
-    "@bower_components/jquery": "jquery/jquery-dist#^3.1.1",
+    "@bower_components/jquery": "jquery/jquery-dist#^3.7.1",
+    "@bower_components/jquery-migrate": "jquery/jquery-migrate#^3.4.1",
     "@bower_components/js-cookie": "js-cookie/js-cookie#^v2.2.1",
     "@bower_components/js-signals": "millermedeiros/js-signals#^1.0.0",
-    "@bower_components/urijs": "medialize/URI.js#^1.18.10"
+    "@bower_components/urijs": "medialize/URI.js#^1.19.11"
   },
   "engines": {
-	"node": "20.x",
-  "yarn": "1.22.x",
-	"jvm": "17",
-	"basex": "9.1.2",
-	"saxon": "9.9.1-8"
+    "node": "20.x",
+    "yarn": "1.22.x",
+    "jvm": "17",
+    "basex": "9.1.2",
+    "saxon": "9.9.1-8"
   }
 }
