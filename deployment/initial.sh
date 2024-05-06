@@ -37,3 +37,7 @@ curl -LOJ https://arche.acdh.oeaw.ac.at/api/44309
 
 sed -i "s~../webapp/japbib-web/~${BUILD_DIR:-../webapp/japbib-web}/~g" deploy-japbib-web-content.bxs
 ./execute-basex-batch.sh ${BUILD_DIR:-../webapp/japbib-web}/deployment/deploy-japbib-web-content $1
+
+# initialize cache
+curl -o /dev/null http://localhost:8984/japbib-web/sru/refresh-scans
+curl -o /dev/null http://localhost:8984/japbib-web/thesaurus?x-mode=refresh
