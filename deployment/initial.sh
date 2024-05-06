@@ -39,5 +39,5 @@ sed -i "s~../webapp/japbib-web/~${BUILD_DIR:-../webapp/japbib-web}/~g" deploy-ja
 ./execute-basex-batch.sh ${BUILD_DIR:-../webapp/japbib-web}/deployment/deploy-japbib-web-content $1
 
 # initialize cache
-curl -o /dev/null http://localhost:8984/japbib-web/sru/refresh-scans
-curl -o /dev/null http://localhost:8984/japbib-web/thesaurus?x-mode=refresh
+curl -o /dev/null http://localhost:$PORT/japbib-web/sru/refresh-scans
+curl -o /dev/null http://localhost:$PORT/japbib-web/thesaurus?x-mode=refresh

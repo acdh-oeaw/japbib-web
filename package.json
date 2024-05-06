@@ -35,7 +35,7 @@
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "postinstall:copy-bower-components": "node -e \"try { require('fs').cpSync(require('path').resolve('node_modules/@bower_components'), 'bower_components', {recursive: true}) } catch (e) { }\"",
-    "postinstall:compile-jquery-migrate": "cd node_modules/@bower_components/jquery-migrate && npm install && npm run build && cd ../../..",
+    "postinstall:compile-jquery-migrate": "cd node_modules/@bower_components/jquery-migrate && npm install --include dev && npm run build && cd ../../..",
     "postinstall": "npm run postinstall:compile-jquery-migrate && npm run postinstall:copy-bower-components"
   },
   "devDependencies": {
