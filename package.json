@@ -60,7 +60,7 @@
     "@bower_components/font-awesome": "FortAwesome/Font-Awesome#^5.0.8",
     "@bower_components/hasher": "millermedeiros/Hasher#^1.2.0",
     "@bower_components/jquery": "jquery/jquery-dist#^3.1.1",
-    "@bower_components/js-cookie": "js-cookie/js-cookie#*",
+    "@bower_components/js-cookie": "js-cookie/js-cookie#^v2.2.1",
     "@bower_components/js-signals": "millermedeiros/js-signals#^1.0.0",
     "@bower_components/urijs": "medialize/URI.js#^1.18.10"
   },
