@@ -37,3 +37,5 @@ curl -LOJ https://arche.acdh.oeaw.ac.at/api/44309
 
 sed -i "s~../webapp/japbib-web/~${BUILD_DIR:-../webapp/japbib-web}/~g" deploy-japbib-web-content.bxs
 ./execute-basex-batch.sh ${BUILD_DIR:-../webapp/japbib-web}/deployment/deploy-japbib-web-content $1
+sed -i "s~../webapp/japbib-web/~${BUILD_DIR:-../webapp/japbib-web}/~g" refresh-cache.xq
+./execute-basex-batch.sh ${BUILD_DIR:-../webapp/japbib-web}/deployment/refresh-cache.xq $1

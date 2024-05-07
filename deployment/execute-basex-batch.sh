@@ -18,19 +18,20 @@ if [ -z "$1" ]; then
 else
   BATCHFILE="$1"
 fi
+BATCHFILE=$(realpath "${2:-../../..}/bin/$BATCHFILE")
 if [ "$OSTYPE" == "msys" -o "$OSTYPE" == "win32" ]
 then
-if [[ "$BATCHFILE" == *.xql ]]; then
+if [[ "$BATCHFILE" == *.xq* ]]; then
    echo "executing XQuery script $BATCHFILE"
-   exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD "RUN $BATCHFILE"
+   exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "XQUERY $(cat $BATCHFILE|tr -d '\r\n')"
 else
   echo "executing BaseX script $BATCHFILE"
-  exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "RUN $BATCHFILE.bxs"
+  exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "RUN $(cygpath -w $BATCHFILE.bxs)"
 fi
 else
-if [[ "$BATCHFILE" == *.xql ]]; then
+if [[ "$BATCHFILE" == *.xq* ]]; then
    echo "executing XQuery script $BATCHFILE using $(realpath ${2:-../../..}/bin/basexclient)"
-   exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD "RUN $BATCHFILE"
+   exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD -c "XQUERY $(cat $BATCHFILE|tr -d '\r\n')"
 else
   echo "executing BaseX script $BATCHFILE using $(realpath ${2:-../../..}/bin/basexclient)"
   exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD -c "RUN $BATCHFILE.bxs"
