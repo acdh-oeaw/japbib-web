@@ -24,6 +24,10 @@ else
   pushd ${1:-../..}/lib/custom
   curl -LO https://maven.indexdata.com/org/z3950/zing/cql-java/1.13/cql-java-1.13.jar
   popd
+  bash "$1/bin/basexhttpstop"
+  bash "$1/bin/basexhttp" -h "$PORT" >/dev/null 2>&1 &
+  sleep 1.5
+  curl --connect-timeout 5 --max-time 10 --retry 3 --retry-delay 0  --retry-max-time 40 --retry-connrefused 1 -s -D - "http://localhost:$PORT" -o /dev/null 2>/dev/null | head -n1 | grep -q '\([23]0[0-9]\)' || (pkill -TERM java; exit 1)
 fi
 pushd deployment
 local_password=${BASEX_admin_pw:-admin}
