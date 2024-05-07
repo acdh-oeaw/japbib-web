@@ -90,7 +90,7 @@ function api:taxonomy-as-html-cached($x-mode, $x-style) {
         api:create-data-with-stats("`{$x-mode}`")]``,
         $jid := jobs:eval($data-with-stats-query, (), map {'cache': true(), 'base-uri': static-base-uri()}), $_ := jobs:wait($jid),
         $data-with-stats := jobs:result($jid),
-        $style := if (some $a in tokenize(request:header("ACCEPT"), ',') satisfies $a = ('text/xml', 'application/xml')) then 'none' else $x-style,
+        $style := try { if (some $a in tokenize(request:header("ACCEPT"), ',') satisfies $a = ('text/xml', 'application/xml')) then 'none' else $x-style } catch basex:http { $x-style },
         $ret := api:taxonomy-as-html($data-with-stats/*, $style)
     return ($ret, api:taxonomy-cache-as-xml($x-mode, $data-with-stats))
 };
