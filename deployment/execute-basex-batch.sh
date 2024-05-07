@@ -18,7 +18,13 @@ if [ -z "$1" ]; then
 else
   BATCHFILE="$1"
 fi
-BATCHFILE=$(realpath "${2:-../../..}/bin/$BATCHFILE")
+pushd ${2:-../../..}/bin >/dev/null
+if [[ "$BATCHFILE" == *.xq* ]]; then
+  BATCHFILE=$(realpath "$BATCHFILE")
+else
+  BATCHFILE=$(realpath "$BATCHFILE.bxs")
+fi
+popd >/dev/null
 if [ "$OSTYPE" == "msys" -o "$OSTYPE" == "win32" ]
 then
 if [[ "$BATCHFILE" == *.xq* ]]; then
@@ -26,7 +32,7 @@ if [[ "$BATCHFILE" == *.xq* ]]; then
    exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "XQUERY $(cat $BATCHFILE|tr -d '\r\n')"
 else
   echo "executing BaseX script $BATCHFILE"
-  exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "RUN $(cygpath -w $BATCHFILE.bxs)"
+  exec ../../../bin/basexclient.bat -U$USERNAME -P$PASSWORD -c "RUN $(cygpath -w $BATCHFILE)"
 fi
 else
 if [[ "$BATCHFILE" == *.xq* ]]; then
@@ -34,6 +40,6 @@ if [[ "$BATCHFILE" == *.xq* ]]; then
    exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD -c "XQUERY $(cat $BATCHFILE|tr -d '\r\n')"
 else
   echo "executing BaseX script $BATCHFILE using $(realpath ${2:-../../..}/bin/basexclient)"
-  exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD -c "RUN $BATCHFILE.bxs"
+  exec ${2:-../../..}/bin/basexclient -U$USERNAME -P$PASSWORD -c "RUN $BATCHFILE"
 fi
 fi
