@@ -38,6 +38,7 @@ export PASSWORD=$local_password
 #-------------------------------------
 
 curl -LOJ https://arche.acdh.oeaw.ac.at/api/44309
+mv 44309 japbib_06-2019-04-05.xml || true
 
 sed -i "s~../webapp/japbib-web/~${BUILD_DIR:-../webapp/japbib-web}/~g" deploy-japbib-web-content.bxs
 ./execute-basex-batch.sh ${BUILD_DIR:-../webapp/japbib-web}/deployment/deploy-japbib-web-content $1
